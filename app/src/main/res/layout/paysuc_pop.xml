@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="360dp"
+        android:background="@drawable/rectangle_shape_gay"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:src="@mipmap/success" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="充值成功"
+            android:textColor="#3d3d3d"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/pay_hashrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="1000算力"
+            android:textColor="#3d3d3d"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="22dp"
+                android:layout_marginTop="8dp"
+                android:text="花费金额"
+                android:textColor="#2A394C"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/pay_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="23dp"
+                android:layout_marginTop="10dp"
+                android:text="1000算力"
+                android:textColor="#2A394C"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="#fff5f5f5"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="22dp"
+                android:layout_marginTop="8dp"
+                android:text="余额"
+                android:textColor="#2A394C"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/remain_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="23dp"
+                android:layout_marginTop="10dp"
+                android:text="1000算力"
+                android:textColor="#2A394C"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="23dp"
+            android:layout_marginTop="10dp"
+            android:background="#fff5f5f5"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="31dp">
+            <Button
+                android:id="@+id/back_hashrate"
+                android:layout_width="118dp"
+                android:layout_height="41dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_white_shape"
+                android:text="返回算力"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/reded"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/continue_pay"
+                android:layout_width="118dp"
+                android:layout_height="41dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_red_shape"
+                android:text="继续充值"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="21dp"
+                android:textColor="@color/white"
+                android:visibility="visible" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

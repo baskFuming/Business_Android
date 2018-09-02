@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.zwonline.top28.activity.BankActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="21dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/return_black" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/bank_my_bankcard"
+            android:textColor="#2B2B2B"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <!--<ProgressBar-->
+        <!--android:id="@+id/progress_Bar"-->
+        <!--style="?android:attr/progressBarStyleHorizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="3dp"-->
+        <!--android:progressDrawable="@drawable/progress_bar"-->
+        <!--android:visibility="gone" />-->
+
+    <!--<WebView-->
+        <!--android:id="@+id/bank_web"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></WebView>-->
+    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+    android:id="@+id/bankrecy"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+    <TextView
+    android:id="@+id/no"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:text="@string/bank_bankcark_empty"
+    android:textSize="20sp"
+    android:visibility="gone" />
+
+    <TextView
+    android:id="@+id/addbank"
+
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:layout_marginTop="30dp"
+    android:background="@color/white"
+    android:drawableLeft="@mipmap/ic_add"
+    android:drawablePadding="10dp"
+    android:drawableRight="@mipmap/ic_back_right"
+    android:gravity="center_vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:text="@string/bank_bankcark_add"
+    android:textColor="@color/black"
+    android:textSize="16sp"
+    android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

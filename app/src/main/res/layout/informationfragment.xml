@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/messages_list_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/search_message"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        >
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@mipmap/home_search"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/add_fuction"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@mipmap/messageadd"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
+
+           />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/info_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            app:tabIndicatorColor="@color/red"
+            app:tabSelectedTextColor="#2F2F2F"
+            app:tabIndicatorHeight="4dp"
+            app:tabTextAppearance="@style/MyTabLayoutText"
+            app:tabTextColor="#807F81"></android.support.design.widget.TabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/info_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+    </LinearLayout>
+
+</RelativeLayout>

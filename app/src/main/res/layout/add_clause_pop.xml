@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="346dp"
+        android:layout_height="320dp"
+        android:background="@drawable/rectangle_shape_gay"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/clause_close"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/hetong_close" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp">
+
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/hetong_edit" />
+
+            <EditText
+                android:id="@+id/clause_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:background="@null"
+                android:hint="点击添加条款名称"
+                android:maxLength="25"
+                android:textColor="#3B3B3B"
+                android:textColorHint="#E6EAEE"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/rectangle_shape_gay"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp">
+
+            <EditText
+                android:id="@+id/clause_ratio"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:textColor="#3B3B3B"
+                android:hint="请输入合同占比"
+                android:textColorHint="#E6EAEE"
+                android:layout_marginLeft="10dp"
+                android:textSize="16sp"
+                android:maxLength="3"
+                android:inputType="number"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="16sp"
+                android:text="%"
+                android:textColor="#3b3b3b"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:layout_marginRight="14dp"/>
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/clause_content"
+            android:layout_width="match_parent"
+            android:layout_height="111dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rectangle_shape_gay"
+            android:hint="请输入条款内容"
+            android:gravity="top"
+            android:padding="10dp"
+            android:textColor="#3b3b3b"
+            android:textColorHint="#E6EAEE"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"/>
+        <Button
+            android:id="@+id/sure"
+            android:layout_width="232dp"
+            android:layout_height="45dp"
+            android:text="保存"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_red_shape"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+</LinearLayout>

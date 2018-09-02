@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/newcontent_recy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"></com.jcodecraeer.xrecyclerview.XRecyclerView>
+
+    <com.zwonline.top28.utils.RecyclerScrollView
+        android:id="@+id/recommend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/lr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.jcodecraeer.xrecyclerview.XRecyclerView
+                android:id="@+id/business_cicler"
+                android:layout_width="match_parent"
+                android:layout_height="660dp"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="18dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/complete"
+                    android:layout_width="120dp"
+                    android:layout_height="36dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="#ffff2b2b"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:text="完成"
+                    android:textColor="#ffffffff"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.zwonline.top28.utils.RecyclerScrollView>
+
+    <RelativeLayout
+        android:id="@+id/no_dynamic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/no_attention"
+            android:layout_width="150dp"
+            android:layout_height="188dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:src="@mipmap/nothing_dongtai" />
+
+        <TextView
+            android:id="@+id/no_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/no_attention"
+            android:layout_centerHorizontal="true"
+            android:text="暂无最新动态"
+            android:textColor="#3D3D3D"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/send_dyna"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/no_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="点击右上方“＋”可以发布动态"
+            android:textColor="#3D3D3D"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/da_v_recommend"
+            android:layout_width="154dp"
+            android:layout_height="42dp"
+            android:layout_below="@id/no_attention"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="76dp"
+            android:background="@drawable/da_v_recommend_shape"
+            android:gravity="center"
+            android:text="大V推荐"
+            android:textColor="#228FFE"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/attention_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/da_v_recommend"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="关注大V，了解行大V的独到见解"
+            android:textColor="#D8DEE9"
+            android:textSize="14sp" />
+    </RelativeLayout>
+</LinearLayout>

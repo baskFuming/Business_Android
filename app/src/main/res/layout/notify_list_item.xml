@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/notify_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:textColor="#404040"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/noread_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangle_shape_gay"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="17dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/notify_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="#404040"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/notify_cotent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/notify_title"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:textColor="#BDBDBD"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/isread"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/redcircle_shape" />
+
+        <View
+            android:id="@+id/lines"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/notify_cotent"
+            android:layout_marginTop="15dp"
+            android:background="#ffe1e2e4" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@id/lines"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击查看"
+                android:textColor="#3d3d3d"
+                android:textSize="16sp"/>
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="9dp"
+                android:src="@mipmap/notice_more"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

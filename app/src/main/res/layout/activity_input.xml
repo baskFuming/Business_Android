@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/inputLayout"
+    >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/umeng_socialize_list_item_bgcolor"
+            tools:ignore="RtlCompat">
+
+            <Button
+                android:id="@+id/inputButton"
+                android:layout_width="60dp"
+                android:layout_height="45dp"
+                android:text="@string/common_btn_send"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true" />
+
+            <EditText
+                android:id="@+id/inputText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginRight="75dp"
+                android:layout_marginLeft="15dp"
+                android:ems="10"
+                android:inputType="text"
+                android:text=""
+                android:textCursorDrawable="@color/colorPrimary"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+
+</RelativeLayout>

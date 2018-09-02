@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants">
+
+    <LinearLayout
+        android:id="@+id/have_comment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.zwonline.top28.utils.ImageViewPlus
+                android:id="@+id/comment_user_head"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="17dp"
+                android:layout_marginTop="10dp"
+               />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:layout_toRightOf="@id/comment_user_head"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/comment_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#7B7B7B"
+                    android:textSize="14sp"
+                    android:maxEms="13"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    />
+
+                <TextView
+                    android:id="@+id/comment_issue_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:textColor="#C2C2C2"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/praise_like"
+                android:layout_width="100dp"
+                android:layout_height="42dp"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:id="@+id/praise_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:lines="1"
+                    android:layout_toLeftOf="@id/comment_like"
+                    android:textColor="#C2C2C2"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:id="@+id/comment_like"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="11dp"
+                    android:background="@drawable/selector_comment_like"
+                    android:button="@null"
+                    android:drawablePadding="5dp"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:layout_marginRight="15dp"/>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/comment_dian"
+                android:layout_width="40dp"
+                android:layout_height="33dp"
+                android:layout_alignParentRight="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="15dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="13dp"
+                    android:src="@mipmap/diandian"
+                    />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/comment_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="74dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="7dp"
+            android:lineSpacingExtra="3dp"
+            android:textColor="#424242"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/linear_child_comments"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="74dp"
+            android:background="@drawable/comment_shape"
+            android:orientation="vertical"
+            android:paddingBottom="11dp"
+            android:paddingLeft="9dp"
+            android:layout_marginRight="20dp"
+            android:paddingRight="11dp"
+            android:paddingTop="6dp">
+
+            <TextView
+                android:id="@+id/comment_user1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                 />
+
+            <TextView
+                android:id="@+id/comment_user2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:id="@+id/look_more_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="#228FFE"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/no_comment_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="226dp"
+            android:layout_height="142dp"
+            android:src="@mipmap/hetong_blank"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂无评论 可以抢沙发哦"
+            android:textColor="#96959A"
+            android:textSize="16sp"
+            android:layout_marginBottom="57dp"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.zwonline.top28.utils.ImageViewPlus
+            android:id="@+id/comment_head"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="17dp"
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:layout_toRightOf="@id/comment_head"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/comment_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用户昵称"
+                android:textColor="#7B7B7B"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/comment_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="20小时前"
+                android:textColor="#C2C2C2"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+        <CheckBox
+            android:id="@+id/comment_likes"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="52dp"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/selector_comment_like"
+            android:button="@null"
+            android:drawablePadding="5dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/praise_nums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@id/comment_likes"
+            android:textColor="#C2C2C2"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:id="@+id/comment_dians"
+            android:layout_width="40dp"
+            android:layout_height="33dp"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="10dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="11dp"
+                android:src="@mipmap/diandian" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/comment_contents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="74dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="7dp"
+        android:lineSpacingExtra="3dp"
+        android:text="阿坝付款琅勃拉邦烦烦烦，发发发吧发放把可能发放不能玩不耐烦，伞大亮南方"
+        android:textColor="#424242"
+        android:textSize="14sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="130dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:background="#ffefefef" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:text="全部评论"
+            android:textColor="#2F2F2F"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="130dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:background="#ffefefef"
+
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/no_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="抢先评论"
+        android:visibility="gone"/>
+</LinearLayout>

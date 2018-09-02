@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".nim.yangfen.SendYangFenActivity">
+
+
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/reded">
+
+
+        <RelativeLayout
+            android:id="@+id/back"
+            android:layout_width="60dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="21dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/back" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:text="鞅分红包"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_shape_gay"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/yangfen_num"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:text="红包个数" />
+
+        <TextView
+            android:id="@+id/ge_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="个"
+            android:textColor="#1d1d1d"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/points_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/ge_tv"
+            android:layout_toRightOf="@id/yangfen_num"
+            android:background="@null"
+            android:drawablePadding="15dp"
+            android:gravity="right"
+            android:hint="填写个数"
+            android:inputType="number"
+            android:maxLength="15"
+            android:paddingRight="10dp"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/group_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#BCBCBC"
+        android:textSize="14sp"/>
+
+    <RelativeLayout
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_shape_gay"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/yf_all"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:textColor="#3D3D3D"
+            android:text="总鞅分" />
+
+        <TextView
+            android:id="@+id/yangfen_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="分"
+            android:textColor="#1d1d1d"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/pin"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/yf_all"
+            android:src="@mipmap/pin"
+            android:layout_marginLeft="10dp"/>
+
+        <EditText
+            android:id="@+id/yangfen_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/yangfen_tv"
+            android:layout_toRightOf="@id/yf_all"
+            android:background="@null"
+            android:gravity="right"
+            android:inputType="number"
+            android:maxLength="15"
+            android:hint="鞅分数量"
+            android:paddingRight="10dp"
+            android:textCursorDrawable="@null"
+            android:textSize="16dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/pin_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="29dp"
+            android:layout_marginTop="10dp"
+            android:text="当前为拼手气红包 "
+            android:textColor="#BCBCBC"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/ordinary_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="改为普通红包"
+            android:textColor="@color/color_activity_blue_bg"
+            android:textSize="14sp"
+            android:button="@null"
+            />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/red_content"
+        android:layout_width="340dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_toLeftOf="@id/yangfen_tv"
+        android:layout_toRightOf="@id/yf_all"
+        android:background="@drawable/rectangle_shape_gay"
+        android:drawablePadding="15dp"
+        android:gravity="left"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:text="恭喜发财，大吉大利！"
+        android:textSize="16dp" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="鞅分:"
+            android:textColor="#1d1d1d"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/show_yf_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:textColor="#1d1d1d"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/send_yf"
+        android:layout_width="340dp"
+        android:layout_height="46dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/yangfen_shape"
+        android:text="塞钱进红包"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

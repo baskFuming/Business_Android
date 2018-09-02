@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/smallSpace"
+    android:layout_marginRight="@dimen/smallSpace"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:alpha="0.2"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll"/>
+    <LinearLayout
+        android:id="@+id/ll"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/id_pop_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/popwindow_shape"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/chat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="银行卡操作"
+                android:textColor="#666666"
+                android:background="@color/white"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#2d2c2c"
+                />
+            <Button
+                android:background="@color/white"
+                android:id="@+id/unbind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="解绑"
+                android:textColor="@color/red"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/popwindow_shape"
+            android:orientation="vertical"
+            android:layout_marginBottom="15dp">
+
+            <Button
+                android:background="@color/white"
+                android:id="@+id/cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/common_cancel"
+
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

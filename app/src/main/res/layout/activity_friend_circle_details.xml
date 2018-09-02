@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.DynamicDetailsActivity">
+
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/base_title_helper" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_layout"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <com.liaoinstan.springview.widget.SpringView
+            android:id="@+id/dynamic_spring"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/title_layout"
+            android:layout_weight="9">
+
+            <ListView
+                android:id="@+id/dynamicdetails_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:visibility="visible"></ListView>
+        </com.liaoinstan.springview.widget.SpringView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/GreyWhite" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linear_share"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="16dp"
+                    android:src="@mipmap/post_share" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="分享"
+                    android:textColor="#1d1d1d"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center_vertical"
+                android:background="#ffebebeb" />
+
+            <LinearLayout
+                android:id="@+id/linear_comment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="16dp"
+                    android:src="@mipmap/post_comment" />
+
+                <TextView
+                    android:id="@+id/comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="评论"
+                    android:textColor="#1d1d1d"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center_vertical"
+                android:background="#ffebebeb" />
+
+            <LinearLayout
+                android:id="@+id/linear_like"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/choose_like"
+                    android:layout_width="14dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/selector_comment_likes"
+                    android:button="@null" />
+
+
+                <TextView
+                    android:id="@+id/is_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="点赞"
+                    android:textColor="#1d1d1d"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

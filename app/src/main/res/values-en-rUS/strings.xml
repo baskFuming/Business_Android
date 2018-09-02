@@ -1,0 +1,499 @@
+<resources>
+    <!--<string name="app_name">shangjitoutiao</string>-->
+    <!--<string name="empty"></string>-->
+    <!--<string name="tabbar_home_page">首页</string>-->
+    <!--<string name="tabbar_biz_page">商机</string>-->
+    <!--<string name="tabbar_video_page">视频</string>-->
+    <!--<string name="tabbar_my_page">我的</string>-->
+    <!--<string-array name="sex">-->
+        <!--<item>men</item>-->
+        <!--<item>madam</item>-->
+
+
+    <!--</string-array>-->
+    <!--<string-array name="industry">-->
+        <!--<item>Car</item>-->
+        <!--<item>welfare</item>-->
+        <!--<item>environmental </item>-->
+        <!--<item>household</item>-->
+        <!--<item>beauty</item>-->
+        <!--<item>clothing</item>-->
+        <!--<item>catering</item>-->
+        <!--<item>culture</item>-->
+        <!--<item>tourism</item>-->
+        <!--<item>education</item>-->
+        <!--<item>health</item>-->
+        <!--<item>technology</item>-->
+        <!--<item>real estate</item>-->
+        <!--<item>entrepreneurship</item>-->
+        <!--<item>society</item>-->
+        <!--<item>finance</item>-->
+        <!--<item>celebrities</item>-->
+    <!--</string-array>-->
+    <!--<string-array name="scm">-->
+        <!--<item>catering snacks</item>-->
+        <!--<item>clothing shoes and hats</item>-->
+        <!--<item>environmental protection machinery</item>-->
+        <!--<item>home building materials</item>-->
+        <!--<item>education network</item>-->
+        <!--<item>beauty care</item>-->
+        <!--<item>special projects</item>-->
+    <!--</string-array>-->
+    <!--<string name="title_activity_payment_record">Payment_recordActivity</string>-->
+
+    <string name="app_name">商机头条</string>
+    <string name="empty"></string>
+
+    <!--bar-->
+    <string name="tabbar_home_page">首页</string>
+    <string name="tabbar_biz_page">商机</string>
+    <string name="tabbar_video_page">视频</string>
+    <string name="tabbar_yangshi">鞅市</string>
+    <string name="tabbar_my_page">我的</string>
+    <string name="tabbar_business_circle">商机圈</string>
+    <!--sex-->
+    <string-array name="sex">
+        <item>男士</item>
+        <item>女士</item>
+    </string-array>
+
+    <!--industry-->
+    <string-array name="industry">
+        <item>汽车</item>
+        <item>公益</item>
+        <item>环保</item>
+        <item>家居</item>
+        <item>美容</item>
+        <item>服装</item>
+        <item>餐饮</item>
+        <item>文化</item>
+        <item>旅游</item>
+        <item>教育</item>
+        <item>健康</item>
+        <item>科技</item>
+        <item>房产</item>
+        <item>创业</item>
+        <item>社会</item>
+        <item>财经</item>
+        <item>名人</item>
+    </string-array>
+
+    <!--mcc-->
+    <string-array name="scm">
+        <item>餐饮小吃</item>
+        <item>服装鞋帽</item>
+        <item>环保机械</item>
+        <item>家居建材</item>
+        <item>教育网络</item>
+        <item>美容保健</item>
+        <item>特色项目</item>
+    </string-array>
+    <string name="title_activity_payment_record">Payment_recordActivity</string>
+
+    <!--bank info-->
+    <string name="bank_account_name">请输入开户行</string>
+    <string name="bank_account_no">请输入卡号</string>
+    <string name="bank_customer_name">请输入真实姓名</string>
+    <string name="bank_tail_number">尾号</string>
+
+    <!--login info-->
+    <string name="user_not_login">请先登录</string>
+    <string name="user_fail_login">登录失败</string>
+    <string name="user_suc_login">登录成功</string>
+    <string name="user_count_down">秒后重新获取</string>
+    <string name="user_get_code">获取验证码</string>
+    <string name="user_phone_format_error">手机号格式有误</string>
+    <string name="user_empty_password">请输入密码</string>
+    <string name="user_empty_newpassword">请输入新密码</string>
+    <string name="user_differ_password">输入的两次密码不一致</string>
+    <string name="user_confirm_password">请输入确认密码</string>
+    <string name="user_confirm_newpassword">请再次输入新密码</string>
+    <string name="user_inconformity_password">密码不一致</string>
+    <string name="user_suc_updatepass">修改成功,请重新登录</string>
+    <string name="user_suc_resetpass">密码重置成功</string>
+    <string name="user_fail_resetpass">密码重置失败</string>
+    <string name="user_phone_error">请输入正确的手机号</string>
+    <string name="user_empty_phone">请输入手机号码</string>
+    <string name="user_empty_verifycode">请输入验证码</string>
+    <string name="user_account_pass_error">账号或者密码错误</string>
+    <string name="user_verifycode_error">验证码错误，请重新输入</string>
+
+    <!--article-->
+    <string name="article_not_empty">请输入文章链接！</string>
+
+    <!--register info-->
+    <string name="user_suc_register">注册成功</string>
+    <string name="user_fail_register">注册失败</string>
+    <string name="user_again_register">注册失败，请重新注册！</string>
+
+    <!--cneter info-->
+    <!--detail info-->
+    <string name="center_set_photo">设置头像</string>
+    <string name="add_photo">添加图片</string>
+    <string-array name="photo_step">
+        <item>选择本地照片</item>
+        <item>拍照</item>
+    </string-array>
+    <string name="center_car">汽车</string>
+    <string name="center_recommend">推荐</string>
+    <!--my info-->
+    <string name="center_my_share">我的分享(%s)</string>
+    <string name="center_my_publish">我的发布(%s)</string>
+    <string name="center_my_inspect">我的考察(%s)</string>
+    <string name="center_my_followed">我的关注</string>
+    <string name="center_my_fans">我的粉丝</string>
+    <string name="center_my_favorite">我的收藏</string>
+    <string name="center_my_publishs">我的发布</string>
+
+    <!--setting info-->
+    <string name="setting_nickname_isempty">昵称不能为空</string>
+    <string name="setting_realname_isempty">真实姓名不能为空</string>
+    <string name="setting_age_isempty">年龄不能为空</string>
+    <string name="setting_address_isempty">地址不能为空</string>
+    <string name="setting_sign_isempty">签名不能为空</string>
+
+    <!--password-->
+    <string name="mycenter_old_password">请输入旧密码！</string>
+    <string name="mycenter_fail_verify">验证失败，请重新输入！</string>
+
+    <!--company-->
+
+    <!--pay cneter-->
+    <string name="pay_not_amount">请输入交易金额！</string>
+    <string name="pay_completed">已完成(%s)</string>
+    <string name="pay_payment">付款</string>
+    <string name="pay_collection">收款</string>
+    <string name="pay_paymenting">未付款</string>
+    <string name="pay_pending_withdraw">待处理</string>
+    <string name="pay_audit_suc_withdraw">已审核</string>
+
+    <!--small feature-->
+    <string name="myis_followed">%s的关注</string>
+    <string name="myis_fans">%s的粉丝</string>
+    <string name="myis_article">%s的文章</string>
+
+    <!--tel-->
+    <string name="mycenter_call">呼叫</string>
+
+    <!--common tips-->
+    <string name="add_suc_tip">添加成功</string>
+    <string name="add_fail_tip">添加失败</string>
+    <string name="update_suc_tip">修改成功</string>
+    <string name="update_fail_tip">修改失败</string>
+    <string name="data_not_empty">不能为空</string>
+    <string name="get_fail_tip">获取失败</string>
+    <string name="get_content_fail_tip">获取内容失败！</string>
+    <string name="get_suc_tip">获取成功</string>
+    <string name="get_storage_perm">需要存储权限</string>
+
+    <!--system info-->
+    <string name="enter_exit_app">再按一次退出商机头条</string>
+    <string name="network_no_service">请检查网络设置</string>
+    <string name="network_error">网络错误！</string>
+    <string name="network_content_error">获取内容失败，请检查网络！</string>
+    <string name="network_connect_wifi">连接wifi</string>
+    <string name="system_wx_noinstall">未安装微信</string>
+
+    <string name="common_not_followed">关注</string>
+    <string name="common_followed">已关注</string>
+    <string name="cancel_attention">取消关注</string>
+    <string name="common_cancel">取消</string>
+    <string name="chat">聊天</string>
+    <string name="consume_integral">本次聊天消耗的</string>
+    <string name="is_willing_answer_calls">是否愿意接听对方电话？</string>
+    <string name="willing">愿意</string>
+    <string name="unwillingness">不愿意</string>
+    <!--common load info-->
+    <string name="data_loading">正在加载中...</string>
+    <string name="data_no_more">没有更多了！</string>
+
+    <!--my favorite info-->
+    <string name="favorite_read">阅读</string>
+    <string name="favorite_article_org">原创</string>
+    <string name="favorite_article_reprint">转载</string>
+    <string name="favorite_suc">收藏成功</string>
+    <string name="favorite_fail">收藏失败</string>
+
+    <!--share info-->
+    <string name="share_fail">分享失败</string>
+    <string name="share_suc">分享成功</string>
+    <string name="share_cancel">分享取消</string>
+
+    <!--my inspect info-->
+    <string name="inspect_booked_number">已有%s人预约</string>
+    <string name="inspect_phone">电话</string>
+    <string name="inspect_address">地址</string>
+    <string name="inspect_already_booked">已预约</string>
+    <string name="inspect_already_inspect">已考察</string>
+
+    <!--yunxin info-->
+    <string name="yx_suc_login">云信登录成功</string>
+    <string name="yx_fail_login">云信登录成功</string>
+    <string name="yx_logout">云信已退出</string>
+
+    <!--aeo info-->
+    <string name="aeo_company_sname_isempty">公司简称不能为空</string>
+    <string name="aeo_company_name_isempty">公司名不能为空</string>
+    <string name="aeo_contacts_isempty">联系人不能为空</string>
+    <string name="aeo_sign_isempty">签名不能为空</string>
+    <string name="aeo_contacts_phone_isempty">联系人电话不能为空</string>
+    <string name="aeo_contacts_address_isempty">地址不能不能为空</string>
+
+    <!--comment-->
+    <string name="comment_fail">评论失败，稍后再试</string>
+
+    <!--updata info-->
+    <string name="promptly_updata">立即更新</string>
+    <string name="withhold_updata">暂不更新</string>
+    <!--comment-->
+
+    <!-- contract-->
+    <string name="option_contract">选著合同</string>
+    <string name="create_contract">生成合同</string>
+    <string name="add_contract">添加合同</string>
+    <string name="custom_contract">自定义合同</string>
+    <string name="contract_proportion">合同条款总占比之和为100%</string>
+    <string name="improt_contract_name">请输入合同名称</string>
+    <string name="contract_start_time">合同开始时间</string>
+    <string name="contract_end_time">合同截止时间</string>
+    <string name="delete_contract_clause">删除</string>
+    <string name="edit_contract_clause">编辑</string>
+    <string name="click_add_clause_name">点击添加条款名称</string>
+    <string name="import_contract_proportion">请输入合同占比</string>
+    <string name="import_contract_content">请输入合同内容</string>
+    <string name="integral_amount">鞅分总额</string>
+    <string name="safeguard_pool_amount">保障池总额</string>
+    <string name="consent_sign_contract">同意签署合同完成付款</string>
+    <string name="contract_toast">您还未起草合同，请点击“添加合同” 起草合同内容</string>
+    <string name="save">保存</string>
+    <string name="start_not_less_than_end">开始时间不能比结束时间晚</string>
+    <string name="end_not_empty">截止时间不能为空</string>
+    <string name="start_not_empty">开始时间不能为空</string>
+    <string name="contract_title_not_empty">合同标题不能为空</string>
+    <string name="clause_content_not_empty">条款内容不能为空</string>
+    <string name="clause_proportion_not_empty">条款比例不能为空</string>
+    <string name="clause_title_not_empty">条款标题不能为空</string>
+    <string name="contract_should_proportion">合同条款总占比之和应为100</string>
+    <string name="toast_know">知道了</string>
+    <string name="ensure_delete">确定要删除该条款吗？</string>
+    <string name="ensure">确定</string>
+    <!--comment-->
+
+
+    <string name="main_tab_session">会话</string>
+    <string name="main_tab_contact">通讯录</string>
+    <string name="user_profile">个人名片</string>
+    <string name="login">登录</string>
+    <string name="logining">登录中\u2026</string>
+    <string name="register">注册</string>
+    <string name="registering">注册中\u2026</string>
+    <string name="agree">同意</string>
+    <string name="reject">拒绝</string>
+    <string name="network_is_not_available">网络连接失败，请检查你的网络设置</string>
+    <string name="login_hint_account">请输入帐号</string>
+    <string name="login_hint_password">请输入密码</string>
+    <string name="input_account">请输入帐号，限20位字母或者数字</string>
+    <string name="register_account_tip">帐号限20位字母或者数字</string>
+    <string name="input_nickname">请输入昵称，限10位汉字、字母或者数字</string>
+    <string name="register_nick_name_tip">昵称限10位汉字、字母或者数字</string>
+    <string name="input_password">请输入密码，6~20位字母或者数字</string>
+    <string name="register_password_tip">密码必须为6~20位字母或者数字</string>
+    <string name="register_success">注册成功</string>
+    <string name="register_failed">注册失败,错误码%1$s:%2$s</string>
+    <string name="login_has_account">已有帐号？直接登录</string>
+    <string name="done">完成</string>
+    <string name="prepare_data">正在准备数据...</string>
+
+    <string name="readed">已读</string>
+    <string name="unread">未读</string>
+    <string name="about">关于</string>
+    <string name="logout">注销</string>
+    <string name="add">添加</string>
+    <string name="remove">移除</string>
+    <string name="menu">菜单</string>
+    <string name="verify_reminder">验证提醒</string>
+    <string name="without_content">暂无</string>
+    <string name="create">新建</string>
+    <string name="delete_tip">删除提示</string>
+    <string name="delete_system_message">删除该条系统消息？</string>
+    <string name="delete_success">删除成功</string>
+    <string name="clear_all_success">清空成功</string>
+    <string name="login_failed">帐号或密码错误</string>
+    <string name="login_exception">无效输入</string>
+    <string name="file_browser">文件浏览器</string>
+    <string name="upload_text">上传</string>
+    <string name="download_text">下载</string>
+    <string name="now_allow_space">不能含有空格</string>
+    <string name="open">开启</string>
+    <string name="close">关闭</string>
+    <string name="search_advanced_team">搜索高级群</string>
+    <string name="net_broken">当前网络不可用</string>
+    <string name="nim_status_unlogin">未登录</string>
+    <string name="nim_status_connecting">连接中...</string>
+    <string name="nim_status_logining">登录中...</string>
+    <string name="copyright">Copyright ©1997-2018 网易公司版权所有</string>
+    <string name="user_not_exsit">该用户不存在</string>
+    <string name="user_tips">请检查你输入的帐号是否正确</string>
+    <string name="edit">编辑</string>
+
+    <!-- session -->
+    <string name="input_panel_guess">猜 拳</string>
+    <string name="input_panel_audio_call">语音通话</string>
+    <string name="input_panel_video_call">视频通话</string>
+    <string name="input_panel_file">发送文件</string>
+    <string name="input_panel_RTS">白 板</string>
+    <string name="input_panel_snapchat">阅后即焚</string>
+    <string name="input_panel_tip">Tip</string>
+    <string name="input_panel_ack_msg">已读回执</string>
+    <string name="message_history_query">云消息记录</string>
+    <string name="message_search_title">搜索本地消息记录</string>
+    <string name="message_clear">清空本地消息记录</string>
+    <string name="message_info">聊天信息</string>
+
+    <!-- 通讯录 -->
+    <string name="add_friend">加为好友</string>
+    <string name="remove_friend">删除好友</string>
+    <string name="begin_chat">发消息</string>
+    <string name="remove_friend_tip">删除好友后，将同时解除双方的好友关系</string>
+    <string name="remove_friend_success">删除好友成功</string>
+    <string name="add_friend_self_tip">不能添加自己为好友</string>
+    <string name="add_friend_verify_tip">朋友验证</string>
+    <string name="black_list_tip">你不会接收到列表中联系人的任何消息</string>
+
+    <!-- 群 -->
+    <string name="add_buddy">添加好友</string>
+    <string name="create_normal_team">创建群</string>
+    <string name="team_apply_sending">发送中…</string>
+    <string name="no_team">您还没有群</string>
+    <string name="no_normal_team">您还没有讨论组</string>
+    <string name="team_search_hint">请输入群号进行搜索</string>
+    <string name="team_number_not_exist">群号不存在</string>
+    <string name="team_join">加入群组</string>
+    <string name="team_join_success">成功加入群: %1$s</string>
+    <string name="team_apply_to_join_send_success">申请已发出</string>
+    <string name="has_exist_in_team">已经在群里</string>
+    <string name="team_num_limit">群数量已达上限</string>
+
+    <!-- 消息提醒 -->
+
+    <!-- 自定义通知 -->
+    <string name="custom_notification">自定义通知</string>
+    <string name="select_custom_notification_target">选择发送对象</string>
+    <string name="send_custom_notification_tip">请输入要发送的内容</string>
+    <string name="send_custom_notification_success">自定义通知发送成功</string>
+    <string name="send_custom_notification_failed">自定义通知发送失败</string>
+    <string name="send_custom_notification_to_buddy">发送给好友</string>
+    <string name="send_custom_notification_to_team">发送给群组</string>
+
+    <!-- 消息类型 -->
+    <string name="msg_type_image">图片</string>
+    <string name="msg_type_audio">语音</string>
+
+    <!-- location -->
+    <string name="location_navigate">导航</string>
+    <string name="location_loading">正在定位</string>
+    <string name="location_map">地图定位</string>
+    <string name="my_location">我的位置</string>
+    <string name="location_address_unkown">该位置信息暂无</string>
+    <string name="format_mylocation">我的位置：%s</string>
+    <string name="location_address_fail">获取位置信息失败</string>
+    <string name="tools_selected">选择工具</string>
+    <string name="friends_map_navigation_web">在网页中打开</string>
+    <string name="location_open_map_error">打开地图出错</string>
+
+    <!-- about -->
+    <string name="about_clear_msg_history">清空所有聊天记录</string>
+    <string name="clear_msg_history_success">聊天记录已清空</string>
+
+    <!-- 云信SDK所需文案 -->
+    <string name="nim_status_bar_multi_messages_incoming">%1$d位联系人有新消息</string>
+    <string name="nim_status_bar_ticker_text">%1$s有新消息</string>
+    <string name="nim_status_bar_image_message">%1$s发来一条图片消息</string>
+    <string name="nim_status_bar_audio_message">%1$s发来一条语音消息</string>
+    <string name="nim_status_bar_video_message">%1$s发来一条视频消息</string>
+    <string name="nim_status_bar_file_message">%1$s发来一条文件消息</string>
+    <string name="nim_status_bar_location_message">%1$s分享了一个地理位置</string>
+    <string name="nim_status_bar_notification_message">%1$s: 通知消息</string>
+    <string name="nim_status_bar_custom_message">%1$s: 自定义消息</string>
+    <string name="nim_status_bar_unsupported_message">%1$s: 无法显示该内容</string>
+    <string name="nim_status_bar_hidden_msg_content">你收到一条新消息</string>
+
+    <!-- setting -->
+    <string name="settings">设置</string>
+    <string name="no_disturb">免打扰</string>
+    <string name="multiport_push">PC/Web在线推送</string>
+    <string name="msg_notice">消息提醒</string>
+    <string name="setting_about">关于</string>
+    <string name="setting_close">已关闭</string>
+    <string name="no_disturb_tips">在设定的时间段内云信消息将不再提醒</string>
+    <string name="time_from">从</string>
+    <string name="time_to">至</string>
+    <string name="time_from_default">22:00</string>
+    <string name="time_to_default">08:00</string>
+    <string name="black_list">黑名单</string>
+    <string name="msg_speaker">听筒模式</string>
+    <string name="ring">响铃模式</string>
+    <string name="led">自定义呼吸灯</string>
+    <string name="notice_content">通知栏标题定制</string>
+    <string name="clear_index">清理全文检索缓存</string>
+    <string name="clear_sdk_cache">清理SDK文件缓存</string>
+    <string name="push_no_detail">推送不展示消息详情</string>
+    <string name="operation_too_frequent">操作太频繁</string>
+    <!-- 多端登录 -->
+    <string name="multiport_manager">多端登录管理</string>
+    <string name="multiport_logout">下线</string>
+    <string name="computer_version">云信电脑版</string>
+    <string name="web_version">云信网页版</string>
+    <string name="mobile_version">云信移动版</string>
+    <string name="multiport_logging">正在使用</string>
+    <string name="kickout_notify">下线通知</string>
+    <string name="kickout_content">你的帐号被%1$s踢出下线，请确定帐号信息安全</string>
+
+    <!-- 多端在线类型 -->
+    <string name="on_line">在线</string>
+    <string name="on_line_pc">PC在线</string>
+    <string name="on_line_mac">Mac在线</string>
+    <string name="on_line_web">web在线</string>
+    <string name="client_aos">Android</string>
+    <string name="client_ios">iOS</string>
+    <string name="on_line_busy">忙碌</string>
+    <string name="off_line">离线</string>
+
+    <!-- 阅后即焚 -->
+    <string name="snapchat_longclick_to_view">按住查看</string>
+
+    <!-- 个人名片 -->
+    <string name="birthday">生 日</string>
+    <string name="phone">手 机</string>
+    <string name="email">邮 箱</string>
+    <string name="signature">签 名</string>
+    <string name="head">头 像</string>
+    <string name="user_information">个人信息</string>
+    <string name="nickname">昵 称</string>
+    <string name="alias">备注</string>
+    <string name="gender">性 别</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="other">其他</string>
+    <string name="phone_number">手机号码</string>
+    <string name="set_head_image">设置头像</string>
+    <string name="user_info_update_success">设置成功</string>
+    <string name="user_info_update_cancel">取消更新</string>
+    <string name="user_info_update_failed">设置失败，请重试</string>
+    <string name="head_update_success">头像设置成功</string>
+    <string name="head_update_failed">头像设置失败，请重试</string>
+    <string name="nickname_empty">昵称不能为空</string>
+
+    <!-- JsBridge -->
+    <string name="js_bridge">NIM JS Bridge</string>
+    <string name="js_bridge_demonstration">Js Bridge演示</string>
+
+    <!--机器人-->
+    <string name="nim_robot_title">云小信机器人</string>
+    <string name="robot_start_chat">开始对话</string>
+
+    <!-- 已读回执 -->
+    <string name="send_ack_msg">发送已读回执消息</string>
+    <string name="ack_msg_info">消息已读详情</string>
+    <string name="ack_msg_tip">已读回执能力支持文本、图片、音频、视频、文件、自定义等消息类型。此处仅以文本消息作为演示，开发者可以根据具体业务场景进行功能设计。</string>
+</resources>

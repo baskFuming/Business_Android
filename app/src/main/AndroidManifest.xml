@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.zwonline.top28">
+
+    <uses-sdk android:minSdkVersion="8" />
+    tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 解锁屏幕需要的权限 -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <!-- 申请电源锁需要的权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MANAGE_LOCATION_POLICY" />
+    <!-- 文件系统权限 -->
+
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 控制呼吸灯，振动器等，用于新消息提醒 -->
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 外置存储存取权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <!-- 多媒体相关 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 如果需要实时音视频通话模块，下面的权限也是必须的。否则，可以不加 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    //地图包、搜索包需要的基础权限
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    //定位包、导航包需要的额外权限（注：基础权限也需要）
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
+    <permission
+        android:name="com.zwonline.top28.permission.RECEIVE_MSG"
+        android:protectionLevel="signature" />
+    <!-- 接收 SDK 消息广播权限 -->
+    <uses-permission android:name="com.zwonline.top28.permission.RECEIVE_MSG" />
+
+    <!-- 相机 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 振动 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- 友盟分享登录需要权限 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
+    <application
+        android:name=".APP"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:resizeableActivity="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.netease.nim.appKey"
+            android:value="53c08adeb3a5f1c0bb4236970f8cc756" />
+
+        <!-- 云信后台服务，请使用独立进程。 -->
+        <service
+            android:name="com.netease.nimlib.service.NimService"
+            android:process=":core" />
+
+        <!-- 云信后台辅助服务 -->
+        <service
+            android:name="com.netease.nimlib.service.NimService$Aux"
+            android:process=":core" />
+
+        <!-- 云信后台辅助服务 -->
+        <service
+            android:name="com.netease.nimlib.job.NIMJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":core" />
+
+        <!-- 云信监视系统启动和网络变化的广播接收器，保持和 NimService 同一进程 -->
+        <receiver
+            android:name="com.netease.nimlib.service.NimReceiver"
+            android:exported="false"
+            android:process=":core">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 云信进程间通信 Receiver -->
+        <receiver android:name="com.netease.nimlib.service.ResponseReceiver" />
+
+        <!-- 云信进程间通信service -->
+        <service android:name="com.netease.nimlib.service.ResponseService" />
+
+        <!-- 云信进程间通信provider -->
+        <!-- android:authorities="{包名}.ipc.provider" -->
+        <!-- <provider -->
+        <!-- android:name="com.netease.nimlib.ipc.NIMContentProvider" -->
+        <!-- android:authorities="com.zwonline.top28.ipc.provider" -->
+        <!-- android:exported="false" -->
+        <!-- android:process=":core" /> -->
+        <provider
+            android:name="com.netease.nimlib.ipc.NIMContentProvider"
+            android:authorities="${applicationId}.ipc.provider"
+            android:exported="false"
+            android:process=":core" />
+
+        <activity
+            android:name=".activity.StartupActivity"
+            android:configChanges="locale|layoutDirection"
+            android:theme="@style/Theme.MyAppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.HomeDetailsActivity"
+            android:configChanges="locale|layoutDirection"
+            android:hardwareAccelerated="false"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.HeadActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyAttentionActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyExamineActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyFansActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyCollectActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.ArticleActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.WalletActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyIssueActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyShareActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyCurrencyActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyBillActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.BankActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.AddBankActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.HomePageActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.CompanyActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.TransmitActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.GatheringActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.GeneralizeActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.WantExamineActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.RecommendUserActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.ProjectActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.BalanceActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.RetrievePasswordActivity"
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.InsuranceActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyProjectActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize|keyboardHidden|fontScale"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+
+        <activity
+            android:name="com.xys.libzxing.zxing.activity.CaptureActivity"
+            android:configChanges="orientation|keyboardHidden|locale|layoutDirection"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <!-- /> -->
+        <!-- 微信 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 新浪微博 -->
+        <activity
+            android:name=".wxapi.WBShareActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- qq精简版 -->
+        <activity
+            android:name="com.umeng.qq.tencent.AuthActivity"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- 这里的scheme是qq分享要用的，100424468为自己申请的appid，真实项目中需要替换 -->
+                <data android:scheme="tencent101481060" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.umeng.qq.tencent.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 分享编辑页 -->
+        <activity
+            android:name="com.umeng.socialize.editorpage.ShareActivity"
+            android:configChanges="locale|layoutDirection"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.UMDefault" />
+
+        <!-- <meta-data -->
+        <!-- android:name="UMENG_APPKEY" -->
+        <!-- android:value="561cae6ae0f55abd990035bf" /> -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5a178395a40fa35153000103" />
+        <!-- 适配全面屏手机 -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
+
+        <activity
+            android:name=".activity.MySettingActivity"
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.AmendPosswordActivity"
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.EditActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.EditArticleActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.BusinessActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.HomeSearchActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.BusinessSearchActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.BusinessGatheringActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.ManagementActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.EnsurePoolActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.FansActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.RetPosswordActivity"
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.PaymentDetailsActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.AtentionActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyAttentionsActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.IntegralActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.EarnIntegralActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity android:name=".activity.IntegralPayActivity" />
+        <activity
+            android:name=".activity.ForRecordActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.ConvertBOCActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.AeosActivity"
+            android:configChanges="locale|layoutDirection"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.PaymentActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.PosOrderCodeActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.BalanceRechargeActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.BalanceWithdrawActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.RechargeRecordActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.WithdrawRecordActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.BankPayActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.MyFansesActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.WithoutCodeLoginActivity"
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.CodeLoginActivity"
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.PasswordLoginActivity"
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.AdvertisingActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.OptionContractActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.AddContractActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.CustomContractActivity"
+            android:configChanges="locale|layoutDirection"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.HashrateActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.AgainAeoActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.EditsActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity
+            android:name=".activity.RecentContactsActivity"
+            android:configChanges="locale|layoutDirection" />
+
+        <!-- 多端登录管理 -->
+        <activity
+            android:name=".nim.main.activity.MultiportActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <!-- 登录界面 -->
+        <activity
+            android:name=".nim.login.LoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <!-- 关于 -->
+        <activity
+            android:name=".nim.main.activity.AboutActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".nim.main.activity.SettingsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".nim.main.activity.NoDisturbActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".nim.contact.activity.AddFriendActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".nim.contact.activity.UserProfileActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".nim.contact.activity.UserProfileSettingActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".nim.contact.activity.UserProfileEditItemActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".nim.contact.activity.BlackListActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <!-- 文件管理器 -->
+        <activity
+            android:name=".nim.file.browser.FileBrowserActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".nim.main.activity.SystemMessageActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".nim.main.activity.CustomNotificationActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".nim.session.activity.MessageHistoryActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".nim.session.activity.MessageInfoActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".nim.team.activity.AdvancedTeamSearchActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".nim.team.activity.AdvancedTeamJoinActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".nim.main.activity.TeamListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <!-- 全局搜索 -->
+        <activity
+            android:name=".nim.main.activity.GlobalSearchActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/global_search_bg"
+            android:windowSoftInputMode="stateUnspecified" />
+        <activity
+            android:name=".nim.main.activity.GlobalSearchDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".nim.main.activity.GlobalSearchDetailActivity2"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 查看阅后即焚 -->
+        <activity
+            android:name=".nim.session.activity.WatchSnapChatPictureActivity"
+            android:configChanges="keyboardHidden"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 下载文件 -->
+        <activity
+            android:name=".nim.session.activity.FileDownloadActivity"
+            android:configChanges="keyboardHidden"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- map -->
+        <activity
+            android:name=".nim.location.activity.LocationAmapActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".nim.location.activity.NavigationAmapActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 消息历史搜索 -->
+        <activity
+            android:name=".nim.session.search.SearchMessageActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/global_search_bg"
+            android:windowSoftInputMode="adjustPan|stateUnspecified" />
+        <activity
+            android:name=".nim.session.search.DisplayMessageActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <!-- 聊天室 -->
+        <activity
+            android:name=".nim.chatroom.activity.ChatRoomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".nim.jsbridge.JsBridgeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <!-- 机器人 -->
+        <activity
+            android:name=".nim.main.activity.RobotListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 已读回执 -->
+        <activity
+            android:name=".nim.session.activity.SendAckMsgActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 已读回执详情 -->
+        <activity
+            android:name=".nim.session.activity.AckMsgInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".nim.contact.activity.RobotProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 云信SDK的监视系统启动和网络变化的广播接收器，用户开机自启动以及网络变化时候重新登录 -->
+        <receiver
+            android:name="com.netease.nimlib.service.NimReceiver"
+            android:exported="false"
+            android:process=":core">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".activity.CommentDetailsActivity"
+            android:configChanges="locale|layoutDirection" />
+        <activity android:name=".activity.AddFriendsActivity" />
+        <activity android:name=".activity.FriendProfileActivity" />
+        <activity android:name=".activity.SearchGroupActivity" />
+        <activity android:name=".nim.main.activity.GroupDataActivity" />
+        <activity android:name=".nim.main.AnnouncementActivity" />
+        <activity android:name=".nim.main.NotifyDetailsActivity" />
+        <activity android:name=".nim.yangfen.SendYangFenActivity" />
+        <activity android:name=".nim.yangfen.SnatchYangFenActivity" />
+        <activity android:name=".nim.yangfen.YangFenRecordActivity" />
+        <activity
+            android:name=".activity.PhotoBrowserActivity"
+            android:theme="@style/ImagesAppDayTheme" />
+        <activity android:name=".activity.SendFriendActivity" />
+        <activity
+            android:name="com.lzy.imagepicker.ui.ImagePreviewDelActivity"
+            android:theme="@style/ImagePickerThemeFullScreen" />
+        <activity android:name=".activity.YangShiActivity" />
+        <activity android:name=".utils.country.CityActivity" />
+        <activity android:name=".activity.YunYingGuanActivity" />
+        <activity
+            android:name=".activity.FeedBackActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <activity android:name=".activity.DynamicDetailsActivity" />
+        <activity android:name=".activity.DynamicCommentDetailsActivity" />
+        <activity android:name=".activity.ShieldUserActivity" />
+        <activity android:name=".activity.AddGetRelistActivity" />
+        <activity android:name=".nim.main.activity.TeamMemberInfoActivity" />
+        <activity android:name=".nim.main.team.TeamMessagesActivity" />
+        <activity android:name=".nim.main.activity.GroupTagsActivity" >
+            <intent-filter>
+                <action android:name="customer_action_here" />
+                <category android:name="android.intent.category.INFO" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.PageDetailsActivity"></activity>
+        <activity android:name=".activity.InformationNoticeActivity"></activity>
+    </application>
+
+</manifest>

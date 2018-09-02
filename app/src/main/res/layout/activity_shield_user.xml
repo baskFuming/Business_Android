@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.ShieldUserActivity">
+
+    <include layout="@layout/base_title_helper"></include>
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/shield_recy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></com.jcodecraeer.xrecyclerview.XRecyclerView>
+
+    <TextView
+        android:id="@+id/no_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="暂无"
+        android:textSize="16sp"
+        android:textColor="#1d1d1d"
+        android:visibility="gone"/>
+</LinearLayout>

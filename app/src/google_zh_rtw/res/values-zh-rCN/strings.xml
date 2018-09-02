@@ -1,0 +1,238 @@
+<resources>
+    <string name="app_name">商機頭條</string>
+    <string name="empty"></string>
+
+    <!--bar-->
+    <string name="tabbar_home_page">首頁</string>
+    <string name="tabbar_biz_page">商機</string>
+    <string name="tabbar_video_page">視頻</string>
+    <string name="tabbar_yangshi">鞅市</string>
+    <string name="tabbar_my_page">我的</string>
+    <string name="tabbar_business_circle">商機圈</string>
+
+    <string-array name="sex">
+        <item>男士</item>
+        <item>女士</item>
+    </string-array>
+
+    <string-array name="industry">
+        <item>汽車</item>
+        <item>公益</item>
+        <item>環保</item>
+        <item>家居</item>
+        <item>美容</item>
+        <item>服裝</item>
+        <item>餐飲</item>
+        <item>文化</item>
+        <item>旅遊</item>
+        <item>教育</item>
+        <item>健康</item>
+        <item>科技</item>
+        <item>房產</item>
+        <item>創業</item>
+        <item>社會</item>
+        <item>財經</item>
+        <item>名人</item>
+    </string-array>
+    <string-array name="scm">
+        <item>餐飲小吃</item>
+        <item>服裝鞋帽</item>
+        <item>環保機械</item>
+        <item>家居建材</item>
+        <item>教育網絡</item>
+        <item>美容保健</item>
+        <item>特色項目</item>
+    </string-array>
+    <string name="title_activity_payment_record">Payment_recordActivity</string>
+
+    <!--bank info-->
+    <string name="bank_account_name">請輸入開戶行</string>
+    <string name="bank_account_no">請輸入卡號</string>
+    <string name="bank_customer_name">請輸入真實姓名</string>
+    <string name="bank_tail_number">尾號</string>
+
+    <!--login info-->
+    <string name="user_not_login">請先登錄</string>
+    <string name="user_fail_login">登錄失敗</string>
+    <string name="user_suc_login">登錄成功</string>
+    <string name="user_count_down">秒後重新獲取</string>
+    <string name="user_get_code">獲取驗證碼</string>
+    <string name="user_phone_format_error">手機號格式有誤</string>
+    <string name="user_empty_password">請輸入密碼</string>
+    <string name="user_empty_newpassword">請輸入新密碼</string>
+    <string name="user_differ_password">輸入的兩次密碼不一致</string>
+    <string name="user_confirm_password">請輸入確認密碼</string>
+    <string name="user_confirm_newpassword">請再次輸入新密碼</string>
+    <string name="user_inconformity_password">密碼不一致</string>
+    <string name="user_suc_updatepass">修改成功,請重新登錄</string>
+    <string name="user_suc_resetpass">密碼重置成功</string>
+    <string name="user_fail_resetpass">密碼重置失敗</string>
+    <string name="user_phone_error">請輸入正確的手機號</string>
+    <string name="user_empty_phone">請輸入手機號</string>
+    <string name="user_empty_verifycode">請輸入驗證碼</string>
+    <string name="user_account_pass_error">賬號或者密碼錯誤</string>
+    <string name="user_verifycode_error">驗證碼錯誤,請重新輸入</string>
+
+    <!--article-->
+    <string name="article_not_empty">請輸入文章鏈接</string>
+
+    <!--register info-->
+    <string name="user_suc_register">註冊成功</string>
+    <string name="user_fail_register">註冊失敗</string>
+    <string name="user_again_register">註冊失敗,請重新註冊</string>
+
+    <!--cneter info-->
+    <!--detail info-->
+    <string name="center_set_photo">設置頭像</string>
+    <string name="add_photo">添加圖片</string>
+    <string-array name="photo_step">
+        <item>選擇本地照片</item>
+        <item>拍照</item>
+    </string-array>
+    <string name="center_car">汽車</string>
+    <string name="center_recommend">推薦</string>
+    <!--<string name="center_recommend">推荐</string>-->
+
+    <!--my info-->
+    <string name="center_my_share">我的分享(%s)</string>
+    <string name="center_my_publish">我的發佈(%s)</string>
+    <string name="center_my_inspect">我的考察(%s)</string>
+    <string name="center_my_followed">我的關注</string>
+    <string name="center_my_fans">我的粉絲</string>
+    <string name="center_my_favorite">我的收藏</string>
+    <string name="center_my_publishs">我的發佈</string>
+
+    <!--setting info-->
+    <string name="setting_nickname_isempty">暱稱不能爲空</string>
+    <string name="setting_realname_isempty">真實姓名不能爲空</string>
+    <string name="setting_age_isempty">年齡不能爲空</string>
+    <string name="setting_address_isempty">地址不能爲空</string>
+    <string name="setting_sign_isempty">簽名不能爲空</string>
+
+    <!--password-->
+    <string name="mycenter_old_password">請輸入舊密碼</string>
+    <string name="mycenter_fail_verify">驗證失敗,請重新輸入</string>
+
+    <!--company-->
+
+    <!--pay cneter-->
+    <string name="pay_not_amount">請輸入交易金額</string>
+    <string name="pay_completed">已完成(%s)</string>
+    <string name="pay_payment">付款</string>
+    <string name="pay_collection">收款</string>
+    <string name="pay_paymenting">未付款</string>
+    <string name="pay_pending_withdraw">待處理</string>
+    <string name="pay_audit_suc_withdraw">已審覈</string>
+
+    <!--small feature-->
+    <string name="myis_followed">%s的關注</string>
+    <string name="myis_fans">%s的粉絲</string>
+    <string name="myis_article">%s的文章</string>
+
+    <!--tel-->
+    <string name="mycenter_call">呼叫</string>
+
+    <!--common tips-->
+    <string name="add_suc_tip">添加成功</string>
+    <string name="add_fail_tip">添加失敗</string>
+    <string name="update_suc_tip">修改成功</string>
+    <string name="update_fail_tip">修改失敗</string>
+    <string name="data_not_empty">不能爲空</string>
+    <string name="get_fail_tip">獲取失敗</string>
+    <string name="get_content_fail_tip">獲取內容失敗</string>
+    <string name="get_suc_tip">獲取成功</string>
+    <string name="get_storage_perm">需要存儲權限</string>
+
+    <!--system info-->
+    <string name="enter_exit_app">再按一次退出商機頭條</string>
+    <string name="network_no_service">請檢查網絡設置</string>
+    <string name="network_error">網絡錯誤</string>
+    <string name="network_content_error">獲取內容失敗,請檢查網絡</string>
+    <string name="network_connect_wifi">連接wifi</string>
+    <string name="system_wx_noinstall">未安裝微信</string>
+
+    <string name="common_not_followed">關注</string>
+    <string name="common_followed">已關注</string>
+    <string name="consume_integral">本次聊天消耗的</string>
+    <string name="is_willing_answer_calls">是否願意接聽對方電話？</string>
+    <string name="willing">願意</string>
+    <string name="unwillingness">不願意</string>
+    <string name="common_cancel">取消</string>
+    <string name="cancel_attention">取消關注</string>
+    <!--common load info-->
+    <string name="data_loading">正在加載中...</string>
+    <string name="data_no_more">沒有更多了</string>
+
+    <!--my favorite info-->
+    <string name="favorite_read">閱讀</string>
+    <string name="favorite_article_org">原創</string>
+    <string name="favorite_article_reprint">轉載</string>
+    <string name="favorite_suc">收藏成功</string>
+    <string name="favorite_fail">收藏失敗</string>
+
+    <!--share info-->
+    <string name="share_fail">分享失敗</string>
+    <string name="share_suc">分享成功</string>
+    <string name="share_cancel">分享取消</string>
+
+    <!--my inspect info-->
+    <string name="inspect_booked_number">已有%s人預約</string>
+    <string name="inspect_phone">電話</string>
+    <string name="inspect_address">地址</string>
+    <string name="inspect_already_booked">已預約</string>
+    <string name="inspect_already_inspect">已考察</string>
+
+    <!--yunxin info-->
+    <string name="yx_suc_login">雲信登錄成功</string>
+    <string name="yx_fail_login">雲信登錄成功</string>
+    <string name="yx_logout">雲信已退出</string>
+    <string name="chat">聊天</string>
+    <!--aeo info-->
+    <string name="aeo_company_sname_isempty">公司簡稱不能爲空</string>
+    <string name="aeo_company_name_isempty">公司名不能爲空</string>
+    <string name="aeo_contacts_isempty">聯繫人不能爲空</string>
+    <string name="aeo_sign_isempty">簽名不能爲空</string>
+    <string name="aeo_contacts_phone_isempty">聯繫人電話不能爲空</string>
+    <string name="aeo_contacts_address_isempty">地址不能不能爲空</string>
+
+    <!--comment-->
+    <string name="comment_fail">評論失敗,稍後再試</string>
+
+
+    <!--updata info-->
+    <string name="promptly_updata">立即更新</string>
+    <string name="withhold_updata">暫不更新</string>
+    <!--comment-->
+
+    <!-- contract-->
+    <string name="option_contract">選著合同</string>
+    <string name="create_contract">生成合同</string>
+    <string name="add_contract">添加合同</string>
+    <string name="custom_contract">自定義合同</string>
+    <string name="contract_proportion">合同條款總占比之和為100%</string>
+    <string name="improt_contract_name">請輸入合同名稱</string>
+    <string name="contract_start_time">合同開始時間</string>
+    <string name="contract_end_time">合同截止時間</string>
+    <string name="delete_contract_clause">刪除</string>
+    <string name="edit_contract_clause">編輯</string>
+    <string name="click_add_clause_name">點擊添加條款名稱</string>
+    <string name="import_contract_proportion">請輸入合同占比</string>
+    <string name="import_contract_content">請輸入合同內容</string>
+    <string name="integral_amount">鞅分總額</string>
+    <string name="safeguard_pool_amount">保障池總額</string>
+    <string name="consent_sign_contract">同意簽署合同完成付款</string>
+    <string name="contract_toast">您還未起草合同，請點擊“添加合同” 起草合同內容</string>
+    <string name="save">保存</string>
+    <string name="start_not_less_than_end">開始時間不能比結束時間晚</string>
+    <string name="end_not_empty">截止時間不能為空</string>
+    <string name="start_not_empty">開始時間不能為空</string>
+    <string name="contract_title_not_empty">合同標題不能為空</string>
+    <string name="clause_content_not_empty">條款內容不能為空</string>
+    <string name="clause_proportion_not_empty">條款比例不能為空</string>
+    <string name="clause_title_not_empty">條款標題不能為空</string>
+    <string name="contract_should_proportion">合同條款總占比之和應為100</string>
+    <string name="toast_know">知道了</string>
+    <string name="ensure_delete">確定要刪除該條款嗎？</string>
+    <string name="ensure">確定</string>
+    <!--comment-->
+</resources>

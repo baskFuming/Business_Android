@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal"
+        android:paddingRight="10dp">
+
+
+        <com.zwonline.top28.utils.ImageViewPlus
+            android:id="@+id/comments_userhead"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/comments_userhead"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/comments_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="#7B7B7B"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/comments_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/username"
+                android:text="2018/03/08"
+                android:textColor="#C2C2C2"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_like"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/choose_like"
+                android:layout_width="14dp"
+                android:layout_height="16dp"
+                android:background="@drawable/selector_comment_likes"
+                android:button="@null"
+                android:layout_marginTop="1dp"
+                android:enabled="false" />
+
+
+            <TextView
+                android:id="@+id/like_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#1d1d1d"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/comments_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="74dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginTop="7dp"
+        android:textColor="#ff424242"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/linear_child_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="74dp"
+        android:layout_marginRight="18sp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/comment_shape"
+        android:orientation="vertical"
+        android:paddingBottom="9dp"
+        android:paddingLeft="9dp"
+        android:paddingRight="18dp"
+        android:paddingTop="9dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/comment_user1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#080808"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/comment_user2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textColor="#080808"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/look_more_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看全部评论"
+            android:textColor="#228FFE"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:visibility="visible" />
+</LinearLayout>

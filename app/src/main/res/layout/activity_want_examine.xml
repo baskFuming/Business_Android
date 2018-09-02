@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.zwonline.top28.activity.WantExamineActivity">
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="65dp"-->
+        <!--android:background="#FF2B2B">-->
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/back"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+                <!--android:layout_width="11dp"-->
+                <!--android:layout_height="21dp"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:src="@mipmap/back" />-->
+        <!--</RelativeLayout>-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:text="预约考察项目"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="18sp" />-->
+    <!--</RelativeLayout>-->
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/examine_web"></WebView>
+</LinearLayout>

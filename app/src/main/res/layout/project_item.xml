@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <RelativeLayout
+        android:id="@+id/project_relative"
+        android:layout_width="341dp"
+        android:layout_height="95dp"
+        android:background="@drawable/btn_project_shape"
+        android:layout_marginRight="17dp"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+
+        <com.zwonline.top28.utils.ImageViewPlus
+            android:id="@+id/project_imag_head"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_launcher"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"/>
+
+        <RelativeLayout
+            android:layout_toRightOf="@id/project_imag_head"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/project_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/project_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_name"
+                android:layout_marginTop="25dp"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/project_detail"
+                android:layout_width="11dp"
+                android:layout_height="21dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="48dp"
+                android:layout_marginRight="20dp"
+                android:src="@mipmap/ic_back_right" />
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/tip"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
+        />
+    <TextView
+        android:id="@+id/certificate_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="21dp"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        />
+
+</RelativeLayout>

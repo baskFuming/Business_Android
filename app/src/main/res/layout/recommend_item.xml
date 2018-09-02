@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:snser="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+   android:layout_marginLeft="10dp"
+    android:layout_marginTop="15dp"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/project_ydmky"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/cate_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/project_special"
+            android:textColor="@color/red"
+            android:textSize="12sp" />
+
+        <RelativeLayout
+            android:layout_width="105dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp">
+
+
+            <com.zwonline.top28.utils.ImageViewPlu
+                android:id="@+id/logo"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/ic_launcher"
+                snser:rectRoundRadius="10dp"
+                snser:type="rounded_rect" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,284 @@
+<resources>
+
+    <!--bank info start-->
+    <string name="bank_card">銀行卡</string>
+    <string name="bank_card_info">請綁定持卡人本人的銀行卡</string>
+    <string name="bank_card_holder">持卡人</string>
+    <string name="bank_card_number">卡號</string>
+    <string name="bank_opening_bank">開戶行</string>
+    <string name="bank_my_bankcard">我的銀行卡</string>
+    <string name="bank_bankcark_empty">還沒有添加銀行卡哦</string>
+    <string name="bank_bankcark_add">添加銀行卡</string>
+    <string name="bank_cmbc_title">招商銀行</string>
+    <string name="bank_unbind_suc">解綁成功</string>
+    <!--bank info end-->
+
+    <!--enterprise info start enterprise -->
+    <string name="enterprise_aeo">認證企業</string>
+    <string name="add_project">新增項目</string>
+    <string name="enterprise_collection_list">收款項目列表</string>
+    <string name="enterprise_insurance_pool">企業保險基金池</string>
+    <string name="enterprise_manager">企業管理</string>
+    <string name="enterprise_service">企業服務</string>
+    <string name="enterprise_abstract">企業簡稱</string>
+    <string name="enter_enterprise_abstract">請輸入企業簡稱</string>
+    <string name="enterprise_full_name">企業全稱</string>
+    <string name="enter_enterprise_name">請輸入企業全稱</string>
+    <string name="enterprise_sign">宣傳簽名</string>
+    <string name="enter_enterprise_sign">請輸入宣傳簽名</string>
+    <string name="enterprise_classify">所屬分類</string>
+    <string name="enterprise_contacts">聯系人</string>
+    <string name="enter_enterprise_contacts">請輸入聯系人</string>
+    <string name="enterprise_contacts_phone">聯系電話</string>
+    <string name="enter_enterprise_contacts_phone">請輸入聯系電話</string>
+    <string name="enterprise_address">地址</string>
+    <string name="enter_enterprise_address">請輸入企業地址</string>
+    <string name="enterprise_business_license">營業執照</string>
+    <string name="enterprise_apply_commit">申請已提交，請等待審核！</string>
+    <!--enterprise info end-->
+
+
+    <!--user info start-->
+    <string name="user_update_password">修改密碼</string>
+    <string name="user_old_password_verfiy">驗證舊密碼</string>
+    <string name="user_old_password_empty">請輸入舊密碼</string>
+    <string name="user_verify_password">驗證密碼</string>
+    <string name="user_setting_head">頭像設置</string>
+    <string name="user_upload_head_empty">請上傳您的頭像</string>
+    <string name="user_center_homepage">個人主頁</string>
+    <string name="user_nickname">用戶暱稱</string>
+    <string name="user_setting_center">個人設置</string>
+    <string name="user_personal_center">個人中心</string>
+    <string name="user_my_recommendation">我的推薦</string>
+    <string name="user_auth_verfiy_suc">您的身份驗證成功,請設置新密碼</string>
+    <!--<string name="user_confirm_newpassword">請確認新密碼</string>-->
+    <string name="user_verfiy_newpassword">驗證密碼</string>
+    <string name="user_update_head">修改頭像</string>
+    <string name="user_nickname_title">暱稱</string>
+    <string name="user_realname">真實姓名</string>
+    <string name="user_realname_empty">請輸入真實姓名</string>
+    <string name="user_sex">性别</string>
+    <string name="user_age">年齡</string>
+    <string name="user_address">地址</string>
+    <string name="user_phone_colon">電話:</string>
+    <string name="user_address_colon">地址:</string>
+    <string name="user_address_empty">請輸入地址</string>
+    <string name="user_like_industry">感興趣的行業</string>
+    <string name="user_personalized_signature">個性簽名</string>
+    <string name="user_person_signature_empty">請輸入個人簽名</string>
+    <string name="user_verified">已認證</string>
+    <string name="user_function">常用功能</string>
+    <string name="user_suggested_users">推薦用戶</string>
+    <string name="user_my_operation">我的操作</string>
+    <string name="user_my_inspect">我的考察</string>
+    <string name="user_logout">退出登錄</string>
+    <string name="user_call_service">聯系客服</string>
+    <!--user info end-->
+
+    <!--article info start-->
+    <string name="article_title">文章</string>
+    <string name="article_publish">發佈文章</string>
+    <string name="article_hello">你好</string>
+    <string name="article_savoie_deckard">薩瓦迪卡</string>
+    <string name="article_write_comment">寫評論</string>
+    <string name="article_reprinted_articles">轉載文章</string>
+    <string name="article_before_edit">請仔細閱讀文章,並確認圖片正確顯示後,再點擊編輯</string>
+    <string name="article_his_article">他的文章</string>
+    <string name="article_his_empty">還沒有發佈過文章哦</string>
+    <string name="article_press_paste">長按粘貼文章鏈接在此處..請勿編輯/轉發謠言,暴力,色情,辱罵等違規內容</string>
+    <string name="article_top">置頂</string>
+    <string name="article_quick_publish">快速發佈</string>
+    <!--article info start-->
+
+    <!--pay info start-->
+    <string name="pay_wallet_balance">餘額</string>
+    <string name="pay_scan_pay_me">掃一掃,向我付錢</string>
+    <string name="pay_enterprise_collection">企業收款</string>
+    <string name="pay_receive_payment">收付款</string>
+    <string name="pay_tome_payment">向我付款</string>
+    <string name="pay_setting_payment">設置收款金額</string>
+    <string name="pay_btn_create_order">生成訂單</string>
+    <string name="pay_income_expenses_detail">收支明細</string>
+    <string name="pay_order_detail">訂單詳情</string>
+    <string name="pay_trade_empty">你還沒有過交易記錄哦</string>
+    <string name="pay_inc_payment_record">收付款記錄</string>
+    <string name="pay_scan">掃一掃</string>
+    <string name="pay_syb">錢包</string>
+    <string name="amount_unit">元</string>
+    <string name="pay_gathering_project">收款項目:</string>
+    <!--pay info end-->
+
+    <!--search info start-->
+    <string name="pay_my_balance">我的余額</string>
+    <string name="balance_recharge">充值</string>
+    <string name="balance_withdraw">提現</string>
+    <string name="balance_recharge_num">充值金額</string>
+    <string name="balance_record">充值記錄</string>
+    <string name="balance_give_boc">贈送算力</string>
+    <!--pay info end-->>
+
+    <!--search info start-->
+    <string name="search_result_empty">沒有搜索到結果</string>
+    <string name="search_find_result">搜索結果</string>
+    <!--search info start-->
+
+    <!--fans info start-->
+    <string name="fans_title">粉絲</string>
+    <string name="fans_empty_ou">ta還沒有粉絲哦</string>
+    <!--fans info end-->
+
+    <!--focus info start-->
+    <string name="focus_add_focus">加關注</string>
+    <string name="focus_his_empty">ta還沒有關注別人哦</string>
+    <string name="focus_user">關注用戶</string>
+    <string name="focus_official_sina">關注官方微博</string>
+    <!--focus info end-->
+
+    <!--favorite info start-->
+    <string name="favorite_title">收藏</string>
+    <string name="favorite_his_empty">還沒有收藏過文章哦</string>
+    <!--favorite info end-->
+
+    <!--share info start-->
+    <string name="share_his_sharing">他的分享</string>
+    <string name="share_my_sharing">我的分享</string>
+    <string name="share_article_empty">還沒有分享過文章哦</string>
+    <string name="share_wx_friend">微信好友</string>
+    <string name="share_friend_circle">朋友圈</string>
+    <string name="share_qq_qzone">QQ空間</string>
+    <string name="share_copy_url">復制鏈接</string>
+    <string name="share_edit_content">編輯分享內容</string>
+
+    <!--share info end-->
+
+    <!--chat info end-->
+    <string name="chat_and_he">和他聊天</string>
+    <!--chat info end-->
+
+    <!--login info start-->
+    <string name="login_member_login">會員登錄</string>
+    <string name="login_account_password">賬號密碼登錄</string>
+    <string name="login_phone_dynamic_password">手機動態碼登錄</string>
+    <string name="login_telphone_empty">請輸入手機驗證碼</string>
+    <string name="login_btn_login">登錄</string>
+    <string name="login_btn_register">註冊</string>
+    <string name="login_btn_register_member">註冊會員</string>
+    <!--login info end-->
+
+    <!--register info start-->
+    <string name="register_member_register">會員註冊</string>
+    <string name="register_get_verfiy_code">獲取手機驗證碼</string>
+    <string name="register_account_pass_empty">請輸入帳號密碼</string>
+    <string name="register_confirm_account_pass">請確認帳號密碼</string>
+    <string name="register_exist_account">已有帳號，立即登錄</string>
+    <string name="without_login">免密碼登錄</string>
+    <string name="without_next_step">下壹步</string>
+    <string name="without_import_phone_num">請輸入手機帳號</string>
+    <string name="without_empty_send">驗證碼已發送至</string>
+    <string name="password_login">密碼登錄</string>
+    <string name="password_login_import_password">請輸入密碼</string>
+    <string name="forget_password">忘記密碼？</string>
+    <string name="retrieve_password">找回密碼</string>
+    <string name="without_invitation_code">請輸入邀請碼(可以為空)</string>
+    <string name="without_unregistered">未註冊手機驗證後自動登錄</string>
+    <!--register info end-->
+
+    <!--sub info start-->
+    <string name="sub_security_plan">守約寶</string>
+    <!--sub info end-->
+
+    <!--coin info start-->
+    <string name="integral">鞅分挖礦</string>
+    <string name="coin_bole_coin">算力</string>
+    <string name="earn_integral">賺取算力</string>
+    <string name="earn_integral_explain">賺取積汾說明</string>
+    <string name="integtal_pay">算力充值</string>
+    <string name="all_record">全部記錄</string>
+    <string name="gain_integtal">獲得算力</string>
+    <string name="deduct_integtal">扣除算力</string>
+    <string name="convert_BOC">兌換BOC</string>
+    <string name="pre_paid">充值方式</string>
+    <string name="alipay">支付寶支付</string>
+    <string name="unionpay">銀聯支付</string>
+    <string name="pay">支付</string>
+    <string name="for_record">兌換BOC記錄</string>
+    <string name="convert_BOC_num">兌換BOC個數</string>
+    <string name="all_convert">全部兌換</string>
+    <string name="convertible">可兌換</string>
+    <string name="wallet_address">錢包地址</string>
+    <string name="affirm_convert">確認兌換</string>
+    <string name="integral_phone_number">手機號碼</string>
+    <string name="integral_verification_code">驗證碼</string>
+    <string name="integral_get_verfiy_code">獲取驗證碼</string>
+    <!--coin info end-->
+    <!--project info start-->
+    <string name="notarize_payment">確認付款</string>
+    <string name="payment_amount">支付金額</string>
+    <string name="payment_method">付款方式</string>
+    <string name="bank_card_payments">銀行卡支付</string>
+    <string name="pos_pay">POS機支付</string>
+    <string name="confirm">確定</string>
+    <!--coin info end-->
+
+    <!--project info start-->
+    <string name="pos_order_code">POS機訂單號</string>
+    <string name="your_pay_order">您的付款訂單號為</string>
+    <string name="order_notify_the_merchant">請您將此訂單號告知商家,在POS機中輸入此訂單號,刷卡之後即可完成付款</string>
+    <string name="preoject_gathering">收款</string>
+    <!--coin info end-->
+
+    <!--project info start-->
+    <string name="project_credit_score">守約分%s分</string>
+    <string name="project_addproject_empty">還沒有添加項目哦</string>
+    <string name="project_inspect_item">考察項目</string>
+    <string name="project_inspect_subscribe">預約考察項目</string>
+    <string name="project_subscribe_empty">還沒有預約過項目哦</string>
+    <string name="project_inspect_detail">考察詳情</string>
+    <string name="project_ai_solicit_sys">智能攬客系統</string>
+    <string name="project_snack">餐飲小吃</string>
+    <string name="project_recommended_project">推薦項目</string>
+    <string name="project_you_like">猜你喜歡</string>
+    <string name="wdj_waste_processor">豌豆垃圾處理器</string>
+    <string name="project_like_inspect">我想考察</string>
+    <string name="project_one_subscribe">已有1人預約</string>
+    <string name="project_two_subscribe">已有2人預約</string>
+    <string name="project_name">項目名稱</string>
+    <string name="project_beijing">北京</string>
+    <string name="project_approve">認證</string>
+    <string name="project_one_tenw">1-10萬</string>
+    <string name="project_policy_good">各地創業政策是越來越好</string>
+    <string name="project_a_simple">一個簡單</string>
+    <string name="project_lihong">李紅</string>
+    <string name="project_wallet_balance">餘額：</string>
+    <string name="project_ydmky">魚的門烤魚</string>
+    <string name="project_special">特色項目</string>
+    <string name="project_apply_again">重新申請</string>
+    <!--project info end-->
+
+    <!--common button start-->
+    <string name="common_btn_submit">提交</string>
+    <string name="common_btn_share">分享</string>
+    <string name="common_btn_add_focus">+關注</string>
+    <string name="common_btn_send">發送</string>
+    <string name="common_btn_edit">編輯</string>
+    <string name="common_btn_empty">清空</string>
+    <string name="common_btn_complete">完成</string>
+    <string name="common_btn_consult">諮詢</string>
+    <string name="common_btn_back">返回</string>
+
+    <!--common button end-->
+    <string name="today_title">今天</string>
+    <string name="culture_title">文化</string>
+    <string name="name_gfnbjh">哥凡尼冰晶畫</string>
+    <string name="safeguard_pool">保障池</string>
+
+    <string name="common_amount_empty">金額不能爲空</string>
+    <string name="common_pay_method_empty">請選擇支付方式</string>
+    <string name="common_orderId_empty">請選擇支付方式</string>
+
+    <!--video start-->
+    <string name="video_title">視頻</string>
+    <string name="video_one">第一個視頻</string>
+    <!--video end-->
+    <string name="syb_apply_ensure">申請創業保障</string>
+</resources>

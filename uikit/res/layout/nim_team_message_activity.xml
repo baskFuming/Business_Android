@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!--<android.support.design.widget.AppBarLayout-->
+    <!--android:id="@+id/app_bar_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:theme="@style/AppTheme.AppBarOverlay"-->
+    <!--app:elevation="0dp">-->
+
+    <!--<android.support.v7.widget.Toolbar-->
+    <!--android:id="@+id/toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="?attr/actionBarSize"-->
+    <!--android:background="@color/white"-->
+    <!--app:titleTextAppearance="@style/Toolbar.TitleText" />-->
+    <!---->
+    <!--</android.support.design.widget.AppBarLayout>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <RelativeLayout
+            android:id="@+id/back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="21dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/back" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/group_name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="#1d1d1d"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            />
+        <ImageView
+            android:id="@+id/group_info"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/nim_ic_message_actionbar_team"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/invalid_team_tip"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:background="@drawable/nim_message_activity_top_tip"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/invalid_team_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/team_invalid_tip"
+            android:textColor="@color/color_yellow_796413"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/message_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+
+
+</LinearLayout>

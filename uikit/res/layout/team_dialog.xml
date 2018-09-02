@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/updata"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/update_linear"
+        android:layout_width="300dp"
+        android:layout_height="272dp"
+        android:background="@drawable/close_selector"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:scrollbars="vertical"
+                android:text="朋友验证"
+                android:textColor="#1d1d1d"
+                android:textSize="18dp" />
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="27dp"
+                android:src="@drawable/back_x" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="21dp"
+            android:layout_marginTop="22dp"
+            android:text="你需要发送验证申请，等对方通过"
+            android:textColor="#DFDFDF"
+            android:textSize="14sp" />
+
+        <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_marginLeft="17dp"-->
+        <!--android:layout_marginRight="17dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:background="#fff4f4f4"-->
+        <!--android:hint="请添加好友..."-->
+        <!--android:maxLength="20"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:textColor="#1d1d1d"-->
+        <!--android:textSize="18sp" />-->
+        <EditText
+            android:id="@+id/info_et"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp"
+            android:layout_marginTop="5dp"
+            android:background="#f4f4f4"
+            android:hint="请添加好友..."
+            android:maxLength="20"
+            android:paddingLeft="10dp"
+            android:textColor="#1d1d1d"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/sends"
+            android:layout_width="184dp"
+            android:layout_height="41dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/close_selector"
+            android:gravity="center"
+            android:text="发送"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

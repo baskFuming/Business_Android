@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fram_back">
+    <View
+        android:id="@+id/background_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
+    <!--<ImageView-->
+        <!--android:id="@+id/back"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:textSize="16sp"-->
+        <!--android:src="@mipmap/close_x" />-->
+
+    <com.zwonline.top28.utils.FloatViewPager
+        android:id="@+id/vp_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.zwonline.top28.utils.FloatViewPager>
+    <!--<ImageView-->
+        <!--android:id="@+id/loading"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/picture_loading"/>-->
+    <TextView
+        android:id="@+id/tv_photo_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="10dp"
+        android:text="111"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+</FrameLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="346dp"
+        android:layout_height="480dp"
+        android:background="@drawable/rectangle_shape_gay"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.zwonline.top28.utils.ImageViewPlus
+                android:id="@+id/my_head"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="29dp"
+                 />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="36dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/my_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="31dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textColor="#1D1D1D"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/my_sign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textColor="#94979C"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/my_qrcode"
+            android:layout_width="287dp"
+            android:layout_height="285dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="11dp"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="扫描上面二维码，加我好友"
+            android:textColor="#1D1D1D"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/close"
+            android:layout_width="184dp"
+            android:layout_height="41dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="关闭"
+            android:textColor="#3D3D3D"
+            android:background="@drawable/close_selector"
+            android:textSize="16sp" />
+    </LinearLayout>
+</LinearLayout>

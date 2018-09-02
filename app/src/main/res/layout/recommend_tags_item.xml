@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    >
+
+    <CheckBox
+        android:id="@+id/tags"
+        android:layout_width="84dp"
+        android:layout_height="35dp"
+        android:background="@drawable/recomment_tags_selector"
+        android:button="@null"
+        android:gravity="center"
+        android:maxLength="5"
+        android:text="股市"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/reded"
+        android:textSize="14sp"
+        />
+    <ImageView
+        android:id="@+id/delete_bt"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@mipmap/label_close"
+        android:visibility="gone"
+        android:layout_marginLeft="70dp"/>
+</RelativeLayout>

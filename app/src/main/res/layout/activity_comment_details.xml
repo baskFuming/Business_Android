@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:notButton="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/comment_details_relat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.CommentDetailsActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#ff000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/comment_details_shape"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/back"
+                android:layout_width="50dp"
+                android:layout_height="50dp">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/back_x" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="评论详情页"
+                android:textColor="#2F2F2F"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <com.zwonline.top28.utils.ImageViewPlus
+                android:id="@+id/comment_head"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="17dp"
+                android:layout_marginTop="10dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:layout_toRightOf="@id/comment_head"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/comment_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#7B7B7B"
+                    android:textSize="14sp"
+                    android:maxEms="13"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    />
+
+                <TextView
+                    android:id="@+id/comment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:textColor="#C2C2C2"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/praise_like"-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="42dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_alignParentRight="true">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/praise_nums"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:lines="1"-->
+                    <!--android:layout_toLeftOf="@id/comment_like"-->
+                    <!--android:textColor="#C2C2C2"-->
+                    <!--android:textSize="14sp" />-->
+
+                <!--<CheckBox-->
+                    <!--android:id="@+id/comment_likes"-->
+                    <!--android:layout_width="14dp"-->
+                    <!--android:layout_height="14dp"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginTop="11dp"-->
+                    <!--android:background="@drawable/selector_comment_like"-->
+                    <!--android:button="@null"-->
+                    <!--android:drawablePadding="5dp"-->
+                    <!--android:enabled="false"-->
+                    <!--android:gravity="center"-->
+                    <!--android:layout_marginRight="15dp"/>-->
+
+
+            <!--</RelativeLayout>-->
+            <LinearLayout
+                android:id="@+id/linear_like"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/comment_likes"
+                    android:layout_width="14dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/selector_comment_likes"
+                    android:button="@null"
+                    android:layout_marginTop="10dp"
+                    android:enabled="false" />
+
+
+                <TextView
+                    android:id="@+id/praise_nums"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#1d1d1d"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <!--<CheckBox-->
+                <!--android:layout_width="14dp"-->
+                <!--android:layout_height="14dp"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:layout_marginTop="11dp"-->
+                <!--android:background="@drawable/selector_comment_likes"-->
+                <!--android:button="@null"-->
+                <!--android:drawablePadding="5dp"-->
+                <!--android:gravity="center" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:textColor="#1d1d1d"-->
+                <!--android:text="1111111"-->
+                <!--android:textSize="12sp" />-->
+
+            <!--<CheckBox-->
+                <!--android:id="@+id/choose_like"-->
+                <!--android:layout_width="14dp"-->
+                <!--android:layout_height="16dp"-->
+                <!--android:background="@drawable/selector_comment_likes"-->
+                <!--android:button="@null"-->
+                <!--android:enabled="false" />-->
+
+
+            <!--<TextView-->
+                <!--android:id="@+id/like_num"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:textColor="#1d1d1d"-->
+                <!--android:textSize="12sp" />-->
+
+            <RelativeLayout
+                android:id="@+id/comment_dians"
+                android:layout_width="40dp"
+                android:layout_height="33dp"
+                android:layout_alignParentRight="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="10dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="11dp"
+                    android:src="@mipmap/diandian" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/comment_contents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="74dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="7dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="3dp"
+            android:lines="2"
+            android:textColor="#424242"
+            android:textSize="14sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="130dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="#ffefefef" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:text="全部评论"
+                android:textColor="#2F2F2F"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="130dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="#ffefefef"
+
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/no_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="抢先评论"
+            android:visibility="gone" />
+
+        <com.liaoinstan.springview.widget.SpringView
+            android:id="@+id/details_spring"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/comment_details_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"></ListView>
+        </com.liaoinstan.springview.widget.SpringView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <!--<EditText-->
+        <!--android:id="@+id/editText"-->
+        <!--android:layout_width="185dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:drawableLeft="@mipmap/pen_gray"-->
+        <!--android:hint="写评论"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:textColor="#888888"-->
+        <!--android:textSize="12sp" />-->
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="@dimen/bottom_component_margin_horizontal"
+            android:layout_toLeftOf="@+id/emoji_button"
+            android:layout_toRightOf="@+id/switchLayout"
+            android:layout_weight="3"
+            android:autoLink="web|email|phone"
+            android:background="@drawable/business_serch_shape"
+            android:drawablePadding="10dp"
+            android:hint="@string/article_write_comment"
+            android:imeOptions="actionSend"
+            android:maxHeight="72dip"
+            android:maxLines="4"
+            android:paddingLeft="15dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp" />
+
+        <!--<LinearLayout-->
+        <!--android:id="@+id/linear_image"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="2"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/comment"-->
+        <!--android:layout_width="25dp"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:src="@mipmap/ic_comment_gray" />-->
+
+        <!--<com.carlos.notificatoinbutton.library.NotificationButton-->
+        <!--android:id="@+id/comment"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:background="@mipmap/ic_comment_gray"-->
+        <!--notButton:circleBgColor="@android:color/holo_red_light"-->
+        <!--notButton:circleSize="5dp"-->
+        <!--notButton:textColor="@android:color/white" />-->
+
+        <!--<CheckBox-->
+        <!--android:id="@+id/collect"-->
+        <!--android:layout_width="25dp"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--android:layout_marginTop="2dp"-->
+        <!--android:background="@drawable/selector_collect"-->
+        <!--android:button="@null" />-->
+
+        <!--      <ImageView
+                  android:id="@+id/collect"
+                  android:layout_width="25dp"
+                  android:layout_height="25dp"
+                  android:layout_gravity="bottom"
+                  android:layout_marginLeft="20dp"
+                  android:src="@drawable/selector_collect" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/imageViewShare"-->
+        <!--android:layout_width="25dp"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:src="@mipmap/share_gray" />-->
+        <!--</LinearLayout>-->
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_register_shape"
+            android:text="@string/common_btn_send"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+    </LinearLayout>
+</RelativeLayout>

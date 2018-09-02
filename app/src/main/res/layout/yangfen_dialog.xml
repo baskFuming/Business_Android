@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/updata"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/update_linear"
+        android:layout_width="300dp"
+        android:layout_height="438dp"
+        android:background="@mipmap/message_gift_bg2"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/close"
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/close_x" />
+            </RelativeLayout>
+
+            <com.zwonline.top28.utils.ImageViewPlus
+                android:id="@+id/send_head"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="3dp"
+                android:text="用户昵称"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/slow_no_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="发了一个鞅分红包"
+                android:textColor="#EED6A4"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/send_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:text="恭喜发财，大吉大利！"
+                android:textColor="#EAD09A"
+                android:textSize="22sp" />
+            <!--android:src="@mipmap/message_gift_open" -->
+            <ImageView
+                android:id="@+id/open_redpack"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:src="@mipmap/message_gift_open" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/look_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="查看领取详情"
+            android:layout_marginBottom="24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:textColor="#EED6A4" />
+
+
+    </RelativeLayout>
+</LinearLayout>

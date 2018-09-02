@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearhead"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="21dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/return_black" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:lines="1"
+            android:paddingRight="20dp"
+            android:singleLine="true"
+            android:text="@string/article_hello"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearhead">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/mtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/article_hello"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <RelativeLayout
+                        android:id="@+id/relative_home"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <com.zwonline.top28.utils.ImageViewPlus
+                            android:id="@+id/userhead"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@id/userhead"
+                            android:text="@string/article_savoie_deckard"
+                            android:textColor="#000000"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/username"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_toRightOf="@id/userhead"
+                            android:text="2017-12-08"
+                            android:textColor="#888888"
+                            android:textSize="10sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/attention"
+                            android:layout_width="60dp"
+                            android:layout_height="35dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/rectangle_shape_red"
+                            android:text="@string/common_btn_add_focus"
+                            android:textColor="#FF2B2B"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/content_web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></WebView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#F5F5F9"></View>
+
+            <WebView
+                android:id="@+id/comment_web"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></WebView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#F5F5F9"></View>
+        </LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <!--<EditText-->
+        <!--android:id="@+id/editText"-->
+        <!--android:layout_width="185dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:drawableLeft="@mipmap/pen_gray"-->
+        <!--android:hint="写评论"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:textColor="#888888"-->
+        <!--android:textSize="12sp" />-->
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="@dimen/bottom_component_margin_horizontal"
+            android:layout_toLeftOf="@+id/emoji_button"
+            android:layout_toRightOf="@+id/switchLayout"
+            android:layout_weight="3"
+            android:autoLink="web|email|phone"
+            android:background="@drawable/nim_message_input_edittext_box"
+            android:drawableLeft="@mipmap/pen_gray"
+            android:drawablePadding="10dp"
+            android:hint="@string/article_write_comment"
+            android:maxHeight="72dip"
+            android:maxLines="4"
+            android:paddingLeft="5dp"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/ic_comment_gray" />
+
+            <ImageView
+                android:id="@+id/collect"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/selector_collect" />
+
+            <ImageView
+                android:id="@+id/imageViewShare"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="20dp"
+                android:src="@mipmap/share_gray" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_register_shape"
+            android:text="@string/common_btn_send"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+        <Button
+            android:id="@+id/replysend"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_register_shape"
+            android:text="@string/common_btn_send"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+    </LinearLayout>
+</RelativeLayout>

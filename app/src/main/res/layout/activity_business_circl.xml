@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.BusinessCirclActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="商机圈"
+            android:textColor="#ff1d1d1d"
+            android:textSize="17sp" />
+
+        <RelativeLayout
+            android:id="@+id/search_message"
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="16dp"
+                android:focusable="false"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/home_search" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/add_fuction"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity=""
+                android:layout_marginTop="16dp"
+                android:focusable="false"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/messageadd" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <com.zwonline.top28.utils.RecyclerScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/lr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.jcodecraeer.xrecyclerview.XRecyclerView
+                android:id="@+id/business_cicler"
+                android:layout_width="match_parent"
+                android:layout_height="660dp"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="18dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="36dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="#ffff2b2b"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:text="完成"
+                    android:textColor="#ffffffff"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.zwonline.top28.utils.RecyclerScrollView>
+</LinearLayout>
