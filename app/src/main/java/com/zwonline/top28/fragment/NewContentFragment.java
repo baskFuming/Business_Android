@@ -585,10 +585,10 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
 //                }
                 adapter.notifyDataSetChanged();
             }
-            if (resultCode == 100) {
-                //发表完动态刷新
-                presenter.MomentList(getActivity(), page, "", "", "");
-            }
+//            if (resultCode == 100) {
+//                //发表完动态刷新
+//                presenter.MomentList(getActivity(), page, "", "", "");
+//            }
         }
 
     }

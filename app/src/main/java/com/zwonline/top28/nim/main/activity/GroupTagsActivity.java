@@ -145,33 +145,38 @@ public class GroupTagsActivity extends BaseActivity<IGroupTagsActivity, GroupTag
         List<RecommendTagsBean.TagListBean> customList = new ArrayList<>();
         customList.clear();
         customList.addAll(createList);
+        /**
+         * 判断是否已经设置过标签
+         */
         if (createList.size() > 0) {
-
+            //循环遍历createlist查找是否有相同tags_id
             for (int i = 0; i < createList.size(); i++) {
                 for (int j = 0; j < recommendTagsList.size(); j++) {
+                    //判断是有相同的tag_id
                     if (createList.get(i).tag_id.equals(recommendTagsList.get(j).tag_id)) {
+
                         recommendTagsList.get(j).did_isChecked = BizConstant.IS_SUC;
+                        //新建一个listview有相同的给他remove掉
+                        for (int k = 0; k < customList.size(); k++) {
+                            if (createList.get(i).tag_id.equals(customList.get(k).tag_id)) {
+                                customList.remove(k);
+                            }
+                        }
                     }
-//                    else {
-//                        RecommendTeamsBean.DataBean bean = new RecommendTeamsBean.DataBean();
-//                        bean.tag_id = customList.get(i).tag_id;
-//                        bean.name = customList.get(i).name;
-//                        bean.did_isChecked = BizConstant.IS_SUC;
-//                        recommendTagsList.add(bean);
-//                    }
                 }
 
             }
-//            if (customList.size()>0){
-//                for (int i = 0; i < customList.size(); i++) {
-////                    RecommendTeamsBean.DataBean bean = new RecommendTeamsBean.DataBean();
-////                    bean.tag_id = customList.get(i).tag_id;
-////                    bean.name = customList.get(i).name;
-////                    bean.did_isChecked = BizConstant.IS_SUC;
-////                    recommendTagsList.add(bean);
-//                }
-//                ToastUtils.showToast(getApplicationContext(),customList.size()+"");
-//            }
+            //把没有的标签循环添加
+            if (customList.size() > 0) {
+                for (int i = 0; i < customList.size(); i++) {
+                    RecommendTeamsBean.DataBean bean = new RecommendTeamsBean.DataBean();
+                    bean.tag_id = customList.get(i).tag_id;
+                    bean.name = customList.get(i).name;
+                    bean.did_isChecked = BizConstant.IS_SUC;
+                    recommendTagsList.add(bean);
+                }
+                ToastUtils.showToast(getApplicationContext(), customList.size() + "");
+            }
 
             adapter.notifyDataSetChanged();
         }
