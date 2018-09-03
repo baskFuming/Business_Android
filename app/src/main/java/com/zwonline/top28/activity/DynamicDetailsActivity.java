@@ -160,10 +160,10 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         initView();
         presenter.mDynamicComment(this, page, moment_id, "", "", "");
         presenter.mDynamicShare(this, moment_id);
-        headView = getLayoutInflater().inflate(R.layout.dynamicdetails_head, null);
+//        headView = getLayoutInflater().inflate(R.layout.dynamicdetails_head, null);
         initListView();
         adapter = new DynamicDetailsAdapter(this, dynamicList);
-        dynamicdetailsList.addHeaderView(headView, null, false);
+//        dynamicdetailsList.addHeaderView(headView, null, false);
         dynamicdetailsList.setAdapter(adapter);
     }
 
@@ -171,25 +171,25 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      * 头布局控件查找
      */
     private void initListView() {
-        ImageViewPlus userHead = headView.findViewById(R.id.userhead);
-        TextView userName = headView.findViewById(R.id.username);
-        TextView time = headView.findViewById(R.id.time);
-        likeAcount = headView.findViewById(R.id.like_acount);
-        commentAcount = headView.findViewById(R.id.comment_acount);
-        LinearLayout article_linear = headView.findViewById(R.id.article_linear);
-        TextView article_title = headView.findViewById(R.id.article_title);
-        TextView article_desc = headView.findViewById(R.id.article_desc);
-        ImageViewPlu article_img = headView.findViewById(R.id.article_img);
+        ImageViewPlus userHead = (ImageViewPlus) findViewById(R.id.userhead);
+        TextView userName = (TextView) findViewById(R.id.username);
+        TextView time = (TextView) findViewById(R.id.time);
+        likeAcount = (TextView) findViewById(R.id.like_acount);
+        commentAcount = (TextView) findViewById(R.id.comment_acount);
+        LinearLayout article_linear = (LinearLayout) findViewById(R.id.article_linear);
+        TextView article_title = (TextView) findViewById(R.id.article_title);
+        TextView article_desc = (TextView) findViewById(R.id.article_desc);
+        ImageViewPlu article_img = (ImageViewPlu) findViewById(R.id.article_img);
         commentAcount.setText("评论 " + comment_count + "条");
         likeAcount.setText("赞 " + like_count);
-        attention = headView.findViewById(R.id.attention);
-        TextView dynamicConment = headView.findViewById(R.id.dynamic_conment);
-        LinearLayout imagLinear = headView.findViewById(R.id.imag_linear);
-        MultiImageView multiImage = headView.findViewById(R.id.multi_image);
-        ImageView dynamic_imag_w = headView.findViewById(R.id.dynamic_imag_w);
-        ImageView dynamic_imag_h = headView.findViewById(R.id.dynamic_imag_h);
-        ImageView dynamic_imag_z = headView.findViewById(R.id.dynamic_imag_z);
-        RelativeLayout imag_relative = headView.findViewById(R.id.imag_relative);
+        attention = (TextView) findViewById(R.id.attention);
+        TextView dynamicConment = (TextView) findViewById(R.id.dynamic_conment);
+        LinearLayout imagLinear = (LinearLayout) findViewById(R.id.imag_linear);
+        MultiImageView multiImage = (MultiImageView) findViewById(R.id.multi_image);
+        ImageView dynamic_imag_w = (ImageView) findViewById(R.id.dynamic_imag_w);
+        ImageView dynamic_imag_h = (ImageView) findViewById(R.id.dynamic_imag_h);
+        ImageView dynamic_imag_z = (ImageView) findViewById(R.id.dynamic_imag_z);
+        RelativeLayout imag_relative = (RelativeLayout) findViewById(R.id.imag_relative);
         RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
         Glide.with(this).load(avatars).apply(requestOptions).into(userHead);
         userName.setText(nickname);
