@@ -150,7 +150,7 @@ public class InformationFragment extends BasesFragment {
         initFragments();
         mPagerAdapter = new InfoFragmentPageAdapter(getActivity(), getActivity().getSupportFragmentManager(), fList, mPageTitleList, mBadgeCountList);
         infoPager.setAdapter(mPagerAdapter);
-        setIndicator(infoTab, 5, 5);
+//        setIndicator(infoTab, 5, 5);
         infoTab.setupWithViewPager(infoPager);
         initBadgeViews();
         setUpTabBadge();
@@ -428,13 +428,13 @@ public class InformationFragment extends BasesFragment {
     @Override
     public void onStart() {
         super.onStart();
-        infoTab.post(new Runnable() {
-            @Override
-            public void run() {
-                infoTab.setTabMode(TabLayout.MODE_FIXED);
-                TabUtils.setIndicator(infoTab, 10, 10);
-            }
-        });
+//        infoTab.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                infoTab.setTabMode(TabLayout.MODE_FIXED);
+//                TabUtils.setIndicator(infoTab, 10, 10);
+//            }
+//        });
     }
 
     @Override
