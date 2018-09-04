@@ -386,7 +386,6 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
 
                     @Override
                     public void gt3DialogOnError(String error) {
-                        Log.i("dsd", error);
 
                     }
                 });

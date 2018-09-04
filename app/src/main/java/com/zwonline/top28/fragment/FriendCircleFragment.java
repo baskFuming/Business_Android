@@ -218,7 +218,7 @@ public class FriendCircleFragment extends BasesFragment {
 
 
                 break;
-}
+        }
 
     }
 
@@ -233,7 +233,7 @@ public class FriendCircleFragment extends BasesFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageFollow event) {
-        ToastUtils.showToast(getActivity(), event.notifyCount + "23456789");
+//        ToastUtils.showToast(getActivity(), event.notifyCount + "23456789");
     }
 
     @Override

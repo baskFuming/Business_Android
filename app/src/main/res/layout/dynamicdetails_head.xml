@@ -263,8 +263,8 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@id/dynamicdetails_list" />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_below="@id/dynamicdetails_list" />-->
 </LinearLayout>

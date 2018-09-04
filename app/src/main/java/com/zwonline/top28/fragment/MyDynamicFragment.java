@@ -38,6 +38,7 @@ import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
@@ -209,7 +210,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
                 if (AntiShake.check(view.getId())) {    //判断是否多次点击
                     return;
                 }
-                intentPositions = position - 1;
+                intentPositions = position - 2;
                 Intent intent = new Intent(getActivity(), DynamicDetailsActivity.class);
                 intent.putExtra("moment_id", newContentList.get(intentPositions).moment_id);
                 intent.putExtra("author_id", newContentList.get(intentPositions).user_id);
@@ -592,6 +593,16 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
         });
+    }
+
+    /**
+     * 点赞列表
+     *
+     * @param likeList
+     */
+    @Override
+    public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
+
     }
 
     @Override

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
+    android:layout_marginTop="30dp"
     android:orientation="vertical">
 
 
@@ -44,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/username"
-                android:text="2018/03/08"
                 android:textColor="#C2C2C2"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -60,9 +60,9 @@
                 android:id="@+id/choose_like"
                 android:layout_width="14dp"
                 android:layout_height="16dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/selector_comment_likes"
                 android:button="@null"
-                android:layout_marginTop="1dp"
                 android:enabled="false" />
 
 
@@ -71,8 +71,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="1dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="1dp"
                 android:textColor="#1d1d1d"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -129,6 +129,6 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="30dp"
         android:visibility="visible" />
 </LinearLayout>

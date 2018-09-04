@@ -7,6 +7,7 @@ import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
@@ -165,4 +166,10 @@ public interface ISendFriendCircleActivity {
      * @param attentionBean
      */
     void showGetMyNotificationCount(AttentionBean attentionBean);
+
+    /**
+     * 点赞列表
+     * @param likeList
+     */
+    void showGetLikeList(List<LikeListBean.DataBean> likeList);
 }

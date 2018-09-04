@@ -32,6 +32,7 @@ import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
@@ -520,6 +521,16 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             messageFollow.notifyCount = attentionBean.data.unread_count;
             EventBus.getDefault().post(messageFollow);
         }
+    }
+
+    /**
+     * 点赞列表
+     *
+     * @param likeList
+     */
+    @Override
+    public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
+
     }
 
     @Override

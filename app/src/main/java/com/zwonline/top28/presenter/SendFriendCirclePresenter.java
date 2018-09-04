@@ -12,6 +12,7 @@ import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PicturBean;
 import com.zwonline.top28.bean.PictursBean;
@@ -807,6 +808,37 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                         @Override
                         public void onNext(AttentionBean attentionBean) {
                             iSendFriendCircleActivity.showGetMyNotificationCount(attentionBean);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 商机圈我的消息未读数量
+     *
+     * @param context
+     */
+    public void GetLikeList(Context context, String momment_id, int page) {
+        try {
+            Flowable<LikeListBean> flowable = sendFriendCircleModel.mGetLikeList(context, momment_id, page);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<LikeListBean>() {
+                        @Override
+                        public void onNext(LikeListBean likeListBean) {
+                            iSendFriendCircleActivity.showGetLikeList(likeListBean.data);
                         }
 
                         @Override

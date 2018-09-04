@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="30dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal"
+        android:paddingRight="10dp">
+
+
+        <com.zwonline.top28.utils.ImageViewPlus
+            android:id="@+id/like_userhead"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@mipmap/no_photo_male" />
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/like_userhead"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/like_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="#7B7B7B"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/like_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/username"
+                android:textColor="#C2C2C2"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/post2_thumb3" />
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:visibility="visible" />
+</LinearLayout>

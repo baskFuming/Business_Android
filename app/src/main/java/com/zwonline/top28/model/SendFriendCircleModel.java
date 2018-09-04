@@ -18,6 +18,7 @@ import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.BusinessClassifyBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PicturBean;
 import com.zwonline.top28.bean.PictursBean;
@@ -586,6 +587,7 @@ public class SendFriendCircleModel {
      */
     public Flowable<AttentionBean> mGetMyNotificationCount(Context context) throws IOException {
         sp = SharedPreferencesUtils.getUtil();
+        String versionName = LanguageUitils.getVersionName(context);
         long timestamp = new Date().getTime() / 1000;//时间戳
         String token = (String) sp.getKey(context, "dialog", "");
         Map<String, String> map = new HashMap<>();
@@ -600,4 +602,31 @@ public class SendFriendCircleModel {
         return flowable;
     }
 
+
+    /**
+     * 获取动态点赞列表接口
+     *
+     * @param context
+     * @return
+     * @throws IOException
+     */
+    public Flowable<LikeListBean> mGetLikeList(Context context, String moment_id, int page) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        String versionName = LanguageUitils.getVersionName(context);
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("moment_id", moment_id);
+        map.put("token", token);
+        map.put("app_version", versionName);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("page", String.valueOf(page));
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        SignUtils.removeNullValue(map);
+        Flowable<LikeListBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .getLikeList(String.valueOf(timestamp), token, sign, moment_id, versionName, page);
+        return flowable;
+    }
 }

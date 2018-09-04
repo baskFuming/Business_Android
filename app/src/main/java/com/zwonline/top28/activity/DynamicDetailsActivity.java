@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,10 +31,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.DynamicDetailsAdapter;
+import com.zwonline.top28.adapter.DynamicDetailsComentAdapter;
+import com.zwonline.top28.adapter.LikeListAdapter;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
@@ -40,6 +45,7 @@ import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PhotoInfos;
 import com.zwonline.top28.bean.PictursBean;
@@ -78,7 +84,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
 
     private RelativeLayout back;
     private TextView title;
-    private ListView dynamicdetailsList;
+    private XRecyclerView dynamicdetailsList;
     private List<DynamicDetailsBean.DataBean> dynamicList;
     private String author_id;
     private String avatars;
@@ -88,7 +94,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private String[] imageUrls;
     private String[] orinal_imageUrls;
     private View headView;
-    private DynamicDetailsAdapter adapter;
+    private DynamicDetailsComentAdapter adapter;
     private int page = 1;
     private LinearLayout linearShare;
     private RewritePopwindow mPopwindow;
@@ -127,7 +133,11 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private int positions;
     private String commentContent;
     private ArrayList<String> commentList;
+    private XRecyclerView zanRecy;
+    private TextView commentUnderline;
+    private TextView likeUnderline;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void init() {
         sp = SharedPreferencesUtils.getUtil();
@@ -136,6 +146,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         dynamicList = new ArrayList<>();
         commentList = new ArrayList<>();
         Intent intent = getIntent();
+
         author_id = intent.getStringExtra("author_id");
         avatars = intent.getStringExtra("avatars");
         nickname = intent.getStringExtra("nickname");
@@ -158,11 +169,17 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
 //        ToastUtils.showToast(getApplicationContext(), "时间=" + newContentList.add_date);
         orinal_imageUrls = getIntent().getStringArrayExtra("orinal_imageUrls");
         initView();
+
         presenter.mDynamicComment(this, page, moment_id, "", "", "");
         presenter.mDynamicShare(this, moment_id);
+        presenter.GetLikeList(this, moment_id, page);
 //        headView = getLayoutInflater().inflate(R.layout.dynamicdetails_head, null);
         initListView();
-        adapter = new DynamicDetailsAdapter(this, dynamicList);
+        dynamicdetailsList.setNestedScrollingEnabled(false);
+        zanRecy.setNestedScrollingEnabled(false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        dynamicdetailsList.setLayoutManager(linearLayoutManager);
+        adapter = new DynamicDetailsComentAdapter(this, dynamicList);
 //        dynamicdetailsList.addHeaderView(headView, null, false);
         dynamicdetailsList.setAdapter(adapter);
     }
@@ -179,7 +196,10 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         LinearLayout article_linear = (LinearLayout) findViewById(R.id.article_linear);
         TextView article_title = (TextView) findViewById(R.id.article_title);
         TextView article_desc = (TextView) findViewById(R.id.article_desc);
+        commentUnderline = (TextView) findViewById(R.id.comment_underline);
+        likeUnderline = (TextView) findViewById(R.id.like_underline);
         ImageViewPlu article_img = (ImageViewPlu) findViewById(R.id.article_img);
+        zanRecy = (XRecyclerView) findViewById(R.id.zan_recy);
         commentAcount.setText("评论 " + comment_count + "条");
         likeAcount.setText("赞 " + like_count);
         attention = (TextView) findViewById(R.id.attention);
@@ -349,7 +369,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         back = (RelativeLayout) findViewById(R.id.back);
         title = (TextView) findViewById(R.id.title);
         title.setText("动态详情");
-        dynamicdetailsList = (ListView) findViewById(R.id.dynamicdetails_list);
+        dynamicdetailsList = (XRecyclerView) findViewById(R.id.comment_xrecy);
         linearShare = (LinearLayout) findViewById(R.id.linear_share);
         linearComment = (LinearLayout) findViewById(R.id.linear_comment);
         linearLike = (LinearLayout) findViewById(R.id.linear_like);
@@ -381,9 +401,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         }
         dynamicList.addAll(dataBeanList);
         adapter.notifyDataSetChanged();
-        dynamicdetailsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter.setOnClickItemListener(new DynamicDetailsComentAdapter.OnClickItemListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void setOnItemClick(View view, int position) {
                 positions = position - 1;
                 Intent intent = new Intent(getApplicationContext(), DynamicCommentDetailsActivity.class);
                 intent.putExtra("uid", dynamicList.get(positions).user_id);
@@ -403,7 +423,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         /**
          * 复制  删除评论
          */
-        adapter.commentsContentSetOnclick(new DynamicDetailsAdapter.CommentsContentInterface() {
+        adapter.commentsContentSetOnclick(new DynamicDetailsComentAdapter.CommentsContentInterface() {
             @Override
             public void onclick(View view, final int position, TextView textView) {
                 deliteCommentPosition = position;
@@ -415,7 +435,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                                 mCurPopupWindow.dismiss();
                                 if (islogins) {
                                     if (StringUtil.isNotEmpty(uid) && dynamicList.get(deliteCommentPosition).user_id.equals(uid)) {
-                                        presenter.DeleteComment(getApplicationContext(), dynamicList.get(position).comment_id,author_id);
+                                        presenter.DeleteComment(getApplicationContext(), dynamicList.get(position).comment_id, author_id);
                                     } else {
                                         ToastUtils.showToast(getApplicationContext(), "举报成功");
                                     }
@@ -440,7 +460,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
          * 评论点赞
          */
 
-        adapter.commentLikeSetOnclick(new DynamicDetailsAdapter.CommentLikeContentInterface() {
+        adapter.commentLikeSetOnclick(new DynamicDetailsComentAdapter.CommentLikeContentInterface() {
             @Override
             public void onclick(View view, int position, CheckBox checkBox, TextView textView) {
                 commentLikePosition = position;
@@ -665,6 +685,22 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     public void showGetMyNotificationCount(AttentionBean attentionBean) {
 
     }
+
+    /**
+     * 点赞列表
+     *
+     * @param likeList
+     */
+    @Override
+    public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
+        LikeListAdapter likeListAdapter = new LikeListAdapter(likeList, this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        zanRecy.setLayoutManager(linearLayoutManager);
+        zanRecy.setAdapter(likeListAdapter);
+        likeListAdapter.notifyDataSetChanged();
+
+    }
+
     /**
      * 上传多张图片
      *
@@ -695,7 +731,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      *
      * @param view
      */
-    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment})
+    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -707,7 +743,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 intent.putExtra("comment_count", comment_count);
                 intent.putExtra("did_i_follow", did_i_follow);
                 intent.putExtra("did_i_like", did_i_like);
-                if (commentList.size()>0){
+                if (commentList.size() > 0) {
                     intent.putStringArrayListExtra("comment_list", (ArrayList<String>) commentList);
                 }
                 //判断type类型
@@ -746,7 +782,20 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 }
 
                 break;
-
+            case R.id.comment_acount_linear:
+                likeUnderline.setVisibility(View.GONE);
+                commentUnderline.setVisibility(View.VISIBLE);
+                dynamicdetailsList.setVisibility(View.VISIBLE);
+                zanRecy.setVisibility(View.GONE);
+                break;
+            case R.id.like_acount_linear:
+                commentUnderline.setVisibility(View.GONE);
+                likeUnderline.setVisibility(View.VISIBLE);
+                dynamicdetailsList.setVisibility(View.GONE);
+                zanRecy.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
         }
     }
 

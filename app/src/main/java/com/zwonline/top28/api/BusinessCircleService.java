@@ -9,6 +9,7 @@ import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicShareBean;
 import com.zwonline.top28.bean.InforNoticeBean;
 import com.zwonline.top28.bean.InforNoticeCleanBean;
+import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RealBean;
@@ -446,7 +447,7 @@ public interface BusinessCircleService {
             @Field("show_telephone") String show_telephone,
             @Field("show_weixin") String show_weixin,
             @Field("show_address") String show_address
-            );
+    );
 
     //微信分享名片更新用户
     @FormUrlEncoded
@@ -477,4 +478,24 @@ public interface BusinessCircleService {
             @Field("sign") String sign
     );
 
+    /**
+     * 获取动态点赞列表接口
+     *
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @param app_version
+     * @param page
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/BusinessCircle/getLikeList")
+    Flowable<LikeListBean> getLikeList(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign,
+            @Field("moment_id") String moment_id,
+            @Field("app_version") String app_version,
+            @Field("page") int page
+    );
 }
