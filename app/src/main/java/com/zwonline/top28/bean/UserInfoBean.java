@@ -73,6 +73,12 @@ public class UserInfoBean {
             public CompanyBean company;
             public String inspect_count;
             public String is_default_password;
+            public String weixin;
+            public String email;
+            public String telephone;
+            public String job_cate_pid;
+
+
             public static class CompanyBean {
                 /**
                  * id : 1
@@ -99,7 +105,6 @@ public class UserInfoBean {
              * token : 39728f29edc3d9d87c683c5c23f2e5e1
              * account : 6
              */
-
             public String token;
             public String account;
         }

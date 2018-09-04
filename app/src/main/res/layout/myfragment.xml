@@ -343,7 +343,8 @@
                     android:layout_weight="1"
                     android:drawablePadding="10dp"
                     android:gravity="center"
-                    android:text=""
+                    android:drawableTop="@mipmap/wode_qygl"
+                    android:text="我的主页"
                     android:textColor="#383838"
                     android:textSize="14sp" />
 

@@ -2,18 +2,15 @@ package com.zwonline.top28.presenter;
 
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
+
 import com.zwonline.top28.base.BasePresenter;
-import com.zwonline.top28.R;
 import com.zwonline.top28.bean.HeadBean;
 import com.zwonline.top28.bean.IndustryBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.model.SettingModel;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
-import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.view.ISettingView;
 
 import java.io.File;
@@ -100,15 +97,14 @@ public class Settingpresenter extends BasePresenter<ISettingView> {
             e.printStackTrace();
         }
     }
-
     //设置个人资料
     public void mSetting(final Context context, String nick_name,
                          String real_name, int sex, String age,
                          String address, String favourite_industry,
-                         String bio) {
+                         String bio,String weixin,String email,String telephone,String job_cate_pid) {
         try {
             Flowable<SettingBean> flowable = settingModel.mSetingModel(context, nick_name, real_name, sex, age, address,
-                    favourite_industry, bio);
+                    favourite_industry, bio,weixin,email,telephone,job_cate_pid);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<SettingBean>() {

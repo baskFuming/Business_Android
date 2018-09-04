@@ -68,7 +68,6 @@ import butterknife.OnClick;
  * @date 2017/12/19
  */
 public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter> implements ISettingView {
-
     private SharedPreferencesUtils sp;
     private int sex;
     private List<IndustryBean.DataBean> industry_list;
@@ -80,7 +79,6 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     protected Uri tempUri;
     private static final int CROP_SMALL_PICTURE = 2;
     private BufferedOutputStream bos;
-    //    private String data;
     private String sex_cn;
     private int count;
     private LinearLayout amendPicture;
@@ -95,14 +93,31 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     private ImageViewPlus imagHead;
     private RelativeLayout back;
     private Uri mUritempFile;
+    private EditText ed_my_phone;
+    private EditText ed_my_wxin;
+    private EditText ed_my_email;
+    private EditText ed_my_job;
+    private String phone;
 
+    private String wexinnumber;
+    private String sharerealname;
+    private String sharephone;
+    private String shareaddress;
+    private String sharemail;
+    private String share_job_cate_pid;
     @Override
     protected void init() {
         initView();
         sp = SharedPreferencesUtils.getUtil();
         presenter.mUserInfo(this);
 //        String avatar = (String) sp.getKey(SettingActivity.this, "avatar", "");
-        Intent intent = getIntent();
+        Intent intent = new Intent();
+        intent.putExtra("weixin",wexinnumber);
+        intent.putExtra("realname",sharerealname);
+        intent.putExtra("phone",sharephone);
+        intent.putExtra("email",sharemail);
+        intent.putExtra("job_cate_pid",share_job_cate_pid);
+        intent.putExtra("residence",shareaddress);
         presenter.mIndustryBean(getApplicationContext());
         industry_list = new ArrayList<>();
         spinnerDate();
@@ -121,6 +136,11 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         bio = (EditText) findViewById(R.id.bio);
         imagHead = (ImageViewPlus) findViewById(R.id.imag_head);
         back = (RelativeLayout) findViewById(R.id.back);
+        ed_my_phone = (EditText) findViewById(R.id.my_phone);
+        ed_my_wxin = (EditText) findViewById(R.id.my_wxin);
+        ed_my_email = (EditText) findViewById(R.id.my_email);
+        ed_my_job = (EditText) findViewById(R.id.my_job);
+
     }
 
     @Override
@@ -157,8 +177,6 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             }
         });
     }
-
-
     /**
      * 上传头像
      *
@@ -172,10 +190,9 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             Toast.makeText(getApplicationContext(), R.string.update_fail_tip, Toast.LENGTH_SHORT).show();
         }
     }
-
     //获取用户信息
     @Override
-    public void showUserInfo(UserInfoBean userInfoBean) {
+    public void showUserInfo(final UserInfoBean userInfoBean) {
         if (userInfoBean.status == 1) {
             boolean b = userInfoBean == null;
             boolean b1 = age == null;
@@ -185,11 +202,20 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             age.setText(userInfoBean.data.user.age);
             nickName.setText(userInfoBean.data.user.nickname);
             bio.setText(userInfoBean.data.user.signature);
-            realName.setText(userInfoBean.data.user.realname);
-            address.setText(userInfoBean.data.user.residence);
             presenter.mIndustryBean(this);
             sex_cn = userInfoBean.data.user.sex;
-            String catePid = userInfoBean.data.user.cate_pid;
+            sharephone = userInfoBean.data.user.phone;
+            ed_my_phone.setText(sharephone);
+            wexinnumber = userInfoBean.data.user.weixin;
+            ed_my_wxin.setText(wexinnumber);
+            sharerealname = userInfoBean.data.user.realname;
+            realName.setText(sharerealname);
+            shareaddress = userInfoBean.data.user.residence;
+            address.setText(shareaddress);
+            ed_my_job.setText(userInfoBean.data.user.job_cate_pid);
+            sharemail = userInfoBean.data.user.email;
+            ed_my_email.setText(sharemail);
+            share_job_cate_pid = userInfoBean.data.user.cate_pid;//您所从事的行业
             if (StringUtil.isNotEmpty(sex_cn)) {
                 spinnerSex.setSelection(Integer.parseInt(sex_cn) - 1, true);
             } else {
@@ -215,7 +241,6 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             ToastUtils.showToast(getApplicationContext(), userInfoBean.msg);
         }
     }
-
     @Override
     public void onErro() {
         if (this == null) {
@@ -231,7 +256,6 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         ArrayAdapter<CharSequence> sexAdapter = ArrayAdapter.createFromResource(this, R.array.sex, android.R.layout.simple_spinner_item);
         sexAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSex.setAdapter(sexAdapter);
-
         spinnerSex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -258,8 +282,11 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                 break;
             case R.id.btn_setting:
                 presenter.mSetting(getApplicationContext(), nickName.getText().toString().trim(),
-                        realName.getText().toString().trim(), sex, age.getText().toString().trim(),
-                        address.getText().toString().trim(), cate_id, bio.getText().toString().trim());
+                        realName.getText().toString().trim(), sex,age.getText().toString().trim(),
+                        address.getText().toString().trim(), cate_id, bio.getText().toString().trim(),ed_my_wxin.getText().toString().trim(),
+                        ed_my_email.getText().toString().trim(),ed_my_phone.getText().toString().trim(),
+                        ed_my_job.getText().toString().trim()
+                );
                 RecordUserBehavior.recordUserBehavior(SettingActivity.this, BizConstant.EDITED_PROFILE);
 
 //                Intent intent = new Intent();

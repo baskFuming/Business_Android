@@ -696,6 +696,7 @@
         </activity>
         <activity android:name=".activity.PageDetailsActivity"></activity>
         <activity android:name=".activity.InformationNoticeActivity"></activity>
+        <activity android:name=".activity.DataAnalysisActivity"></activity>
     </application>
 
 </manifest>

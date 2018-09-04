@@ -30,22 +30,17 @@ import com.zwonline.top28.bean.MyExamine;
 import com.zwonline.top28.bean.MyFansBean;
 import com.zwonline.top28.bean.MyIssueBean;
 import com.zwonline.top28.bean.MyShareBean;
-import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PaymentBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
 import com.zwonline.top28.bean.PicturBean;
-import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.ProjectBean;
 import com.zwonline.top28.bean.QrCodeBean;
 import com.zwonline.top28.bean.RecommendBean;
-import com.zwonline.top28.bean.RefotPasswordBean;
 import com.zwonline.top28.bean.RegisterBean;
-import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShareDataBean;
 import com.zwonline.top28.bean.ShortMessage;
 import com.zwonline.top28.bean.UnclaimedMbpCountBean;
-import com.zwonline.top28.bean.UserBean;
 import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.bean.VideoBean;
 import com.zwonline.top28.bean.WithdrawRecordBean;
@@ -629,6 +624,7 @@ public interface ApiService {
     @POST("App/Member/upload_image")
     Flowable<PicturBean> iPicture(@Part List<MultipartBody.Part> partList);
 
+
     //修改资料
     @FormUrlEncoded
     @POST("/App/Member/update_profile")
@@ -642,7 +638,11 @@ public interface ApiService {
             @Field("age") String age,
             @Field("address") String address,
             @Field("favourite_industry") String favourite_industry,
-            @Field("bio") String bio
+            @Field("bio") String bio,
+            @Field("weixin") String weixin,
+            @Field("email") String email,
+            @Field("telephone") String telephone,
+            @Field("job_cate_pid") String job_cate_pid
     );
 
     //行业分类

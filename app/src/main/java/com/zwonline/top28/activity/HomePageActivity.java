@@ -1,8 +1,11 @@
 package com.zwonline.top28.activity;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
@@ -12,12 +15,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.util.Util;
@@ -33,6 +43,11 @@ import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.friend.constant.VerifyType;
 import com.netease.nimlib.sdk.friend.model.AddFriendData;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.MyIssueAdapter;
 import com.zwonline.top28.adapter.MyShareAdapter;
@@ -43,12 +58,16 @@ import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.MyIssueBean;
 import com.zwonline.top28.bean.MyShareBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
+import com.zwonline.top28.bean.RealBean;
+import com.zwonline.top28.bean.SettingBean;
+import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.fragment.ArticleFragmnet;
 import com.zwonline.top28.fragment.OthersHomePageFrag;
 import com.zwonline.top28.nim.DemoCache;
 import com.zwonline.top28.presenter.HomePagePresenter;
+import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.NavigationBar;
 import com.zwonline.top28.utils.NomalActionBarView;
@@ -56,7 +75,9 @@ import com.zwonline.top28.utils.ScrollLinearLayoutManager;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
+import com.zwonline.top28.utils.WXUtils;
 import com.zwonline.top28.utils.click.AntiShake;
+import com.zwonline.top28.utils.popwindow.MySharePopwindow;
 import com.zwonline.top28.view.IHomePageActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -139,10 +160,34 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private String image_user;
     private ImageView daV_user;
     private ImageView user_dev;
+    private MySharePopwindow myQrCodePopwindow;
+
+    private IWXAPI api;
+    private String realname;
+    private String phone;
+    private String wexinnumber;
+    private String address;
+    private String telphone;
+    private String email;
+    private String job_cate_pid;
+
+
+    private String sharerealname;
+    private String sharephone;
+    private String sharewexinnumber;
+    private String shareaddress;
+    private String sharemail;
+    private String share_job_cate_pid;
+
+    private String type = "1";
+    private String type2 = "2";
+
     @Override
     protected void init() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
         NavigationBar.Statedata(this);
+        api = WXAPIFactory.createWXAPI(this, "wx979d60eb9639eb65");
         initData();//查找控件
         sp = SharedPreferencesUtils.getUtil();
         islogins = (boolean) sp.getKey(this, "islogin", false);
@@ -150,28 +195,30 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         sex = intent.getStringExtra("sex");
+
+        sharewexinnumber = intent.getStringExtra("weixin");
+        Log.e("weixin", sharewexinnumber + "");
+
+        sharerealname = intent.getStringExtra("realname");
+        sharephone = intent.getStringExtra("phone");
+        sharemail = intent.getStringExtra("email");
+        share_job_cate_pid = intent.getStringExtra("job_cate_pid");
+        shareaddress = intent.getStringExtra("residence");
         updateUserOperatorView();
         iList = new ArrayList<>();
         sList = new ArrayList<>();
         presenter.mMyissue(this, uid, page);
         presenter.mMyShare(this, uid, page);
-        presenter.mExamineChat(this, uid);//检查是否聊过天
-//        sp.insertKey(HomePageActivity.this, "userID", uid);
-//        if (islogins) {
-        presenter.mCompany(this, uid);
-//        } else {
-//            Toast.makeText(this, R.string.user_not_login, Treoast.LENGTH_SHORT).show();
-//            startActivity(new Intent(HomePageActivity.this, WithoutCodeLoginActivity.class));
-//            overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-//        }
+        presenter.mUserInfo(this);
         messageFollow = new MessageFollow();
-//        is_attention = intent.getStringExtra("is_attention");
         issueRecyclerViewData();
         shareRecyclerViewData();
-
-
         initView();
-
+//        presenter.mSetting(this, "",
+//                sharerealname, "","",
+//                shareaddress, "", "",sharewexinnumber,
+//                sharemail,sharephone,
+//                share_job_cate_pid);
     }
 
     /**
@@ -190,6 +237,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         issueAdapter = new MyIssueAdapter(iList, this);
         articleRecy.setAdapter(issueAdapter);
     }
+
     /**
      * xRecyclerview分享文章配置
      */
@@ -206,6 +254,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         shareAdapter = new MyShareAdapter(sList, HomePageActivity.this);
         shareRecy.setAdapter(shareAdapter);
     }
+
     //查找控件
     private void initData() {
         text_singnature = (TextView) findViewById(R.id.text_sing_nature);
@@ -217,7 +266,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         toolbar = (NomalActionBarView) findViewById(R.id.toolbar);
 
         daV_user = (ImageView) findViewById(R.id.dv_user);
-
         View view = toolbar.getChildAt(0);
         //未折叠显示
         img_left_befor = view.findViewById(R.id.img_left_befor);
@@ -280,11 +328,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     //获取用户信息
     @Override
     public void showCompany(PersonageInfoBean companyBean) {
-
-
         image_user = companyBean.data.avatar;
         name_Singnature = companyBean.data.signature;
-
         is_attention = companyBean.data.did_i_follow;
         follow_count = companyBean.data.follow_count;
         fans_count = companyBean.data.fans_count;
@@ -298,7 +343,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         if (companyBean.data.identity_type.equals(BizConstant.IS_FAIL)) {
             daV_user.setVisibility(View.GONE);
             user_dev.setVisibility(View.GONE);
-        }else {
+        } else {
             user_dev.setVisibility(View.VISIBLE);
             daV_user.setVisibility(View.VISIBLE);
         }
@@ -307,19 +352,26 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         } else {
             text_singnature.setText("这个人很懒，什么也没有留下!");
         }
-//        if (companyBean.data.did_i_follow.equals("0")) {
-//            guanzhu.setText(R.string.common_btn_add_focus);
-//        } else if (companyBean.data.did_i_follow.equals("1")) {
-//            guanzhu.setText(R.string.common_followed);
-//        }
-        if (companyBean.data.did_i_follow.equals("0")) {
-            add_foll_befor.setText(R.string.common_btn_add_focus);
-            add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
-            add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
-        } else if (companyBean.data.did_i_follow.equals("1")) {
-            add_foll_befor.setText(R.string.common_followed);
-            add_foll_befor.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-            add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+        if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
+            if (companyBean.data.did_i_follow.equals("0")) {
+                add_foll_befor.setText(R.string.common_btn_add_focus);
+                add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+            } else if (companyBean.data.did_i_follow.equals("1")) {
+                add_foll_befor.setText(R.string.common_followed);
+                add_foll_befor.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
+                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+            }
+        } else {
+            if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !companyBean.data.did_i_follow.equals("0")) {
+                add_foll_befor.setText("分享");
+                add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+            } else if (!companyBean.data.did_i_follow.equals("1")) {
+                add_foll_befor.setText("分享");
+                add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+            }
         }
 
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
@@ -334,8 +386,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.mCompany(this, uid);
         presenter.mExamineChat(this, uid);//检查是否聊过天
+        presenter.mCompany(this, uid);
     }
 
     @Override
@@ -381,10 +433,9 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                 break;
             case R.id.add_foll_befor:
                 if (islogins) {
-                    if (!uid.equals(userUid)) {
+                    if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
                         if (add_foll_befor.getText().toString().equals(getString(R.string.common_btn_add_focus))) {
                             presenter.mAttention(HomePageActivity.this, "follow", uid, BizConstant.ALREADY_FAVORITE);
-//                            presenter.mAttention(this,"follow",String.valueOf(uid),messageFollow.followNum);
                             add_foll_befor.setText(R.string.common_followed);
                             currentNum = Integer.parseInt((String) sp.getKey(HomePageActivity.this, "follow", "0")) + 1;
                             messageFollow.followNum = currentNum + "";
@@ -402,41 +453,66 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
                             add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
                         }
+                    } else if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && uid.equals(userUid)) {
+                        if (add_foll_befor.getText().toString().equals("分享")) {
+                            add_foll_befor.setText("分享");
+                            add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                            add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+                            myQrCodePopwindow = new MySharePopwindow(this);
+                            myQrCodePopwindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                            View contentView = myQrCodePopwindow.getContentView();
+                            //查找  布局控件
+                            TextView editTextshare = contentView.findViewById(R.id.textshare);
+                            final EditText editTextname = contentView.findViewById(R.id.share_name);
+                            final EditText editTextphone = contentView.findViewById(R.id.share_phone);
+                            final EditText editTexewxin = contentView.findViewById(R.id.share_wxin);
+                            final EditText editTextaddress = contentView.findViewById(R.id.share_address);
+
+                            if (StringUtil.isNotEmpty(nickname)) {
+                                editTextname.setText(nickname);
+                            }
+//                            if (StringUtil.isNotEmpty(phone)) {
+//                                editTextphone.setText(phone);
+//                            }
+//                            if (StringUtil.isNotEmpty(wexinnumber)) {
+//                                editTexewxin.setText(wexinnumber);
+//                            }
+//                            if (StringUtil.isNotEmpty(address)) {
+//                                editTextaddress.setText(address);
+//                            }
+                            final CheckBox checkBox1 = contentView.findViewById(R.id.share_check1);
+                            checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    if (checkBox1.isChecked()) {
+                                        editTextname.setText(realname);
+                                    } else {
+                                        editTextname.setText(nickname);
+                                    }
+                                }
+                            });
+                            final CheckBox checkBox2 = contentView.findViewById(R.id.share_check2);
+                            final CheckBox checkBox3 = contentView.findViewById(R.id.share_check3);
+                            final CheckBox checkBox4 = contentView.findViewById(R.id.share_check4);
+                            editTextshare.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (checkBox1.isChecked()) {
+                                        presenter.cardShareWXin(HomePageActivity.this, realname, "", "", "");
+                                    }
+                                    shareWXin(uid);
+                                }
+                            });
+                        }
                     } else {
                         ToastUtils.showToast(HomePageActivity.this, "自己不能关注自己！");
                     }
                 } else {
                     ToastUtils.showToast(this, "请先登录！");
                 }
-
-//                if (islogins) {
-//                    if (!uid.equals(userUid)){
-//                        if (add_foll_befor.getText().toString().equals(getString(R.string.common_btn_add_focus))) {
-//                            showNormalDialogs();
-//                            add_foll_befor.setText(R.string.common_followed);
-//                            currentNum = Integer.parseInt((String) sp.getKey(HomePageActivity.this, "follow", "0")) + 1;
-//                            messageFollow.followNum = currentNum + "";
-//                            sp.insertKey(HomePageActivity.this, "follow", messageFollow.followNum);
-//                            EventBus.getDefault().post(messageFollow);
-//                        } else {
-//                            presenter.mUnAttention(this, "un_follow", uid);
-//                            add_foll_befor.setText(R.string.common_btn_add_focus);
-//                            currentNum = Integer.parseInt((String) sp.getKey(HomePageActivity.this, "follow", "0")) - 1;
-//                            messageFollow.followNum = currentNum + "";
-//                            sp.insertKey(HomePageActivity.this, "follow", messageFollow.followNum);
-//                            EventBus.getDefault().post(messageFollow);
-//                        }
-//                    }else {
-//                        ToastUtils.showToast(HomePageActivity.this,"自己不能关注自己！");
-//                    }
-//                } else {
-//                    ToastUtils.showToast(this, "请先登录！");
-//                }
-
                 break;
             case R.id.chat:
                 if (islogins) {
-
                     if (chatted.equals("1")) {
                         presenter.mOnLineChat(this, uid);
                         // 打开单聊界面
@@ -469,19 +545,87 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         }
     }
 
+    //调起微信小程序
+    private void shareWXin(String uid) {
+        WXMiniProgramObject miniProgramObject = new WXMiniProgramObject();
+        miniProgramObject.webpageUrl = "https://toutiao.28.com";//小程序网页地址
+        miniProgramObject.userName = "gh_2c9958d8253e";//小程序ID
+        miniProgramObject.path = "pages/article/article?user_id=" + uid;//小程序路径
+        // 0.正式版本  1.测试版本  2.测试版本
+        miniProgramObject.miniprogramType = WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW;
+        WXMediaMessage mediaMessage = new WXMediaMessage(miniProgramObject);
+        mediaMessage.title = "商机头条";//自定标题
+        mediaMessage.description = "商机头条和会赚钱的人在一起";//描述
+        Bitmap bitmap = BitmapFactory.decodeResource(HomePageActivity.this.getResources(), R.mipmap.ic_launcher);
+        Bitmap sendBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+        bitmap.recycle();
+        mediaMessage.thumbData = WXUtils.bmpToByteArray(sendBitmap, true);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        req.message = mediaMessage;
+        api.sendReq(req);
+    }
+
 
     @Override
     public void showHomeDetails(HomeDetailsBean homeDetails) {
-
-        if (homeDetails.data.is_attention.equals("0")) {
-            add_foll_befor.setText(R.string.common_btn_add_focus);
-            add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
-            add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
-        } else if (homeDetails.data.is_attention.equals("1")) {
-            add_foll_befor.setText(R.string.common_followed);
-            add_foll_befor.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-            add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+        if (!uid.equals(userUid)) {
+            if (homeDetails.data.is_attention.equals("0")) {
+                add_foll_befor.setText(R.string.common_btn_add_focus);
+                add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+            } else if (homeDetails.data.is_attention.equals("1")) {
+                add_foll_befor.setText(R.string.common_followed);
+                add_foll_befor.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
+                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+            }
+        } else {
+            if (!homeDetails.data.is_attention.equals("0")) {
+                add_foll_befor.setText("分享");
+                add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+            } else if (!homeDetails.data.is_attention.equals("0")) {
+                add_foll_befor.setText("分享");
+                add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+            }
         }
+
+    }
+
+    /**
+     * 判断是否是好友
+     *
+     * @param isFriend
+     */
+    private void updateAlias(final boolean isFriend) {
+        if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
+            if (isFriend) {
+                add_fr_befor.setText("聊天");
+            } else {
+                add_fr_befor.setText("+好友");
+            }
+        } else {
+            add_fr_befor.setText("数据分析");
+        }
+        add_fr_befor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
+                    if (isFriend) {
+                        NimUIKit.startP2PSession(HomePageActivity.this, uid);
+                    } else {
+                        onAddFriendByVerify(uid);
+                    }
+                } else {
+                    startActivity(new Intent(HomePageActivity.this, DataAnalysisActivity.class));
+
+                }
+
+            }
+        });
+
     }
 
     /**
@@ -681,9 +825,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         if (HomePageActivity.this != null) {
             return;
         }
-//        ToastUtils.showToast(this, getString(R.string.data_loading));
-//        shareNo.setVisibility(View.VISIBLE);
-//        shareRecy.setVisibility(View.GONE);
     }
 
     //检查是否聊过天
@@ -696,6 +837,36 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     //在线聊天
     @Override
     public void showOnLineChat(AmountPointsBean amountPointsBean) {
+
+    }
+
+    @Override
+    public void showShareWXin(RealBean realbean) {
+
+    }
+
+    //获取微信分享的内容
+    @Override
+    public void showUserInfo(UserInfoBean userInfoBean) {
+        if (userInfoBean.status == 1) {
+            realname = userInfoBean.data.user.realname;
+            phone = userInfoBean.data.user.phone;
+            telphone = userInfoBean.data.user.telephone;
+            wexinnumber = userInfoBean.data.user.weixin;
+            address = userInfoBean.data.user.residence;
+        } else {
+            ToastUtil.showToast(this, "请重新登录");
+        }
+
+    }
+
+    @Override
+    public void isSucceed() {
+
+    }
+
+    @Override
+    public void showSetting(SettingBean headBean) {
 
     }
 
@@ -788,14 +959,12 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (verticalOffset == 0) {
                     NavigationBar.Statedata(HomePageActivity.this);
-
                     //张开状态
                     add_befor.setVisibility(View.VISIBLE);
                     add_after.setVisibility(View.GONE);
                     StatusBarUtil.setColor(HomePageActivity.this, getResources().getColor(R.color.black), 0);
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
                 } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
-
                     //收缩状态
                     add_befor.setVisibility(View.GONE);
                     add_after.setVisibility(View.VISIBLE);
@@ -923,28 +1092,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         }
     }
 
-    /**
-     * 判断是否是好友
-     * @param isFriend
-     */
-    private void updateAlias(final boolean isFriend) {
-        if (isFriend) {
-            add_fr_befor.setText("聊天");
-        } else {
-            add_fr_befor.setText("+好友");
-        }
-        add_fr_befor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFriend) {
-                    NimUIKit.startP2PSession(HomePageActivity.this, uid);
-                } else {
-                    onAddFriendByVerify(uid);
-                }
-            }
-        });
-
-    }
 
     /**
      * 通过验证方式添加好友
@@ -978,6 +1125,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
 
     /**
      * 添加好友
+     *
      * @param account
      * @param msg
      * @param addDirectly
@@ -1025,4 +1173,9 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                 });
 
     }
+
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
+
 }

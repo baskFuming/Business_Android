@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+ <RelativeLayout
+     android:layout_gravity="center_vertical"
+     android:layout_centerInParent="true"
+     android:layout_width="wrap_content"
+     android:layout_height="420dp">
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:focusable="false"
+        android:layout_width="310dp"
+        android:layout_height="379dp"
+        android:background="@drawable/rectangle_shape_gay"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="119dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="分享的主页内容"
+            android:textColor="#ff1d1d1d"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="221dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="勾选的信息会显示在您分享的名片页上"
+            android:textColor="#ffbdbdbd"
+            android:textSize="13sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="16dp">
+
+            <EditText
+                android:id="@+id/share_name"
+                android:cursorVisible="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@null"
+                android:hint="请输入姓名"
+                android:textColor="#ffd1d1d1"
+                android:textSize="15sp" />
+
+            <CheckBox
+                android:id="@+id/share_check1"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null" />
+            />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="278dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="#fff5f5f5" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="16dp">
+            <EditText
+                android:id="@+id/share_phone"
+                android:cursorVisible="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@null"
+                android:hint="请输入电话"
+                android:textColor="#ffd1d1d1"
+                android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/share_check2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="278dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="#fff5f5f5" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="16dp">
+
+            <EditText
+                android:id="@+id/share_wxin"
+                android:cursorVisible="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@null"
+                android:hint="请输入微信号"
+                android:textColor="#ffd1d1d1"
+                android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/share_check3"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="278dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="#fff5f5f5" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="16dp">
+            <EditText
+                android:id="@+id/share_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@null"
+                android:hint="请输入地址"
+                android:cursorVisible="false"
+                android:textColor="#ffd1d1d1"
+                android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/share_check4"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textshare"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="62dp"
+            android:background="@drawable/my_share_self"
+            android:gravity="center"
+            android:text="分享"
+            android:textColor="#ffffffff"
+            android:textSize="15sp" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/share_image"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/close" />
+ </RelativeLayout>
+</RelativeLayout>

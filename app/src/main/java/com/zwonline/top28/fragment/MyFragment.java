@@ -23,6 +23,7 @@ import com.zwonline.top28.activity.ArticleActivity;
 import com.zwonline.top28.activity.EnsurePoolActivity;
 import com.zwonline.top28.activity.FansActivity;
 import com.zwonline.top28.activity.HashrateActivity;
+import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.activity.InsuranceActivity;
 import com.zwonline.top28.activity.MyAttentionsActivity;
 import com.zwonline.top28.activity.MyCollectActivity;
@@ -344,7 +345,11 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 startActivity(transmit_intent);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
-            case R.id.video://发布视频
+            case R.id.video://我的主页
+                Intent myintent  = new Intent(getActivity(), HomePageActivity.class);
+                myintent.putExtra("uid",uid);
+                startActivity(myintent);
+                getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.wallet://钱包
                 RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.CLICK_WALLET);
@@ -428,6 +433,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.notice_img://公告
+
                 startActivity(new Intent(getActivity(), AnnouncementActivity.class));
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;

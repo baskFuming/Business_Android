@@ -50,6 +50,9 @@ import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.MyIssueBean;
 import com.zwonline.top28.bean.MyShareBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
+import com.zwonline.top28.bean.RealBean;
+import com.zwonline.top28.bean.SettingBean;
+import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.fragment.ArticleFragmnet;
@@ -692,6 +695,26 @@ public class PageDetailsActivity extends UI implements IHomePageActivity{
     //在线聊天
     @Override
     public void showOnLineChat(AmountPointsBean amountPointsBean) {
+
+    }
+
+    @Override
+    public void showShareWXin(RealBean realbean) {
+
+    }
+
+    @Override
+    public void showUserInfo(UserInfoBean userInfoBean) {
+
+    }
+
+    @Override
+    public void isSucceed() {
+
+    }
+
+    @Override
+    public void showSetting(SettingBean headBean) {
 
     }
 

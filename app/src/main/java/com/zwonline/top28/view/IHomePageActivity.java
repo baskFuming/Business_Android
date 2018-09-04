@@ -6,7 +6,9 @@ import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.MyIssueBean;
 import com.zwonline.top28.bean.MyShareBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
-import com.zwonline.top28.bean.UserBean;
+import com.zwonline.top28.bean.RealBean;
+import com.zwonline.top28.bean.SettingBean;
+import com.zwonline.top28.bean.UserInfoBean;
 
 import java.util.List;
 
@@ -86,4 +88,23 @@ public interface IHomePageActivity {
      * @param amountPointsBean
      */
     void showOnLineChat(AmountPointsBean amountPointsBean);
+
+    /**
+     * 分享微信名片
+     *
+     * @param realbean
+     */
+    void showShareWXin(RealBean realbean);
+
+    /**
+     * 分享微信名片内容
+     *
+     * @param userInfoBean
+     */
+    void showUserInfo(UserInfoBean userInfoBean);
+    /**
+     * 判断用户保存是否成功
+     */
+    void isSucceed();
+    void showSetting(SettingBean headBean);//保存用户信息
 }

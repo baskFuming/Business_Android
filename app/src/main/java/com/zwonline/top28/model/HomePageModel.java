@@ -15,8 +15,10 @@ import com.zwonline.top28.bean.InforNoticeCleanBean;
 import com.zwonline.top28.bean.MyIssueBean;
 import com.zwonline.top28.bean.MyShareBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
+import com.zwonline.top28.bean.RealBean;
+import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.TipBean;
-import com.zwonline.top28.bean.UserBean;
+import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
@@ -217,4 +219,75 @@ public class HomePageModel {
                 .markNotificationRead(String.valueOf(timestamp), token, sign, versionName, page);
         return flowable;
     }
+
+    //微信分享名片
+    public Flowable<RealBean> shareWxin(Context context, String show_realname, String show_telephone, String show_weixin, String show_address) throws IOException {
+        String versionName = LanguageUitils.getVersionName(context);
+        sp = SharedPreferencesUtils.getUtil();
+        String token = (String) sp.getKey(context, "dialog", "");
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("token", token);
+        map.put("app_version", versionName);
+        map.put("show_realname", show_realname);
+        map.put("show_telephone", show_telephone);
+        map.put("show_weixin", show_weixin);
+        map.put("show_address", show_address);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<RealBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .sjPageCallback(String.valueOf(timestamp), token, sign, versionName, show_realname,
+                        show_telephone,show_weixin,show_address);
+        return flowable;
+    }
+    //微信名片更新  weixin email telephone job_cate_pid
+    public Flowable<SettingBean> mSetingModel(Context context, String nick_name,
+                                              String real_name, int sex, String age,
+                                              String address, String favourite_industry,
+                                              String bio, String weixin, String email, String telephone, String job_cate_pid) throws IOException {
+
+        sp = SharedPreferencesUtils.getUtil();
+        String token = (String) sp.getKey(context, "dialog", "");
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("nick_name", nick_name);
+        map.put("real_name", real_name);
+        map.put("sex", String.valueOf(sex));
+        map.put("age", String.valueOf(age));
+        map.put("address", address);
+        map.put("favourite_industry", String.valueOf(favourite_industry));
+        map.put("bio", bio);
+        map.put("weixin", weixin);
+        map.put("email", email);
+        map.put("telephone", telephone);
+        map.put("job_cate_pid", job_cate_pid);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<SettingBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .iSetting(String.valueOf(timestamp), token, sign, nick_name, real_name, sex, age, address, favourite_industry, bio
+                        ,weixin,email,telephone,job_cate_pid);
+        return flowable;
+    }
+
+    //个人信息
+    public Flowable<UserInfoBean> UserInfo(Context context) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        String token = (String) sp.getKey(context, "dialog", "");
+        long timestamp = new Date().getTime() / 1000;//获取时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("token", token);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<UserInfoBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .iUserInfo(String.valueOf(timestamp),token, sign);
+        return flowable;
+    }
+
 }

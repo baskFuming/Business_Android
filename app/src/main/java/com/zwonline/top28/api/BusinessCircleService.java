@@ -11,11 +11,13 @@ import com.zwonline.top28.bean.InforNoticeBean;
 import com.zwonline.top28.bean.InforNoticeCleanBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
+import com.zwonline.top28.bean.RealBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
 import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
 import com.zwonline.top28.bean.TipBean;
+import com.zwonline.top28.bean.UserInfoBean;
 
 import java.util.List;
 
@@ -418,4 +420,61 @@ public interface BusinessCircleService {
             @Field("app_version") String app_version,
             @Field("page") int page
     );
+
+
+    /**
+     * 微信分享名片
+     *
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @param app_version
+     * @param show_realname
+     * @param show_telephone
+     * @param show_weixin
+     * @param show_address
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Member/sjPageCallback")
+    Flowable<RealBean> sjPageCallback(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign,
+            @Field("app_version") String app_version,
+            @Field("show_realname") String show_realname,
+            @Field("show_telephone") String show_telephone,
+            @Field("show_weixin") String show_weixin,
+            @Field("show_address") String show_address
+            );
+
+    //微信分享名片更新用户
+    @FormUrlEncoded
+    @POST("/App/Member/update_profile")
+    Flowable<SettingBean> iSetting(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign,
+            @Field("nick_name") String nick_name,
+            @Field("real_name") String real_name,
+            @Field("sex") int sex,
+            @Field("age") String age,
+            @Field("address") String address,
+            @Field("favourite_industry") String favourite_industry,
+            @Field("bio") String bio,
+            @Field("weixin") String weixin,
+            @Field("email") String email,
+            @Field("telephone") String telephone,
+            @Field("job_cate_pid") String job_cate_pid
+    );
+
+    //获取个人信息
+    @FormUrlEncoded
+    @POST("/App/Member/user_info")
+    Flowable<UserInfoBean> iUserInfo(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
+
 }

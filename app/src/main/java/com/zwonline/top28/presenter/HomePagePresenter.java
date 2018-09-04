@@ -11,7 +11,9 @@ import com.zwonline.top28.bean.ExamineChatBean;
 import com.zwonline.top28.bean.MyIssueBean;
 import com.zwonline.top28.bean.MyShareBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
-import com.zwonline.top28.bean.UserBean;
+import com.zwonline.top28.bean.RealBean;
+import com.zwonline.top28.bean.SettingBean;
+import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.model.HomePageModel;
 import com.zwonline.top28.view.IHomePageActivity;
 
@@ -292,7 +294,6 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
                                 }
                             }
                         }
-
                         @Override
                         public void onError(Throwable t) {
                             iHomePageActivity.onErro();
@@ -350,6 +351,99 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
                         @Override
                         public void onError(Throwable t) {
 
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //微信分享名片
+    public void cardShareWXin(Context context,String show_realname,String show_telephone,String show_weixin,String show_address){
+        try {
+            Flowable<RealBean> flowable = homePageModel.shareWxin(context, show_realname,show_telephone,show_weixin,show_address);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<RealBean>() {
+                        @Override
+                        public void onNext(RealBean realBean) {
+                            iHomePageActivity.showShareWXin(realBean);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //设置个人资料
+    public void mSetting(final Context context, String nick_name,
+                         String real_name, int sex, String age,
+                         String address, String favourite_industry,
+                         String bio,String weixin,String email,String telephone,String job_cate_pid) {
+        try {
+            Flowable<SettingBean> flowable = homePageModel.mSetingModel(context, nick_name, real_name, sex, age, address,
+                    favourite_industry, bio,weixin,email,telephone,job_cate_pid);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<SettingBean>() {
+                        @Override
+                        public void onNext(SettingBean headBean) {
+                            if (headBean.status==1){
+                                iHomePageActivity.isSucceed();
+                            }else {
+                                iHomePageActivity.onErro();
+                            }
+                            iHomePageActivity.showSetting(headBean);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //获取用户信息
+    public void mUserInfo(Context context){
+        try {
+            Flowable<UserInfoBean>flowable=homePageModel.UserInfo(context);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<UserInfoBean>() {
+                        @Override
+                        public void onNext(UserInfoBean userInfoBean) {
+                            if (userInfoBean!=null&&userInfoBean.data!=null){
+                                iHomePageActivity.showUserInfo(userInfoBean);
+                            }else {
+                                iHomePageActivity.onErro();
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            iHomePageActivity.onErro();
                         }
 
                         @Override
