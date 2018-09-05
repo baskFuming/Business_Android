@@ -31,6 +31,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.DynamicDetailsActivity;
 import com.zwonline.top28.activity.HomeDetailsActivity;
+import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.adapter.NewContentAdapter;
 import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.AddBankBean;
@@ -50,6 +51,7 @@ import com.zwonline.top28.bean.ShieldUserBean;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.nim.main.NotifyDetailsActivity;
+import com.zwonline.top28.nim.main.fragment.SessionListFragment;
 import com.zwonline.top28.presenter.SendFriendCirclePresenter;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
@@ -64,6 +66,8 @@ import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtilses;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -99,13 +103,15 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
     private int likePosition;
     private int intentPositions;
     private String nickname;
-//    private List<String> comment_list = new ArrayList<>();
+    private String newContnets;
+    private String newComment;
+    //    private List<String> comment_list = new ArrayList<>();
 
     @Override
     protected void init(View view) {
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         sp = SharedPreferencesUtils.getUtil();
-//        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
         uid = (String) sp.getKey(getActivity(), "uid", "");
         nickname = (String) sp.getKey(getActivity(), "nickname", "");
@@ -115,6 +121,16 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
         presenter.MomentLists(getActivity(), page, "", "", "");
         presenter.GetMyNotificationCount(getActivity());
         recyclerViewData();
+    }
+
+    private static final String PAGE_NAME_KEY = "PAGE_NAME_KEY";
+
+    public static NewContentFragment getInstance(String pageName) {
+        Bundle args = new Bundle();
+        args.putString(PAGE_NAME_KEY, pageName);
+        NewContentFragment pageFragment = new NewContentFragment();
+        pageFragment.setArguments(args);
+        return pageFragment;
     }
 
     /**
@@ -187,7 +203,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
                 intent.putExtra("type", newContentList.get(intentPositions).type);
                 intent.putExtra("did_i_follow", newContentList.get(intentPositions).did_i_follow);
                 intent.putExtra("did_i_like", newContentList.get(intentPositions).did_i_like);
-
+                intent.putExtra("isComment", BizConstant.NEW);
                 //判断type类型
                 if (newContentList.get(intentPositions).type.equals(BizConstant.ALREADY_FAVORITE)) {
                     if (StringUtil.isNotEmpty(newContentList.get(intentPositions).content)) {//判断动态是否有内容
@@ -534,14 +550,16 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
     public void showGetMyNotificationCount(AttentionBean attentionBean) {
 
         MessageFollow messageFollow = new MessageFollow();
-        if (attentionBean.status==1){
+        if (attentionBean.status == 1) {
             messageFollow.notifyCount = attentionBean.data.unread_count;
             EventBus.getDefault().post(messageFollow);
+
         }
     }
 
     /**
      * 点赞列表
+     *
      * @param likeList
      */
     @Override
@@ -596,18 +614,38 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
                 adapter.notifyDataSetChanged();
             }
 //            if (resultCode == 100) {
+//                ToastUtils.showToast(getActivity(),"1");
 //                //发表完动态刷新
-//                presenter.MomentList(getActivity(), page, "", "", "");
+////                presenter.MomentList(getActivity(), 1, "", "", "");
 //            }
         }
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageFollow event) {
+        newContnets = event.newContnet;
+        newComment = event.newComment;
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-//        presenter.MomentList(getActivity(), page, "", "");
+        if (StringUtil.isNotEmpty(newContnets) && newContnets.equals(BizConstant.IS_SUC)) {
+            presenter.MomentList(getActivity(), 1, "", "", "");
+        }
+        if (StringUtil.isNotEmpty(newComment)) {
+            NewContentBean.DataBean.CommentsExcerptBean bean = new NewContentBean.DataBean.CommentsExcerptBean();
+            bean.content = newComment;
+            bean.user_id = uid;
+            bean.nickname = nickname;
+            if (newContentList.get(intentPositions).comments_excerpt != null) {
+                newContentList.get(intentPositions).comments_excerpt.add(bean);
+            }
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -810,7 +848,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(EventBus.getDefault().isRegistered(this)) {
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }

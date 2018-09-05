@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -62,6 +63,8 @@ import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtilses;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +111,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
     private SharedPreferences jame;
     private RelativeLayout noDynamic;
     private TextView daVRecommend;
+    private String nickname;
 
     @Override
     protected void init(View view) {
@@ -116,12 +120,14 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
         dlist = new ArrayList<>();
         attentionList = new ArrayList<>();
         sp = SharedPreferencesUtils.getUtil();
+        EventBus.getDefault().register(this);
         //创建一个文件用来储存app的开启次数状态
         jame = getActivity().getSharedPreferences("jame", 0);
         //这个文件里面的布尔常量名，和它的初始状态，状态为是，则触发下面的方法
         isFirst = jame.getBoolean("isFirst", true);
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
         uid = (String) sp.getKey(getActivity(), "uid", "");
+        nickname = (String) sp.getKey(getActivity(), "nickname", "");
         newContentList = new ArrayList<>();
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         if (islogins) {
@@ -132,6 +138,15 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
         recyclerViewData();
     }
 
+    private static final String PAGE_NAME_KEY = "PAGE_NAME_KEY";
+
+    public static AttentionCotentFragment getInstance(String pageName) {
+        Bundle args = new Bundle();
+        args.putString(PAGE_NAME_KEY, pageName);
+        AttentionCotentFragment pageFragment = new AttentionCotentFragment();
+        pageFragment.setArguments(args);
+        return pageFragment;
+    }
 
     /**
      *
@@ -327,6 +342,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
                 intent.putExtra("type", newContentList.get(intentPositions).type);
                 intent.putExtra("did_i_follow", newContentList.get(intentPositions).did_i_follow);
                 intent.putExtra("did_i_like", newContentList.get(intentPositions).did_i_like);
+                intent.putExtra("isComment", BizConstant.ATTENTION);
                 //判断type类型
                 if (newContentList.get(intentPositions).type.equals(BizConstant.ALREADY_FAVORITE)) {
                     if (StringUtil.isNotEmpty(newContentList.get(intentPositions).content)) {//判断动态是否有内容
@@ -764,6 +780,21 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
 //            }
         }
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageFollow event) {
+        String newContnets = event.attentionComment;
+        if (StringUtil.isNotEmpty(newContnets)) {
+            NewContentBean.DataBean.CommentsExcerptBean bean = new NewContentBean.DataBean.CommentsExcerptBean();
+            bean.content = newContnets;
+            bean.user_id = uid;
+            bean.nickname = nickname;
+            if (newContentList.get(intentPositions).comments_excerpt != null) {
+                newContentList.get(intentPositions).comments_excerpt.add(bean);
+            }
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

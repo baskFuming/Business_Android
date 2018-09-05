@@ -39,12 +39,14 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         setContentView(setLayoutId());
 //        SysApplication.getInstance().addActivity(this);
         bind = ButterKnife.bind(this);
+//        EventBus.getDefault().register(this);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (presenter != null) {
             presenter.attachView((V) this);
         }
         presenter = getPresenter();
+
         init();
 
     }
@@ -72,6 +74,8 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         if (presenter != null) {
             presenter.detachView();
             bind.unbind();
+        }
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }

@@ -3,15 +3,19 @@ package com.zwonline.top28.fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -25,6 +29,10 @@ import com.jaeger.library.StatusBarUtil;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.msg.SystemMessageObserver;
+import com.netease.nimlib.sdk.msg.SystemMessageService;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.xys.libzxing.zxing.encoding.EncodingUtils;
 import com.zwonline.top28.R;
@@ -34,6 +42,7 @@ import com.zwonline.top28.activity.SearchGroupActivity;
 import com.zwonline.top28.activity.SendFriendActivity;
 import com.zwonline.top28.activity.TransmitActivity;
 import com.zwonline.top28.activity.WithoutCodeLoginActivity;
+import com.zwonline.top28.adapter.InfoFragmentPageAdapter;
 import com.zwonline.top28.base.BaseFragment;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.base.BasesFragment;
@@ -42,11 +51,16 @@ import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.nim.main.activity.GlobalSearchActivity;
 import com.zwonline.top28.nim.main.fragment.ContactListFragment;
 import com.zwonline.top28.nim.main.fragment.SessionListFragment;
+import com.zwonline.top28.nim.main.helper.SystemMessageUnreadManager;
+import com.zwonline.top28.nim.main.reminder.ReminderId;
+import com.zwonline.top28.nim.main.reminder.ReminderItem;
+import com.zwonline.top28.nim.main.reminder.ReminderManager;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
+import com.zwonline.top28.utils.badge.InfoBadgeView;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.popwindow.MyQrCodePopwindow;
 
@@ -60,6 +74,7 @@ import java.util.List;
 import butterknife.OnClick;
 
 import static com.liaoinstan.springview.utils.DensityUtil.dip2px;
+import static com.zwonline.top28.adapter.InfoFragmentPageAdapter.formatBadgeNumber;
 
 /**
  * 商机圈页面
@@ -78,7 +93,14 @@ public class FriendCircleFragment extends BasesFragment {
     private SharedPreferencesUtils sp;
     private boolean isLogin;
     private String uid;
+    private List<String> mPageTitleList = new ArrayList<String>();
+    private List<Integer> mBadgeCountList = new ArrayList<Integer>();
+    private List<InfoBadgeView> mBadgeViews;
+    private InfoFragmentPageAdapter mPagerAdapter;
+    private int count = 0;
+    private int notifyCount;
 
+    @Subscribe
     @Override
     protected void init(View view) {
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
@@ -90,6 +112,7 @@ public class FriendCircleFragment extends BasesFragment {
         EventBus.getDefault().register(this);
         initView(view);
     }
+
 
     @Override
     protected BasePresenter setPresenter() {
@@ -112,30 +135,87 @@ public class FriendCircleFragment extends BasesFragment {
         recommendFragment = new RecommendFragment();
         //将fragment装进列表中
         fList = new ArrayList<>();
-        fList.add(newContentFragment);
-        fList.add(recommendFragment);
-        fList.add(attentionCotentFragment);
-        fList.add(myDynamicFragment);
 
         //将名称加载tab名字列表，正常情况下，我们应该在values/arrays.xml中进行定义然后调用
 
         //设置TabLayout的模式
 //        infoTab.setTabMode(TabLayout.MODE_FIXED);
-        friendTab.setTabMode(TabLayout.MODE_SCROLLABLE);
+//        friendTab.setTabMode(TabLayout.MODE_SCROLLABLE);
         //为TabLayout添加tab名称
-        friendTab.addTab(friendTab.newTab().setText("最新"));
-        friendTab.addTab(friendTab.newTab().setText("推荐"));
-        friendTab.addTab(friendTab.newTab().setText("关注"));
-        friendTab.addTab(friendTab.newTab().setText("我的"));
-
-        FrinedAdapter fAdapter = new FrinedAdapter(getChildFragmentManager());
+//        friendTab.addTab(friendTab.newTab().setText("最新"));
+//        friendTab.addTab(friendTab.newTab().setText("推荐"));
+//        friendTab.addTab(friendTab.newTab().setText("关注"));
+//        friendTab.addTab(friendTab.newTab().setText("我的"));
+        initFragments();
+//        FrinedAdapter fAdapter = new FrinedAdapter(getChildFragmentManager());
+        mPagerAdapter = new InfoFragmentPageAdapter(getActivity(), getActivity().getSupportFragmentManager(), fList, mPageTitleList, mBadgeCountList);
         //viewpager加载adapter
-        friendPager.setAdapter(fAdapter);
+        friendPager.setAdapter(mPagerAdapter);
         //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
         //TabLayout加载viewpager
-        StringUtil.dynamicReflexs(friendTab);
+//        StringUtil.dynamicReflexs(friendTab);
 
         friendTab.setupWithViewPager(friendPager);
+        initBadgeViews();
+        setUpTabBadge();
+    }
+
+    private void initFragments() {
+
+        mPageTitleList.add("最新");
+        mPageTitleList.add("推荐");
+        mPageTitleList.add("关注");
+        mPageTitleList.add("我的");
+        mBadgeCountList.add(0);
+        mBadgeCountList.add(0);
+        mBadgeCountList.add(0);
+        mBadgeCountList.add(count++);
+        fList.add(NewContentFragment.getInstance(mPageTitleList.get(0)));
+        fList.add(RecommendFragment.getInstance(mPageTitleList.get(1)));
+        fList.add(AttentionCotentFragment.getInstance(mPageTitleList.get(2)));
+        fList.add(myDynamicFragment.getInstance(mPageTitleList.get(3)));
+
+    }
+
+    private void initBadgeViews() {
+        if (mBadgeViews == null) {
+            mBadgeViews = new ArrayList<InfoBadgeView>();
+            InfoBadgeView tmp = new InfoBadgeView(getActivity());
+            tmp.setBadgeMargin(40, 6, 0, 0);
+            tmp.setTextSize(10);
+            mBadgeViews.add(tmp);
+        }
+    }
+
+    /**
+     * 设置Tablayout上的标题的角标
+     */
+    private void setUpTabBadge() {
+        // 1. 最简单
+        for (int i = 0; i < fList.size(); i++) {
+            mBadgeViews.get(0).setTargetView(((ViewGroup) friendTab.getChildAt(0)).getChildAt(i));
+            mBadgeViews.get(0).setText(formatBadgeNumber(mBadgeCountList.get(i)));
+        }
+
+        // 2. 最实用
+        for (int i = 0; i < fList.size(); i++) {
+            TabLayout.Tab tab = friendTab.getTabAt(i);
+
+            // 更新Badge前,先remove原来的customView,否则Badge无法更新
+            View customView = tab.getCustomView();
+            if (customView != null) {
+                ViewParent parent = customView.getParent();
+                if (parent != null) {
+                    ((ViewGroup) parent).removeView(customView);
+                }
+            }
+
+            // 更新CustomView
+//            tab.setCustomView(mPagerAdapter.getTabItemView(i));
+        }
+
+        // 需加上以下代码,不然会出现更新Tab角标后,选中的Tab字体颜色不是选中状态的颜色
+//        mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getCustomView().setSelected(true);
     }
 
     //fragment适配器
@@ -233,7 +313,12 @@ public class FriendCircleFragment extends BasesFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageFollow event) {
-//        ToastUtils.showToast(getActivity(), event.notifyCount + "23456789");
+        if (StringUtil.isNotEmpty(event.notifyCount)){
+            notifyCount = Integer.parseInt(event.notifyCount);
+            mBadgeCountList.set(3, notifyCount);
+            setUpTabBadge();
+        }
+
     }
 
     @Override

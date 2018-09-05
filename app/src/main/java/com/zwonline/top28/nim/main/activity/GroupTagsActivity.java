@@ -175,7 +175,6 @@ public class GroupTagsActivity extends BaseActivity<IGroupTagsActivity, GroupTag
                     bean.did_isChecked = BizConstant.IS_SUC;
                     recommendTagsList.add(bean);
                 }
-                ToastUtils.showToast(getApplicationContext(), customList.size() + "");
             }
 
             adapter.notifyDataSetChanged();
@@ -207,9 +206,6 @@ public class GroupTagsActivity extends BaseActivity<IGroupTagsActivity, GroupTag
                                 createList.remove(i);
                                 choose_like.setTextColor(Color.parseColor("#ff2b2b"));
                                 recommendTagsList.get(position).did_isChecked = BizConstant.IS_FAIL;
-//                                Gson gson = new Gson();
-//                                String s = gson.toJson(createList);
-//                                ToastUtils.showToast(getApplicationContext(), s);
                             }
                         }
                     } else {
@@ -227,7 +223,6 @@ public class GroupTagsActivity extends BaseActivity<IGroupTagsActivity, GroupTag
         adapter.deleteSetOnclick(new RecommendTagsAdapter.DeleteInterface() {
             @Override
             public void onclick(View view, int position, CheckBox choose_like) {
-//                ToastUtils.showToast(getApplicationContext(), recommendTagsList.size() + "");
                 for (int i = 0; i < createList.size(); i++) {
                     if (recommendTagsList.get(position).tag_id.equals(createList.get(i).tag_id)) {
                         createList.remove(i);

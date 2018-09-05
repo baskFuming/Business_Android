@@ -615,12 +615,15 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         try {
             if (resultCode == Activity.RESULT_OK) {
 
+            }
+            if (resultCode == Activity.RESULT_OK) {
+
                 String result = data.getExtras().getString("result");
                 if (businessFragment != null) {
                     businessFragment.onActivityResult(requestCode & 0xffff, requestCode, data);
                 }
                 if (myFragment != null) {
-                    businessFragment.onActivityResult(requestCode & 0xffff, requestCode, data);
+                    myFragment.onActivityResult(requestCode & 0xffff, requestCode, data);
                 }
                 if (StringUtil.isNotEmpty(result)) {
                     JSONObject jobj = new JSONObject(result.toString());

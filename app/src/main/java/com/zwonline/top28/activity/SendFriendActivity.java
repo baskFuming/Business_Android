@@ -30,6 +30,7 @@ import com.zwonline.top28.bean.RefotPasswordBean;
 import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
+import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.SendFriendCirclePresenter;
 import com.zwonline.top28.tip.toast.ToastUtil;
@@ -40,6 +41,9 @@ import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.ISendFriendCircleActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,8 +69,12 @@ public class SendFriendActivity extends BaseActivity<ISendFriendCircleActivity, 
     private SharedPreferencesUtils sp;
     private boolean isLogin;
 
+    @Subscribe
     @Override
     protected void init() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         sp = SharedPreferencesUtils.getUtil();
         isLogin = (boolean) sp.getKey(getApplicationContext(), "islogin", false);
         //最好放到 Application oncreate执行
@@ -217,11 +225,15 @@ public class SendFriendActivity extends BaseActivity<ISendFriendCircleActivity, 
      *
      * @param sendNewMomentBean
      */
+    @Subscribe
     @Override
     public void showSendNewMoment(SendNewMomentBean sendNewMomentBean) {
         if (sendNewMomentBean.status == 1) {
             Intent intent = new Intent();
             intent.putExtra("announce", BizConstant.IS_SUC);
+            MessageFollow messageFollow = new MessageFollow();
+            messageFollow.newContnet = BizConstant.IS_SUC;
+            EventBus.getDefault().post(messageFollow);
             setResult(100, intent);
             finish();
             overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
@@ -469,4 +481,11 @@ public class SendFriendActivity extends BaseActivity<ISendFriendCircleActivity, 
         return result.toString();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 }

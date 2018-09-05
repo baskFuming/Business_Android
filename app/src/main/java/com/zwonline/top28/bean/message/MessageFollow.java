@@ -1,5 +1,7 @@
 package com.zwonline.top28.bean.message;
 
+import com.zwonline.top28.bean.RecommendTagsBean;
+
 /**
  * @author YSG
  * @desc
@@ -8,4 +10,10 @@ package com.zwonline.top28.bean.message;
 public class MessageFollow {
     public String followNum;
     public String notifyCount;
+    public int positions;
+    public String newContnet;
+    public String newComment;
+    public String recommendComment;
+    public String attentionComment;
+    public String myComment;
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -58,6 +59,8 @@ import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtilses;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +96,9 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
     private TextView daVRecommend;
     private RelativeLayout infoLayout;
     private TextView infoNum;
+    private String newContnets;
+    private String nickname;
+    private String myComment;
 
     /**
      * 我的动态
@@ -103,8 +109,10 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
     protected void init(View view) {
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         sp = SharedPreferencesUtils.getUtil();
+        EventBus.getDefault().register(this);
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
         userId = (String) sp.getKey(getActivity(), "uid", "");
+        nickname = (String) sp.getKey(getActivity(), "nickname", "");
         newContentList = new ArrayList<>();
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         initView(view);
@@ -132,6 +140,16 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
         attention_v.setVisibility(View.GONE);
         daVRecommend = view.findViewById(R.id.da_v_recommend);//大Vtuijian
         daVRecommend.setVisibility(View.GONE);
+    }
+
+    private static final String PAGE_NAME_KEY = "PAGE_NAME_KEY";
+
+    public static MyDynamicFragment getInstance(String pageName) {
+        Bundle args = new Bundle();
+        args.putString(PAGE_NAME_KEY, pageName);
+        MyDynamicFragment pageFragment = new MyDynamicFragment();
+        pageFragment.setArguments(args);
+        return pageFragment;
     }
 
     /**
@@ -249,8 +267,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
                     intent.putExtra("imageUrls", images);
 
                 }
-
-
+                intent.putExtra("isComment", BizConstant.MY);
                 startActivityForResult(intent, 10);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
@@ -588,18 +605,12 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
         infoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showToast(getActivity(), "消息提醒");
                 startActivity(new Intent(getActivity(), InformationNoticeActivity.class));
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
         });
     }
 
-    /**
-     * 点赞列表
-     *
-     * @param likeList
-     */
     @Override
     public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
 
@@ -641,13 +652,28 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
                 }
                 adapter.notifyDataSetChanged();
             }
-            if (resultCode == 100) {
-                //发表完动态刷新
-                if (StringUtil.isNotEmpty(userId)) {
-                    presenter.MomentList(getActivity(), page, userId, "", "");
-                }
-            }
+//            if (resultCode == 100) {
+//                //发表完动态刷新
+//                if (StringUtil.isNotEmpty(userId)) {
+//                    presenter.MomentList(getActivity(), page, userId, "", "");
+//                }
+//            }
         }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageFollow event) {
+//        NewContentBean.DataBean.CommentsExcerptBean bean = new NewContentBean.DataBean.CommentsExcerptBean();
+//        bean.content = event.comment;
+//        bean.user_id = uid;
+//        bean.nickname = nickname;
+//        ToastUtils.showToast(getActivity(),event.newContnet+"");
+        myComment = event.myComment;
+        newContnets = event.newContnet;
+//        newContentList.get(intentPositions).comments_excerpt.add(bean);
+
+//        adapter.notifyDataSetChanged();
 
     }
 
@@ -656,6 +682,19 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
         super.onResume();
         if (newContentList.size() == 0) {
             presenter.MomentLists(getActivity(), page, userId, "", "");
+        }
+        if (StringUtil.isNotEmpty(newContnets) && newContnets.equals(BizConstant.IS_SUC)) {
+            presenter.MomentList(getActivity(), page, userId, "", "");
+        }
+        if (StringUtil.isNotEmpty(myComment)) {
+            NewContentBean.DataBean.CommentsExcerptBean bean = new NewContentBean.DataBean.CommentsExcerptBean();
+            bean.content = myComment;
+            bean.user_id = uid;
+            bean.nickname = nickname;
+            if (newContentList.get(intentPositions).comments_excerpt != null) {
+                newContentList.get(intentPositions).comments_excerpt.add(bean);
+            }
+            adapter.notifyDataSetChanged();
         }
     }
 

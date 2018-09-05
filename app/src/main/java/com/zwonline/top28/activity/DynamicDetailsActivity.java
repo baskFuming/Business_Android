@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +34,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -38,6 +42,7 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.DynamicDetailsAdapter;
 import com.zwonline.top28.adapter.DynamicDetailsComentAdapter;
 import com.zwonline.top28.adapter.LikeListAdapter;
+import com.zwonline.top28.adapter.ShieldUserAdapter;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
@@ -53,6 +58,7 @@ import com.zwonline.top28.bean.RefotPasswordBean;
 import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
+import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.SendFriendCirclePresenter;
 import com.zwonline.top28.tip.toast.ToastUtil;
@@ -68,6 +74,9 @@ import com.zwonline.top28.utils.popwindow.DynamicCommentPopuWindow;
 import com.zwonline.top28.view.ISendFriendCircleActivity;
 import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtilses;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -136,17 +145,33 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private XRecyclerView zanRecy;
     private TextView commentUnderline;
     private TextView likeUnderline;
+    private List<LikeListBean.DataBean> likeLists;
+    private LikeListAdapter likeListAdapter;
+    private int refreshTime = 0;
+    private int times = 0;
+    private String isComment;
+
+    @Subscribe
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void init() {
+
         sp = SharedPreferencesUtils.getUtil();
         islogins = (boolean) sp.getKey(getApplicationContext(), "islogin", false);
         uid = (String) sp.getKey(getApplicationContext(), "uid", "");
         dynamicList = new ArrayList<>();
         commentList = new ArrayList<>();
+        likeLists = new ArrayList<>();
         Intent intent = getIntent();
-
+        isComment = intent.getStringExtra("isComment");
         author_id = intent.getStringExtra("author_id");
         avatars = intent.getStringExtra("avatars");
         nickname = intent.getStringExtra("nickname");
@@ -165,27 +190,52 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         did_i_follow = intent.getStringExtra("did_i_follow");
         did_i_like = intent.getStringExtra("did_i_like");
         imageUrls = getIntent().getStringArrayExtra("imageUrls");
-//        NewContentBean.DataBean newContentList = (NewContentBean.DataBean) intent.getSerializableExtra("newContent");
-//        ToastUtils.showToast(getApplicationContext(), "时间=" + newContentList.add_date);
         orinal_imageUrls = getIntent().getStringArrayExtra("orinal_imageUrls");
         initView();
 
         presenter.mDynamicComment(this, page, moment_id, "", "", "");
         presenter.mDynamicShare(this, moment_id);
-        presenter.GetLikeList(this, moment_id, page);
+        presenter.GetLikeList(getApplicationContext(), moment_id, page);
 //        headView = getLayoutInflater().inflate(R.layout.dynamicdetails_head, null);
         initListView();
-        dynamicdetailsList.setNestedScrollingEnabled(false);
-        zanRecy.setNestedScrollingEnabled(false);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        dynamicdetailsList.setLayoutManager(linearLayoutManager);
-        adapter = new DynamicDetailsComentAdapter(this, dynamicList);
-//        dynamicdetailsList.addHeaderView(headView, null, false);
-        dynamicdetailsList.setAdapter(adapter);
+
+        recyclerViewData();
     }
 
     /**
-     * 头布局控件查找
+     * xRecyclerview配置
+     */
+    private void recyclerViewData() {
+        dynamicdetailsList.setNestedScrollingEnabled(false);
+        zanRecy.setNestedScrollingEnabled(false);
+        dynamicdetailsList.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        dynamicdetailsList.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
+        dynamicdetailsList.setArrowImageView(R.drawable.iconfont_downgrey);
+        dynamicdetailsList.getDefaultRefreshHeaderView().setRefreshTimeVisible(true);
+        dynamicdetailsList.getDefaultFootView().setLoadingHint(getString(R.string.loading));
+        dynamicdetailsList.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        dynamicdetailsList.setLayoutManager(linearLayoutManager);
+        adapter = new DynamicDetailsComentAdapter(this, dynamicList);
+        dynamicdetailsList.setAdapter(adapter);
+
+        //点赞列表配置
+        zanRecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        zanRecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
+        zanRecy.setArrowImageView(R.drawable.iconfont_downgrey);
+        zanRecy.getDefaultRefreshHeaderView().setRefreshTimeVisible(true);
+        zanRecy.getDefaultFootView().setLoadingHint(getString(R.string.loading));
+        zanRecy.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
+
+        likeListAdapter = new LikeListAdapter(likeLists, this);
+        LinearLayoutManager linearLayoutManagers = new LinearLayoutManager(this);
+        zanRecy.setLayoutManager(linearLayoutManagers);
+        zanRecy.setAdapter(likeListAdapter);
+
+    }
+
+    /**
+     * 控件查找
      */
     private void initListView() {
         ImageViewPlus userHead = (ImageViewPlus) findViewById(R.id.userhead);
@@ -456,6 +506,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             }
         });
 
+        commentLoadMore();
         /**
          * 评论点赞
          */
@@ -474,6 +525,81 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     ToastUtils.showToast(getApplicationContext(), "请先登录");
                 }
 
+            }
+        });
+
+
+    }
+
+    /**
+     * 动态评论上拉刷新下拉加载
+     */
+    public void commentLoadMore() {
+        dynamicdetailsList.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                refreshTime++;
+                times = 0;
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page = 1;
+                        presenter.mDynamicComment(DynamicDetailsActivity.this, page, moment_id, "", "", "");
+                        if (dynamicdetailsList != null)
+                            dynamicdetailsList.refreshComplete();
+                    }
+
+                }, 1000);            //refresh data here
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page++;
+                        presenter.mDynamicComment(DynamicDetailsActivity.this, page, moment_id, "", "", "");
+                        if (dynamicdetailsList != null) {
+                            dynamicdetailsList.loadMoreComplete();
+                        }
+                    }
+                }, 1000);
+                times++;
+            }
+        });
+
+    }
+
+    /**
+     * 点赞列表上拉刷新下拉加载
+     */
+    public void likeLoadMore() {
+        zanRecy.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                refreshTime++;
+                times = 0;
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page = 1;
+                        presenter.GetLikeList(getApplicationContext(), moment_id, page);
+                        if (zanRecy != null)
+                            zanRecy.refreshComplete();
+                    }
+
+                }, 1000);            //refresh data here
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page++;
+                        presenter.GetLikeList(getApplicationContext(), moment_id, page);
+                        if (zanRecy != null) {
+                            zanRecy.loadMoreComplete();
+                        }
+                    }
+                }, 1000);
+                times++;
             }
         });
 
@@ -499,10 +625,23 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      *
      * @param addBankBean
      */
+    @Subscribe
     @Override
     public void showNewComment(AddBankBean addBankBean) {
         if (addBankBean.status == 1) {
             commentList.add(commentContent);
+            MessageFollow messageFollow = new MessageFollow();
+            if (StringUtil.isNotEmpty(isComment) && isComment.equals(BizConstant.NEW)) {
+                messageFollow.newComment = commentContent;
+            } else if (StringUtil.isNotEmpty(isComment) && isComment.equals(BizConstant.RECOMMEND)) {
+                messageFollow.recommendComment = commentContent;
+            } else if (StringUtil.isNotEmpty(isComment) && isComment.equals(BizConstant.ATTENTION)) {
+                messageFollow.attentionComment = commentContent;
+            } else if (StringUtil.isNotEmpty(isComment) && isComment.equals(BizConstant.MY)) {
+                messageFollow.myComment = commentContent;
+            }
+
+            EventBus.getDefault().post(messageFollow);
             int comment = Integer.parseInt(comment_count) + 1;
             commentAcount.setText("评论 " + comment + "条");
             comment_count = comment + "";
@@ -587,6 +726,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             likeAcount.setText("赞 " + (like + 1));
             isLike.setTextColor(Color.parseColor("#ff2b2b"));
             like_count = (like + 1) + "";
+            presenter.GetLikeList(this, moment_id, page);
         } else {
             ToastUtil.showToast(getApplicationContext(), attentionBean.msg);
         }
@@ -693,12 +833,13 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
-        LikeListAdapter likeListAdapter = new LikeListAdapter(likeList, this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        zanRecy.setLayoutManager(linearLayoutManager);
-        zanRecy.setAdapter(likeListAdapter);
-        likeListAdapter.notifyDataSetChanged();
+        if (page == 1) {
+            likeLists.clear();
+        }
+        likeLists.addAll(likeList);
 
+        likeListAdapter.notifyDataSetChanged();
+        likeLoadMore();
     }
 
     /**
@@ -1041,5 +1182,12 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 
 }

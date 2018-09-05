@@ -150,7 +150,7 @@ public class InformationFragment extends BasesFragment {
         initFragments();
         mPagerAdapter = new InfoFragmentPageAdapter(getActivity(), getActivity().getSupportFragmentManager(), fList, mPageTitleList, mBadgeCountList);
         infoPager.setAdapter(mPagerAdapter);
-//        setIndicator(infoTab, 5, 5);
+        setIndicator(infoTab, 5, 5);
         infoTab.setupWithViewPager(infoPager);
         initBadgeViews();
         setUpTabBadge();
@@ -193,8 +193,8 @@ public class InformationFragment extends BasesFragment {
                 .querySystemMessageUnreadCountBlock();
         count = unread;
 
-        mPageTitleList.add("消 息");
-        mPageTitleList.add("好 友");
+        mPageTitleList.add("消息");
+        mPageTitleList.add("好友");
         mBadgeCountList.add(0);
         mBadgeCountList.add(count++);
         fList.add(SessionListFragment.getInstance(mPageTitleList.get(0)));
@@ -211,7 +211,6 @@ public class InformationFragment extends BasesFragment {
         NIMClient.getService(SystemMessageObserver.class)
                 .observeUnreadCountChange(sysMsgUnreadCountChangedObserver, true);
 
-        Log.d("unreadCount=", unreadCount + "");
         ReminderManager.getInstance().registerUnreadNumChangedCallback(new ReminderManager.UnreadNumChangedCallback() {
             @Override
             public void onUnreadNumChanged(ReminderItem item) {
@@ -428,13 +427,6 @@ public class InformationFragment extends BasesFragment {
     @Override
     public void onStart() {
         super.onStart();
-//        infoTab.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                infoTab.setTabMode(TabLayout.MODE_FIXED);
-//                TabUtils.setIndicator(infoTab, 10, 10);
-//            }
-//        });
     }
 
     @Override

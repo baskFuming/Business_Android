@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
+                android:text="打开个角度看哈哈肯定看哈哈肯定好卡好卡啊的机会卡卡的哈客户端看"
                 android:textColor="#7B7B7B"
                 android:textSize="16sp" />
 

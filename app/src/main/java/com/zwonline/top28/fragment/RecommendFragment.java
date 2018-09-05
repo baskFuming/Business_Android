@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -52,6 +53,8 @@ import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtilses;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +92,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
     protected void init(View view) {
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         sp = SharedPreferencesUtils.getUtil();
+        EventBus.getDefault().register(this);
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
         uid = (String) sp.getKey(getActivity(), "uid", "");
         nickname = (String) sp.getKey(getActivity(), "nickname", "");
@@ -98,6 +102,16 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
         presenter.MomentLists(getActivity(), page, "", "", BizConstant.ALREADY_FAVORITE);
         presenter.GetMyNotificationCount(getActivity());
         recyclerViewData();
+    }
+
+    private static final String PAGE_NAME_KEY = "PAGE_NAME_KEY";
+
+    public static RecommendFragment getInstance(String pageName) {
+        Bundle args = new Bundle();
+        args.putString(PAGE_NAME_KEY, pageName);
+        RecommendFragment pageFragment = new RecommendFragment();
+        pageFragment.setArguments(args);
+        return pageFragment;
     }
 
     /**
@@ -194,7 +208,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
                         intent.putExtra("hight", newContentList.get(intentPositions).images_arr.get(0).original_size.height);
                         intent.putExtra("width", newContentList.get(intentPositions).images_arr.get(0).original_size.width);
                     }
-
+                    intent.putExtra("isComment", BizConstant.RECOMMEND);
                     intent.putExtra("orinal_imageUrls", image);
                     intent.putExtra("imageUrls", images);
 
@@ -585,6 +599,21 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
 //            }
         }
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageFollow event) {
+        String newContnets = event.recommendComment;
+        if (StringUtil.isNotEmpty(newContnets)) {
+            NewContentBean.DataBean.CommentsExcerptBean bean = new NewContentBean.DataBean.CommentsExcerptBean();
+            bean.content = newContnets;
+            bean.user_id = uid;
+            bean.nickname = nickname;
+            if (newContentList.get(intentPositions).comments_excerpt != null) {
+                newContentList.get(intentPositions).comments_excerpt.add(bean);
+            }
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

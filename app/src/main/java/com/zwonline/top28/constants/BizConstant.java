@@ -223,4 +223,14 @@ public class BizConstant {
     public static final String PINGBI = "block";
     public static final String UNPINGBI = "unblock";
 
+    /**
+     * 商机圈评论返回EventBus通知
+     */
+    public static final String NEW="1";
+    public static final String RECOMMEND="2";
+    public static final String ATTENTION="3";
+    public static final String MY="4";
+
+
+
 }

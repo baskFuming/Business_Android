@@ -73,7 +73,7 @@ public class ShieldUserActivity extends BaseActivity<ISendFriendCircleActivity, 
         shieldRecy.setArrowImageView(R.drawable.iconfont_downgrey);
         shieldRecy.getDefaultRefreshHeaderView().setRefreshTimeVisible(true);
         shieldRecy.getDefaultFootView().setLoadingHint(getString(R.string.loading));
-        shieldRecy.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
+        shieldRecy.getDefaultFootView().setNoMoreHint( getString(R.string.load_end));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         shieldRecy.setLayoutManager(linearLayoutManager);
