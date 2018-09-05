@@ -7,11 +7,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.RelativeLayout;
 
+import com.jaeger.library.StatusBarUtil;
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.bean.IntegralRecordBean;
 import com.zwonline.top28.fragment.FansListFragment;
+import com.zwonline.top28.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +29,23 @@ public class MyFansesActivity extends BaseActivity {
     @Override
     protected void init() {
         initView();
+
         fansList = new ArrayList<>();
         IntegralRecordBean integralRecordBean = new IntegralRecordBean();
         fansList.add(new IntegralRecordBean("全部粉丝", 1));
         fansList.add(new IntegralRecordBean("已关注", 2));
         fansList.add(new IntegralRecordBean("未关注", 3));
-        fansList.add(new IntegralRecordBean("已沟通", 4));
-        fansList.add(new IntegralRecordBean("未沟通", 5));
+//        fansList.add(new IntegralRecordBean("已沟通", 4));
+//        fansList.add(new IntegralRecordBean("未沟通", 5));
         for (int i = 0; i < fansList.size(); i++) {
             fansTab.newTab().setText(fansList.get(i).record_name);
         }
+        fansTab.setTabMode(TabLayout.MODE_FIXED);
         MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fansList);
         fansView.setAdapter(myFragmentAdapter);
         fansTab.setupWithViewPager(fansView);
         fansTab.setTabsFromPagerAdapter(myFragmentAdapter);
+        StringUtil.dynamicReflexs(fansTab);
     }
 
     @Override

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ import com.zwonline.top28.bean.ExamineChatBean;
 import com.zwonline.top28.bean.MyFansBean;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.utils.MyYAnimation;
 import com.zwonline.top28.utils.popwindow.AttentionPopwindow;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
@@ -72,6 +74,7 @@ public class MyFansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private String fansAttentions = "1";
     private String isFollow;
     private Button attentiones;
+    private AttentionMomentInterface attentionMomentInterface;
 
     public MyFansListAdapter(List<MyFansBean.DataBean> list, Context context) {
         this.list = list;
@@ -80,7 +83,7 @@ public class MyFansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.myattentions_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.myfanss_item, parent, false);
         final MyViewHolder holder = new MyViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,29 +103,20 @@ public class MyFansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         Glide.with(context).load(list.get(position).avatars).apply(options).into(myViewHolder.avatars);
         myViewHolder.nickname.setText(list.get(position).nickname);
         myViewHolder.signature.setText(list.get(position).signature);
-
-
+        String did_i_follow = list.get(position).did_i_follow;
+        if (did_i_follow.equals(BizConstant.IS_FAIL)) {
+            myViewHolder.consult.setText(R.string.common_btn_add_focus);
+            myViewHolder.consult.setTextColor(Color.parseColor("#FF2B2B"));
+            myViewHolder.consult.setBackgroundResource(R.drawable.guanzhu_shape);
+        } else {
+            myViewHolder.consult.setText(R.string.common_followed);
+            myViewHolder.consult.setTextColor(Color.parseColor("#DDDDDD"));
+            myViewHolder.consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+        }
         myViewHolder.consult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                positions = position;
-                String did_i_follow = list.get(position).did_i_follow;
-                mPopwindow = new AttentionPopwindow((Activity) context, itemsOnClick, position, fansAttentions, isFollow);
-                mPopwindow.showAtLocation(v,
-                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-                View contentView = mPopwindow.getContentView();
-                attentiones = (Button) contentView.findViewById(R.id.cancel_attention);
-                if (did_i_follow.equals("0") && StringUtil.isNotEmpty(did_i_follow)) {
-//            myViewHolder.guanzhu.setText(R.string.common_btn_add_focus);
-                    isFollow = context.getString(R.string.common_btn_add_focus);
-                    attentiones.setText(context.getString(R.string.common_btn_add_focus));
-                } else {
-//            myViewHolder.guanzhu.setText(R.string.common_followed);
-                    isFollow = context.getString(R.string.cancel_attention);
-                    attentiones.setText(context.getString(R.string.cancel_attention));
-                }
-                uid = list.get(position).uid;
-
+                attentionMomentInterface.onclick(v, position);
             }
         });
 
@@ -134,16 +128,15 @@ public class MyFansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView nickname, signature;
+        TextView nickname, signature, consult;
         ImageViewPlus avatars;
-        RelativeLayout consult;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             nickname = (TextView) itemView.findViewById(R.id.nickname);
             signature = (TextView) itemView.findViewById(R.id.signature);
             avatars = (ImageViewPlus) itemView.findViewById(R.id.avatars);
-            consult = (RelativeLayout) itemView.findViewById(R.id.consult);
+            consult = (TextView) itemView.findViewById(R.id.attentions);
         }
     }
 
@@ -155,6 +148,17 @@ public class MyFansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public interface OnClickItemListener {
         void setOnItemClick(int position, View view);
+    }
+
+    public void attentionMomentSetOnclick(AttentionMomentInterface attentionMomentInterface) {
+        this.attentionMomentInterface = attentionMomentInterface;
+    }
+
+    /**
+     * 按钮点击事件对应的接口
+     */
+    public interface AttentionMomentInterface {
+        public void onclick(View view, int position);
     }
 
     private MyViewHolder myViewHolder;
@@ -232,7 +236,7 @@ public class MyFansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         String token = (String) sp.getKey(context, "dialog", "");
                         String unFollow = attentiones.getText().toString();
                         if (StringUtil.isNotEmpty(unFollow) && unFollow.equals(R.string.common_btn_add_focus)) {
-                            showNormalDialogFollow(String.valueOf(timestamp), token,attentiones ,positions);
+                            showNormalDialogFollow(String.valueOf(timestamp), token, attentiones, positions);
                             notifyDataSetChanged();
                         } else if (StringUtil.isNotEmpty(unFollow) && unFollow.equals(R.string.cancel_attention)) {
                             //currentNum = Integer.parseInt((String) sp.getKey(context, "follow", "0")) + 1;
@@ -352,7 +356,7 @@ public class MyFansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
     //关注的请求
-    public void mAnttent(String timestamp, String token,int position) throws IOException {
+    public void mAnttent(String timestamp, String token, int position) throws IOException {
         messageFollow.followNum = currentNum + "";
         sp.insertKey(context, "follow", messageFollow.followNum);
         EventBus.getDefault().post(messageFollow);
@@ -403,7 +407,7 @@ public class MyFansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            mAnttent(timestamp, token,position);
+                            mAnttent(timestamp, token, position);
                             consult.setText(R.string.cancel_attention);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -415,7 +419,7 @@ public class MyFansListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            mAnttent(timestamp, token,position);
+                            mAnttent(timestamp, token, position);
                             consult.setText(R.string.cancel_attention);
                         } catch (IOException e) {
                             e.printStackTrace();

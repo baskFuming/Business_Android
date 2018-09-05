@@ -28,7 +28,6 @@
                 android:id="@+id/nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/project_ai_solicit_sys"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
@@ -40,11 +39,10 @@
                 android:layout_marginTop="10dp"
                 android:lines="1"
                 android:singleLine="true"
-                android:text="@string/project_a_simple"
                 android:textColor="#888888"
                 android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/consult"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
@@ -53,6 +51,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rectangle_shape_red"
                 android:text="@string/common_btn_add_focus"
+                android:gravity="center"
                 android:layout_marginLeft="5dp"
                 android:textColor="@color/red"
                 android:textSize="16sp" />

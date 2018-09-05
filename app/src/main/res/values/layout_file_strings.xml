@@ -124,7 +124,7 @@
     <!--search info start-->
 
     <!--fans info start-->
-    <string name="fans_title">粉丝</string>
+    <string name="fans_title">我的粉丝</string>
     <string name="fans_empty_ou">ta还没有粉丝哦</string>
     <!--fans info end-->
 

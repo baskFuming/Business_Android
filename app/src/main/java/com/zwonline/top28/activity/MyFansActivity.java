@@ -12,8 +12,10 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.MyFansAdapter;
 import com.zwonline.top28.base.BaseActivity;
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.MyFansBean;
 import com.zwonline.top28.presenter.MyFansPresenter;
+import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IMyFansActivity;
@@ -40,9 +42,10 @@ public class MyFansActivity extends BaseActivity<IMyFansActivity, MyFansPresente
     private int refreshTime = 0;
     private int times = 0;
     private int page = 1;
-
+    private SharedPreferencesUtils sp;
     @Override
     protected void init() {
+
         initData();
         fList = new ArrayList<>();
         Intent intent = getIntent();
@@ -147,6 +150,16 @@ public class MyFansActivity extends BaseActivity<IMyFansActivity, MyFansPresente
         } else {
             ToastUtils.showToast(this, getString(R.string.load_end));
         }
+    }
+
+    @Override
+    public void showAttention(AttentionBean attentionBean) {
+
+    }
+
+    @Override
+    public void showUnAttention(AttentionBean attentionBean) {
+
     }
 
     /**

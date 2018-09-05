@@ -83,12 +83,12 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         myViewHolder.signature.setText(list.get(position).signature);
         if (list.get(position).did_i_follow.equals("0") && !list.get(position).did_i_follow.equals("")) {
             myViewHolder.consult.setText(R.string.common_btn_add_focus);
-            myViewHolder.consult.setBackgroundResource(R.drawable.btn_ganzhu_red);
-            myViewHolder.consult.setTextColor(Color.parseColor("#FDFDFD"));
+            myViewHolder.consult.setBackgroundResource(R.drawable.guanzhu_shape);
+            myViewHolder.consult.setTextColor(Color.parseColor("#FF2B2B"));
         } else {
             myViewHolder.consult.setText(R.string.common_followed);
-            myViewHolder.consult.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-            myViewHolder.consult.setTextColor(Color.parseColor("#FDFDFD"));
+            myViewHolder.consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            myViewHolder.consult.setTextColor(Color.parseColor("#DDDDDD"));
         }
         //点击关注取消关注
         myViewHolder.consult.setOnClickListener(new View.OnClickListener() {
@@ -102,16 +102,16 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //                        showNormalDialogFollow(String.valueOf(timestamp), token, myViewHolder.consult, position);
                         mAnttent(String.valueOf(timestamp), token, position,BizConstant.ALREADY_FAVORITE);
                         myViewHolder.consult.setText(R.string.common_followed);
-                        myViewHolder.consult.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-                        myViewHolder.consult.setTextColor(Color.parseColor("#FDFDFD"));
+                        myViewHolder.consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+                        myViewHolder.consult.setTextColor(Color.parseColor("#DDDDDD"));
                     } else {
                         myViewHolder.consult.setText(R.string.common_btn_add_focus);
                         //currentNum = Integer.parseInt((String) sp.getKey(context, "follow", "0")) - 1;
                         messageFollow.followNum = currentNum + "";
                         sp.insertKey(context, "follow", messageFollow.followNum);
                         EventBus.getDefault().post(messageFollow);
-                        myViewHolder.consult.setBackgroundResource(R.drawable.btn_ganzhu_red);
-                        myViewHolder.consult.setTextColor(Color.parseColor("#FDFDFD"));
+                        myViewHolder.consult.setBackgroundResource(R.drawable.guanzhu_shape);
+                        myViewHolder.consult.setTextColor(Color.parseColor("#ff2b2b"));
                         Map<String, String> map = new HashMap<>();
                         map.put("timestamp", String.valueOf(timestamp));
                         map.put("type", "un_follow");
@@ -155,7 +155,7 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView nickname, signature, no;
         ImageView avatars;
-        Button consult;
+        TextView consult;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -163,7 +163,7 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             signature = (TextView) itemView.findViewById(R.id.signature);
             avatars = (ImageView) itemView.findViewById(R.id.avatars);
             no = (TextView) itemView.findViewById(R.id.no);
-            consult = (Button) itemView.findViewById(R.id.consult);
+            consult = (TextView) itemView.findViewById(R.id.consult);
         }
     }
 

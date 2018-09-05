@@ -26,6 +26,7 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.MyFansAdapter;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.MyFansBean;
 import com.zwonline.top28.presenter.MyFansPresenter;
 import com.zwonline.top28.utils.LanguageUitils;
@@ -271,6 +272,16 @@ public class FansActivity extends BaseActivity<IMyFansActivity, MyFansPresenter>
 
     @Override
     public void noLoadMore() {
+
+    }
+
+    @Override
+    public void showAttention(AttentionBean attentionBean) {
+
+    }
+
+    @Override
+    public void showUnAttention(AttentionBean attentionBean) {
 
     }
 

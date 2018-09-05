@@ -8,20 +8,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.jaeger.library.StatusBarUtil;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.adapter.MyFansListAdapter;
 import com.zwonline.top28.base.BaseFragment;
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.IntegralRecordBean;
 import com.zwonline.top28.bean.MyFansBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.MyFansPresenter;
+import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IMyFansActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,9 +43,17 @@ public class FansListFragment extends BaseFragment<IMyFansActivity, MyFansPresen
     private int page = 1;
     private int refreshTime = 0;
     private int times = 0;
+    private List<MyFansBean.DataBean> fanList;
+    private int attentionPosition;
+    private SharedPreferencesUtils sp;
+    private String myUid;
 
     @Override
     protected void init(View view) {
+        sp = SharedPreferencesUtils.getUtil();
+        myUid = (String) sp.getKey(getActivity(), "uid", "");
+        fanList = new ArrayList<>();
+        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.white), 0);
         myFansRecy = (XRecyclerView) view.findViewById(R.id.myfans_recy);
         title_relay = (RelativeLayout) view.findViewById(R.id.title_relay);
         title_relay.setVisibility(View.GONE);
@@ -56,6 +69,11 @@ public class FansListFragment extends BaseFragment<IMyFansActivity, MyFansPresen
         myFansRecy.getDefaultRefreshHeaderView().setRefreshTimeVisible(true);
         myFansRecy.getDefaultFootView().setLoadingHint(getString(R.string.loading));
         myFansRecy.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        myFansRecy.setLayoutManager(linearLayoutManager);
+        myFansListAdapter = new MyFansListAdapter(fanList, getActivity());
+        myFansRecy.setAdapter(myFansListAdapter);
+
     }
 
     @Override
@@ -66,16 +84,18 @@ public class FansListFragment extends BaseFragment<IMyFansActivity, MyFansPresen
     //网络请求
     public void initData(int cate_ids) {
         if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 1) {
-            presenter.mMyFans(getActivity());
+            presenter.mMyFanses(getActivity(), "", page);
         } else if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 2) {
-            presenter.mMyFanses(getActivity(), BizConstant.FOLLOW);
+            presenter.mMyFanses(getActivity(), BizConstant.FOLLOW, page);
         } else if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 3) {
-            presenter.mMyFanses(getActivity(), BizConstant.UN_FOLLOW);
-        } else if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 4) {
-            presenter.mMyFanses(getActivity(), BizConstant.CONTACTED);
-        } else if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 5) {
-            presenter.mMyFanses(getActivity(), BizConstant.UN_CONTACTED);
+            presenter.mMyFanses(getActivity(), BizConstant.UN_FOLLOW, page);
         }
+//        else if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 4) {
+//            presenter.mMyFanses(getActivity(), BizConstant.CONTACTED);
+//        } else if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 5) {
+//            presenter.mMyFanses(getActivity(), BizConstant.UN_CONTACTED);
+//        }
+
     }
 
     @Override
@@ -97,27 +117,27 @@ public class FansListFragment extends BaseFragment<IMyFansActivity, MyFansPresen
     //展示数据
     @Override
     public void showMyFansDate(final List<MyFansBean.DataBean> MyFansList) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        myFansRecy.setLayoutManager(linearLayoutManager);
-        myFansListAdapter = new MyFansListAdapter(MyFansList, getActivity());
-        myFansRecy.setAdapter(myFansListAdapter);
+        if (page == 1) {
+            fanList.clear();
+        }
+        fanList.addAll(MyFansList);
         myFansListAdapter.notifyDataSetChanged();
         myFansListAdapter.setOnClickItemListener(new MyFansListAdapter.OnClickItemListener() {
             @Override
             public void setOnItemClick(int position, View view) {
-                int positions = position-1;
-                String uid = MyFansList.get(positions).uid;
+                int positions = position - 1;
+                String uid = fanList.get(positions).uid;
                 if (AntiShake.check(view.getId())) {    //判断是否多次点击
                     return;
                 }
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
-                intent.putExtra("nickname", MyFansList.get(positions).nickname);
-                intent.putExtra("avatars", MyFansList.get(positions).avatars);
+                intent.putExtra("nickname", fanList.get(positions).nickname);
+                intent.putExtra("avatars", fanList.get(positions).avatars);
                 intent.putExtra("uid", uid);
-                intent.putExtra("is_attention", MyFansList.get(positions).did_i_follow);
+                intent.putExtra("is_attention", fanList.get(positions).did_i_follow);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                getActivity().finish();
+//                getActivity().finish();
             }
         });
         myFansRecy.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -128,7 +148,6 @@ public class FansListFragment extends BaseFragment<IMyFansActivity, MyFansPresen
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         initData(cate_ids);
-
                         if (myFansRecy != null)
                             myFansRecy.refreshComplete();
                     }
@@ -153,7 +172,19 @@ public class FansListFragment extends BaseFragment<IMyFansActivity, MyFansPresen
                 times++;
             }
         });
+        myFansListAdapter.attentionMomentSetOnclick(new MyFansListAdapter.AttentionMomentInterface() {
 
+
+            @Override
+            public void onclick(View view, int position) {
+                attentionPosition = position;
+                if (fanList.get(attentionPosition).did_i_follow.equals(BizConstant.IS_FAIL)) {
+                    presenter.mAttentions(getActivity(), "follow", fanList.get(position).uid, "");
+                } else {
+                    presenter.mUnAttention(getActivity(), "un_follow", fanList.get(position).uid);
+                }
+            }
+        });
 
     }
 
@@ -165,5 +196,39 @@ public class FansListFragment extends BaseFragment<IMyFansActivity, MyFansPresen
     @Override
     public void noLoadMore() {
 
+    }
+
+    /**
+     * 关注关注
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showAttention(AttentionBean attentionBean) {
+        if (attentionBean.status == 1) {
+            if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 1) {
+                fanList.get(attentionPosition).did_i_follow = BizConstant.IS_SUC;
+            } else if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 3) {
+                fanList.remove(attentionPosition);
+            }
+            myFansListAdapter.notifyDataSetChanged();
+        }
+        ToastUtils.showToast(getActivity(), attentionBean.msg);
+    }
+
+    /**
+     * 取消关注
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showUnAttention(AttentionBean attentionBean) {
+        if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 1) {
+            fanList.get(attentionPosition).did_i_follow = BizConstant.IS_FAIL;
+        } else if (StringUtil.isNotEmpty(String.valueOf(cate_ids)) && cate_ids == 2) {
+            fanList.remove(attentionPosition);
+        }
+        myFansListAdapter.notifyDataSetChanged();
+        ToastUtils.showToast(getActivity(), attentionBean.msg);
     }
 }

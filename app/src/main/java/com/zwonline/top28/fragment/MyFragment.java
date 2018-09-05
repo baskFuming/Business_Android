@@ -25,9 +25,11 @@ import com.zwonline.top28.activity.FansActivity;
 import com.zwonline.top28.activity.HashrateActivity;
 import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.activity.InsuranceActivity;
+import com.zwonline.top28.activity.MyAttentionActivity;
 import com.zwonline.top28.activity.MyAttentionsActivity;
 import com.zwonline.top28.activity.MyCollectActivity;
 import com.zwonline.top28.activity.MyExamineActivity;
+import com.zwonline.top28.activity.MyFansesActivity;
 import com.zwonline.top28.activity.MyIssueActivity;
 import com.zwonline.top28.activity.MyProjectActivity;
 import com.zwonline.top28.activity.MySettingActivity;
@@ -319,7 +321,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 break;
             case R.id.tv_fensi_linear://我的fans
                 RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.CLICK_PERSONAL_FANS);
-                Intent intent_fen = new Intent(getActivity(), FansActivity.class);
+                Intent intent_fen = new Intent(getActivity(), MyFansesActivity.class);
                 intent_fen.putExtra("uid", uid);
                 intent_fen.putExtra("fans", R.string.center_my_fans);
                 startActivity(intent_fen);

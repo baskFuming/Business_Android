@@ -54,6 +54,7 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private SharedPreferencesUtils sp;
     private MessageFollow messageFollow;
     private int currentNum;
+
     public MyFansAdapter(List<MyFansBean.DataBean> list, Context context) {
         this.list = list;
         this.context = context;
@@ -88,12 +89,12 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         myViewHolder.signature.setText(list.get(position).signature);
         if (list.get(position).did_i_follow.equals("0") && !list.get(position).did_i_follow.equals("")) {
             myViewHolder.guanzhu.setText(R.string.common_btn_add_focus);
-            myViewHolder.guanzhu.setBackgroundResource(R.drawable.btn_ganzhu_red);
-            myViewHolder.guanzhu.setTextColor(Color.parseColor("#FDFDFD"));
+            myViewHolder.guanzhu.setBackgroundResource(R.drawable.guanzhu_shape);
+            myViewHolder.guanzhu.setTextColor(Color.parseColor("#FF2B2B"));
         } else {
             myViewHolder.guanzhu.setText(R.string.common_followed);
-            myViewHolder.guanzhu.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-            myViewHolder.guanzhu.setTextColor(Color.parseColor("#FDFDFD"));
+            myViewHolder.guanzhu.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            myViewHolder.guanzhu.setTextColor(Color.parseColor("#DDDDDD"));
         }
         //点击关注
         myViewHolder.guanzhu.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +106,7 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     SharedPreferencesUtils sp = SharedPreferencesUtils.getUtil();
                     String token = (String) sp.getKey(context, "dialog", "");
                     if (myViewHolder.guanzhu.getText().toString().trim().equals(context.getString(R.string.common_btn_add_focus))) {
-                        showNormalDialogFollow(String.valueOf(timestamp), token, myViewHolder.guanzhu,position);
+                        showNormalDialogFollow(String.valueOf(timestamp), token, myViewHolder.guanzhu, position);
                     } else {
                         myViewHolder.guanzhu.setText(R.string.common_btn_add_focus);
                         currentNum = Integer.parseInt((String) sp.getKey(context, "follow", "0")) - 1;
@@ -113,8 +114,8 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         sp.insertKey(context, "follow", messageFollow.followNum);
                         EventBus.getDefault().post(messageFollow);
 
-                        myViewHolder.guanzhu.setBackgroundResource(R.drawable.btn_ganzhu_red);
-                        myViewHolder.guanzhu.setTextColor(Color.parseColor("#FDFDFD"));
+                        myViewHolder.guanzhu.setBackgroundResource(R.drawable.guanzhu_shape);
+                        myViewHolder.guanzhu.setTextColor(Color.parseColor("#FF2B2B"));
                         Map<String, String> map = new HashMap<>();
                         map.put("timestamp", String.valueOf(timestamp));
                         map.put("type", "un_follow");
@@ -158,7 +159,7 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView nickname, signature, no;
         ImageView avatars;
-        Button guanzhu;
+        TextView guanzhu;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -166,7 +167,7 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             signature = (TextView) itemView.findViewById(R.id.signature);
             avatars = (ImageView) itemView.findViewById(R.id.avatars);
             no = (TextView) itemView.findViewById(R.id.no);
-            guanzhu = (Button) itemView.findViewById(R.id.consult);
+            guanzhu = (TextView) itemView.findViewById(R.id.consult);
         }
     }
 
@@ -181,7 +182,7 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     //关注的请求
-    public void mAnttent(String timestamp, String token,int position) throws IOException {
+    public void mAnttent(String timestamp, String token, int position) throws IOException {
         messageFollow.followNum = currentNum + "";
         sp.insertKey(context, "follow", messageFollow.followNum);
         EventBus.getDefault().post(messageFollow);
@@ -216,7 +217,7 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     //关注是否愿意接听电话
-    private void showNormalDialogFollow(final String timestamp, final String token, final Button consult, final int position) {
+    private void showNormalDialogFollow(final String timestamp, final String token, final TextView consult, final int position) {
         /* @setIcon 设置对话框图标
          * @setTitle 设置对话框标题
          * @setMessage 设置对话框消息提示
@@ -231,10 +232,10 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            mAnttent(timestamp, token,position);
+                            mAnttent(timestamp, token, position);
                             consult.setText(R.string.common_followed);
-                            consult.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-                            consult.setTextColor(Color.parseColor("#FDFDFD"));
+                            consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+                            consult.setTextColor(Color.parseColor("#DDDDDD"));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -245,10 +246,10 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            mAnttent(timestamp, token,position);
+                            mAnttent(timestamp, token, position);
                             consult.setText(R.string.common_followed);
-                            consult.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-                            consult.setTextColor(Color.parseColor("#FDFDFD"));
+                            consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+                            consult.setTextColor(Color.parseColor("#DDDDDD"));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

@@ -1,5 +1,6 @@
 package com.zwonline.top28.view;
 
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.MyFansBean;
 
 import java.util.List;
@@ -30,4 +31,18 @@ public interface IMyFansActivity {
      * 没有更多
      */
     void noLoadMore();
+
+    /**
+     * 关注
+     *
+     * @param attentionBean
+     */
+    void showAttention(AttentionBean attentionBean);
+
+    /**
+     * 取消关注
+     *
+     * @param attentionBean
+     */
+    void showUnAttention(AttentionBean attentionBean);
 }
