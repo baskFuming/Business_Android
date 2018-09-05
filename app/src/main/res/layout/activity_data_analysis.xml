@@ -7,32 +7,32 @@
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".activity.DataAnalysisActivity">
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="45dp"-->
-        <!--android:background="@color/white">-->
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/backnotice"-->
-            <!--android:layout_width="40dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--&gt;-->
-            <!--<ImageView-->
-                <!--android:layout_width="15dp"-->
-                <!--android:layout_height="21dp"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:src="@mipmap/return_black" />-->
-        <!--</RelativeLayout>-->
-        <!--<TextView-->
-            <!--android:id="@+id/tv_balance"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:text="数据分析"-->
-            <!--android:textColor="#ff1d1d1d"-->
-            <!--android:textSize="18sp" />-->
-    <!--</RelativeLayout>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white">
+        <RelativeLayout
+            android:id="@+id/backnotice"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="21dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/return_black" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="数据分析"
+            android:textColor="#ff1d1d1d"
+            android:textSize="18sp" />
+    </RelativeLayout>
     <ProgressBar
         android:id="@+id/progress_Bar"
         style="?android:attr/progressBarStyleHorizontal"

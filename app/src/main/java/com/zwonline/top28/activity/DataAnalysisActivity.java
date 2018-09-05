@@ -1,23 +1,20 @@
 package com.zwonline.top28.activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.zwonline.top28.R;
 import com.zwonline.top28.api.Api;
@@ -38,6 +35,7 @@ public class DataAnalysisActivity extends AppCompatActivity {
     private String token;
     private String url = Api.baseUrl() + "/Members/chart.html";
     private String uid;
+    private RelativeLayout backnotice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +53,13 @@ public class DataAnalysisActivity extends AppCompatActivity {
         synCookies(url, cookieString);
         progressBar = (ProgressBar) findViewById(R.id.progress_Bar);
         datawebView = (WebView) findViewById(R.id.data_web);
+        backnotice = (RelativeLayout)findViewById(R.id.backnotice);
+        backnotice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         webSettingInit();
     }
 
@@ -79,33 +84,15 @@ public class DataAnalysisActivity extends AppCompatActivity {
         datawebView.loadUrl(url, headMap);
         datawebView.setWebViewClient(new WebViewClient(){
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            public boolean shouldOverrideUrlLoading(WebView view, String  url) {
                 if (url.contains("http://top28app//pushToUserHomepage/")) {
                     String path = "http://top28app//pushToUserHomepage/";
                     String uid = url.substring(path.length(), url.length());
-                    Intent intent1 = new Intent(DataAnalysisActivity.this, HomePageActivity.class);
-                    intent1.putExtra("uid", uid);
-                    startActivity(intent1);
+                    Intent intent = new Intent(DataAnalysisActivity.this, HomePageActivity.class);
+                    intent.putExtra("uid", uid);
+                    startActivity(intent);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
-                }
-                //判断用户单击的是那个超连接
-                String tag = "tel";
-                if (url.contains(tag)) {
-                    String mobile = url.substring(url.lastIndexOf("/") + 1);
-                    Intent mIntent = new Intent(Intent.ACTION_CALL);
-                    Uri data = Uri.parse(mobile);
-                    mIntent.setData(data);
-                    //Android6.0以后的动态获取打电话权限
-                    if (ActivityCompat.checkSelfPermission(DataAnalysisActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                        startActivity(mIntent);
-                        //这个超连接,java已经处理了，webview不要处理
-                        return true;
-                    } else {
-                        //申请权限
-                        ActivityCompat.requestPermissions(DataAnalysisActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-                        return true;
-                    }
                 }
                 return false;
             }
@@ -147,4 +134,14 @@ public class DataAnalysisActivity extends AppCompatActivity {
         cookieManager.setCookie(url, cookieString);//cookies是在HttpClient中获得的cookie 如果没有特殊需求，这里只需要将session id以"key=value"形式作为cookie即可
         CookieSyncManager.getInstance().sync();
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //这是一个监听用的按键的方法，keyCode 监听用户的动作，如果是按了返回键，同时Webview要返回的话，WebView执行回退操作，因为mWebView.canGoBack()返回的是一个Boolean类型，所以我们把它返回为true
+        if(keyCode==KeyEvent.KEYCODE_BACK&&datawebView.canGoBack()){
+            datawebView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

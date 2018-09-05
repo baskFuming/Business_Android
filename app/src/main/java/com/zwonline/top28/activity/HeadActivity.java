@@ -278,6 +278,11 @@ public class HeadActivity extends BaseActivity<ISettingView, Settingpresenter> i
     }
 
     @Override
+    public void showIndustrys(List<UserInfoBean.DataBean.UserBean> bbeanList) {
+
+    }
+
+    @Override
     public void showSetting(SettingBean headBean) {
         if(headBean.status==1){
             Toast.makeText(this, R.string.update_suc_tip,Toast.LENGTH_SHORT).show();

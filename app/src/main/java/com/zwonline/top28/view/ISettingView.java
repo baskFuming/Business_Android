@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface ISettingView {
     void showIndustry(List<IndustryBean.DataBean> beanList);//感兴趣的行业
+    void showIndustrys(List<UserInfoBean.DataBean.UserBean> bbeanList);//感兴趣的行业
     void showSetting(SettingBean headBean);//保存用户信息
     void showSettingHead(HeadBean headBean);//上传头像
     void showUserInfo(UserInfoBean userInfoBean);//

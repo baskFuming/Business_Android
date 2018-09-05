@@ -400,7 +400,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     protected int setLayoutId() {
         return R.layout.activity_home_page;
     }
-
     @OnClick({R.id.tv_guanzhu, R.id.tv_fensi, R.id.tv_shoucang, R.id.back, R.id.guanzhu, R.id.chat, R.id.article, R.id.share, R.id.add_foll_befor})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
@@ -473,13 +472,13 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                 editTextname.setText(nickname);
                             }
                             if (StringUtil.isNotEmpty(phone)) {
-                                editTextphone.setText("请输入您的手机号码");
+                                editTextphone.setText("请输入电话");
                             }
                             if (StringUtil.isNotEmpty(wexinnumber)) {
-                                editTexewxin.setText("请输入您的微信号");
+                                editTexewxin.setText("请输入微信号");
                             }
                             if (StringUtil.isNotEmpty(address)) {
-                                editTextaddress.setText("请输入您的地址");
+                                editTextaddress.setText("请输入地址");
                             }
                             final CheckBox checkBoxrealname = contentView.findViewById(R.id.share_check1);
                             checkBoxrealname.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -499,7 +498,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                     if (checkBoxsharephone.isChecked()) {
                                         editTextphone.setText(phone);
                                     } else {
-                                        editTextphone.setText("请输入您的手机号码");
+                                        editTextphone.setText("请输入电话");
                                     }
                                 }
                             });
@@ -510,7 +509,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                     if (checkBoxwxin.isChecked()) {
                                         editTexewxin.setText(wexinnumber);
                                     } else {
-                                        editTexewxin.setText("请输入您的微信号");
+                                        editTexewxin.setText("请输入微信号");
                                     }
                                 }
                             });
@@ -521,7 +520,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                     if (checkBoxaddress.isChecked()) {
                                         editTextaddress.setText(address);
                                     } else {
-                                        editTextaddress.setText("请输入您的地址");
+                                        editTextaddress.setText("请输入地址");
                                     }
                                 }
                             });

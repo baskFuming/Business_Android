@@ -24,7 +24,6 @@ public class ShieldUserPopwindow extends PopupWindow {
         super(context);
         initView(context, itemsOnClick, position);
     }
-
     private void initView(final Activity context, View.OnClickListener itemsOnClick, int position) {
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mView = mInflater.inflate(R.layout.shield_user_pop, null);
@@ -36,7 +35,6 @@ public class ShieldUserPopwindow extends PopupWindow {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //销毁弹出框
                 dismiss();
                 backgroundAlpha(context, 1f);

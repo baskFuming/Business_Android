@@ -18,13 +18,17 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -33,10 +37,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.IndustryAdapter;
+import com.zwonline.top28.adapter.JobAdpater;
+import com.zwonline.top28.adapter.MyJobAdpater;
+import com.zwonline.top28.adapter.SexAdpater;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.HeadBean;
 import com.zwonline.top28.bean.IndustryBean;
 import com.zwonline.top28.bean.SettingBean;
+import com.zwonline.top28.bean.SexBean;
 import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.RecordUserBehavior;
@@ -46,6 +54,8 @@ import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
+import com.zwonline.top28.utils.popwindow.SexSharePopwindow;
+import com.zwonline.top28.utils.popwindow.SharePopwindow;
 import com.zwonline.top28.view.ISettingView;
 
 import java.io.BufferedOutputStream;
@@ -98,13 +108,20 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     private EditText ed_my_email;
     private EditText ed_my_job;
     private String phone;
-
     private String wexinnumber;
     private String sharerealname;
     private String sharephone;
     private String shareaddress;
     private String sharemail;
     private String share_job_cate_pid;
+    private SexSharePopwindow sexSharePopwindow;
+    private List<UserInfoBean.DataBean.UserBean> dlist;
+    private EditText real_sex, real_job,my_jobs;
+    private JobAdpater jobAdpater;
+    private MyJobAdpater myJobAdpater;
+    private SharePopwindow sharePopwindow;
+    private List<SexBean> sexBeanList;
+    private SexAdpater adpater;
     @Override
     protected void init() {
         initView();
@@ -112,18 +129,18 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         presenter.mUserInfo(this);
 //        String avatar = (String) sp.getKey(SettingActivity.this, "avatar", "");
         Intent intent = new Intent();
-        intent.putExtra("weixin",wexinnumber);
-        intent.putExtra("realname",sharerealname);
-        intent.putExtra("phone",sharephone);
-        intent.putExtra("email",sharemail);
-        intent.putExtra("job_cate_pid",share_job_cate_pid);
-        intent.putExtra("residence",shareaddress);
+        intent.putExtra("weixin", wexinnumber);
+        intent.putExtra("realname", sharerealname);
+        intent.putExtra("phone", sharephone);
+        intent.putExtra("email", sharemail);
+        intent.putExtra("job_cate_pid", share_job_cate_pid);
+        intent.putExtra("residence", shareaddress);
         presenter.mIndustryBean(getApplicationContext());
         industry_list = new ArrayList<>();
+        dlist = new ArrayList<>();
+        sexBeanList = new ArrayList<>();
         spinnerDate();
-
     }
-
     private void initView() {
         amendPicture = (LinearLayout) findViewById(R.id.amend_picture);
         spinnerSex = (Spinner) findViewById(R.id.spinner_sex);
@@ -139,8 +156,10 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         ed_my_phone = (EditText) findViewById(R.id.my_phone);
         ed_my_wxin = (EditText) findViewById(R.id.my_wxin);
         ed_my_email = (EditText) findViewById(R.id.my_email);
-        ed_my_job = (EditText) findViewById(R.id.my_job);
-
+//        ed_my_job = (EditText) findViewById(R.id.my_job);
+        real_sex = (EditText) findViewById(R.id.real_sex);
+        real_job = (EditText) findViewById(R.id.real_job);
+        my_jobs = (EditText)findViewById(R.id.my_jobs);
     }
 
     @Override
@@ -157,6 +176,10 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     //展示感兴趣的行业
     @Override
     public void showIndustry(final List<IndustryBean.DataBean> beanList) {
+        if (beanList!=null){
+            industry_list.clear();
+        }
+        industry_list.addAll(beanList);
         IndustryAdapter adapter = new IndustryAdapter(beanList, this);
         if (adapter != null) {
             boolean b = spinnerIndustry == null;
@@ -177,6 +200,12 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             }
         });
     }
+
+    @Override
+    public void showIndustrys(List<UserInfoBean.DataBean.UserBean> bbeanList) {
+
+    }
+
     /**
      * 上传头像
      *
@@ -190,6 +219,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             Toast.makeText(getApplicationContext(), R.string.update_fail_tip, Toast.LENGTH_SHORT).show();
         }
     }
+
     //获取用户信息
     @Override
     public void showUserInfo(final UserInfoBean userInfoBean) {
@@ -198,7 +228,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             boolean b1 = age == null;
             RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male)
                     .error(R.mipmap.no_photo_male);
-            Glide.with(getApplicationContext()).load(userInfoBean.data.user.avatar).apply(options).into(imagHead);
+            Glide.with(this).load(userInfoBean.data.user.avatar).apply(options).into(imagHead);
             age.setText(userInfoBean.data.user.age);
             nickName.setText(userInfoBean.data.user.nickname);
             bio.setText(userInfoBean.data.user.signature);
@@ -212,8 +242,11 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             realName.setText(sharerealname);
             shareaddress = userInfoBean.data.user.residence;
             address.setText(shareaddress);
-            ed_my_job.setText(userInfoBean.data.user.job_cate_pid);
+            real_sex.setText(userInfoBean.data.user.sex_cn);
+//            ed_my_job.setText(userInfoBean.data.user.job_cate_pid);
             sharemail = userInfoBean.data.user.email;
+            my_jobs.setText(userInfoBean.data.user.job_cate_pid);
+            real_job.setText(userInfoBean.data.user.favorite);
             ed_my_email.setText(sharemail);
             share_job_cate_pid = userInfoBean.data.user.cate_pid;//您所从事的行业
             if (StringUtil.isNotEmpty(sex_cn)) {
@@ -241,6 +274,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             ToastUtils.showToast(getApplicationContext(), userInfoBean.msg);
         }
     }
+
     @Override
     public void onErro() {
         if (this == null) {
@@ -271,7 +305,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
 
     }
 
-    @OnClick({R.id.amend_picture, R.id.btn_setting, R.id.back})
+    @OnClick({R.id.amend_picture, R.id.btn_setting, R.id.back, R.id.sex_image_reback, R.id.job_image_reback,R.id.job_my_reback})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -282,13 +316,13 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                 break;
             case R.id.btn_setting:
                 presenter.mSetting(getApplicationContext(), nickName.getText().toString().trim(),
-                        realName.getText().toString().trim(), sex,age.getText().toString().trim(),
-                        address.getText().toString().trim(), cate_id, bio.getText().toString().trim(),ed_my_wxin.getText().toString().trim(),
-                        ed_my_email.getText().toString().trim(),ed_my_phone.getText().toString().trim(),
-                        ed_my_job.getText().toString().trim()
+                        realName.getText().toString().trim(), sex, age.getText().toString().trim(),
+                        address.getText().toString().trim(), cate_id,
+                        bio.getText().toString().trim(), ed_my_wxin.getText().toString().trim(),
+                        ed_my_email.getText().toString().trim(), ed_my_phone.getText().toString().trim(),
+                        my_jobs.getText().toString().trim()
                 );
                 RecordUserBehavior.recordUserBehavior(SettingActivity.this, BizConstant.EDITED_PROFILE);
-
 //                Intent intent = new Intent();
 //                intent.putExtra("nickname", nickName.getText().toString().trim());
 //                intent.putExtra("avatar", data);
@@ -299,6 +333,61 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             case R.id.back:
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                break;
+            case R.id.job_my_reback://从事行业
+                sexSharePopwindow = new SexSharePopwindow(SettingActivity.this);
+                sexSharePopwindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                View contentViewss = sexSharePopwindow.getContentView();
+                RecyclerView recyclerViewss = contentViewss.findViewById(R.id.sex_recy);
+                LinearLayoutManager linearLayoutManagerss = new LinearLayoutManager(this);
+                linearLayoutManagerss.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerViewss.setLayoutManager(linearLayoutManagerss);
+                myJobAdpater = new MyJobAdpater(industry_list, this);
+                recyclerViewss.setAdapter(myJobAdpater);
+                myJobAdpater.setOnClickItemListener(new MyJobAdpater.OnClickItemListener() {
+                    @Override
+                    public void setOnItemClick(View v, int position) {
+                        my_jobs.setText(industry_list.get(position).cate_name);
+                        sharePopwindow.dismiss();
+                    }
+                });
+                break;
+            case R.id.sex_image_reback://请选择性别
+                sharePopwindow = new SharePopwindow(this);
+                sharePopwindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                View contentView = sharePopwindow.getContentView();
+                ListView listView = contentView.findViewById(R.id.sex_recy);
+//                for (int i=0;i<sexBeanList.size();i++){
+                    sexBeanList.add(new SexBean("男士"));
+                    sexBeanList.add(new SexBean("女士"));
+//                }
+                adpater = new SexAdpater(this,sexBeanList);
+                listView.setAdapter(adpater);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        real_sex.setText(sexBeanList.get(position).sex);
+                        sharePopwindow.dismiss();
+                    }
+                });
+                break;
+            case R.id.job_image_reback://感兴趣行业
+                sexSharePopwindow = new SexSharePopwindow(SettingActivity.this);
+                sexSharePopwindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                View contentViews = sexSharePopwindow.getContentView();
+                RecyclerView recyclerViews = contentViews.findViewById(R.id.sex_recy);
+                LinearLayoutManager linearLayoutManagers = new LinearLayoutManager(this);
+                linearLayoutManagers.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerViews.setLayoutManager(linearLayoutManagers);
+                jobAdpater = new JobAdpater(industry_list, this);
+                recyclerViews.setAdapter(jobAdpater);
+                jobAdpater.setOnClickItemListener(new JobAdpater.OnClickItemListener() {
+                    @Override
+                    public void setOnItemClick(View v, int position) {
+                        real_job.setText(industry_list.get(position).cate_name);
+                        sharePopwindow.dismiss();
+                    }
+                });
                 break;
         }
     }
@@ -369,7 +458,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                                 openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
                                 startActivityForResult(openCameraIntent, TAKE_PICTURE);
                             }
-                        }else {
+                        } else {
                             Intent openCameraIntent = new Intent(
                                     MediaStore.ACTION_IMAGE_CAPTURE);
                             tempUri = Uri.fromFile(new File(Environment
