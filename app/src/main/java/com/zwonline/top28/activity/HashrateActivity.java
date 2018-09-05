@@ -54,14 +54,14 @@ import java.util.Map;
 import butterknife.OnClick;
 
 public class HashrateActivity extends BaseActivity {
-
     private RelativeLayout back;
     private RelativeLayout backXx;
     private TextView hashrate;
     private TextView hashrates;
+    private SharedPreferencesUtils sp;
+
     private ProgressBar progressBar;
     private WebView hashrateWeb;
-    private SharedPreferencesUtils sp;
     private String token;
     private String url = Api.baseUrl() + "/Integral/createIntegral";
     private ImageView service;
@@ -76,7 +76,6 @@ public class HashrateActivity extends BaseActivity {
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
         synCookies(url, cookieString);
-
         webSettingInit();
         //客服聊天
         service.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +86,6 @@ public class HashrateActivity extends BaseActivity {
             }
         });
     }
-
     //webview配置
     private void webSettingInit() {
         WebSettings settings = hashrateWeb.getSettings();

@@ -179,8 +179,13 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private String sharemail;
     private String share_job_cate_pid;
 
-    private String type = "1";
-    private String type2 = "2";
+
+
+    private String realnames;
+    private String phones;
+    private String wexinnumbers;
+    private String addresss;
+    private String telphones;
 
     @Override
     protected void init() {
@@ -214,11 +219,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         issueRecyclerViewData();
         shareRecyclerViewData();
         initView();
-//        presenter.mSetting(this, "",
-//                sharerealname, "","",
-//                shareaddress, "", "",sharewexinnumber,
-//                sharemail,sharephone,
-//                share_job_cate_pid);
+        presenter.mSetting(this, "", realname, 0, "", address, "", "", wexinnumber, "", phone, "");
     }
 
     /**
@@ -471,38 +472,91 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             if (StringUtil.isNotEmpty(nickname)) {
                                 editTextname.setText(nickname);
                             }
-//                            if (StringUtil.isNotEmpty(phone)) {
-//                                editTextphone.setText(phone);
-//                            }
-//                            if (StringUtil.isNotEmpty(wexinnumber)) {
-//                                editTexewxin.setText(wexinnumber);
-//                            }
-//                            if (StringUtil.isNotEmpty(address)) {
-//                                editTextaddress.setText(address);
-//                            }
-                            final CheckBox checkBox1 = contentView.findViewById(R.id.share_check1);
-                            checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            if (StringUtil.isNotEmpty(phone)) {
+                                editTextphone.setText("请输入您的手机号码");
+                            }
+                            if (StringUtil.isNotEmpty(wexinnumber)) {
+                                editTexewxin.setText("请输入您的微信号");
+                            }
+                            if (StringUtil.isNotEmpty(address)) {
+                                editTextaddress.setText("请输入您的地址");
+                            }
+                            final CheckBox checkBoxrealname = contentView.findViewById(R.id.share_check1);
+                            checkBoxrealname.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                 @Override
                                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if (checkBox1.isChecked()) {
+                                    if (checkBoxrealname.isChecked()) {
                                         editTextname.setText(realname);
                                     } else {
                                         editTextname.setText(nickname);
                                     }
                                 }
                             });
-                            final CheckBox checkBox2 = contentView.findViewById(R.id.share_check2);
-                            final CheckBox checkBox3 = contentView.findViewById(R.id.share_check3);
-                            final CheckBox checkBox4 = contentView.findViewById(R.id.share_check4);
-                            editTextshare.setOnClickListener(new View.OnClickListener() {
+                            final CheckBox checkBoxsharephone = contentView.findViewById(R.id.share_check2);
+                            checkBoxsharephone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                 @Override
-                                public void onClick(View v) {
-                                    if (checkBox1.isChecked()) {
-                                        presenter.cardShareWXin(HomePageActivity.this, realname, "", "", "");
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    if (checkBoxsharephone.isChecked()) {
+                                        editTextphone.setText(phone);
+                                    } else {
+                                        editTextphone.setText("请输入您的手机号码");
                                     }
-                                    shareWXin(uid);
                                 }
                             });
+                            final CheckBox checkBoxwxin = contentView.findViewById(R.id.share_check3);
+                            checkBoxwxin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    if (checkBoxwxin.isChecked()) {
+                                        editTexewxin.setText(wexinnumber);
+                                    } else {
+                                        editTexewxin.setText("请输入您的微信号");
+                                    }
+                                }
+                            });
+                            final CheckBox checkBoxaddress = contentView.findViewById(R.id.share_check4);
+                            checkBoxaddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    if (checkBoxaddress.isChecked()) {
+                                        editTextaddress.setText(address);
+                                    } else {
+                                        editTextaddress.setText("请输入您的地址");
+                                    }
+                                }
+                            });
+                            editTextshare.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {  // 1 0
+                                    presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), 0, "", editTextaddress.getText().toString().trim(),
+                                            "", "", editTexewxin.getText().toString().trim(),
+                                            "", editTextphone.getText().toString().trim(), "");
+                                    if (checkBoxrealname.isChecked()) {
+                                        realnames = BizConstant.ALREADY_FAVORITE;
+                                    } else {
+                                        realnames = BizConstant.NO_FAVORITE;
+                                    }
+                                    if (checkBoxsharephone.isChecked()) {
+                                        phones = BizConstant.ALREADY_FAVORITE;
+                                    } else {
+                                        phones = BizConstant.NO_FAVORITE;
+                                    }
+                                    if (checkBoxwxin.isChecked()) {
+                                        wexinnumbers = BizConstant.ALREADY_FAVORITE;
+                                    } else {
+                                        wexinnumbers = BizConstant.NO_FAVORITE;
+                                    }
+                                    if (checkBoxaddress.isChecked()) {
+                                        addresss = BizConstant.ALREADY_FAVORITE;
+                                    } else {
+                                        addresss = BizConstant.NO_FAVORITE;
+                                    }
+                                    presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss);
+                                    shareWXin(uid);
+                                }
+
+                            });
+
                         }
                     } else {
                         ToastUtils.showToast(HomePageActivity.this, "自己不能关注自己！");
@@ -619,10 +673,10 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                         onAddFriendByVerify(uid);
                     }
                 } else {
-                    startActivity(new Intent(HomePageActivity.this, DataAnalysisActivity.class));
-
+                    Intent intent = new Intent(HomePageActivity.this, DataAnalysisActivity.class);
+                    intent.putExtra("uid", uid);
+                    startActivity(intent);
                 }
-
             }
         });
 

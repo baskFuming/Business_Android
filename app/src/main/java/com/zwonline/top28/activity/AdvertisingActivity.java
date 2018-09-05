@@ -37,8 +37,6 @@ public class AdvertisingActivity extends BaseActivity {
     private ProgressBar advertisingProgressBar;
     private WebView advertisingWeb;
     private String url;
-
-
     @Override
     protected void init() {
         initView();
@@ -47,7 +45,6 @@ public class AdvertisingActivity extends BaseActivity {
         url = intent.getStringExtra("jump_path");
         initWeb();
     }
-
     private void initWeb() {
 
         WebSettings webSettings = advertisingWeb.getSettings();
