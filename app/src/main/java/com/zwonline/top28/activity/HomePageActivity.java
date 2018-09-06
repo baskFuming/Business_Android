@@ -185,7 +185,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private String wexinnumbers;
     private String addresss;
     private String telphones;
-    private String sex_cn;
+    private String sex_id;
 
     @Override
     protected void init() {
@@ -209,7 +209,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         sharemail = intent.getStringExtra("email");
         share_job_cate_pid = intent.getStringExtra("job_cate_pid");
         shareaddress = intent.getStringExtra("residence");
-        sex_cn = intent.getStringExtra("sex_cn");
+        sex_id = intent.getStringExtra("sex_id");
         updateUserOperatorView();
         iList = new ArrayList<>();
         sList = new ArrayList<>();
@@ -556,7 +556,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                         addresss = BizConstant.NO_FAVORITE;
                                     }
                                     presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss);
-                                    presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), Integer.parseInt(sex_cn), "", editTextaddress.getText().toString().trim(),
+                                    presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), Integer.parseInt(sex_id), "", editTextaddress.getText().toString().trim(),
                                             "", "", editTexewxin.getText().toString().trim(),
                                             "", editTextphone.getText().toString().trim(), "");
                                     shareWXin(uid);
@@ -914,7 +914,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             telphone = userInfoBean.data.user.telephone;
             wexinnumber = userInfoBean.data.user.weixin;
             address = userInfoBean.data.user.residence;
-            sex_cn = userInfoBean.data.user.sex_cn;
+            sex_id = userInfoBean.data.user.sex;
         } else {
             ToastUtil.showToast(this, "请重新登录");
         }
