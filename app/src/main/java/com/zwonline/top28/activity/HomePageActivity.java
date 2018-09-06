@@ -187,6 +187,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private String telphones;
     private String sex_id;
 
+    private String wx_page_type;
+    private int wXinType;
     @Override
     protected void init() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -197,6 +199,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         sp = SharedPreferencesUtils.getUtil();
         islogins = (boolean) sp.getKey(this, "islogin", false);
         userUid = (String) sp.getKey(this, "uid", "");
+        wx_page_type = (String) sp.getKey(this, "wx_page_type", "");
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         sex = intent.getStringExtra("sex");
@@ -605,14 +608,20 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                 break;
         }
     }
+
     //调起微信小程序
-    private void shareWXin(String uid) {
+    private void shareWXin(String uid) { //1.正式版本
+        if (StringUtil.isNotEmpty(wx_page_type)&&wx_page_type.equals(BizConstant.ALREADY_FAVORITE)){
+             wXinType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;
+        }else {
+            wXinType = WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW;
+        }
         WXMiniProgramObject miniProgramObject = new WXMiniProgramObject();
         miniProgramObject.webpageUrl = "https://toutiao.28.com";//小程序网页地址
         miniProgramObject.userName = "gh_2c9958d8253e";//小程序ID
         miniProgramObject.path = "pages/article/article?user_id=" + uid;//小程序路径
-        // 0.正式版本  1.测试版本  2.测试版本
-        miniProgramObject.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;
+        // 0.正式版本  1.测试版本  2.体验版本
+        miniProgramObject.miniprogramType = wXinType;
         WXMediaMessage mediaMessage = new WXMediaMessage(miniProgramObject);
         mediaMessage.title = "商机头条";//自定标题
         mediaMessage.description = "商机头条和会赚钱的人在一起";//描述
@@ -626,7 +635,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         req.message = mediaMessage;
         api.sendReq(req);
     }
-
 
     @Override
     public void showHomeDetails(HomeDetailsBean homeDetails) {

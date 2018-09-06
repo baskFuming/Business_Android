@@ -21,11 +21,9 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.activity.AeosActivity;
 import com.zwonline.top28.activity.ArticleActivity;
 import com.zwonline.top28.activity.EnsurePoolActivity;
-import com.zwonline.top28.activity.FansActivity;
 import com.zwonline.top28.activity.HashrateActivity;
 import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.activity.InsuranceActivity;
-import com.zwonline.top28.activity.MyAttentionActivity;
 import com.zwonline.top28.activity.MyAttentionsActivity;
 import com.zwonline.top28.activity.MyCollectActivity;
 import com.zwonline.top28.activity.MyExamineActivity;
@@ -220,6 +218,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 sp.insertKey(getActivity(), "fans", userInfoBean.data.user.fans);
                 sp.insertKey(getActivity(), "favorite", userInfoBean.data.user.favorite);
                 sp.insertKey(getActivity(),"job_cate_pid",userInfoBean.data.user.job_cate_pid);
+                sp.insertKey(getActivity(),"wx_page_type",userInfoBean.data.user.wx_page_type);
             }
 
             avatar = userInfoBean.data.user.avatar;
