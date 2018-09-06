@@ -141,7 +141,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         intent.putExtra("email", sharemail);
         intent.putExtra("job_cate_pid", share_job_cate_pid);
         intent.putExtra("residence", shareaddress);
-        intent.putExtra("sex_cn", sex_cn);
+        intent.putExtra("sex_id", sex_id);
 //        presenter.mIndustryBean(getApplicationContext());
         industry_list = new ArrayList<>();
         dlist = new ArrayList<>();
