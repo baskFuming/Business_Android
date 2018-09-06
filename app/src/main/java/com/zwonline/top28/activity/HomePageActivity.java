@@ -180,7 +180,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private String share_job_cate_pid;
 
 
-
     private String realnames;
     private String phones;
     private String wexinnumbers;
@@ -400,6 +399,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     protected int setLayoutId() {
         return R.layout.activity_home_page;
     }
+
     @OnClick({R.id.tv_guanzhu, R.id.tv_fensi, R.id.tv_shoucang, R.id.back, R.id.guanzhu, R.id.chat, R.id.article, R.id.share, R.id.add_foll_befor})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
@@ -472,12 +472,18 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                 editTextname.setText(nickname);
                             }
                             if (StringUtil.isNotEmpty(phone)) {
+                                editTextphone.setText(phone);
+                            } else {
                                 editTextphone.setText("请输入电话");
                             }
                             if (StringUtil.isNotEmpty(wexinnumber)) {
+                                editTexewxin.setText(wexinnumber);
+                            } else {
                                 editTexewxin.setText("请输入微信号");
                             }
                             if (StringUtil.isNotEmpty(address)) {
+                                editTextaddress.setText(address);
+                            } else {
                                 editTextaddress.setText("请输入地址");
                             }
                             final CheckBox checkBoxrealname = contentView.findViewById(R.id.share_check1);
@@ -492,44 +498,41 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                 }
                             });
                             final CheckBox checkBoxsharephone = contentView.findViewById(R.id.share_check2);
-                            checkBoxsharephone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if (checkBoxsharephone.isChecked()) {
-                                        editTextphone.setText(phone);
-                                    } else {
-                                        editTextphone.setText("请输入电话");
-                                    }
-                                }
-                            });
+//                            checkBoxsharephone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                                @Override
+//                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                                    if (checkBoxsharephone.isChecked()) {
+//                                        editTextphone.setText(phone);
+//                                    } else {
+//                                        editTextphone.setText("请输入电话");
+//                                    }
+//                                }
+//                            });
                             final CheckBox checkBoxwxin = contentView.findViewById(R.id.share_check3);
-                            checkBoxwxin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if (checkBoxwxin.isChecked()) {
-                                        editTexewxin.setText(wexinnumber);
-                                    } else {
-                                        editTexewxin.setText("请输入微信号");
-                                    }
-                                }
-                            });
+//                            checkBoxwxin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                                @Override
+//                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                                    if (checkBoxwxin.isChecked()) {
+//                                        editTexewxin.setText(wexinnumber);
+//                                    } else {
+//                                        editTexewxin.setText("请输入微信号");
+//                                    }
+//                                }
+//                            });
                             final CheckBox checkBoxaddress = contentView.findViewById(R.id.share_check4);
-                            checkBoxaddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if (checkBoxaddress.isChecked()) {
-                                        editTextaddress.setText(address);
-                                    } else {
-                                        editTextaddress.setText("请输入地址");
-                                    }
-                                }
-                            });
+//                            checkBoxaddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                                @Override
+//                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                                    if (checkBoxaddress.isChecked()) {
+//                                        editTextaddress.setText(address);
+//                                    } else {
+//                                        editTextaddress.setText("请输入地址");
+//                                    }
+//                                }
+//                            });
                             editTextshare.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {  // 1 0
-                                    presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), 0, "", editTextaddress.getText().toString().trim(),
-                                            "", "", editTexewxin.getText().toString().trim(),
-                                            "", editTextphone.getText().toString().trim(), "");
                                     if (checkBoxrealname.isChecked()) {
                                         realnames = BizConstant.ALREADY_FAVORITE;
                                     } else {
@@ -551,6 +554,9 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                         addresss = BizConstant.NO_FAVORITE;
                                     }
                                     presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss);
+                                    presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), 0, "", editTextaddress.getText().toString().trim(),
+                                            "", "", editTexewxin.getText().toString().trim(),
+                                            "", editTextphone.getText().toString().trim(), "");
                                     shareWXin(uid);
                                 }
 
