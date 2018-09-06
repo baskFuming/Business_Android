@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -20,7 +21,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -189,6 +189,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
 
     private String wx_page_type;
     private int wXinType;
+    private CheckBox checkBoxrealname;
 
     @Override
     protected void init() {
@@ -473,9 +474,10 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             final EditText editTextphone = contentView.findViewById(R.id.share_phone);
                             final EditText editTexewxin = contentView.findViewById(R.id.share_wxin);
                             final EditText editTextaddress = contentView.findViewById(R.id.share_address);
-
-                            if (StringUtil.isNotEmpty(nickname)) {
-                                editTextname.setText(nickname);
+                            if (StringUtil.isNotEmpty(realname)) {
+                                editTextname.setText(realname);
+                            } else {
+                                editTextname.setText("请输入姓名");
                             }
                             if (StringUtil.isNotEmpty(phone)) {
                                 editTextphone.setText(phone);
@@ -492,50 +494,16 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             } else {
                                 editTextaddress.setText("请输入地址");
                             }
-                            final CheckBox checkBoxrealname = contentView.findViewById(R.id.share_check1);
-                            checkBoxrealname.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if (checkBoxrealname.isChecked()) {
-                                        editTextname.setText(realname);
-                                    } else {
-                                        editTextname.setText(nickname);
-                                    }
-                                }
-                            });
+//                            if (StringUtil.isNotEmpty(editTextname.getText().toString().trim())) {
+//                                checkBoxrealname.setChecked(true);
+//                            } else {
+//                                checkBoxrealname.setChecked(false);
+//                            }
+
+                            checkBoxrealname = contentView.findViewById(R.id.share_check1);
                             final CheckBox checkBoxsharephone = contentView.findViewById(R.id.share_check2);
-//                            checkBoxsharephone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                                @Override
-//                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                                    if (checkBoxsharephone.isChecked()) {
-//                                        editTextphone.setText(phone);
-//                                    } else {
-//                                        editTextphone.setText("请输入电话");
-//                                    }
-//                                }
-//                            });
                             final CheckBox checkBoxwxin = contentView.findViewById(R.id.share_check3);
-//                            checkBoxwxin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                                @Override
-//                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                                    if (checkBoxwxin.isChecked()) {
-//                                        editTexewxin.setText(wexinnumber);
-//                                    } else {
-//                                        editTexewxin.setText("请输入微信号");
-//                                    }
-//                                }
-//                            });
                             final CheckBox checkBoxaddress = contentView.findViewById(R.id.share_check4);
-//                            checkBoxaddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                                @Override
-//                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                                    if (checkBoxaddress.isChecked()) {
-//                                        editTextaddress.setText(address);
-//                                    } else {
-//                                        editTextaddress.setText("请输入地址");
-//                                    }
-//                                }
-//                            });
                             /**
                              *
                              * 点击分享
@@ -630,10 +598,12 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         // 0.正式版本  1.测试版本  2.体验版本
         miniProgramObject.miniprogramType = wXinType;
         WXMediaMessage mediaMessage = new WXMediaMessage(miniProgramObject);
-        mediaMessage.title = "商机头条";//自定标题
+        mediaMessage.title = realname+"商机链名片";//自定标题
         mediaMessage.description = "商机头条和会赚钱的人在一起";//描述
+        Matrix matrix = new Matrix();
+        matrix.setScale(0.5f, 0.5f);
         Bitmap bitmap = BitmapFactory.decodeResource(HomePageActivity.this.getResources(), R.mipmap.id_card);
-        Bitmap sendBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+        Bitmap sendBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         bitmap.recycle();
         mediaMessage.thumbData = WXUtils.bmpToByteArray(sendBitmap, true);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
@@ -666,7 +636,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                 add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
             }
         }
-
     }
 
     /**

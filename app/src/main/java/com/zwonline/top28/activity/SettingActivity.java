@@ -244,7 +244,6 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     public void showIndustrys(List<UserInfoBean.DataBean.UserBean> bbeanList) {
 
     }
-
     /**
      * 上传头像
      *
