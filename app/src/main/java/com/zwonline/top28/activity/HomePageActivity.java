@@ -185,6 +185,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private String wexinnumbers;
     private String addresss;
     private String telphones;
+    private String sex_cn;
 
     @Override
     protected void init() {
@@ -208,6 +209,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         sharemail = intent.getStringExtra("email");
         share_job_cate_pid = intent.getStringExtra("job_cate_pid");
         shareaddress = intent.getStringExtra("residence");
+        sex_cn = intent.getStringExtra("sex_cn");
         updateUserOperatorView();
         iList = new ArrayList<>();
         sList = new ArrayList<>();
@@ -554,7 +556,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                         addresss = BizConstant.NO_FAVORITE;
                                     }
                                     presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss);
-                                    presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), 0, "", editTextaddress.getText().toString().trim(),
+                                    presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), Integer.parseInt(sex_cn), "", editTextaddress.getText().toString().trim(),
                                             "", "", editTexewxin.getText().toString().trim(),
                                             "", editTextphone.getText().toString().trim(), "");
                                     shareWXin(uid);
@@ -603,7 +605,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                 break;
         }
     }
-
     //调起微信小程序
     private void shareWXin(String uid) {
         WXMiniProgramObject miniProgramObject = new WXMiniProgramObject();
@@ -611,11 +612,11 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         miniProgramObject.userName = "gh_2c9958d8253e";//小程序ID
         miniProgramObject.path = "pages/article/article?user_id=" + uid;//小程序路径
         // 0.正式版本  1.测试版本  2.测试版本
-        miniProgramObject.miniprogramType = WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW;
+        miniProgramObject.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;
         WXMediaMessage mediaMessage = new WXMediaMessage(miniProgramObject);
         mediaMessage.title = "商机头条";//自定标题
         mediaMessage.description = "商机头条和会赚钱的人在一起";//描述
-        Bitmap bitmap = BitmapFactory.decodeResource(HomePageActivity.this.getResources(), R.mipmap.ic_launcher);
+        Bitmap bitmap = BitmapFactory.decodeResource(HomePageActivity.this.getResources(), R.mipmap.id_card);
         Bitmap sendBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
         bitmap.recycle();
         mediaMessage.thumbData = WXUtils.bmpToByteArray(sendBitmap, true);
@@ -913,6 +914,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             telphone = userInfoBean.data.user.telephone;
             wexinnumber = userInfoBean.data.user.weixin;
             address = userInfoBean.data.user.residence;
+            sex_cn = userInfoBean.data.user.sex_cn;
         } else {
             ToastUtil.showToast(this, "请重新登录");
         }

@@ -20,7 +20,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -142,6 +141,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         intent.putExtra("email", sharemail);
         intent.putExtra("job_cate_pid", share_job_cate_pid);
         intent.putExtra("residence", shareaddress);
+        intent.putExtra("sex_cn", sex_cn);
 //        presenter.mIndustryBean(getApplicationContext());
         industry_list = new ArrayList<>();
         dlist = new ArrayList<>();
