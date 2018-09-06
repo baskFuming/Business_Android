@@ -181,9 +181,11 @@ public class TeamNotificationHelper {
                     sb.append(authen + NimUIKit.getContext().getString(R.string.team_not_allow_anyone_join));
                 }
             } else if (field.getKey() == TeamFieldEnum.Extension) {
-                sb.append("群扩展字段被更新为 " + field.getValue());
+                sb.append("群扩展字段更新 ");
+//                sb.append("群扩展字段被更新为 " + field.getValue());
             } else if (field.getKey() == TeamFieldEnum.Ext_Server) {
-                sb.append("群扩展字段(服务器)被更新为 " + field.getValue());
+//                sb.append("群扩展字段(服务器)被更新为 " + field.getValue());
+                sb.append("群扩展字段)更新 ");
             } else if (field.getKey() == TeamFieldEnum.ICON) {
                 sb.append("群头像已更新");
             } else if (field.getKey() == TeamFieldEnum.InviteMode) {
@@ -193,7 +195,8 @@ public class TeamNotificationHelper {
             } else if (field.getKey() == TeamFieldEnum.BeInviteMode) {
                 sb.append("群被邀请人身份验证权限被更新为 " + field.getValue());
             } else if (field.getKey() == TeamFieldEnum.TeamExtensionUpdateMode) {
-                sb.append("群扩展字段修改权限被更新为 " + field.getValue());
+//                sb.append("群扩展字段修改权限被更新为 " + field.getValue());
+                sb.append("群扩展字段更新 ");
             } else if (field.getKey() == TeamFieldEnum.AllMute) {
                 TeamAllMuteModeEnum teamAllMuteModeEnum = (TeamAllMuteModeEnum) field.getValue();
                 if (teamAllMuteModeEnum == TeamAllMuteModeEnum.Cancel) {

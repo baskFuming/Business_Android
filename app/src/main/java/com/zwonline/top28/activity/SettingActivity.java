@@ -20,6 +20,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -127,6 +129,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     private String job_cate_id;
     private String interested_cate_id;
     private String sex_id;
+    private TextView textCount;
 
     @Override
     protected void init() {
@@ -159,6 +162,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         age = (EditText) findViewById(R.id.age);
         address = (EditText) findViewById(R.id.address);
         bio = (EditText) findViewById(R.id.bio);
+        bio.addTextChangedListener(textWatcher);
         imagHead = (ImageViewPlus) findViewById(R.id.imag_head);
         back = (RelativeLayout) findViewById(R.id.back);
         ed_my_phone = (EditText) findViewById(R.id.my_phone);
@@ -168,6 +172,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         real_sex = (TextView) findViewById(R.id.real_sex);
         real_job = (TextView) findViewById(R.id.real_job);
         my_jobs = (TextView) findViewById(R.id.my_jobs);
+        textCount = (TextView) findViewById(R.id.text_count);
     }
 
     @Override
@@ -647,4 +652,41 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         return file;
     }
 
+
+    /**
+     * 监听输入框的输入状态
+     */
+    private TextWatcher textWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int count) {
+            String pointsEditT = bio.getText().toString();
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+            String pointsEditT = bio.getText().toString();
+            if (StringUtil.isNotEmpty(pointsEditT)) {
+
+                textCount.setText(pointsEditT.length() + "/20");
+            } else {
+                textCount.setText("0/20");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String pointsEditT = bio.getText().toString();
+            if (StringUtil.isNotEmpty(pointsEditT)) {
+
+                textCount.setText(pointsEditT.length() + "/20");
+            } else {
+                textCount.setText("0/20");
+            }
+        }
+
+    };
 }

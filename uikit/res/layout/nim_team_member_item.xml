@@ -16,16 +16,16 @@
 
         <ImageView
             android:id="@+id/imageViewOwner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="bottom|right"
             android:src="@drawable/nim_team_owner_icon"
             android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/imageViewAdmin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="bottom|right"
             android:src="@drawable/nim_team_admin_icon"
             android:visibility="gone"/>
