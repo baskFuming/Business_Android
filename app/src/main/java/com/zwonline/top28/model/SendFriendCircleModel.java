@@ -17,6 +17,7 @@ import com.zwonline.top28.bean.BusinessCircle;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.BusinessClassifyBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
+import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
@@ -627,6 +628,30 @@ public class SendFriendCircleModel {
         Flowable<LikeListBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .getLikeList(String.valueOf(timestamp), token, sign, moment_id, versionName, page);
+        return flowable;
+    }
+
+    /**
+     * 动态详情接口
+     *
+     * @param context
+     * @return
+     * @throws IOException
+     */
+    public Flowable<DynamicDetailsesBean> mMomentDetail(Context context, String moment_id) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("moment_id", moment_id);
+        map.put("token", token);
+        map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        SignUtils.removeNullValue(map);
+        Flowable<DynamicDetailsesBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .momentDetail(String.valueOf(timestamp), token, sign, moment_id);
         return flowable;
     }
 }

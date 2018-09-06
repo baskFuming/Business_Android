@@ -686,7 +686,8 @@
         <activity android:name=".activity.AddGetRelistActivity" />
         <activity android:name=".nim.main.activity.TeamMemberInfoActivity" />
         <activity android:name=".nim.main.team.TeamMessagesActivity" />
-        <activity android:name=".nim.main.activity.GroupTagsActivity" >
+        <activity android:name=".nim.main.activity.GroupTagsActivity"
+            android:windowSoftInputMode="stateUnspecified|adjustPan">
             <intent-filter>
                 <action android:name="customer_action_here" />
                 <category android:name="android.intent.category.INFO" />

@@ -28,6 +28,7 @@ import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
+import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
@@ -412,6 +413,18 @@ public class FeedBackActivity extends BaseActivity<ISendFriendCircleActivity, Se
     public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
 
     }
+
+    /**
+     * 动态详情接口
+     *
+     * @param mommentList
+     */
+    @Override
+    public void showMomentDetail(DynamicDetailsesBean mommentList) {
+
+    }
+
+
     private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
         SelectDialog dialog = new SelectDialog(this, R.style.transparentFrameWindowStyle, listener, names);
         if (!this.isFinishing()) {

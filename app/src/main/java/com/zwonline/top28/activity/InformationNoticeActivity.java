@@ -1,5 +1,6 @@
 package com.zwonline.top28.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.zwonline.top28.bean.InforNoticeCleanBean;
 import com.zwonline.top28.bean.TipBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.InForNoticePresenter;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.InforNoticeActivity;
 
@@ -23,6 +25,9 @@ import java.util.List;
 
 import butterknife.OnClick;
 
+/**
+ * 商机圈我的消息通知列表
+ */
 public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity, InForNoticePresenter> implements InforNoticeActivity {
 
     private XRecyclerView noticerecyclerView;
@@ -37,7 +42,7 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
     protected void init() {
         dList = new ArrayList<>();
         presenter.InforNoticePageList(this, page);
-        presenter.InforNoticePageListTip(InformationNoticeActivity.this,page);
+//        presenter.InforNoticePageListTip(InformationNoticeActivity.this, page);
         //查找ID资源
         initData();
         //加载RecycleView 通知列表
@@ -69,6 +74,7 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
             }
         });
     }
+
     @Override
     protected InForNoticePresenter getPresenter() {
         return new InForNoticePresenter(this);
@@ -78,6 +84,7 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
     protected int setLayoutId() {
         return R.layout.activity_information_notice;
     }
+
     @Override
     public void inForNoticeMethod(InforNoticeBean inforNoticeBean) {
 
@@ -96,17 +103,19 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
                 if (AntiShake.check(view.getId())) {    //判断是否多次点击
                     return;
                 }
-                if (dList.get(position).is_read.equals(BizConstant.ENTERPRISE_tRUE)) {
-                    //是否读取小红点
-                    presenter.InforNoticePageListTip(InformationNoticeActivity.this,page);
-                }
-                //跳转到动态详情页面
-//                Intent intent = new Intent(getApplicationContext(),AnnouncementActivity.class);
-//                startActivity(intent);
+                String url = dList.get(position).url;
+                String[] str = url.split("/");
+
+//                //跳转到动态详情页面
+                Intent intent = new Intent(getApplicationContext(), DynamicDetailsActivity.class);
+                intent.putExtra("moment_id", str[1]);
+                startActivity(intent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
         });
         inForNoticeLoadMore();
     }
+
     private void inForNoticeLoadMore() {
         noticerecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -123,12 +132,13 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
 
                 }, 1000);            //refresh data here
             }
+
             @Override
             public void onLoadMore() {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         page++;
-                        presenter.InforNoticePageListTip(InformationNoticeActivity.this,page);
+                        presenter.InforNoticePageListTip(InformationNoticeActivity.this, page);
                         presenter.InforNoticePageList(InformationNoticeActivity.this, page);
                         if (noticerecyclerView != null) {
                             noticerecyclerView.loadMoreComplete();
@@ -173,8 +183,8 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
         }
         switch (view.getId()) {
             case R.id.notice_dele_tip://清空数据
-                if (dList != null && dList.size() != 0){
-                    for (int i=0;i<dList.size();i++){
+                if (dList != null && dList.size() != 0) {
+                    for (int i = 0; i < dList.size(); i++) {
                         page++;
                         presenter.InforNoticePageCleanList(this, String.valueOf(page));
                     }

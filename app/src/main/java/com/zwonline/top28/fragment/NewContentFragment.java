@@ -39,6 +39,7 @@ import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
+import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
 import com.zwonline.top28.bean.ExamineChatBean;
 import com.zwonline.top28.bean.LikeListBean;
@@ -566,6 +567,17 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
     public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
 
     }
+
+    /**
+     * 动态详情接口
+     *
+     * @param mommentList
+     */
+    @Override
+    public void showMomentDetail(DynamicDetailsesBean mommentList) {
+
+    }
+
 
     @Override
     public void showFeedBack(SettingBean settingBean) {

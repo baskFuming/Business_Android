@@ -184,6 +184,7 @@
                 android:background="#ffe1e2e4" />
 
             <RelativeLayout
+                android:id="@+id/sex_image_reback"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
                 android:padding="18dp"
@@ -197,28 +198,30 @@
                     android:text="性别"
                     android:textColor="#ff2a394c"
                     android:textSize="16sp" />
-                <EditText
+
+                <TextView
                     android:id="@+id/real_sex"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
                     android:background="@null"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:hint="请选择性别"
                     android:maxLines="1"
-                    android:text="男士"
                     android:paddingLeft="10dp"
                     android:textColorHint="#ffc1c1c1"
-                    android:textSize="16sp"
-                    android:layout_marginRight="20dp"/>
+                    android:textSize="16sp" />
+
                 <ImageView
-                    android:id="@+id/sex_image_reback"
-                    android:layout_alignParentRight="true"
+
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/ic_back_right" />
+
                 <Spinner
                     android:id="@+id/spinner_sex"
                     android:layout_width="100dp"
@@ -378,6 +381,7 @@
                 android:background="#ffe1e2e4" />
 
             <RelativeLayout
+                android:id="@+id/job_my_reback"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
                 android:padding="18dp"
@@ -391,39 +395,40 @@
                     android:text="您目前所从事的行业"
                     android:textColor="#ff2a394c"
                     android:textSize="16sp" />
-                <EditText
+
+                <TextView
                     android:id="@+id/my_jobs"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
                     android:background="@null"
+                    android:cursorVisible="false"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:hint="请选择从事行业"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
                     android:textColorHint="#ffc1c1c1"
-                    android:textSize="16sp"
-                    android:layout_marginRight="20dp"
-                    android:cursorVisible="false"/>
+                    android:textSize="16sp" />
+
                 <ImageView
-                    android:id="@+id/job_my_reback"
-                    android:layout_alignParentRight="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/ic_back_right" />
                 <!--<EditText-->
-                    <!--android:id="@+id/my_job"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="50dp"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:background="@null"-->
-                    <!--android:hint="请选择从事行业"-->
-                    <!--android:maxLines="1"-->
-                    <!--android:paddingLeft="10dp"-->
-                    <!--android:textColorHint="#ffc1c1c1"-->
-                    <!--android:textSize="16sp" />-->
+                <!--android:id="@+id/my_job"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:background="@null"-->
+                <!--android:hint="请选择从事行业"-->
+                <!--android:maxLines="1"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:textColorHint="#ffc1c1c1"-->
+                <!--android:textSize="16sp" />-->
             </RelativeLayout>
 
             <View
@@ -467,6 +472,8 @@
                 android:background="#ffe1e2e4" />
 
             <RelativeLayout
+                android:id="@+id/job_image_reback"
+
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
                 android:padding="18dp"
@@ -480,37 +487,40 @@
                     android:text="感兴趣的行业"
                     android:textColor="#ff2a394c"
                     android:textSize="16sp" />
-                <EditText
+
+                <TextView
                     android:id="@+id/real_job"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
                     android:background="@null"
+                    android:cursorVisible="false"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:hint="请选择你感兴趣的行业"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
                     android:textColorHint="#ffc1c1c1"
-                    android:textSize="16sp"
-                    android:layout_marginRight="20dp"
-                    android:cursorVisible="false"/>
+                    android:textSize="16sp" />
+
                 <ImageView
-                    android:id="@+id/job_image_reback"
-                    android:layout_alignParentRight="true"
+
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/ic_back_right" />
+
                 <Spinner
-                    android:visibility="gone"
                     android:id="@+id/spinner_industry"
                     android:layout_width="110dp"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
                     android:backgroundTint="#ffc1c1c1"
                     android:gravity="center"
-                    android:overlapAnchor="false"></Spinner>
+                    android:overlapAnchor="false"
+                    android:visibility="gone"></Spinner>
             </RelativeLayout>
 
             <View
@@ -555,7 +565,6 @@
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="20"
                         android:textColor="#ffc1c1c1"
                         android:textSize="16sp" />
                 </RelativeLayout>
@@ -567,6 +576,10 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="5dp"
                     android:background="#ffe1e2e4" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"></View>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

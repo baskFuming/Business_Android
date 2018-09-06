@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -116,12 +117,18 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     private String share_job_cate_pid;
     private SexSharePopwindow sexSharePopwindow;
     private List<UserInfoBean.DataBean.UserBean> dlist;
-    private EditText real_sex, real_job,my_jobs;
+    private TextView real_sex;
     private JobAdpater jobAdpater;
+    private TextView real_job, my_jobs;
     private MyJobAdpater myJobAdpater;
     private SharePopwindow sharePopwindow;
     private List<SexBean> sexBeanList;
     private SexAdpater adpater;
+    private String job_cate_pid;
+    private String job_cate_id;
+    private String interested_cate_id;
+    private String sex_id;
+
     @Override
     protected void init() {
         initView();
@@ -135,12 +142,13 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         intent.putExtra("email", sharemail);
         intent.putExtra("job_cate_pid", share_job_cate_pid);
         intent.putExtra("residence", shareaddress);
-        presenter.mIndustryBean(getApplicationContext());
+//        presenter.mIndustryBean(getApplicationContext());
         industry_list = new ArrayList<>();
         dlist = new ArrayList<>();
         sexBeanList = new ArrayList<>();
         spinnerDate();
     }
+
     private void initView() {
         amendPicture = (LinearLayout) findViewById(R.id.amend_picture);
         spinnerSex = (Spinner) findViewById(R.id.spinner_sex);
@@ -157,9 +165,9 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         ed_my_wxin = (EditText) findViewById(R.id.my_wxin);
         ed_my_email = (EditText) findViewById(R.id.my_email);
 //        ed_my_job = (EditText) findViewById(R.id.my_job);
-        real_sex = (EditText) findViewById(R.id.real_sex);
-        real_job = (EditText) findViewById(R.id.real_job);
-        my_jobs = (EditText)findViewById(R.id.my_jobs);
+        real_sex = (TextView) findViewById(R.id.real_sex);
+        real_job = (TextView) findViewById(R.id.real_job);
+        my_jobs = (TextView) findViewById(R.id.my_jobs);
     }
 
     @Override
@@ -176,10 +184,36 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     //展示感兴趣的行业
     @Override
     public void showIndustry(final List<IndustryBean.DataBean> beanList) {
-        if (beanList!=null){
+        if (beanList != null) {
             industry_list.clear();
         }
         industry_list.addAll(beanList);
+
+
+        if (StringUtil.isNotEmpty(job_cate_pid)) {
+            if (job_cate_pid.equals(BizConstant.IS_FAIL)) {
+                my_jobs.setText(industry_list.get(0).cate_name);
+            } else {
+                for (int i = 0; i < industry_list.size(); i++) {
+                    if (job_cate_pid.equals(industry_list.get(i).cate_id)) {
+                        my_jobs.setText(industry_list.get(i).cate_name);
+                    }
+                }
+            }
+
+        }
+        if (StringUtil.isNotEmpty(interested_cate_id)) {
+            if (interested_cate_id.equals(BizConstant.IS_FAIL)) {
+                real_job.setText(industry_list.get(0).cate_name);
+            } else {
+                for (int i = 0; i < industry_list.size(); i++) {
+                    if (interested_cate_id.equals(industry_list.get(i).cate_id)) {
+                        real_job.setText(industry_list.get(i).cate_name);
+                    }
+                }
+            }
+
+        }
         IndustryAdapter adapter = new IndustryAdapter(beanList, this);
         if (adapter != null) {
             boolean b = spinnerIndustry == null;
@@ -223,6 +257,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     //获取用户信息
     @Override
     public void showUserInfo(final UserInfoBean userInfoBean) {
+        presenter.mIndustryBean(getApplicationContext());
         if (userInfoBean.status == 1) {
             boolean b = userInfoBean == null;
             boolean b1 = age == null;
@@ -234,6 +269,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             bio.setText(userInfoBean.data.user.signature);
             presenter.mIndustryBean(this);
             sex_cn = userInfoBean.data.user.sex;
+            sex_id = userInfoBean.data.user.sex;
             sharephone = userInfoBean.data.user.phone;
             ed_my_phone.setText(sharephone);
             wexinnumber = userInfoBean.data.user.weixin;
@@ -245,8 +281,10 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             real_sex.setText(userInfoBean.data.user.sex_cn);
 //            ed_my_job.setText(userInfoBean.data.user.job_cate_pid);
             sharemail = userInfoBean.data.user.email;
-            my_jobs.setText(userInfoBean.data.user.job_cate_pid);
-            real_job.setText(userInfoBean.data.user.favorite);
+            job_cate_pid = userInfoBean.data.user.job_cate_pid;
+            interested_cate_id = userInfoBean.data.user.cate_pid;
+//            my_jobs.setText(userInfoBean.data.user.job_cate_pid);
+//            real_job.setText(userInfoBean.data.user.favorite);
             ed_my_email.setText(sharemail);
             share_job_cate_pid = userInfoBean.data.user.cate_pid;//您所从事的行业
             if (StringUtil.isNotEmpty(sex_cn)) {
@@ -305,7 +343,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
 
     }
 
-    @OnClick({R.id.amend_picture, R.id.btn_setting, R.id.back, R.id.sex_image_reback, R.id.job_image_reback,R.id.job_my_reback})
+    @OnClick({R.id.amend_picture, R.id.btn_setting, R.id.back, R.id.sex_image_reback, R.id.job_image_reback, R.id.job_my_reback})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -316,11 +354,11 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                 break;
             case R.id.btn_setting:
                 presenter.mSetting(getApplicationContext(), nickName.getText().toString().trim(),
-                        realName.getText().toString().trim(), sex, age.getText().toString().trim(),
-                        address.getText().toString().trim(), cate_id,
+                        realName.getText().toString().trim(), Integer.parseInt(sex_id), age.getText().toString().trim(),
+                        address.getText().toString().trim(), interested_cate_id,
                         bio.getText().toString().trim(), ed_my_wxin.getText().toString().trim(),
                         ed_my_email.getText().toString().trim(), ed_my_phone.getText().toString().trim(),
-                        my_jobs.getText().toString().trim()
+                        job_cate_pid
                 );
                 RecordUserBehavior.recordUserBehavior(SettingActivity.this, BizConstant.EDITED_PROFILE);
 //                Intent intent = new Intent();
@@ -347,8 +385,10 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                 myJobAdpater.setOnClickItemListener(new MyJobAdpater.OnClickItemListener() {
                     @Override
                     public void setOnItemClick(View v, int position) {
+                        sexSharePopwindow.dismiss();
+                        sexSharePopwindow.backgroundAlpha(SettingActivity.this, 1f);
                         my_jobs.setText(industry_list.get(position).cate_name);
-                        sharePopwindow.dismiss();
+                        job_cate_pid = industry_list.get(position).cate_id;
                     }
                 });
                 break;
@@ -358,16 +398,18 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                 View contentView = sharePopwindow.getContentView();
                 ListView listView = contentView.findViewById(R.id.sex_recy);
 //                for (int i=0;i<sexBeanList.size();i++){
-                    sexBeanList.add(new SexBean("男士"));
-                    sexBeanList.add(new SexBean("女士"));
+                sexBeanList.add(new SexBean("男士"));
+                sexBeanList.add(new SexBean("女士"));
 //                }
-                adpater = new SexAdpater(this,sexBeanList);
+                adpater = new SexAdpater(this, sexBeanList);
                 listView.setAdapter(adpater);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         real_sex.setText(sexBeanList.get(position).sex);
+                        sex_id = String.valueOf(position + 1);
                         sharePopwindow.dismiss();
+                        sharePopwindow.backgroundAlpha(SettingActivity.this, 1f);
                     }
                 });
                 break;
@@ -385,7 +427,9 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                     @Override
                     public void setOnItemClick(View v, int position) {
                         real_job.setText(industry_list.get(position).cate_name);
-                        sharePopwindow.dismiss();
+                        interested_cate_id = industry_list.get(position).cate_id;
+                        sexSharePopwindow.dismiss();
+                        sexSharePopwindow.backgroundAlpha(SettingActivity.this, 1f);
                     }
                 });
                 break;
@@ -505,7 +549,6 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                         }
 //                    setImageToHeadView(intent);
                     } else {
-                        Log.e("ffl", "onActivityResult: -------------intent为null------------");
                     }
                     break;
             }

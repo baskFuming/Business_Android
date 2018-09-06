@@ -11,6 +11,7 @@ import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
+import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
@@ -839,6 +840,38 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                         @Override
                         public void onNext(LikeListBean likeListBean) {
                             iSendFriendCircleActivity.showGetLikeList(likeListBean.data);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 商机圈我的消息未读数量
+     *
+     * @param context
+     */
+    public void MomentDetail(Context context, String momment_id) {
+        try {
+            Flowable<DynamicDetailsesBean> flowable = sendFriendCircleModel.mMomentDetail(context, momment_id);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<DynamicDetailsesBean>() {
+                        @Override
+                        public void onNext(DynamicDetailsesBean dynamicDetailsesBean) {
+                            iSendFriendCircleActivity.showMomentDetail(dynamicDetailsesBean);
                         }
 
                         @Override

@@ -49,6 +49,7 @@ import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
+import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
@@ -150,6 +151,20 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private int refreshTime = 0;
     private int times = 0;
     private String isComment;
+    private ImageViewPlus userHead;
+    private TextView userName;
+    private TextView time;
+    private TextView article_title;
+    private LinearLayout article_linear;
+    private TextView article_desc;
+    private ImageViewPlu article_img;
+    private TextView dynamicConment;
+    private LinearLayout imagLinear;
+    private MultiImageView multiImage;
+    private ImageView dynamic_imag_w;
+    private ImageView dynamic_imag_h;
+    private ImageView dynamic_imag_z;
+    private RelativeLayout imag_relative;
 
     @Subscribe
     @Override
@@ -171,28 +186,30 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         commentList = new ArrayList<>();
         likeLists = new ArrayList<>();
         Intent intent = getIntent();
-        isComment = intent.getStringExtra("isComment");
-        author_id = intent.getStringExtra("author_id");
-        avatars = intent.getStringExtra("avatars");
-        nickname = intent.getStringExtra("nickname");
-        add_date = intent.getStringExtra("add_date");
-        content = intent.getStringExtra("content");
         moment_id = intent.getStringExtra("moment_id");
-        type = intent.getStringExtra("type");
-        hight = intent.getStringExtra("hight");
-        width = intent.getStringExtra("width");
-        comment_count = intent.getStringExtra("comment_count");
-        like_count = getIntent().getStringExtra("like_count");
-        articleDesc = intent.getStringExtra("target_description");
-        articleID = intent.getStringExtra("target_id");
-        articleImage = intent.getStringExtra("target_image");
-        articleTitle = intent.getStringExtra("target_title");
-        did_i_follow = intent.getStringExtra("did_i_follow");
-        did_i_like = intent.getStringExtra("did_i_like");
-        imageUrls = getIntent().getStringArrayExtra("imageUrls");
-        orinal_imageUrls = getIntent().getStringArrayExtra("orinal_imageUrls");
-        initView();
+        isComment = intent.getStringExtra("isComment");
 
+//        author_id = intent.getStringExtra("author_id");
+//        avatars = intent.getStringExtra("avatars");
+////        nickname = intent.getStringExtra("nickname");
+//        add_date = intent.getStringExtra("add_date");
+//        content = intent.getStringExtra("content");
+//        moment_id = intent.getStringExtra("moment_id");
+//        type = intent.getStringExtra("type");
+//        hight = intent.getStringExtra("hight");
+//        width = intent.getStringExtra("width");
+//        comment_count = intent.getStringExtra("comment_count");
+//        like_count = getIntent().getStringExtra("like_count");
+//        articleDesc = intent.getStringExtra("target_description");
+//        articleID = intent.getStringExtra("target_id");
+//        articleImage = intent.getStringExtra("target_image");
+//        articleTitle = intent.getStringExtra("target_title");
+//        did_i_follow = intent.getStringExtra("did_i_follow");
+//        did_i_like = intent.getStringExtra("did_i_like");
+//        imageUrls = getIntent().getStringArrayExtra("imageUrls");
+//        orinal_imageUrls = getIntent().getStringArrayExtra("orinal_imageUrls");
+        initView();
+        presenter.MomentDetail(getApplicationContext(), moment_id);
         presenter.mDynamicComment(this, page, moment_id, "", "", "");
         presenter.mDynamicShare(this, moment_id);
         presenter.GetLikeList(getApplicationContext(), moment_id, page);
@@ -238,28 +255,67 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      * 控件查找
      */
     private void initListView() {
-        ImageViewPlus userHead = (ImageViewPlus) findViewById(R.id.userhead);
-        TextView userName = (TextView) findViewById(R.id.username);
-        TextView time = (TextView) findViewById(R.id.time);
+        userHead = (ImageViewPlus) findViewById(R.id.userhead);
+        userName = (TextView) findViewById(R.id.username);
+        time = (TextView) findViewById(R.id.time);
         likeAcount = (TextView) findViewById(R.id.like_acount);
         commentAcount = (TextView) findViewById(R.id.comment_acount);
-        LinearLayout article_linear = (LinearLayout) findViewById(R.id.article_linear);
-        TextView article_title = (TextView) findViewById(R.id.article_title);
-        TextView article_desc = (TextView) findViewById(R.id.article_desc);
+        article_linear = (LinearLayout) findViewById(R.id.article_linear);
+        article_title = (TextView) findViewById(R.id.article_title);
+        article_desc = (TextView) findViewById(R.id.article_desc);
         commentUnderline = (TextView) findViewById(R.id.comment_underline);
         likeUnderline = (TextView) findViewById(R.id.like_underline);
-        ImageViewPlu article_img = (ImageViewPlu) findViewById(R.id.article_img);
+        article_img = (ImageViewPlu) findViewById(R.id.article_img);
         zanRecy = (XRecyclerView) findViewById(R.id.zan_recy);
+        attention = (TextView) findViewById(R.id.attention);
+        dynamicConment = (TextView) findViewById(R.id.dynamic_conment);
+        imagLinear = (LinearLayout) findViewById(R.id.imag_linear);
+        multiImage = (MultiImageView) findViewById(R.id.multi_image);
+        dynamic_imag_w = (ImageView) findViewById(R.id.dynamic_imag_w);
+        dynamic_imag_h = (ImageView) findViewById(R.id.dynamic_imag_h);
+        dynamic_imag_z = (ImageView) findViewById(R.id.dynamic_imag_z);
+        imag_relative = (RelativeLayout) findViewById(R.id.imag_relative);
+
+    }
+
+    /**
+     * 动态详情接口
+     *
+     * @param mommentList
+     */
+    @Override
+    public void showMomentDetail(DynamicDetailsesBean mommentList) {
+        author_id = mommentList.data.user_id;
+        avatars = mommentList.data.author.avatars;
+        nickname = mommentList.data.author.nickname;
+        add_date = mommentList.data.add_time;
+        content = mommentList.data.content;
+        type = mommentList.data.type;
+
+        comment_count = mommentList.data.comment_count;
+        like_count = mommentList.data.like_count;
+        articleDesc = mommentList.data.extend_content.target_description;
+        articleID = mommentList.data.extend_content.target_id;
+        articleImage = mommentList.data.extend_content.target_image;
+        articleTitle = mommentList.data.extend_content.target_title;
+        did_i_follow = mommentList.data.did_i_follow;
+        did_i_like = mommentList.data.did_i_like;
+        if (mommentList.data.images_arr != null) {
+            String image[] = new String[mommentList.data.images_arr.size()];
+            String images[] = new String[mommentList.data.images_arr.size()];
+            for (int i = 0; i < mommentList.data.images_arr.size(); i++) {
+                image[i] = mommentList.data.images_arr.get(i).original;
+                images[i] = mommentList.data.images_arr.get(i).thumb;
+            }
+            if (mommentList.data.images_arr.size() == 1) {
+                hight = mommentList.data.images_arr.get(0).original_size.height;
+                width = mommentList.data.images_arr.get(0).original_size.width;
+            }
+            imageUrls = images;
+            orinal_imageUrls = image;
+        }
         commentAcount.setText("评论 " + comment_count + "条");
         likeAcount.setText("赞 " + like_count);
-        attention = (TextView) findViewById(R.id.attention);
-        TextView dynamicConment = (TextView) findViewById(R.id.dynamic_conment);
-        LinearLayout imagLinear = (LinearLayout) findViewById(R.id.imag_linear);
-        MultiImageView multiImage = (MultiImageView) findViewById(R.id.multi_image);
-        ImageView dynamic_imag_w = (ImageView) findViewById(R.id.dynamic_imag_w);
-        ImageView dynamic_imag_h = (ImageView) findViewById(R.id.dynamic_imag_h);
-        ImageView dynamic_imag_z = (ImageView) findViewById(R.id.dynamic_imag_z);
-        RelativeLayout imag_relative = (RelativeLayout) findViewById(R.id.imag_relative);
         RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
         Glide.with(this).load(avatars).apply(requestOptions).into(userHead);
         userName.setText(nickname);
@@ -841,6 +897,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         likeListAdapter.notifyDataSetChanged();
         likeLoadMore();
     }
+
 
     /**
      * 上传多张图片

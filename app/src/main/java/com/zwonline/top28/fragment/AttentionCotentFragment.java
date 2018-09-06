@@ -41,6 +41,7 @@ import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
+import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
@@ -247,6 +248,17 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
     public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
 
     }
+
+    /**
+     * 动态详情接口
+     *
+     * @param mommentList
+     */
+    @Override
+    public void showMomentDetail(DynamicDetailsesBean mommentList) {
+
+    }
+
 
     @Override
     protected SendFriendCirclePresenter setPresenter() {

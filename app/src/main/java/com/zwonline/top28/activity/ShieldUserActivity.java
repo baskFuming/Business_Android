@@ -21,6 +21,7 @@ import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
+import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
@@ -73,7 +74,7 @@ public class ShieldUserActivity extends BaseActivity<ISendFriendCircleActivity, 
         shieldRecy.setArrowImageView(R.drawable.iconfont_downgrey);
         shieldRecy.getDefaultRefreshHeaderView().setRefreshTimeVisible(true);
         shieldRecy.getDefaultFootView().setLoadingHint(getString(R.string.loading));
-        shieldRecy.getDefaultFootView().setNoMoreHint( getString(R.string.load_end));
+        shieldRecy.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         shieldRecy.setLayoutManager(linearLayoutManager);
@@ -217,6 +218,17 @@ public class ShieldUserActivity extends BaseActivity<ISendFriendCircleActivity, 
     public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
 
     }
+
+    /**
+     * 动态详情接口
+     *
+     * @param mommentList
+     */
+    @Override
+    public void showMomentDetail(DynamicDetailsesBean mommentList) {
+
+    }
+
 
     @Override
     public void onClick(View v) {

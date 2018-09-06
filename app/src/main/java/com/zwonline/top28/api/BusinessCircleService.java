@@ -6,6 +6,7 @@ import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
+import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
 import com.zwonline.top28.bean.InforNoticeBean;
 import com.zwonline.top28.bean.InforNoticeCleanBean;
@@ -497,5 +498,22 @@ public interface BusinessCircleService {
             @Field("moment_id") String moment_id,
             @Field("app_version") String app_version,
             @Field("page") int page
+    );
+
+    /**
+     * 动态详情接口
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @param moment_id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/BusinessCircle/momentDetail")
+    Flowable<DynamicDetailsesBean> momentDetail(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign,
+            @Field("moment_id") String moment_id
     );
 }

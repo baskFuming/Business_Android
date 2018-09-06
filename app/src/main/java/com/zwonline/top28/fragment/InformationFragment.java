@@ -227,7 +227,7 @@ public class InformationFragment extends BasesFragment {
         if (mBadgeViews == null) {
             mBadgeViews = new ArrayList<InfoBadgeView>();
             InfoBadgeView tmp = new InfoBadgeView(getActivity());
-            tmp.setBadgeMargin(50, 6, 0, 0);
+            tmp.setBadgeMargin(40, 6, 0, 0);
             tmp.setTextSize(10);
             mBadgeViews.add(tmp);
         }

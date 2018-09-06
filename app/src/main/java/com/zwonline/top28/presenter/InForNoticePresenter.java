@@ -19,14 +19,16 @@ import io.reactivex.schedulers.Schedulers;
 public class InForNoticePresenter extends BasePresenter<InforNoticeActivity> {
     public HomePageModel homePageModel;
     public InforNoticeActivity iHomePageActivity;
+
     public InForNoticePresenter(InforNoticeActivity iHomePageActivity) {
         this.iHomePageActivity = iHomePageActivity;
         homePageModel = new HomePageModel();
     }
+
     //通知列表
-    public void InforNoticePageList(Context context, final int page)  {
+    public void InforNoticePageList(Context context, final int page) {
         try {
-            Flowable<InforNoticeBean> flowable = homePageModel.inForNotice(context,page);
+            Flowable<InforNoticeBean> flowable = homePageModel.inForNotice(context, page);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new BaseDisposableSubscriber<InforNoticeBean>(context) {
@@ -35,6 +37,7 @@ public class InForNoticePresenter extends BasePresenter<InforNoticeActivity> {
                             iHomePageActivity.inForNoticeList(myIssueBean.data);
 
                         }
+
                         @Override
                         protected String getTitleMsg() {
                             return null;
@@ -42,7 +45,7 @@ public class InForNoticePresenter extends BasePresenter<InforNoticeActivity> {
 
                         @Override
                         protected boolean isNeedProgressDialog() {
-                            return true;
+                            return false;
                         }
 
                         @Override
@@ -53,10 +56,11 @@ public class InForNoticePresenter extends BasePresenter<InforNoticeActivity> {
             e.printStackTrace();
         }
     }
+
     //通知列表
-    public void InforNoticePageCleanList(Context context, final String page)  {
+    public void InforNoticePageCleanList(Context context, final String page) {
         try {
-            Flowable<InforNoticeCleanBean> flowable = homePageModel.inForNoticeClean(context,page);
+            Flowable<InforNoticeCleanBean> flowable = homePageModel.inForNoticeClean(context, page);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new BaseDisposableSubscriber<InforNoticeCleanBean>(context) {
@@ -83,10 +87,11 @@ public class InForNoticePresenter extends BasePresenter<InforNoticeActivity> {
             e.printStackTrace();
         }
     }
+
     //是否读取
-    public void InforNoticePageListTip(Context context, final int page)  {
+    public void InforNoticePageListTip(Context context, final int page) {
         try {
-            Flowable<TipBean> flowable = homePageModel.inForNoticeTip(context,page);
+            Flowable<TipBean> flowable = homePageModel.inForNoticeTip(context, page);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new BaseDisposableSubscriber<TipBean>(context) {
@@ -94,6 +99,7 @@ public class InForNoticePresenter extends BasePresenter<InforNoticeActivity> {
                         protected void onBaseNext(TipBean myIssueBean) {
                             iHomePageActivity.inForNoticeTip(myIssueBean);
                         }
+
                         @Override
                         protected String getTitleMsg() {
                             return null;
