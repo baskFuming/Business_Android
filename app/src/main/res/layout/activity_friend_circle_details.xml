@@ -63,7 +63,7 @@
                                     android:id="@+id/userhead"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
-                                    android:src="@mipmap/no_photo_male" />
+                                    />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -111,9 +111,7 @@
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
                                     android:layout_marginRight="14dp"
-                                    android:background="@drawable/dynamic_guanzhu_shape"
                                     android:gravity="center"
-                                    android:text="+关注"
                                     android:textColor="@color/reded"
                                     android:textSize="14sp" />
 
@@ -263,6 +261,7 @@
                         android:layout_height="3dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="5dp"
+                        android:visibility="gone"
                         android:background="@drawable/btn_red_shape" />
                 </LinearLayout>
 

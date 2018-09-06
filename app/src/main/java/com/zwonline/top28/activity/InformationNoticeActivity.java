@@ -42,7 +42,7 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
     protected void init() {
         dList = new ArrayList<>();
         presenter.InforNoticePageList(this, page);
-//        presenter.InforNoticePageListTip(InformationNoticeActivity.this, page);
+        presenter.InforNoticePageListTip(InformationNoticeActivity.this, page);
         //查找ID资源
         initData();
         //加载RecycleView 通知列表
