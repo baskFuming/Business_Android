@@ -189,6 +189,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
 
     private String wx_page_type;
     private int wXinType;
+
     @Override
     protected void init() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -535,6 +536,10 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
 //                                    }
 //                                }
 //                            });
+                            /**
+                             *
+                             * 点击分享
+                             */
                             editTextshare.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {  // 1 0
@@ -563,6 +568,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                             "", "", editTexewxin.getText().toString().trim(),
                                             "", editTextphone.getText().toString().trim(), "");
                                     shareWXin(uid);
+                                    myQrCodePopwindow.dismiss();
+                                    myQrCodePopwindow.backgroundAlpha(HomePageActivity.this, 1f);
                                 }
 
                             });
@@ -611,9 +618,9 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
 
     //调起微信小程序
     private void shareWXin(String uid) { //1.正式版本
-        if (StringUtil.isNotEmpty(wx_page_type)&&wx_page_type.equals(BizConstant.ALREADY_FAVORITE)){
-             wXinType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;
-        }else {
+        if (StringUtil.isNotEmpty(wx_page_type) && wx_page_type.equals(BizConstant.ALREADY_FAVORITE)) {
+            wXinType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;
+        } else {
             wXinType = WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW;
         }
         WXMiniProgramObject miniProgramObject = new WXMiniProgramObject();

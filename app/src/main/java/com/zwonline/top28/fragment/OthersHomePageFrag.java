@@ -99,7 +99,7 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
         newContentList = new ArrayList<>();
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         newcontentRecy = (XRecyclerView) view.findViewById(R.id.newcontent_recy);
-        presenter.MomentLists(getActivity(), page, userId, "","");
+        presenter.MomentLists(getActivity(), page, userId, "", "");
         recyclerViewData();
     }
 
@@ -521,6 +521,7 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
 
     /**
      * 点赞列表
+     *
      * @param likeList
      */
     @Override
@@ -612,7 +613,8 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         page = 1;
-                        presenter.MomentLists(getActivity(), page, userId, "","");
+                        presenter.GetMyNotificationCount(getActivity());
+                        presenter.MomentLists(getActivity(), page, userId, "", "");
                         if (newcontentRecy != null)
                             newcontentRecy.refreshComplete();
                     }
@@ -625,7 +627,8 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         page++;
-                        presenter.MomentLists(getActivity(), page, userId, "","");
+                        presenter.GetMyNotificationCount(getActivity());
+                        presenter.MomentLists(getActivity(), page, userId, "", "");
                         if (newcontentRecy != null) {
                             newcontentRecy.loadMoreComplete();
                         }

@@ -686,6 +686,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
                     public void run() {
                         page = 1;
                         presenter.MomentLists(getActivity(), page, "", "", "");
+                        presenter.GetMyNotificationCount(getActivity());
                         if (newcontentRecy != null)
                             newcontentRecy.refreshComplete();
                     }
@@ -699,6 +700,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
                     public void run() {
                         page++;
                         presenter.MomentLists(getActivity(), page, "", "", "");
+                        presenter.GetMyNotificationCount(getActivity());
                         if (newcontentRecy != null) {
                             newcontentRecy.loadMoreComplete();
                         }

@@ -868,21 +868,28 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
             Flowable<DynamicDetailsesBean> flowable = sendFriendCircleModel.mMomentDetail(context, momment_id);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSubscriber<DynamicDetailsesBean>() {
+                    .subscribeWith(new BaseDisposableSubscriber<DynamicDetailsesBean>(context) {
+
                         @Override
-                        public void onNext(DynamicDetailsesBean dynamicDetailsesBean) {
+                        protected void onBaseNext(DynamicDetailsesBean dynamicDetailsesBean) {
                             iSendFriendCircleActivity.showMomentDetail(dynamicDetailsesBean);
                         }
 
                         @Override
-                        public void onError(Throwable t) {
-
+                        protected String getTitleMsg() {
+                            return null;
                         }
 
                         @Override
-                        public void onComplete() {
+                        protected boolean isNeedProgressDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
 
                         }
+
                     });
         } catch (IOException e) {
             e.printStackTrace();

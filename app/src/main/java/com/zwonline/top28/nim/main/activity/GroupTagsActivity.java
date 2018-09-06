@@ -19,7 +19,10 @@ import com.google.gson.Gson;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
+import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.team.TeamService;
+import com.netease.nimlib.sdk.team.constant.TeamFieldEnum;
 import com.netease.nimlib.sdk.team.model.CreateTeamResult;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.zwonline.top28.R;
@@ -308,6 +311,22 @@ public class GroupTagsActivity extends BaseActivity<IGroupTagsActivity, GroupTag
                     String ss = "{" + "\"tag_list\"" + ":" + s + "}";
                     if (StringUtil.isNotEmpty(alter) && alter.equals(BizConstant.IS_SUC)) {
                         team.setExtension(ss);
+                        NIMClient.getService(TeamService.class).updateTeam(teamId, TeamFieldEnum.Extension, ss).setCallback(new RequestCallback<Void>() {
+                            @Override
+                            public void onSuccess(Void param) {
+                                // 成功
+                            }
+
+                            @Override
+                            public void onFailed(int code) {
+                                // 失败
+                            }
+
+                            @Override
+                            public void onException(Throwable exception) {
+                                // 错误
+                            }
+                        });
                         finish();
                         overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                     } else {

@@ -209,10 +209,10 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
 //        imageUrls = getIntent().getStringArrayExtra("imageUrls");
 //        orinal_imageUrls = getIntent().getStringArrayExtra("orinal_imageUrls");
         initView();
-        presenter.MomentDetail(getApplicationContext(), moment_id);
+        presenter.MomentDetail(this, moment_id);
         presenter.mDynamicComment(this, page, moment_id, "", "", "");
         presenter.mDynamicShare(this, moment_id);
-        presenter.GetLikeList(getApplicationContext(), moment_id, page);
+        presenter.GetLikeList(this, moment_id, page);
 //        headView = getLayoutInflater().inflate(R.layout.dynamicdetails_head, null);
         initListView();
 
@@ -458,7 +458,17 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         } else {
             imagLinear.setVisibility(View.GONE);
         }
-
+        if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
+            choose_like.setChecked(false);
+            choose_like.setEnabled(false);
+            isLike.setText("点赞");
+            isLike.setTextColor(Color.parseColor("#1d1d1d"));
+        } else {
+            choose_like.setChecked(true);
+            choose_like.setEnabled(false);
+            isLike.setText("已赞");
+            isLike.setTextColor(Color.parseColor("#ff2b2b"));
+        }
     }
 
     @Override
@@ -481,17 +491,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         linearLike = (LinearLayout) findViewById(R.id.linear_like);
         isLike = (TextView) findViewById(R.id.is_like);
         choose_like = (CheckBox) findViewById(R.id.choose_like);
-        if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
-            choose_like.setChecked(false);
-            choose_like.setEnabled(false);
-            isLike.setText("点赞");
-            isLike.setTextColor(Color.parseColor("#1d1d1d"));
-        } else {
-            choose_like.setChecked(true);
-            choose_like.setEnabled(false);
-            isLike.setText("已赞");
-            isLike.setTextColor(Color.parseColor("#ff2b2b"));
-        }
+
 
     }
 

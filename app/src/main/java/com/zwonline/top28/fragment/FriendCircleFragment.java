@@ -305,9 +305,9 @@ public class FriendCircleFragment extends BasesFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (isLogin == false) {
-            friendPager.setCurrentItem(0);//没有登录默认选中第一项
-        }
+//        if (isLogin == false) {
+//            friendPager.setCurrentItem(0);//没有登录默认选中第一项
+//        }
 
     }
 
