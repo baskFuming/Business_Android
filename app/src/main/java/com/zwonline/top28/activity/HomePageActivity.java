@@ -383,9 +383,12 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
 
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
         if (Util.isOnMainThread()) {
-            Glide.with(getApplicationContext()).load(companyBean.data.avatar).apply(options)
+            Glide.with(this).load(companyBean.data.avatar).apply(options)
                     .into(userTou);
+            Glide.with(this).load(image_user).apply(options)
+                    .into(add_user_after);
         }
+
 
     }
 
@@ -598,7 +601,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         // 0.正式版本  1.测试版本  2.体验版本
         miniProgramObject.miniprogramType = wXinType;
         WXMediaMessage mediaMessage = new WXMediaMessage(miniProgramObject);
-        mediaMessage.title = realname+"商机链名片";//自定标题
+        mediaMessage.title = realname + "商机链名片";//自定标题
         mediaMessage.description = "商机头条和会赚钱的人在一起";//描述
         Matrix matrix = new Matrix();
         matrix.setScale(0.5f, 0.5f);
@@ -918,9 +921,9 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (Util.isOnMainThread()) {
-            Glide.with(getApplicationContext()).pauseRequests();
-        }
+//        if (Util.isOnMainThread()) {
+//            Glide.with(getApplicationContext()).pauseRequests();
+//        }
     }
 
     //Dialog弹窗
@@ -1016,11 +1019,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                     StatusBarUtil.setColor(HomePageActivity.this, getResources().getColor(R.color.white), 0);
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
-                    if (Util.isOnMainThread()) {
-                        Glide.with(getApplicationContext()).load(image_user).apply(options)
-                                .into(add_user_after);
-                        add_name_after.setText(nickname);
-                    }
+                    add_name_after.setText(nickname);
                 } else {
                     int alpha = 255 - Math.abs(verticalOffset);
                     if (alpha < 0) {

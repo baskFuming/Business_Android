@@ -15,7 +15,7 @@ android {
         versionName "3.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            targetSdkVersion 22
+            targetSdkVersion 26
             //设置支持的SO库架构
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }

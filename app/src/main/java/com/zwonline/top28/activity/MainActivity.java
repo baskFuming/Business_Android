@@ -534,20 +534,20 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     /*
      * 获取当前程序的版本名
      */
-    private String getVersionName() {
-        PackageInfo packInfo = null;
-        try {
-            //获取packagemanager的实例
-            PackageManager packageManager = getPackageManager();
-            //getPackageName()是你当前类的包名，0代表是获取版本信息
-            packInfo = packageManager.getPackageInfo(getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return packInfo.versionName;
-
-    }
+//    private String getVersionName() {
+//        PackageInfo packInfo = null;
+//        try {
+//            //获取packagemanager的实例
+//            PackageManager packageManager = getPackageManager();
+//            //getPackageName()是你当前类的包名，0代表是获取版本信息
+//            packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return packInfo.versionName;
+//
+//    }
 
 
     /*
@@ -673,7 +673,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
      */
     @Override
     public void showUpdataVersion(UpdateCodeBean updateCodeBean) {
-        if (NetUtils.isConnected(getApplicationContext())) {
+        if (NetUtils.isConnected(this)) {
             //判断是否更新版本
             version = updateCodeBean.data.have_new_version;
             //更新版本

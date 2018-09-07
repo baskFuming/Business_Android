@@ -47,7 +47,7 @@
             <EditText
                 android:id="@+id/share_name"
                 android:cursorVisible="false"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:background="@null"
@@ -84,7 +84,7 @@
             <EditText
                 android:id="@+id/share_phone"
                 android:cursorVisible="false"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:background="@null"
@@ -120,7 +120,7 @@
             <EditText
                 android:id="@+id/share_wxin"
                 android:cursorVisible="false"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:background="@null"
@@ -154,7 +154,7 @@
             android:layout_marginLeft="16dp">
             <EditText
                 android:id="@+id/share_address"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:background="@null"
