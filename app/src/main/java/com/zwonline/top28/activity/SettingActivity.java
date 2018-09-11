@@ -663,7 +663,6 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             String pointsEditT = bio.getText().toString();
 
         }
-
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count,
                                       int after) {
@@ -675,12 +674,10 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                 textCount.setText("0/20");
             }
         }
-
         @Override
         public void afterTextChanged(Editable s) {
             String pointsEditT = bio.getText().toString();
             if (StringUtil.isNotEmpty(pointsEditT)) {
-
                 textCount.setText(pointsEditT.length() + "/20");
             } else {
                 textCount.setText("0/20");

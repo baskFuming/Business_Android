@@ -686,18 +686,21 @@
         <activity android:name=".activity.AddGetRelistActivity" />
         <activity android:name=".nim.main.activity.TeamMemberInfoActivity" />
         <activity android:name=".nim.main.team.TeamMessagesActivity" />
-        <activity android:name=".nim.main.activity.GroupTagsActivity"
+        <activity
+            android:name=".nim.main.activity.GroupTagsActivity"
             android:windowSoftInputMode="stateUnspecified|adjustPan">
             <intent-filter>
                 <action android:name="customer_action_here" />
+
                 <category android:name="android.intent.category.INFO" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.PageDetailsActivity"></activity>
-        <activity android:name=".activity.InformationNoticeActivity"></activity>
-        <activity android:name=".activity.DataAnalysisActivity"></activity>
+        <activity android:name=".activity.PageDetailsActivity" />
+        <activity android:name=".activity.InformationNoticeActivity" />
+        <activity android:name=".activity.DataAnalysisActivity" />
+        <activity android:name=".activity.GroupActivity"></activity>
     </application>
 
 </manifest>

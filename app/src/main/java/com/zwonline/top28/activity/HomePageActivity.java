@@ -1,18 +1,24 @@
 package com.zwonline.top28.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -82,12 +88,16 @@ import com.zwonline.top28.view.IHomePageActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.OnClick;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static com.liaoinstan.springview.utils.DensityUtil.dip2px;
 
 /**
@@ -191,8 +201,15 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private int wXinType;
     private CheckBox checkBoxrealname;
 
+    private View view;
+    private Bitmap bitmaps;
+    private int time = 0;
+    private String filePath;
+
     @Override
     protected void init() {
+        requestPower();
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
         NavigationBar.Statedata(this);
@@ -464,6 +481,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
                         }
                     } else if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && uid.equals(userUid)) {
+                        //截屏方法
+                        screenshot();
                         if (add_foll_befor.getText().toString().equals("分享")) {
                             add_foll_befor.setText("分享");
                             add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
@@ -605,10 +624,13 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         mediaMessage.description = "商机头条和会赚钱的人在一起";//描述
         Matrix matrix = new Matrix();
         matrix.setScale(0.5f, 0.5f);
-        Bitmap bitmap = BitmapFactory.decodeResource(HomePageActivity.this.getResources(), R.mipmap.id_card);
+
+      /*  Bitmap bitmap = BitmapFactory.decodeResource(HomePageActivity.this.getResources(), R.mipmap.id_card);
         Bitmap sendBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        bitmap.recycle();
-        mediaMessage.thumbData = WXUtils.bmpToByteArray(sendBitmap, true);
+        bitmap.recycle();*/
+
+
+        mediaMessage.thumbData = WXUtils.bmpToByteArray(getBitmapFromFile(filePath), true);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.scene = SendMessageToWX.Req.WXSceneSession;
@@ -1222,4 +1244,83 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
+    /*
+       采样率压缩
+     */
+    public static void compressBitmapToFile(Bitmap bmp, File file) {
+        // 尺寸压缩倍数,值越大，图片尺寸越小
+        int ratio = 2;
+        // 压缩Bitmap到对应尺寸
+        Bitmap result = Bitmap.createBitmap(bmp.getWidth() / ratio, bmp.getHeight() / ratio, Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(result);
+        Rect rect = new Rect(0, 0, bmp.getWidth() / ratio, bmp.getHeight() / ratio);
+        canvas.drawBitmap(bmp, null, rect, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // 把压缩后的数据存放到baos中   0-100 不压缩
+        result.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //截屏
+    private void screenshot() {
+        // 获取屏幕
+        View dView = getWindow().getDecorView();
+        dView.setDrawingCacheEnabled(true);
+        dView.buildDrawingCache();
+        Bitmap bmp = dView.getDrawingCache();
+        if (bmp != null) {
+            try {
+                // 获取内置SD卡路径
+                String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+                // 图片文件路径
+                filePath = sdCardPath + File.separator + "screenshot.png";
+                File file = new File(filePath);
+                compressBitmapToFile(bmp, file);
+                bmp.recycle();
+            } catch (Exception e) {
+                bmp.recycle();
+            }
+        }
+    }
+
+    //file 转为Bitmap
+    public static Bitmap getBitmapFromFile(String pathName) {
+        return BitmapFactory.decodeFile(pathName);
+    }
+
+    public void requestPower() {
+        //判断是否已经赋予权限
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PERMISSION_GRANTED) {
+            //如果应用之前请求过此权限但用户拒绝了请求，此方法将返回 true。
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {//这里可以写个对话框之类的项向用户解释为什么要申请权限，并在对话框的确认键后续再次申请权限
+            } else {
+                //申请权限，字符串数组内是一个或多个要申请的权限，1是申请权限结果的返回参数，在onRequestPermissionsResult可以得知申请结果
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,}, 1);
+            }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PERMISSION_GRANTED) {
+//                    Toast.makeText(this, "" + "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
+                } else {
+//                    Toast.makeText(this, "" + "权限" + permissions[i] + "申请失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
 }

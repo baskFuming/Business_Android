@@ -133,6 +133,7 @@ public class APP extends Application {
         config.setToDefaults();
         res.updateConfiguration(config, res.getDisplayMetrics());
         MultiDex.install(this);
+
         //获取APK渠道标识
         String channel = getChannel();
     }
@@ -159,6 +160,7 @@ public class APP extends Application {
         LeakCanary.install(this);
         //友盟统计
         MobclickAgent.setScenarioType(getApplicationContext(), MobclickAgent.EScenarioType.E_UM_NORMAL);
+
         NIMClient.init(this, loginInfo(), options());
 //        int unreadNum = 0;
 //        for (RecentContact r : items) {
