@@ -422,7 +422,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 settingIntent.putExtra("avatar", avatar);
                 settingIntent.putExtra("is_default_password", isDefaultPassword);
                 startActivity(settingIntent);
-                getActivity().finish();
+//                getActivity().finish();
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.management://企业管理
@@ -430,6 +430,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 startActivity(new Intent(getActivity(), MyProjectActivity.class));
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
+
             case R.id.ensure_pool://保障池
                 startActivity(new Intent(getActivity(), EnsurePoolActivity.class));
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);

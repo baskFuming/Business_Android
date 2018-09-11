@@ -157,7 +157,6 @@ public class PosOrderCodeActivity extends BaseActivity<IPaymentActivity, Payment
                 finish();
             }
             if (dataStatus.equals(BizConstant.ORDER_PAY_SUCCESS)) {
-                Log.i("=================", "stopTimer");
                 stopTimer();
                 finish();
             }
@@ -167,9 +166,7 @@ public class PosOrderCodeActivity extends BaseActivity<IPaymentActivity, Payment
 
     private void startPollingOrder() {
         if (isStop) {
-            Log.i(TAG, "Start");
         } else {
-            Log.i(TAG, "Stop");
         }
 
         isStop = !isStop;
@@ -202,12 +199,10 @@ public class PosOrderCodeActivity extends BaseActivity<IPaymentActivity, Payment
             mTimerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Log.i(TAG, "count: " + String.valueOf(count));
                     sendMessage();
 
                     do {
                         try {
-                            Log.i(TAG, "sleep(1000)...");
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
                         }

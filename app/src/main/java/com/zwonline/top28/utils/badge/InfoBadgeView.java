@@ -55,7 +55,7 @@ public class InfoBadgeView extends TextView {
         setTextColor(Color.WHITE);
         setTypeface(Typeface.DEFAULT_BOLD);
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-        setPadding(dip2Px(5), dip2Px(1), dip2Px(5), dip2Px(1));
+        setPadding(dip2Px(4), dip2Px(1), dip2Px(4), dip2Px(1));
 
         // set default background
         setBackground(9, Color.parseColor("#ff2b2b"));

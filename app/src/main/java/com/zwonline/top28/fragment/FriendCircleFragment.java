@@ -181,8 +181,8 @@ public class FriendCircleFragment extends BasesFragment {
         if (mBadgeViews == null) {
             mBadgeViews = new ArrayList<InfoBadgeView>();
             InfoBadgeView tmp = new InfoBadgeView(getActivity());
-            tmp.setBadgeMargin(40, 6, 0, 0);
-            tmp.setTextSize(10);
+            tmp.setBadgeMargin(36, 11, 0, 0);
+            tmp.setTextSize(7);
             mBadgeViews.add(tmp);
         }
     }
@@ -313,7 +313,7 @@ public class FriendCircleFragment extends BasesFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageFollow event) {
-        if (StringUtil.isNotEmpty(event.notifyCount)){
+        if (StringUtil.isNotEmpty(event.notifyCount)) {
             notifyCount = Integer.parseInt(event.notifyCount);
             mBadgeCountList.set(3, notifyCount);
             setUpTabBadge();

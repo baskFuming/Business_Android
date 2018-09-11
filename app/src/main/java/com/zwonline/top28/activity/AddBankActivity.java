@@ -39,7 +39,9 @@ public class AddBankActivity extends BaseActivity<IAddBankActivity, AddBankPrese
     Button commit;
     private String addCard;
 
-
+    /**
+     * 初始化
+     */
     @Override
     protected void init() {
         Intent intent = getIntent();

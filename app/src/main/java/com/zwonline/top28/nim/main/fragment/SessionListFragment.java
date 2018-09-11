@@ -58,6 +58,7 @@ import com.zwonline.top28.nim.session.extension.RedPacketOpenedAttachment;
 import com.zwonline.top28.nim.session.extension.SnapChatAttachment;
 import com.zwonline.top28.nim.session.extension.StickerAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenAction;
+import com.zwonline.top28.nim.yangfen.YangFenAttachment;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.badge.BadgeViews;
@@ -66,6 +67,7 @@ import com.zwonline.top28.utils.popwindow.EmptyPopwindow;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 /**
  * Created by zhoujianghua on 2015/8/17.
  */
@@ -92,6 +94,7 @@ public class SessionListFragment extends TabFragment {
     private RecentContactAdapter recentContactAdapter;
 
     private static final String PAGE_NAME_KEY = "PAGE_NAME_KEY";
+
     public static SessionListFragment getInstance(String pageName) {
         Bundle args = new Bundle();
         args.putString(PAGE_NAME_KEY, pageName);
@@ -99,6 +102,7 @@ public class SessionListFragment extends TabFragment {
         pageFragment.setArguments(args);
         return pageFragment;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -295,6 +299,7 @@ public class SessionListFragment extends TabFragment {
                 }
 
             }
+
             @Override
             public void yunYingGun() {
                 startActivity(new Intent(getActivity(), YunYingGuanActivity.class));
@@ -349,6 +354,9 @@ public class SessionListFragment extends TabFragment {
                     return "[阅后即焚]";
                 } else if (attachment instanceof RedPacketAttachment) {
                     return "[鞅分红包]";
+                } else if (attachment instanceof YangFenAttachment) {
+                    return "[鞅分红包]";
+
                 } else if (attachment instanceof RedPacketOpenedAttachment) {
                     return ((RedPacketOpenedAttachment) attachment).getDesc(recentContact.getSessionType(), recentContact.getContactId());
                 }
@@ -369,7 +377,6 @@ public class SessionListFragment extends TabFragment {
                         return (String) content.get("content");
                     }
                 }
-
 
 
                 return null;
