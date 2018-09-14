@@ -45,6 +45,8 @@ public class ContactDataAdapter extends BaseAdapter {
 
     private final IContactDataProvider dataProvider;
 
+
+
     //
     // DATAS
     //

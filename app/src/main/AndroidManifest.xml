@@ -700,7 +700,8 @@
         <activity android:name=".activity.PageDetailsActivity" />
         <activity android:name=".activity.InformationNoticeActivity" />
         <activity android:name=".activity.DataAnalysisActivity" />
-        <activity android:name=".activity.GroupActivity"></activity>
+        <activity android:name=".activity.GroupActivity" />
+        <activity android:name=".expandlistview.activity.ExpandableActivity"></activity>
     </application>
 
 </manifest>

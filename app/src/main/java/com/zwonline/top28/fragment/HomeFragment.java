@@ -2,16 +2,18 @@ package com.zwonline.top28.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,24 +34,30 @@ import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.HomeClassPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.tip.toast.ToastUtil;
-import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.NetUtils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.click.AntiShake;
-import com.zwonline.top28.utils.popwindow.CustomPopuWindow;
 import com.zwonline.top28.utils.popwindow.YangFenUnclaimedWindow;
 import com.zwonline.top28.view.IHomeClassFrag;
 
-import java.lang.reflect.Field;
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.UIUtil;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static com.liaoinstan.springview.utils.DensityUtil.dip2px;
 
 /**
  * 1.类的用途
@@ -78,6 +86,16 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     private LinearLayout home_linear;
     private YangFenUnclaimedWindow yangFenUnclaimedWindow;
 
+
+    //二次修改
+    @BindView(R.id.magic_indicator)
+    MagicIndicator magicIndicator;
+
+    private SimplePagerTitleView simplePagerTitleView;
+
+    private List<HomeBean.DataBean> hlist;
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -91,7 +109,6 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
         hotBusiness = (ImageView) view.findViewById(R.id.hot_business);
         hot_business_relat = (RelativeLayout) view.findViewById(R.id.hot_business_relat);
         home_linear = (LinearLayout) view.findViewById(R.id.home_linear);
-
         date(view);
         if (NetUtils.isConnected(getActivity())) {
             presenter.mHomeClass(getActivity());
@@ -110,7 +127,6 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (!StringUtil.isEmpty(etHome.getText().toString().trim())) {
                         RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.DO_SEARCH);
-
                         Intent intent = new Intent(getActivity(), HomeSearchActivity.class);
                         intent.putExtra("title", etHome.getText().toString().trim());
                         startActivity(intent);
@@ -150,90 +166,91 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     }
 
     @Override
-    public void showHomeClass(List<HomeBean.DataBean> classList) {
-        for (int i = 0; i < classList.size(); i++) {
-            tablayout.newTab().setText(classList.get(i).cate_name);
-        }
+    public void showHomeClass(final List<HomeBean.DataBean> classList) {
+        loadingTablayout(classList);
 
-        tablayout.newTab().setText(R.string.center_recommend);
-        if (classList.size() > 5) {
+//        for (int i = 0; i < classList.size(); i++) {
+//            tablayout.newTab().setText(classList.get(i).cate_name);
+//        }
+//
+//        tablayout.newTab().setText(R.string.center_recommend);
+//
+//        if (classList.size() > 5) {
+//
+//            tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+//        } else {
+//            tablayout.setTabMode(TabLayout.MODE_FIXED);
+//        }
+//
+//        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getChildFragmentManager(), classList);
+//        viewpager.setAdapter(myFragmentAdapter);
+//        viewpager.setOffscreenPageLimit(1);
+//        viewpager.setCurrentItem(1);
+//        StringUtil.reflex(tablayout);
+//        tablayout.setTabsFromPagerAdapter(myFragmentAdapter);
+//        tablayout.setupWithViewPager(viewpager);
+    }
 
-            tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        } else {
-            tablayout.setTabMode(TabLayout.MODE_FIXED);
-        }
-
+    private void loadingTablayout(final List<HomeBean.DataBean> classList) {
+        HomeBean.DataBean bean = new HomeBean.DataBean("300", getString(R.string.center_recommend));
+        classList.add(1, bean);
         MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getChildFragmentManager(), classList);
         viewpager.setAdapter(myFragmentAdapter);
         viewpager.setOffscreenPageLimit(1);
         viewpager.setCurrentItem(1);
-        StringUtil.reflex(tablayout);
-        tablayout.setTabsFromPagerAdapter(myFragmentAdapter);
-        tablayout.setupWithViewPager(viewpager);
+        magicIndicator.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        CommonNavigator commonNavigator = new CommonNavigator(getActivity());
+        commonNavigator.setAdjustMode(true);  //ture 即标题平分屏幕宽度的模式
+        commonNavigator.setScrollPivotX(0.65f);
+        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+            @Override
+            public int getCount() {
+                return classList == null ? 0 : classList.size();
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                simplePagerTitleView = new ColorTransitionPagerTitleView(context);
+                simplePagerTitleView.setTextSize(16);
+                for (int i = 0; i < classList.size(); i++) {
+                    simplePagerTitleView.setText(classList.get(index).cate_name);
+                }
+                simplePagerTitleView.setSelectedColor(Color.parseColor("#000000"));
+                simplePagerTitleView.setNormalColor(Color.parseColor("#9e9e9e"));
+                simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewpager.setCurrentItem(index);
+                    }
+                });
+                return simplePagerTitleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator indicator = new LinePagerIndicator(context);
+                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                indicator.setLineHeight(UIUtil.dip2px(context, 4));
+                indicator.setLineWidth(UIUtil.dip2px(context, 30));
+                indicator.setRoundRadius(UIUtil.dip2px(context, 3));
+                indicator.setStartInterpolator(new AccelerateInterpolator());
+                indicator.setEndInterpolator(new DecelerateInterpolator(2.0f));
+                indicator.setColors(Color.parseColor("#FF2B2B"));
+                return indicator;
+            }
+        });
+        magicIndicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind(magicIndicator, viewpager);
     }
 
     @Override
     public void showHomesClass(HomeBean homeBean) {
-//        sp.insertKey(getActivity(), "dialog", homeBean.dialog);
     }
-
-    //这里用于处理Tablayout的
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        //了解源码得知 线的宽度是根据 tabView的宽度来设置的
-//        tablayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    //拿到tabLayout的mTabStrip属性
-//                    LinearLayout mTabStrip = (LinearLayout) tablayout.getChildAt(0);
-//
-//                    int dp10 = dip2px(tablayout.getContext(), 70);
-//
-//                    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-//                        View tabView = mTabStrip.getChildAt(i);
-//
-//                        //拿到tabView的mTextView属性  tab的字数不固定一定用反射取mTextView
-//                        Field mTextViewField = tabView.getClass().getDeclaredField("mTextView");
-//                        mTextViewField.setAccessible(true);
-//
-//                        TextView mTextView = (TextView) mTextViewField.get(tabView);
-//
-//                        tabView.setPadding(0, 0, 0, 0);
-//
-//                        //因为我想要的效果是   字多宽线就多宽，所以测量mTextView的宽度
-//                        int width = 0;
-//                        width = mTextView.getWidth();
-//                        if (width == 0) {
-//                            mTextView.measure(0, 0);
-//                            width = mTextView.getMeasuredWidth();
-//                        }
-//
-//                        //设置tab左右间距为10dp  注意这里不能使用Padding 因为源码中线的宽度是根据 tabView的宽度来设置的
-//                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
-//                        params.width = width;
-//                        params.leftMargin = dp10;
-//                        params.rightMargin = dp10;
-//                        tabView.setLayoutParams(params);
-//
-//                        tabView.invalidate();
-//                    }
-//
-//                } catch (NoSuchFieldException e) {
-//                    e.printStackTrace();
-//                } catch (IllegalAccessException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//    }
 
     @Override
     public void showErro() {
         Toast.makeText(getActivity(), R.string.get_content_fail_tip, Toast.LENGTH_SHORT).show();
     }
-
 
     @OnClick({R.id.btn_search, R.id.hot_business})
     public void onViewClicked(View view) {
@@ -266,7 +283,6 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
 
     //适配Fragment
     class MyFragmentAdapter extends FragmentPagerAdapter {
-        private List<HomeBean.DataBean> hlist;
 
         public MyFragmentAdapter(FragmentManager fm, List<HomeBean.DataBean> list) {
             super(fm);
@@ -274,9 +290,8 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
                 hlist = new ArrayList<>();
             }
             hlist.addAll(list);
-            HomeBean.DataBean bean = new HomeBean.DataBean("300", getString(R.string.center_recommend));
-
-            hlist.add(1, bean);
+//            HomeBean.DataBean bean = new HomeBean.DataBean("300", getString(R.string.center_recommend));
+//            hlist.add(1, bean);
         }
 
         @Override
@@ -327,5 +342,6 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
         // 将myTouchListener注册到分发列表
         ((MainActivity) this.getActivity()).registerMyTouchListener(myTouchListener);
     }
+
 
 }

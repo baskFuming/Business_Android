@@ -42,8 +42,8 @@ import com.zwonline.top28.nim.main.reminder.ReminderId;
 import com.zwonline.top28.nim.main.reminder.ReminderItem;
 import com.zwonline.top28.nim.main.reminder.ReminderManager;
 import com.zwonline.top28.nim.session.SessionHelper;
-import com.zwonline.top28.utils.badge.BadgeViews;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.badge.BadgeViews;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,7 +15,6 @@
         android:layout_height="379dp"
         android:background="@drawable/rectangle_shape_gay"
         android:orientation="vertical">
-
         <TextView
             android:layout_width="119dp"
             android:layout_height="24dp"
@@ -24,7 +23,6 @@
             android:text="分享的主页内容"
             android:textColor="#ff1d1d1d"
             android:textSize="17sp" />
-
         <TextView
             android:layout_width="221dp"
             android:layout_height="18dp"
@@ -176,7 +174,7 @@
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_gravity="center"
-            android:layout_marginTop="62dp"
+            android:layout_marginTop="65dp"
             android:background="@drawable/my_share_self"
             android:gravity="center"
             android:text="分享"

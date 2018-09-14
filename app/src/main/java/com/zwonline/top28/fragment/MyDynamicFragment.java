@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.ClipboardManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,7 +29,6 @@ import com.zwonline.top28.activity.DynamicDetailsActivity;
 import com.zwonline.top28.activity.HomeDetailsActivity;
 import com.zwonline.top28.activity.InformationNoticeActivity;
 import com.zwonline.top28.activity.WithoutCodeLoginActivity;
-import com.zwonline.top28.adapter.AttentionDynamicHeadAdapter;
 import com.zwonline.top28.adapter.MyDynamicAdapter;
 import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.AddBankBean;
@@ -597,7 +595,6 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
             EventBus.getDefault().post(messageFollow);
             if (StringUtil.isNotEmpty(attentionBean.data.unread_count) && attentionBean.data.unread_count.equals(BizConstant.IS_FAIL)) {
                 infoLayout.setVisibility(View.GONE);
-
             } else {
                 infoNum.setText(attentionBean.data.unread_count + "条新消息");
                 infoLayout.setVisibility(View.VISIBLE);

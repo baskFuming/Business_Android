@@ -26,6 +26,7 @@ android {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             minifyEnabled false
+
 //            zipAlignEnabled true
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -37,7 +38,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     lintOptions {
         disable 'ExtraTranslation'
         disable 'MissingTranslation'
@@ -188,6 +188,7 @@ dependencies {
     compile 'com.contrarywind:Android-PickerView:4.1.2'
     //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
+
     compile(name: 'geetest_testbutton_android_v3.5.3', ext: 'aar')
     //加载GIF图
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.1'
@@ -208,6 +209,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation files('libs/pinyin4j-2.5.0.jar')
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    compile 'com.github.donkingliang:GroupedRecyclerViewAdapter:1.3.1'
+    compile 'com.github.hackware1993:MagicIndicator:1.5.0'
 //    implementation 'im.unicolas:trollbadgeview:1.3'
 //    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 }

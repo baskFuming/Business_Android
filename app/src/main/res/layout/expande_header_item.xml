@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:background="@color/backgroundgray"
+        android:paddingLeft="15sp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/iv_state"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_right"
+            android:layout_gravity="center_vertical|right"
+            android:rotation="90"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"/>
+        <TextView
+            android:id="@+id/tv_expandable_header"
+            android:layout_marginLeft="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我管理的群/我加入群"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/textview_color"/>
+
+    </RelativeLayout>
+</LinearLayout>

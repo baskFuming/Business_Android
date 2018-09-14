@@ -1,16 +1,17 @@
 package com.zwonline.top28.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -28,14 +31,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
-import com.netease.nim.uikit.api.NimUIKit;
-import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
 import com.netease.nim.uikit.business.recent.RecentContactsFragment;
-import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
-import com.netease.nimlib.sdk.msg.SystemMessageService;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.xys.libzxing.zxing.encoding.EncodingUtils;
 import com.zwonline.top28.R;
@@ -50,17 +49,26 @@ import com.zwonline.top28.nim.main.activity.GlobalSearchActivity;
 import com.zwonline.top28.nim.main.activity.GroupTagsActivity;
 import com.zwonline.top28.nim.main.fragment.ContactListFragment;
 import com.zwonline.top28.nim.main.fragment.SessionListFragment;
-import com.zwonline.top28.nim.main.helper.SystemMessageUnreadManager;
-import com.zwonline.top28.nim.main.reminder.ReminderId;
-import com.zwonline.top28.nim.main.reminder.ReminderItem;
-import com.zwonline.top28.nim.main.reminder.ReminderManager;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
-import com.zwonline.top28.utils.TabUtils;
 import com.zwonline.top28.utils.badge.InfoBadgeView;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.popwindow.MyQrCodePopwindow;
+
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.UIUtil;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeAnchor;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgePagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeRule;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -80,12 +88,12 @@ import static com.zwonline.top28.adapter.InfoFragmentPageAdapter.formatBadgeNumb
 public class InformationFragment extends BasesFragment {
     Unbinder unbinder;
     private TabLayout infoTab;
-    private ViewPager infoPager;
-    private List<Fragment> fList = new ArrayList<>();
     private List<String> mPageTitleList = new ArrayList<String>();
     private List<Integer> mBadgeCountList = new ArrayList<Integer>();
+
     private SessionListFragment sessionListFragment;
     private ContactListFragment myFragment;
+
     private FragmentPagerAdapter fAdapter;
     private RelativeLayout searchMessage;
     private PopupWindow mCurPopupWindow;
@@ -100,9 +108,19 @@ public class InformationFragment extends BasesFragment {
     private List<MyQRCodeBean> qrlist;
     private MyQrCodePopwindow myQrCodePopwindow;
     private MyQRCodeBean bean;
-    private int count = 0;
+    private int count;
     private List<InfoBadgeView> mBadgeViews;
     private InfoFragmentPageAdapter mPagerAdapter;
+    //修改后的Tablayout
+    private MagicIndicator magicIndicator;
+    private String[] titles = new String[]{"消息", "我的"};
+    private ViewPager infoPager;
+    private List<Fragment> fList = new ArrayList<>();
+    private MyAdapter adapter;
+    private SimplePagerTitleView simplePagerTitleView;
+    private BadgePagerTitleView badgePagerTitleView;
+    private TextView badgeTextView;
+    private Observer<Integer> sysMsgUnreadCountChangedObserver;
 
     @Override
     protected void init(View view) {
@@ -115,16 +133,26 @@ public class InformationFragment extends BasesFragment {
         uid = (String) sp.getKey(getActivity(), "uid", "");
         sign = (String) sp.getKey(getActivity(), "sign", "");
         bean = new MyQRCodeBean();
-        infoTab = view.findViewById(R.id.info_tab);
+//        infoTab = view.findViewById(R.id.info_tab);
         addFuction = view.findViewById(R.id.add_fuction);
+        magicIndicator = view.findViewById(R.id.friend_cicler_indicator);
         infoPager = view.findViewById(R.id.info_viewpager);
         searchMessage = view.findViewById(R.id.search_message);
+        sysMsgUnreadCountChangedObserver = new Observer<Integer>() {
+            @Override
+            public void onEvent(Integer unreadCount) {
+                count = unreadCount;
+                badgeTextView.setText(count + "");
+            }
+        };
         initControls();
     }
 
     private void updateUnreadNum(int unreadCount) {
-//        count += unreadCount;
-        mBadgeCountList.set(1, unreadCount);
+//        count = unreadCount;
+//        badgeTextView.setText(count+"");
+
+//        mBadgeCountList.set(1, unreadCount);
     }
 
     @Override
@@ -147,13 +175,76 @@ public class InformationFragment extends BasesFragment {
         myFragment = new ContactListFragment();
         //将fragment装进列表中
         fList = new ArrayList<>();
-        initFragments();
-        mPagerAdapter = new InfoFragmentPageAdapter(getActivity(), getActivity().getSupportFragmentManager(), fList, mPageTitleList, mBadgeCountList);
-        infoPager.setAdapter(mPagerAdapter);
-        setIndicator(infoTab, 5, 5);
-        infoTab.setupWithViewPager(infoPager);
-        initBadgeViews();
-        setUpTabBadge();
+        fList.add(sessionListFragment);
+        fList.add(myFragment);
+        adapter = new MyAdapter(getActivity().getSupportFragmentManager());
+        infoPager.setAdapter(adapter);
+//        initFragments();
+        friendCircIndicator();
+//        mPagerAdapter = new InfoFragmentPageAdapter(getActivity(), getActivity().getSupportFragmentManager(), fList, mPageTitleList, mBadgeCountList);
+//        infoPager.setAdapter(mPagerAdapter);
+//        setIndicator(infoTab, 5, 5);
+//        infoTab.setupWithViewPager(infoPager);
+//        initBadgeViews();
+//        setUpTabBadge();
+    }
+
+    private void friendCircIndicator() {
+        magicIndicator.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        CommonNavigator commonNavigator = new CommonNavigator(getActivity());
+//        commonNavigator.setAdjustMode(true);  //ture 即标题平分屏幕宽度的模式
+        commonNavigator.setScrollPivotX(0.65f);
+        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+            @Override
+            public int getCount() {
+                return titles == null ? 0 : titles.length;
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                badgePagerTitleView = new BadgePagerTitleView(context);
+                simplePagerTitleView = new ColorTransitionPagerTitleView(context);
+                simplePagerTitleView.setTextSize(16);
+                simplePagerTitleView.setText(titles[index]);
+                simplePagerTitleView.setSelectedColor(Color.parseColor("#000000"));
+                simplePagerTitleView.setNormalColor(Color.parseColor("#9e9e9e"));
+                simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        infoPager.setCurrentItem(index);
+//                        badgePagerTitleView.setBadgeView(null);
+                    }
+                });
+                badgePagerTitleView.setInnerPagerTitleView(simplePagerTitleView);
+                if (index == 1) {
+                    badgeTextView = (TextView) LayoutInflater.from(context).inflate(R.layout.simple_count_badge_layout, null);
+                    badgePagerTitleView.setBadgeView(badgeTextView);
+
+                }
+                if (index == 1) {
+                    badgePagerTitleView.setXBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_RIGHT, -UIUtil.dip2px(context, 2)));
+                    badgePagerTitleView.setYBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_TOP, 0));
+                }
+                badgePagerTitleView.setAutoCancelBadge(false);
+                return badgePagerTitleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator indicator = new LinePagerIndicator(context);
+                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                indicator.setLineHeight(UIUtil.dip2px(context, 4));
+                indicator.setLineWidth(UIUtil.dip2px(context, 30));
+                indicator.setRoundRadius(UIUtil.dip2px(context, 3));
+                indicator.setStartInterpolator(new AccelerateInterpolator());
+                indicator.setEndInterpolator(new DecelerateInterpolator(2.0f));
+                indicator.setColors(Color.parseColor("#FF2B2B"));
+                return indicator;
+            }
+        });
+        magicIndicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind(magicIndicator, infoPager);
+
     }
 
     public void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
@@ -189,38 +280,38 @@ public class InformationFragment extends BasesFragment {
     }
 
     private void initFragments() {
-        int unread = NIMClient.getService(SystemMessageService.class)
-                .querySystemMessageUnreadCountBlock();
-        count = unread;
+//        int unread = NIMClient.getService(SystemMessageService.class)
+//                .querySystemMessageUnreadCountBlock();
+//        count = unread;
+//        mPageTitleList.add("消息");
+//        mPageTitleList.add("好友");
+//        mBadgeCountList.add(0);
+//        mBadgeCountList.add(count++);
+//        fList.add(SessionListFragment.getInstance(mPageTitleList.get(0)));
+//        fList.add(ContactListFragment.getInstance(mPageTitleList.get(1)));
+//        int unreadCount = SystemMessageUnreadManager.getInstance().getSysMsgUnreadCount();
+//        Observer<Integer> sysMsgUnreadCountChangedObserver = new Observer<Integer>() {
+//            @Override
+//            public void onEvent(Integer unreadCount) {
+//                count= unreadCount;
+//                badgeTextView.setText(count+"");
+////                mBadgeCountList.set(1, unreadCount);
+////                setUpTabBadge();
+//            }
+//        };
+//        NIMClient.getService(SystemMessageObserver.class)
+//                .observeUnreadCountChange(sysMsgUnreadCountChangedObserver, true);
 
-        mPageTitleList.add("消息");
-        mPageTitleList.add("好友");
-        mBadgeCountList.add(0);
-        mBadgeCountList.add(count++);
-        fList.add(SessionListFragment.getInstance(mPageTitleList.get(0)));
-        fList.add(ContactListFragment.getInstance(mPageTitleList.get(1)));
-        int unreadCount = SystemMessageUnreadManager.getInstance().getSysMsgUnreadCount();
-        Observer<Integer> sysMsgUnreadCountChangedObserver = new Observer<Integer>() {
-            @Override
-            public void onEvent(Integer unreadCount) {
-                count += unreadCount;
-                mBadgeCountList.set(1, unreadCount);
-                setUpTabBadge();
-            }
-        };
-        NIMClient.getService(SystemMessageObserver.class)
-                .observeUnreadCountChange(sysMsgUnreadCountChangedObserver, true);
-
-        ReminderManager.getInstance().registerUnreadNumChangedCallback(new ReminderManager.UnreadNumChangedCallback() {
-            @Override
-            public void onUnreadNumChanged(ReminderItem item) {
-                if (item.getId() != ReminderId.CONTACT) {
-                    return;
-                }
-                updateUnreadNum(item.getUnread());
-                setUpTabBadge();
-            }
-        });
+//        ReminderManager.getInstance().registerUnreadNumChangedCallback(new ReminderManager.UnreadNumChangedCallback() {
+//            @Override
+//            public void onUnreadNumChanged(ReminderItem item) {
+//                if (item.getId() != ReminderId.CONTACT) {
+//                    return;
+//                }
+//                updateUnreadNum(item.getUnread());
+////                setUpTabBadge();
+//            }
+//        });
     }
 
     private void initBadgeViews() {
@@ -343,11 +434,9 @@ public class InformationFragment extends BasesFragment {
         }
     }
 
-    //fragment适配器
-    class Find_tab_Adapter extends FragmentPagerAdapter {
-        private String[] titles = new String[]{"消息", "好友"};
 
-        public Find_tab_Adapter(FragmentManager fm) {
+    private class MyAdapter extends FragmentPagerAdapter {
+        public MyAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -358,23 +447,44 @@ public class InformationFragment extends BasesFragment {
 
         @Override
         public int getCount() {
-            return 2;
+            return titles.length;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             return titles[position];
         }
-
-        public View getTabItemView(int position) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.tab_add_red_dot, null);
-            TextView textView = (TextView) view.findViewById(R.id.tv_tab_title);
-            textView.setText(titles[position]);
-
-            return view;
-        }
-
     }
+    //fragment适配器
+//    class Find_tab_Adapter extends FragmentPagerAdapter {
+//        public Find_tab_Adapter(FragmentManager fm) {
+//            super(fm);
+//        }
+//
+//        @Override
+//        public Fragment getItem(int position) {
+//            return fList.get(position);
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return titles.length;
+//        }
+//
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            return titles[position];
+//        }
+
+//        public View getTabItemView(int position) {
+//            View view = LayoutInflater.from(getActivity()).inflate(R.layout.tab_add_red_dot, null);
+//            TextView textView = (TextView) view.findViewById(R.id.tv_tab_title);
+//            textView.setText(titles[position]);
+//
+//            return view;
+//        }
+
+//    }
 
 
     /**
@@ -432,6 +542,9 @@ public class InformationFragment extends BasesFragment {
     @Override
     public void onResume() {
         super.onResume();
+        NIMClient.getService(SystemMessageObserver.class).observeUnreadCountChange(sysMsgUnreadCountChangedObserver, true);
+
         new RecentContactsFragment();
     }
+
 }

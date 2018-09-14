@@ -86,9 +86,14 @@
         android:layout_height="40dp"
         android:background="@color/white">
 
-
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/magic_indicator"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="40dp"></net.lucode.hackware.magicindicator.MagicIndicator>
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabIndicatorColor="@color/red"
@@ -163,6 +168,7 @@
         </RelativeLayout>
 
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"

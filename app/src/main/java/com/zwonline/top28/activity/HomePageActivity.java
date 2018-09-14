@@ -165,7 +165,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private ImageViewPlus add_user_after, imageUser;
     private TextView add_name_after, add_fr_befor, add_foll_befor, add_foll_after;
     private AppBarLayout appBarLayout;
-    private LinearLayout add_after;
+    private LinearLayout add_after,lin_befo;
     private RelativeLayout add_befor;
     private String image_user;
     private ImageView daV_user;
@@ -301,24 +301,23 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         add_user_after = view.findViewById(R.id.add_user_after);
         add_name_after = view.findViewById(R.id.add_name_after);
         add_after = view.findViewById(R.id.add_after);
-
+        lin_befo = view.findViewById(R.id.lin_befo);
         user_dev = view.findViewById(R.id.user_dev);
 
         //加载Tobla
         initTol();
-        img_left_befor.setOnClickListener(new View.OnClickListener() {
+        lin_befo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        img_left_after.setOnClickListener(new View.OnClickListener() {
+        add_after.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-
 
         chat = (TextView) findViewById(R.id.chat);
         guanzhu = (TextView) findViewById(R.id.guanzhu);
@@ -499,22 +498,22 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             if (StringUtil.isNotEmpty(realname)) {
                                 editTextname.setText(realname);
                             } else {
-                                editTextname.setText("请输入姓名");
+                                editTextname.setText("");
                             }
                             if (StringUtil.isNotEmpty(phone)) {
                                 editTextphone.setText(phone);
                             } else {
-                                editTextphone.setText("请输入电话");
+                                editTextphone.setText("");
                             }
                             if (StringUtil.isNotEmpty(wexinnumber)) {
                                 editTexewxin.setText(wexinnumber);
                             } else {
-                                editTexewxin.setText("请输入微信号");
+                                editTexewxin.setText("");
                             }
                             if (StringUtil.isNotEmpty(address)) {
                                 editTextaddress.setText(address);
                             } else {
-                                editTextaddress.setText("请输入地址");
+                                editTextaddress.setText("");
                             }
 //                            if (StringUtil.isNotEmpty(editTextname.getText().toString().trim())) {
 //                                checkBoxrealname.setChecked(true);
@@ -1091,7 +1090,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             mTextView.measure(0, 0);
                             width = mTextView.getMeasuredWidth();
                         }
-
                         //设置tab左右间距为10dp  注意这里不能使用Padding 因为源码中线的宽度是根据 tabView的宽度来设置的
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
                         params.width = width;

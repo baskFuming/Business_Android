@@ -232,5 +232,9 @@ public class BizConstant {
     public static final String MY="4";
 
 
+    public static final int MAGIC=0;
+
+
+
 
 }

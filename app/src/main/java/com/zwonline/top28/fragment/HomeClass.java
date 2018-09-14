@@ -10,10 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jaeger.library.StatusBarUtil;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -23,7 +20,6 @@ import com.zwonline.top28.activity.CompanyActivity;
 import com.zwonline.top28.activity.HomeDetailsActivity;
 import com.zwonline.top28.adapter.HomeAdapter;
 import com.zwonline.top28.base.BasesFragment;
-import com.zwonline.top28.base.BaseHomeFragment;
 import com.zwonline.top28.bean.HomeBean;
 import com.zwonline.top28.bean.HomeClassBean;
 import com.zwonline.top28.constants.BizConstant;
@@ -225,6 +221,7 @@ public class HomeClass extends BasesFragment<IHomeFragment, HomePresenter> imple
                         page = 1;
                         if (cate_id != null && cate_id.equals(BizConstant.BIZ_RECOMMEND_ID)) {
                             presenter.mHomeRecommend(getActivity(),String.valueOf(page));
+
                         } else {
                             presenter.mHomePage(getActivity(),String.valueOf(page), cate_id);
                         }

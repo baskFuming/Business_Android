@@ -42,33 +42,26 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
     private static final String EXTRA_DATA_ITEM_TYPES = "EXTRA_DATA_ITEM_TYPES";
 
     private ContactDataAdapter adapter;
-
     private ListView lvContacts;
-
     private int itemType;
-
     public static final void start(Context context, int teamItemTypes) {
         Intent intent = new Intent();
         intent.setClass(context, TeamListActivity.class);
         intent.putExtra(EXTRA_DATA_ITEM_TYPES, teamItemTypes);
-
         context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         itemType = getIntent().getIntExtra(EXTRA_DATA_ITEM_TYPES, ItemTypes.TEAMS.ADVANCED_TEAM);
-
         setContentView(R.layout.group_list_activity);
 
         ToolBarOptions options = new NimToolBarOptions();
         options.titleId = itemType == ItemTypes.TEAMS.ADVANCED_TEAM ? R.string.advanced_team : R.string.normal_team;
+
         setToolBar(R.id.toolbar, options);
-
         lvContacts = (ListView) findViewById(R.id.group_list);
-
         GroupStrategy groupStrategy = new GroupStrategy();
         IContactDataProvider dataProvider = new ContactDataProvider(itemType);
 
@@ -80,15 +73,16 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
 
             @Override
             protected void onPreReady() {
-            }
 
+            }
             @Override
             protected void onPostLoad(boolean empty, String queryText, boolean all) {
             }
         };
         adapter.addViewHolder(ItemTypes.LABEL, LabelHolder.class);
         adapter.addViewHolder(ItemTypes.TEAM, ContactHolder.class);
-
+        View view = View.inflate(this,R.layout.item_group,null);
+        lvContacts.addHeaderView(view);
         lvContacts.setAdapter(adapter);
         lvContacts.setOnItemClickListener(this);
         lvContacts.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -122,7 +116,6 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         registerTeamUpdateObserver(false);
     }
 
@@ -149,6 +142,7 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
         @Override
         public void onRemoveTeam(Team team) {
             adapter.load(true);
+
         }
     };
 
@@ -167,5 +161,4 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
             }
         }
     }
-
 }
