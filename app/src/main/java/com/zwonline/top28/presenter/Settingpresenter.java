@@ -51,7 +51,6 @@ public class Settingpresenter extends BasePresenter<ISettingView> {
                             sp.insertKey(context,"avatar",headBean.data);
                             iSettingView.showSettingHead(headBean);
                         }
-
                         @Override
                         public void onError(Throwable t) {
 
@@ -101,10 +100,11 @@ public class Settingpresenter extends BasePresenter<ISettingView> {
     public void mSetting(final Context context, String nick_name,
                          String real_name, int sex, String age,
                          String address, String favourite_industry,
-                         String bio,String weixin,String email,String telephone,String job_cate_pid) {
+                         String bio,String weixin,String email,String telephone,String job_cate_pid,String enterprise
+    ,String position) {
         try {
             Flowable<SettingBean> flowable = settingModel.mSetingModel(context, nick_name, real_name, sex, age, address,
-                    favourite_industry, bio,weixin,email,telephone,job_cate_pid);
+                    favourite_industry, bio,weixin,email,telephone,job_cate_pid,enterprise,position);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<SettingBean>() {

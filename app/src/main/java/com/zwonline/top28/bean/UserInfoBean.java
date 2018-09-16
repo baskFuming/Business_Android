@@ -76,6 +76,8 @@ public class UserInfoBean {
             public String email;
             public String telephone;
             public String job_cate_pid;
+            public String enterprise;
+            public String position;
             public static class CompanyBean {
                 /**
                  * id : 1

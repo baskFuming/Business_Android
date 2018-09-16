@@ -85,23 +85,15 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     private RelativeLayout hot_business_relat;
     private LinearLayout home_linear;
     private YangFenUnclaimedWindow yangFenUnclaimedWindow;
-
-
     //二次修改
     @BindView(R.id.magic_indicator)
     MagicIndicator magicIndicator;
-
     private SimplePagerTitleView simplePagerTitleView;
-
     private List<HomeBean.DataBean> hlist;
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
-
-
     @Override
     protected void init(View view) {
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
@@ -204,7 +196,9 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
         commonNavigator.setScrollPivotX(0.65f);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
-            public int getCount() {
+            public int getCount(
+
+            ) {
                 return classList == null ? 0 : classList.size();
             }
 

@@ -219,6 +219,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 sp.insertKey(getActivity(), "favorite", userInfoBean.data.user.favorite);
                 sp.insertKey(getActivity(),"job_cate_pid",userInfoBean.data.user.job_cate_pid);
                 sp.insertKey(getActivity(),"wx_page_type",userInfoBean.data.user.wx_page_type);
+                sp.insertKey(getActivity(),"enterprise",userInfoBean.data.user.enterprise);
+                sp.insertKey(getActivity(),"position",userInfoBean.data.user.position);
             }
 
             avatar = userInfoBean.data.user.avatar;

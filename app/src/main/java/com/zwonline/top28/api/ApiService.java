@@ -643,7 +643,10 @@ public interface ApiService {
             @Field("weixin") String weixin,
             @Field("email") String email,
             @Field("telephone") String telephone,
-            @Field("job_cate_pid") String job_cate_pid
+            @Field("job_cate_pid") String job_cate_pid,
+            @Field("enterprise") String enterprise,
+            @Field("position") String position
+
     );
 
     //行业分类

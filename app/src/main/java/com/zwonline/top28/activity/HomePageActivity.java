@@ -165,7 +165,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private ImageViewPlus add_user_after, imageUser;
     private TextView add_name_after, add_fr_befor, add_foll_befor, add_foll_after;
     private AppBarLayout appBarLayout;
-    private LinearLayout add_after,lin_befo;
+    private LinearLayout add_after, lin_befo;
     private RelativeLayout add_befor;
     private String image_user;
     private ImageView daV_user;
@@ -199,17 +199,22 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
 
     private String wx_page_type;
     private int wXinType;
-    private CheckBox checkBoxrealname;
-
+    private CheckBox checkBoxrealname, checkBoxsharephone, checkBoxwxin, checkBoxaddress, checkbox_job, checkbox_adress;
     private View view;
     private Bitmap bitmaps;
     private int time = 0;
     private String filePath;
 
+    private Bitmap bmp;
+    private EditText editTextname, editTextphone, editTexewxin, editTextaddress, share_job, job_address;
+
+    //分享小程序 可选字段
+    private String show_enterprise;
+    private String show_position;
+
     @Override
     protected void init() {
         requestPower();
-
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
         NavigationBar.Statedata(this);
@@ -219,13 +224,14 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         islogins = (boolean) sp.getKey(this, "islogin", false);
         userUid = (String) sp.getKey(this, "uid", "");
         wx_page_type = (String) sp.getKey(this, "wx_page_type", "");
+        //职位 公司名称
+        show_enterprise = (String) sp.getKey(this, "enterprise", show_enterprise);
+        show_position = (String) sp.getKey(this, "position", show_position);
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         sex = intent.getStringExtra("sex");
-
         sharewexinnumber = intent.getStringExtra("weixin");
         Log.e("weixin", sharewexinnumber + "");
-
         sharerealname = intent.getStringExtra("realname");
         sharephone = intent.getStringExtra("phone");
         sharemail = intent.getStringExtra("email");
@@ -242,7 +248,9 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         issueRecyclerViewData();
         shareRecyclerViewData();
         initView();
-        presenter.mSetting(this, "", realname, 0, "", address, "", "", wexinnumber, "", phone, "");
+        presenter.mSetting(this, "", realname, 0, "", address, "", "", wexinnumber, "", phone, "", show_enterprise, show_position);
+
+
     }
 
     /**
@@ -491,10 +499,52 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             View contentView = myQrCodePopwindow.getContentView();
                             //查找  布局控件
                             TextView editTextshare = contentView.findViewById(R.id.textshare);
-                            final EditText editTextname = contentView.findViewById(R.id.share_name);
-                            final EditText editTextphone = contentView.findViewById(R.id.share_phone);
-                            final EditText editTexewxin = contentView.findViewById(R.id.share_wxin);
-                            final EditText editTextaddress = contentView.findViewById(R.id.share_address);
+                            //Editext
+                            editTextname = contentView.findViewById(R.id.share_name);
+                            editTextphone = contentView.findViewById(R.id.share_phone);
+                            editTexewxin = contentView.findViewById(R.id.share_wxin);
+                            editTextaddress = contentView.findViewById(R.id.share_address);
+                            share_job = contentView.findViewById(R.id.share_job);
+                            job_address = contentView.findViewById(R.id.job_address);
+                            //CheckBox
+                            checkBoxrealname = contentView.findViewById(R.id.share_check1);
+                            checkBoxsharephone = contentView.findViewById(R.id.share_check2);
+                            checkBoxwxin = contentView.findViewById(R.id.share_check3);
+                            checkBoxaddress = contentView.findViewById(R.id.share_check4);
+                            checkbox_job = contentView.findViewById(R.id.checkbox_job);
+                            checkbox_adress = contentView.findViewById(R.id.checkbox_adress);
+                            //判断checkbox是否选中
+                            if (StringUtil.isNotEmpty(realname)) {
+                                checkBoxrealname.setChecked(true);
+                            } else {
+                                checkBoxrealname.setChecked(false);
+                            }
+                            if (StringUtil.isNotEmpty(phone)) {
+                                checkBoxsharephone.setChecked(true);
+                            } else {
+                                checkBoxsharephone.setChecked(false);
+                            }
+                            if (StringUtil.isNotEmpty(wexinnumber)) {
+                                checkBoxwxin.setChecked(true);
+                            } else {
+                                checkBoxwxin.setChecked(false);
+                            }
+                            if (StringUtil.isNotEmpty(address)) {
+                                checkBoxaddress.setChecked(true);
+                            } else {
+                                checkBoxaddress.setChecked(false);
+                            }
+                            if (StringUtil.isNotEmpty(show_enterprise)){
+                                checkbox_job.setChecked(true);
+                            }else {
+                                checkbox_job.setChecked(false);
+                            }
+                            if (StringUtil.isNotEmpty(show_position)){
+                                checkbox_adress.setChecked(true);
+                            }else {
+                                checkbox_adress.setChecked(false);
+                            }
+                            //这里当前获取的字段
                             if (StringUtil.isNotEmpty(realname)) {
                                 editTextname.setText(realname);
                             } else {
@@ -515,20 +565,17 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             } else {
                                 editTextaddress.setText("");
                             }
-//                            if (StringUtil.isNotEmpty(editTextname.getText().toString().trim())) {
-//                                checkBoxrealname.setChecked(true);
-//                            } else {
-//                                checkBoxrealname.setChecked(false);
-//                            }
-
-                            checkBoxrealname = contentView.findViewById(R.id.share_check1);
-                            final CheckBox checkBoxsharephone = contentView.findViewById(R.id.share_check2);
-                            final CheckBox checkBoxwxin = contentView.findViewById(R.id.share_check3);
-                            final CheckBox checkBoxaddress = contentView.findViewById(R.id.share_check4);
-                            /**
-                             *
-                             * 点击分享
-                             */
+                            if (StringUtil.isNotEmpty(show_enterprise)){
+                                share_job.setText(show_enterprise);
+                            }else {
+                                share_job.setText("");
+                            }
+                            if(StringUtil.isNotEmpty(show_position)){
+                                job_address.setText(show_position);
+                            }else {
+                                job_address.setText("");
+                            }
+                            //分享小程序
                             editTextshare.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {  // 1 0
@@ -552,10 +599,20 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                     } else {
                                         addresss = BizConstant.NO_FAVORITE;
                                     }
-                                    presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss);
+                                    if (checkbox_job.isChecked()){
+                                        show_enterprise = BizConstant.ALREADY_FAVORITE;
+                                    }else {
+                                        show_enterprise = BizConstant.NO_FAVORITE;
+                                    }
+                                    if (checkbox_adress.isChecked()){
+                                        show_position = BizConstant.ALREADY_FAVORITE;
+                                    }else {
+                                        show_position = BizConstant.NO_FAVORITE;
+                                    }
+                                    presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss, show_enterprise, show_position);
                                     presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), Integer.parseInt(sex_id), "", editTextaddress.getText().toString().trim(),
                                             "", "", editTexewxin.getText().toString().trim(),
-                                            "", editTextphone.getText().toString().trim(), "");
+                                            "", editTextphone.getText().toString().trim(), "", share_job.getText().toString(), job_address.getText().toString());
                                     shareWXin(uid);
                                     myQrCodePopwindow.dismiss();
                                     myQrCodePopwindow.backgroundAlpha(HomePageActivity.this, 1f);
@@ -923,6 +980,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             wexinnumber = userInfoBean.data.user.weixin;
             address = userInfoBean.data.user.residence;
             sex_id = userInfoBean.data.user.sex;
+            show_enterprise = userInfoBean.data.user.enterprise;
+            show_position = userInfoBean.data.user.position;
         } else {
             ToastUtil.showToast(this, "请重新登录");
         }
@@ -942,9 +1001,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        if (Util.isOnMainThread()) {
-//            Glide.with(getApplicationContext()).pauseRequests();
-//        }
+        bmp.recycle();
     }
 
     //Dialog弹窗
@@ -1249,7 +1306,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         // 尺寸压缩倍数,值越大，图片尺寸越小
         int ratio = 2;
         // 压缩Bitmap到对应尺寸
-        Bitmap result = Bitmap.createBitmap(bmp.getWidth() / ratio, bmp.getHeight() / ratio, Bitmap.Config.RGB_565);
+        Bitmap result = Bitmap.createBitmap(bmp.getWidth() / ratio, (int) (bmp.getHeight() / ratio / 2.8), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(result);
         Rect rect = new Rect(0, 0, bmp.getWidth() / ratio, bmp.getHeight() / ratio);
         canvas.drawBitmap(bmp, null, rect, null);
@@ -1272,7 +1329,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         View dView = getWindow().getDecorView();
         dView.setDrawingCacheEnabled(true);
         dView.buildDrawingCache();
-        Bitmap bmp = dView.getDrawingCache();
+        bmp = dView.getDrawingCache();
         if (bmp != null) {
             try {
                 // 获取内置SD卡路径
@@ -1286,6 +1343,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                 bmp.recycle();
             }
         }
+//        toolbar.setVisibility(View.GONE);
     }
 
     //file 转为Bitmap
@@ -1308,6 +1366,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             }
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

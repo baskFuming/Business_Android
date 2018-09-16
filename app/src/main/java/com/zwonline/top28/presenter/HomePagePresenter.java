@@ -364,9 +364,9 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
     }
 
     //微信分享名片
-    public void cardShareWXin(Context context,String show_realname,String show_telephone,String show_weixin,String show_address){
+    public void cardShareWXin(Context context,String show_realname,String show_telephone,String show_weixin,String show_address,String show_enterprise,String show_position){
         try {
-            Flowable<RealBean> flowable = homePageModel.shareWxin(context, show_realname,show_telephone,show_weixin,show_address);
+            Flowable<RealBean> flowable = homePageModel.shareWxin(context, show_realname,show_telephone,show_weixin,show_address,show_enterprise,show_position);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<RealBean>() {
@@ -393,10 +393,10 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
     public void mSetting(final Context context, String nick_name,
                          String real_name, int sex, String age,
                          String address, String favourite_industry,
-                         String bio,String weixin,String email,String telephone,String job_cate_pid) {
+                         String bio,String weixin,String email,String telephone,String job_cate_pid,String enterprise,String position) {
         try {
             Flowable<SettingBean> flowable = homePageModel.mSetingModel(context, nick_name, real_name, sex, age, address,
-                    favourite_industry, bio,weixin,email,telephone,job_cate_pid);
+                    favourite_industry, bio,weixin,email,telephone,job_cate_pid,enterprise,position);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<SettingBean>() {

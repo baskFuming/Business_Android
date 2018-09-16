@@ -64,7 +64,8 @@ public class SettingModel {
     public Flowable<SettingBean> mSetingModel(Context context, String nick_name,
                                               String real_name, int sex, String age,
                                               String address, String favourite_industry,
-                                              String bio,String weixin,String email,String telephone,String job_cate_pid) throws IOException {
+                                              String bio,String weixin,String email,String telephone,String job_cate_pid
+                                       ,String enterprise,String position) throws IOException {
 
         sp = SharedPreferencesUtils.getUtil();
         String token = (String) sp.getKey(context, "dialog", "");
@@ -83,12 +84,14 @@ public class SettingModel {
         map.put("email", email);
         map.put("telephone", telephone);
         map.put("job_cate_pid", job_cate_pid);
+        map.put("enterprise",enterprise);
+        map.put("position",position);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<SettingBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
                 .iSetting(String.valueOf(timestamp), token, sign, nick_name, real_name, sex, age, address, favourite_industry, bio
-                ,weixin,email,telephone,job_cate_pid);
+                ,weixin,email,telephone,job_cate_pid,enterprise,position);
         return flowable;
     }
 

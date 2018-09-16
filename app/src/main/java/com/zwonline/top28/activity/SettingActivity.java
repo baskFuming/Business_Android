@@ -130,6 +130,8 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     private String interested_cate_id;
     private String sex_id;
     private TextView textCount;
+    private String enterprice;
+    private String ad_position;
 
     @Override
     protected void init() {
@@ -145,6 +147,8 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         intent.putExtra("job_cate_pid", share_job_cate_pid);
         intent.putExtra("residence", shareaddress);
         intent.putExtra("sex_id", sex_id);
+        intent.putExtra("enterprice",enterprice);
+        intent.putExtra("position",ad_position);
 //        presenter.mIndustryBean(getApplicationContext());
         industry_list = new ArrayList<>();
         dlist = new ArrayList<>();
@@ -289,6 +293,8 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             interested_cate_id = userInfoBean.data.user.cate_pid;
 //            my_jobs.setText(userInfoBean.data.user.job_cate_pid);
 //            real_job.setText(userInfoBean.data.user.favorite);
+            enterprice = userInfoBean.data.user.enterprise;
+            ad_position = userInfoBean.data.user.position;
             ed_my_email.setText(sharemail);
             share_job_cate_pid = userInfoBean.data.user.cate_pid;//您所从事的行业
             if (StringUtil.isNotEmpty(sex_cn)) {
@@ -362,8 +368,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                         address.getText().toString().trim(), interested_cate_id,
                         bio.getText().toString().trim(), ed_my_wxin.getText().toString().trim(),
                         ed_my_email.getText().toString().trim(), ed_my_phone.getText().toString().trim(),
-                        job_cate_pid
-                );
+                        job_cate_pid,"","");
                 RecordUserBehavior.recordUserBehavior(SettingActivity.this, BizConstant.EDITED_PROFILE);
 //                Intent intent = new Intent();
 //                intent.putExtra("nickname", nickName.getText().toString().trim());
@@ -515,8 +520,6 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                             openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
                             startActivityForResult(openCameraIntent, TAKE_PICTURE);
                         }
-
-
                         break;
                 }
             }

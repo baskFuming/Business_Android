@@ -221,7 +221,8 @@ public class HomePageModel {
     }
 
     //微信分享名片
-    public Flowable<RealBean> shareWxin(Context context, String show_realname, String show_telephone, String show_weixin, String show_address) throws IOException {
+    public Flowable<RealBean> shareWxin(Context context, String show_realname, String show_telephone, String show_weixin, String show_address
+    ,String show_enterprise,String show_position) throws IOException {
         String versionName = LanguageUitils.getVersionName(context);
         sp = SharedPreferencesUtils.getUtil();
         String token = (String) sp.getKey(context, "dialog", "");
@@ -234,19 +235,21 @@ public class HomePageModel {
         map.put("show_telephone", show_telephone);
         map.put("show_weixin", show_weixin);
         map.put("show_address", show_address);
+        map.put("show_enterprise",show_enterprise);
+        map.put("show_position",show_position);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<RealBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .sjPageCallback(String.valueOf(timestamp), token, sign, versionName, show_realname,
-                        show_telephone,show_weixin,show_address);
+                        show_telephone,show_weixin,show_address,show_enterprise,show_position);
         return flowable;
     }
     //微信名片更新  weixin email telephone job_cate_pid
     public Flowable<SettingBean> mSetingModel(Context context, String nick_name,
                                               String real_name, int sex, String age,
                                               String address, String favourite_industry,
-                                              String bio, String weixin, String email, String telephone, String job_cate_pid) throws IOException {
+                                              String bio, String weixin, String email, String telephone, String job_cate_pid,String enterprise,String position) throws IOException {
 
         sp = SharedPreferencesUtils.getUtil();
         String token = (String) sp.getKey(context, "dialog", "");
@@ -265,12 +268,14 @@ public class HomePageModel {
         map.put("email", email);
         map.put("telephone", telephone);
         map.put("job_cate_pid", job_cate_pid);
+        map.put("enterprise",enterprise);
+        map.put("position",position);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<SettingBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .iSetting(String.valueOf(timestamp), token, sign, nick_name, real_name, sex, age, address, favourite_industry, bio
-                        ,weixin,email,telephone,job_cate_pid);
+                        ,weixin,email,telephone,job_cate_pid,enterprise,position);
         return flowable;
     }
 

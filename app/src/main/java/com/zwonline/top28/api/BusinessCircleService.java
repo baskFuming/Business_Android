@@ -435,6 +435,8 @@ public interface BusinessCircleService {
      * @param show_telephone
      * @param show_weixin
      * @param show_address
+     * @param show_enterprise
+     * @param show_position
      * @return
      */
     @FormUrlEncoded
@@ -447,8 +449,10 @@ public interface BusinessCircleService {
             @Field("show_realname") String show_realname,
             @Field("show_telephone") String show_telephone,
             @Field("show_weixin") String show_weixin,
-            @Field("show_address") String show_address
-    );
+            @Field("show_address") String show_address,
+            @Field("show_enterprise") String show_enterprise,
+            @Field("show_position") String show_position
+            );
 
     //微信分享名片更新用户
     @FormUrlEncoded
@@ -467,7 +471,9 @@ public interface BusinessCircleService {
             @Field("weixin") String weixin,
             @Field("email") String email,
             @Field("telephone") String telephone,
-            @Field("job_cate_pid") String job_cate_pid
+            @Field("job_cate_pid") String job_cate_pid,
+            @Field("enterprise") String enterprise,
+            @Field("position") String position
     );
 
     //获取个人信息

@@ -31,7 +31,6 @@
                 android:layout_marginLeft="17dp"
                 android:focusable="false"
                 android:background="@mipmap/ret_black"
-                android:onClick="imgOnclickAfter"
                 android:padding="10px" />
             <RelativeLayout
                 android:layout_width="30dp"
@@ -83,8 +82,8 @@
                     android:layout_gravity="center"
                     android:background="@mipmap/back"
                     android:gravity="center"
-                    android:onClick="imgOnclickBefor"
                     android:padding="10px" />
+
             </LinearLayout>
 
             <TextView
