@@ -85,15 +85,23 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     private RelativeLayout hot_business_relat;
     private LinearLayout home_linear;
     private YangFenUnclaimedWindow yangFenUnclaimedWindow;
+
+
     //二次修改
     @BindView(R.id.magic_indicator)
     MagicIndicator magicIndicator;
+
     private SimplePagerTitleView simplePagerTitleView;
+
     private List<HomeBean.DataBean> hlist;
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
+
+
     @Override
     protected void init(View view) {
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
@@ -159,6 +167,7 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
 
     @Override
     public void showHomeClass(final List<HomeBean.DataBean> classList) {
+//        viewpager.setCurrentItem(1);
         loadingTablayout(classList);
 
 //        for (int i = 0; i < classList.size(); i++) {
@@ -177,7 +186,7 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
 //        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getChildFragmentManager(), classList);
 //        viewpager.setAdapter(myFragmentAdapter);
 //        viewpager.setOffscreenPageLimit(1);
-//        viewpager.setCurrentItem(1);
+
 //        StringUtil.reflex(tablayout);
 //        tablayout.setTabsFromPagerAdapter(myFragmentAdapter);
 //        tablayout.setupWithViewPager(viewpager);
@@ -185,20 +194,28 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
 
     private void loadingTablayout(final List<HomeBean.DataBean> classList) {
         HomeBean.DataBean bean = new HomeBean.DataBean("300", getString(R.string.center_recommend));
+        HomeBean.DataBean bean1 = new HomeBean.DataBean("400", getString(R.string.center_car));
         classList.add(1, bean);
+//        classList.add(bean1);
+//        classList.add(bean1);
+//        classList.add(bean1);
+//        classList.add(bean1);
         MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getChildFragmentManager(), classList);
+//        viewpager.setOffscreenPageLimit(1);
         viewpager.setAdapter(myFragmentAdapter);
-        viewpager.setOffscreenPageLimit(1);
-        viewpager.setCurrentItem(1);
+//        viewpager.setCurrentItem(1);
         magicIndicator.setBackgroundColor(Color.parseColor("#FFFFFF"));
         CommonNavigator commonNavigator = new CommonNavigator(getActivity());
-        commonNavigator.setAdjustMode(true);  //ture 即标题平分屏幕宽度的模式
+        if (classList.size()>6){
+            commonNavigator.setAdjustMode(false);  //ture 即标题平分屏幕宽度的模式
+        }else {
+            commonNavigator.setAdjustMode(true);  //ture 即标题平分屏幕宽度的模式
+        }
         commonNavigator.setScrollPivotX(0.65f);
+
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
-            public int getCount(
-
-            ) {
+            public int getCount() {
                 return classList == null ? 0 : classList.size();
             }
 
@@ -209,14 +226,18 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
                 for (int i = 0; i < classList.size(); i++) {
                     simplePagerTitleView.setText(classList.get(index).cate_name);
                 }
-                simplePagerTitleView.setSelectedColor(Color.parseColor("#000000"));
-                simplePagerTitleView.setNormalColor(Color.parseColor("#9e9e9e"));
+                simplePagerTitleView.setSelectedColor(Color.parseColor("#2F2F2F"));
+                simplePagerTitleView.setNormalColor(Color.parseColor("#807F81"));
+
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        //第二次进入跳转
                         viewpager.setCurrentItem(index);
                     }
                 });
+
                 return simplePagerTitleView;
             }
 
@@ -235,6 +256,7 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
         });
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
+        viewpager.setCurrentItem(1);
     }
 
     @Override

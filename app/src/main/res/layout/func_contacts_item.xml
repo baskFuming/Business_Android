@@ -168,13 +168,10 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dip"
             android:layout_toRightOf="@id/tv_func_name"
-            android:background="@drawable/redcircle_shape"
+            android:background="@drawable/simple_count_badge_bg"
             android:gravity="center"
-            android:paddingLeft="5dp"
-            android:paddingRight="4dp"
-            android:singleLine="true"
             android:textColor="@android:color/white"
-            android:textSize="10sp"
+            android:textSize="8sp"
             android:visibility="gone" />
 
         <ImageView

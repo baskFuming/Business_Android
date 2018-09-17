@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -16,8 +18,11 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +63,9 @@ import com.zwonline.top28.utils.NetUtils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
+import com.zwonline.top28.utils.badge.BadgeView;
+import com.zwonline.top28.utils.badge.InfoBadgeView;
+import com.zwonline.top28.utils.badge.MainBadgeView;
 import com.zwonline.top28.utils.popwindow.CustomPopuWindow;
 import com.zwonline.top28.utils.popwindow.YangFenUnclaimedWindow;
 import com.zwonline.top28.view.IMainActivity;
@@ -73,14 +81,13 @@ import java.util.List;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 
 
-public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter> implements IMainActivity, BottomNavigationBar.OnTabSelectedListener {
+public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter> implements RadioGroup.OnCheckedChangeListener, IMainActivity {
     public SharedPreferencesUtils sp;
     private HomeFragment homeFragment;
     private FriendCircleFragment businessFragment;
     private InformationFragment informationFragment;
     private MyFragment myFragment;
     private ExamineFragment examineFragment;
-    private TextBadgeItem mBadgeItem;
     private List<RecentContact> items;
     private int unreadMsgsCount;
     //退出时的时间
@@ -106,11 +113,22 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private boolean islogine;
     private String token;
     private String mbpCount;
-
+    private Fragment mFragment;
+    private int page = 1;
+    private RadioButton rbHome;
+    private RadioButton rbYangShi;
+    private RadioButton rbBusinessCircle;
+    private RadioButton rbInfo;
+    private RadioButton rbMy;
+    private MainBadgeView badgeView;
 
     @Override
     protected void init() {
         new RecentContactsFragment();
+        homeFragment = new HomeFragment();
+        businessFragment = new FriendCircleFragment();
+        informationFragment = new InformationFragment();
+        myFragment = new MyFragment();
         initView();
 //        ToastUtils.showToast(this,LanguageUitils.getVersionName(this)+"");
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -121,21 +139,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         sp = SharedPreferencesUtils.getUtil();
         islogine = (boolean) sp.getKey(this, "islogin", false);
         token = (String) sp.getKey(getApplicationContext(), "dialog", "");
+        initFragmentManager();
         presenter.HongBaoPermission(getApplicationContext());//红包权限
-
-//        try {
-//            String token= (String) sp.getKey(context,"dialog","");
-//            long timestamp = new Date().getTime() / 1000;//时间戳
-//            Map<String, String> map = new HashMap<>();
-//            map.put("token", token);
-//            map.put("hongbao_id", "125");
-//            map.put("timestamp", String.valueOf(timestamp));
-//            String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-//            System.out.print("timestamp==" + timestamp + "sign==" + sign + "token==" + token);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
 
         appInstalled = LanguageUitils.isAppInstalled(context, BizConstant.YINGYONGBAO);
         xiaomi = LanguageUitils.isAppInstalled(context, BizConstant.XIAOMI);
@@ -149,7 +154,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             e.printStackTrace();
         }
 
-        assignViews();
+//        assignViews();
         updateUnreadCount();//更新消息数据
         initMessageListener();
         int code = getVersionCode();//获取版本号
@@ -160,6 +165,38 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         }
 
 
+    }
+
+    /**
+     *
+     */
+    private void initFragmentManager() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.MYLOGIN)) {
+            fragmentManager.beginTransaction().add(R.id.framelayout, myFragment).commit();
+            mFragment = myFragment;
+            rbMy.setChecked(true);
+        } else if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.INFO_LOGIN)) {
+            fragmentManager.beginTransaction().add(R.id.framelayout, informationFragment).commit();
+            mFragment = informationFragment;
+            rbInfo.setChecked(true);
+        } else if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.TYPE_TWO)) {
+            fragmentManager.beginTransaction().add(R.id.framelayout, businessFragment).commit();
+            mFragment = businessFragment;
+            rbBusinessCircle.setChecked(true);
+        } else if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.TYPE_ONE)) {
+            fragmentManager.beginTransaction().add(R.id.framelayout, homeFragment).commit();
+            mFragment = homeFragment;
+            rbHome.setChecked(true);
+        } else if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.IS_FAIL)) {
+            fragmentManager.beginTransaction().add(R.id.framelayout, homeFragment).commit();
+            mFragment = homeFragment;
+            rbHome.setChecked(true);
+        } else {
+            fragmentManager.beginTransaction().add(R.id.framelayout, homeFragment).commit();
+            mFragment = homeFragment;
+            rbHome.setChecked(true);
+        }
     }
 
     @Override
@@ -183,6 +220,126 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         framelayout = (FrameLayout) findViewById(R.id.framelayout);
         bottomBar = (BottomNavigationBar) findViewById(R.id.bottom_bar);
         mian = (LinearLayout) findViewById(R.id.main);
+        RadioGroup navigationBar = (RadioGroup) findViewById(R.id.rg_main);
+        rbHome = (RadioButton) findViewById(R.id.rb_home);
+
+        rbYangShi = (RadioButton) findViewById(R.id.rb_yangshi);
+        rbBusinessCircle = (RadioButton) findViewById(R.id.rb_business_circle);
+        rbInfo = (RadioButton) findViewById(R.id.rb_info);
+        rbMy = (RadioButton) findViewById(R.id.rb_my);
+        Button btn_msg = (Button) findViewById(R.id.btn_msg);
+        badgeView = new MainBadgeView(this);
+        badgeView.setTargetView(btn_msg);
+        badgeView.setTextSize(10);
+        badgeView.setBadgeMargin(0, 0, 12, 10);
+        navigationBar.setOnCheckedChangeListener(this);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        sp.insertKey(getApplicationContext(), "isfer", false);
+        switch (checkedId) {
+            case R.id.rb_home:
+                rbHome.setChecked(true);
+                switchFragment(homeFragment);
+                StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                page = 1;
+                break;
+            case R.id.rb_yangshi:
+                if (islogine) {
+                    if (page == 1) {
+                        rbHome.setChecked(true);
+                        switchFragment(homeFragment);
+                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                    } else if (page == 3) {
+                        rbBusinessCircle.setChecked(true);
+                        switchFragment(businessFragment);
+                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                    } else if (page == 4) {
+                        rbInfo.setChecked(true);
+                        switchFragment(informationFragment);
+                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                    } else if (page == 5) {
+                        rbMy.setChecked(true);
+                        switchFragment(myFragment);
+                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                    }
+//
+                    startActivity(new Intent(this, YangShiActivity.class));
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                } else {
+                    Intent infoIntent = new Intent(this, WithoutCodeLoginActivity.class);
+//                    infoIntent.putExtra("login_type", BizConstant.BUSINESS_LOGIN);
+                    startActivity(infoIntent);
+                    //activity切换动画效果
+                    finish();
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                }
+                break;
+            case R.id.rb_business_circle:
+                rbBusinessCircle.setChecked(true);
+                switchFragment(businessFragment);
+                StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                page = 3;
+                break;
+            case R.id.rb_info:
+                if (islogine) {
+                    rbInfo.setChecked(true);
+                    rbHome.setChecked(false);
+                    rbMy.setChecked(false);
+                    rbBusinessCircle.setChecked(false);
+                    rbYangShi.setChecked(false);
+                    switchFragment(informationFragment);
+                    StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                    page = 4;
+                } else {
+                    Intent infoIntent = new Intent(this, WithoutCodeLoginActivity.class);
+//                    infoIntent.putExtra("login_type", BizConstant.BUSINESS_LOGIN);
+                    infoIntent.putExtra("login_type", BizConstant.INFO_LOGIN);
+                    startActivity(infoIntent);
+                    //activity切换动画效果
+                    finish();
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    startActivity(infoIntent);
+                    //activity切换动画效果
+                    finish();
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                }
+
+                break;
+            case R.id.rb_my:
+                if (islogine) {
+                    rbMy.setChecked(true);
+                    switchFragment(myFragment);
+                    StatusBarUtil.setColor(this, getResources().getColor(R.color.reded), 0);
+                    page = 5;
+                } else {
+                    Intent myIntent = new Intent(this, WithoutCodeLoginActivity.class);
+                    myIntent.putExtra("login_type", BizConstant.MYLOGIN);
+                    startActivity(myIntent);
+                    //activity切换动画效果
+                    finish();
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                }
+
+                break;
+        }
+    }
+
+    private void switchFragment(Fragment fragment) {
+        //判断当前显示的Fragment是不是切换的Fragment
+        if (mFragment != fragment) {
+            //判断切换的Fragment是否已经添加过
+            if (!fragment.isAdded()) {
+                //如果没有，则先把当前的Fragment隐藏，把切换的Fragment添加上
+                getSupportFragmentManager().beginTransaction().hide(mFragment)
+                        .add(R.id.framelayout, fragment).commit();
+            } else {
+                //如果已经添加过，则先把当前的Fragment隐藏，把切换的Fragment显示出来
+                getSupportFragmentManager().beginTransaction().hide(mFragment).show(fragment).commit();
+            }
+            mFragment = fragment;
+        }
     }
 
     //检测本程序的版本，这里假设从服务器中获取到最新的版本号为3
@@ -191,7 +348,16 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         if (!StringUtil.isEmpty(version) && version.equals("1")) {
 //            showDialogUpdate();//弹出提示版本更新的对话框
             customPopuWindow = new CustomPopuWindow(MainActivity.this, description, forceUpdate, listener);
-            customPopuWindow.showAtLocation(MainActivity.this.findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+            mian.post(new Runnable() {
+                @Override
+                public void run() {
+                    customPopuWindow.showAtLocation(mian, Gravity.CENTER, 0, 0);
+
+                }
+            });
+
+
+//            customPopuWindow.showAtLocation(this.findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         } else {
             if (islogine) {
                 //yangFenLingQu();//鞅分领取
@@ -200,7 +366,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 
             //否则吐司，说现在是最新的版本
 //            Toast.makeText(this, "当前已经是最新的版本", Toast.LENGTH_SHORT).show();
-            Log.v("updata", "当前已经是最新的版本");
+//            Log.v("updata", "当前已经是最新的版本");
         }
     }
 
@@ -228,7 +394,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(boolean flag) {
         if (flag) {
-            mBadgeItem.setText(unreadMsgsCount + "");
+            badgeView.setBadgeCount(unreadMsgsCount);
         }
     }
 
@@ -241,16 +407,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         //获取所有的未读消息
 
         unreadMsgsCount = NIMClient.getService(MsgService.class).getTotalUnreadCount();
-        if (unreadMsgsCount > 99) {
-            mBadgeItem.setText("99+");//底部使用的自定义控件显示未读消息99d
-            mBadgeItem.show(true);//true,使用默认动画显示
-        } else if (unreadMsgsCount > 0) {//unreadMsgsCount
-            mBadgeItem.setText(String.valueOf(unreadMsgsCount));
-            mBadgeItem.show(true);
-        } else {
-            mBadgeItem.hide(true);
-        }
-        //mBadgeItem.setText(unreadMsgsCount+"");
+        badgeView.setBadgeCount(unreadMsgsCount);
 
     }
 
@@ -259,229 +416,6 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     protected void onResume() {
         super.onResume();
 //        updateUnreadCount();
-    }
-
-    //添加底部布局
-    private void assignViews() {
-
-        bottomBar.setMode(BottomNavigationBar.MODE_FIXED);
-        bottomBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        bottomBar.setTabSelectedListener(this);//设置监听
-        setDefaultFragment();
-
-        BottomNavigationItem conversationItem = new BottomNavigationItem(R.mipmap.menubar_message1, "消息").setActiveColorResource(R.color.reded).setInactiveIcon(ContextCompat.getDrawable(this, R.mipmap.menubar_message2));
-        mBadgeItem = new TextBadgeItem();
-        mBadgeItem.setGravity(Gravity.RIGHT);
-        mBadgeItem.setTextColor("#ffffff");
-        mBadgeItem.setBackgroundColor("#ff0000");
-//        mBadgeItem.setText("5");
-        mBadgeItem.show();
-        conversationItem.setBadgeItem(mBadgeItem);
-        bottomBar.addItem(new BottomNavigationItem(R.mipmap.menubar_home1, R.string.tabbar_home_page).setActiveColorResource(R.color.reded).setInactiveIcon(ContextCompat.getDrawable(this, R.mipmap.menubar_home2)))
-//                .addItem(new BottomNavigationItem(R.mipmap.menubar_jifen1, R.string.tabbar_biz_page).setActiveColorResource(R.color.reded).setInactiveIcon(ContextCompat.getDrawable(this, R.mipmap.menuba_jifen2)))
-//                .addItem(new BottomNavigationItem(R.mipmap.menubar_video1, R.string.tabbar_video_page).setActiveColorResource(R.color.reded).setInactiveIcon(ContextCompat.getDrawable(this, R.mipmap.menubar_video2)))
-                .addItem(new BottomNavigationItem(R.mipmap.menubar_ys, R.string.tabbar_yangshi).setActiveColorResource(R.color.reded).setInactiveIcon(ContextCompat.getDrawable(this, R.mipmap.menubar_ys)))
-                .addItem(new BottomNavigationItem(R.mipmap.menubar_sjq1, R.string.tabbar_business_circle).setActiveColorResource(R.color.reded).setInactiveIcon(ContextCompat.getDrawable(this, R.mipmap.menubar_sjq2)))
-                .addItem(conversationItem)
-                .addItem(new BottomNavigationItem(R.mipmap.menubar_wode1, R.string.tabbar_my_page).setActiveColorResource(R.color.reded).setInactiveIcon(ContextCompat.getDrawable(this, R.mipmap.menubar_wode2)))
-                .setActiveColor(R.color.red)
-                .setInActiveColor(R.color.tabhost_text)
-                .setActiveColor(R.color.tabhost_text)
-                .setBarBackgroundColor(R.color.white)
-                .initialise();
-    }
-
-    //设置默认的选项
-    private void setDefaultFragment() {
-        if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.MYLOGIN)) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            myFragment = new MyFragment();
-            fragmentTransaction.add(R.id.framelayout, myFragment);
-            fragmentTransaction.commit();
-            bottomBar.setFirstSelectedPosition(4);
-        } else if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.INFO_LOGIN)) {
-            informationFragment = new InformationFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.framelayout, informationFragment);
-            fragmentTransaction.commit();
-            bottomBar.setFirstSelectedPosition(3);
-        } else if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.TYPE_TWO)) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            businessFragment = new FriendCircleFragment();
-            fragmentTransaction.add(R.id.framelayout, businessFragment);
-            fragmentTransaction.commit();
-            bottomBar.setFirstSelectedPosition(2);
-        } else if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.TYPE_ONE)) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            examineFragment = new ExamineFragment();
-            fragmentTransaction.add(R.id.framelayout, examineFragment);
-            fragmentTransaction.commit();
-            bottomBar.setFirstSelectedPosition(1);
-        } else if (StringUtil.isNotEmpty(loginType) && loginType.equals(BizConstant.IS_FAIL)) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            homeFragment = new HomeFragment();
-            fragmentTransaction.add(R.id.framelayout, homeFragment);
-            fragmentTransaction.commit();
-            bottomBar.setFirstSelectedPosition(0);
-        } else {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            homeFragment = new HomeFragment();
-            fragmentTransaction.add(R.id.framelayout, homeFragment);
-            fragmentTransaction.commit();
-            bottomBar.setFirstSelectedPosition(0);
-        }
-    }
-    //控制Fragment显隐
-
-    private void hideFragments(FragmentTransaction transaction) {
-        if (homeFragment != null) {
-            transaction.hide(homeFragment);
-        }
-        if (businessFragment != null) {
-            transaction.hide(businessFragment);
-        }
-        if (examineFragment != null) {
-            transaction.hide(examineFragment);
-        }
-        if (informationFragment != null) {
-            transaction.hide(informationFragment);
-        }
-        if (myFragment != null) {
-            transaction.hide(myFragment);
-        }
-    }
-
-    //底部点击
-    @Override
-    public void onTabSelected(int position) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        hideFragments(fragmentTransaction);
-        sp.insertKey(getApplicationContext(), "isfer", false);
-        switch (position) {
-            case 0:
-                if (homeFragment == null) {
-                    homeFragment = new HomeFragment();
-                    fragmentTransaction.add(R.id.framelayout, homeFragment);
-                } else {
-                    fragmentTransaction.show(homeFragment);
-//                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为黑色
-                    StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
-
-                }
-                break;
-            case 2:
-                if (businessFragment == null) {
-                    businessFragment = new FriendCircleFragment();
-                    fragmentTransaction.add(R.id.framelayout, businessFragment);
-                    StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
-//                    NavigationBar.Statedata(this);
-                } else {
-                    fragmentTransaction.show(businessFragment);
-                    StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
-//                    NavigationBar.Statedata(this);
-                }
-                break;
-            case 1:
-                if (islogine) {
-//                if (examineFragment == null) {
-//                    examineFragment = new ExamineFragment();
-//                    fragmentTransaction.add(R.id.framelayout, examineFragment);
-//                    StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
-//                } else {
-//                    fragmentTransaction.show(examineFragment);
-////                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//设置状态栏字体为黑色
-//                    StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
-//                }
-                    startActivity(new Intent(this, YangShiActivity.class));
-                    finish();
-//                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                } else {
-                    Intent infoIntent = new Intent(this, WithoutCodeLoginActivity.class);
-//                    infoIntent.putExtra("login_type", BizConstant.BUSINESS_LOGIN);
-                    startActivity(infoIntent);
-                    //activity切换动画效果
-                    finish();
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                }
-
-                break;
-            case 3:
-                sp = SharedPreferencesUtils.getUtil();
-                boolean islogins = (boolean) sp.getKey(this, "islogin", false);
-                if (islogins) {
-                    if (informationFragment == null) {
-                        informationFragment = new InformationFragment();
-                        fragmentTransaction.add(R.id.framelayout, informationFragment);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
-                    } else {
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
-                        fragmentTransaction.show(informationFragment);
-                    }
-                } else {
-                    Intent infoIntent = new Intent(this, WithoutCodeLoginActivity.class);
-                    infoIntent.putExtra("login_type", BizConstant.INFO_LOGIN);
-                    startActivity(infoIntent);
-                    //activity切换动画效果
-                    finish();
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                }
-                break;
-            case 4:
-                //判断是否登录
-                sp = SharedPreferencesUtils.getUtil();
-                boolean islogin = (boolean) sp.getKey(this, "islogin", false);
-                if (islogin) {
-                    if (myFragment == null) {
-                        myFragment = new MyFragment();
-                        fragmentTransaction.add(R.id.framelayout, myFragment);
-                    } else {
-                        fragmentTransaction.show(myFragment);
-//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.reded), 0);
-                    }
-                } else {
-                    Intent myIntent = new Intent(this, WithoutCodeLoginActivity.class);
-                    myIntent.putExtra("login_type", BizConstant.MYLOGIN);
-                    startActivity(myIntent);
-                    //activity切换动画效果
-                    finish();
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                }
-                break;
-        }
-        fragmentTransaction.commit();
-    }
-
-
-    /**
-     * 设置tab数字提示加缩放动画
-     */
-    private void setBadgeNum(int num) {
-        mBadgeItem.setText(String.valueOf(num));
-        if (num == 5) {
-            mBadgeItem.hide();
-        } else {
-            mBadgeItem.show();
-        }
-    }
-
-
-    @Override
-    public void onTabUnselected(int position) {
-
-    }
-
-    @Override
-    public void onTabReselected(int position) {
-
     }
 
 
@@ -526,29 +460,11 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                             //EventBus.getDefault().post(true);
                             updateUnreadCount();//更新消息数据
                         } else {
-                            mBadgeItem.hide();
+//                            mBadgeItem.hide();
                         }
                     }
                 }, true);
     }
-
-    /*
-     * 获取当前程序的版本名
-     */
-//    private String getVersionName() {
-//        PackageInfo packInfo = null;
-//        try {
-//            //获取packagemanager的实例
-//            PackageManager packageManager = getPackageManager();
-//            //getPackageName()是你当前类的包名，0代表是获取版本信息
-//            packInfo = packageManager.getPackageInfo(getPackageName(), 0);
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return packInfo.versionName;
-//
-//    }
 
 
     /*
@@ -569,22 +485,6 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         return 1;
     }
 
-
-    /**
-     * 当activity销毁时不保存其内部的view的状态
-     *
-     * @paramoutState
-     */
-
-    @Override
-
-    public void onSaveInstanceState(Bundle outState) {
-
-//将super调用取消即可，表明当意外(比如系统内存吃紧将应用杀死)发生我不需要保存Fragmentde状态和数据等
-
-//super.onSaveInstanceState(outState);
-
-    }
 
     @Override
     protected void onDestroy() {
@@ -682,8 +582,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             //强制更新
             forceUpdate = updateCodeBean.data.force_update;
             package_download_url = updateCodeBean.data.package_download_url;
+            checkVersion();
         }
-        checkVersion();
     }
 
     /**
@@ -713,6 +613,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                 sp.insertKey(context, "has_permission", has_permission);
         }
     }
+
 
     public interface MyTouchListener {
         public void onTouchEvent(MotionEvent event);
@@ -788,5 +689,19 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             }
         }
     };
+
+    public static String formatBadgeNumber(int value) {
+        if (value <= 0) {
+            return null;
+        }
+
+        if (value < 100) {
+            // equivalent to String#valueOf(int);
+            return Integer.toString(value);
+        }
+
+        // my own policy
+        return "99+";
+    }
 }
 

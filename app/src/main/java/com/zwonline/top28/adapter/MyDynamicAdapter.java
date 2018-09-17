@@ -149,36 +149,40 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             myViewHolder.multiImageView.setVisibility(View.GONE);
             int width = Integer.parseInt(list.get(pos).images_arr.get(0).original_size.width);
             int height = Integer.parseInt(list.get(pos).images_arr.get(0).original_size.height);
-
+            RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
             if (width < height) {
                 myViewHolder.dynamic_imag_h.setVisibility(View.VISIBLE);
                 myViewHolder.dynamic_imag_z.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).into(myViewHolder.dynamic_imag_h);
+                Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_h);
             } else if (width > height) {
                 myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_z.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_w.setVisibility(View.VISIBLE);
                 myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).into(myViewHolder.dynamic_imag_w);
+                Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_w);
             } else {
                 myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_z.setVisibility(View.VISIBLE);
                 myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).into(myViewHolder.dynamic_imag_z);
+                Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_z);
             }
             //单张图片点击放大
             myViewHolder.imag_relative.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String image[] = new String[list.get(pos).images_arr.size()];
+                    String images[] = new String[list.get(pos).images_arr.size()];
                     if (list.get(pos).images_arr != null) {
                         image[0] = list.get(pos).images_arr.get(0).original;
+                        images[0] = list.get(pos).images_arr.get(0).thumb;
                         Intent intent = new Intent(context, PhotoBrowserActivity.class);
                         intent.putExtra("imageUrls", image);
+                        intent.putExtra("imageUrl",images);
                         intent.putExtra("curImg", list.get(pos).images_arr.get(0).original);
+                        intent.putExtra("curImgs", list.get(pos).images_arr.get(0).thumb);
                         context.startActivity(intent);
                     } else {
 
@@ -206,13 +210,18 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             public void onItemClick(View view, int positions) {
                 // To do something or 查看大图.
                 String image[] = new String[list.get(pos).images_arr.size()];
+                String images[] = new String[list.get(pos).images_arr.size()];
                 if (list.get(pos).images_arr != null) {
                     for (int i = 0; i < list.get(pos).images_arr.size(); i++) {
                         image[i] = list.get(pos).images_arr.get(i).original;
+                        images[i] = list.get(pos).images_arr.get(i).thumb;
+
                     }
                     Intent intent = new Intent(context, PhotoBrowserActivity.class);
                     intent.putExtra("imageUrls", image);
+                    intent.putExtra("imageUrl", images);
                     intent.putExtra("curImg", list.get(pos).images_arr.get(positions).original);
+                    intent.putExtra("curImgs", list.get(pos).images_arr.get(positions).thumb);
                     context.startActivity(intent);
                 } else {
 

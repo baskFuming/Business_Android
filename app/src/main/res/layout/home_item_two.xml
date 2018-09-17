@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/article_top"
                         android:textColor="@color/reded"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:layout_marginRight="5dp"
                         android:visibility="gone" />
 
@@ -64,7 +64,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#9E9E9E"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
 
@@ -75,7 +75,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/linear"
                     android:textColor="#9E9E9E"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:visibility="gone" />
                 />
 
@@ -86,7 +86,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
                     android:textColor="#9E9E9E"
-                    android:textSize="14sp" />
+                    android:textSize="12sp"
+                    android:layout_marginLeft="10dp"/>
 
 
             </RelativeLayout>
@@ -101,6 +102,5 @@
         android:layout_width="112dp"
         android:layout_height="84dp"
         snser:rectRoundRadius="4dp"
-        android:background="@mipmap/gray_logo"
         snser:type="rounded_rect" />
 </RelativeLayout>

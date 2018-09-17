@@ -47,7 +47,7 @@ public class InfoBadgeView extends TextView {
                     new LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT,
-                            Gravity.LEFT | Gravity.TOP);
+                            Gravity.RIGHT | Gravity.TOP);
             setLayoutParams(layoutParams);
         }
 

@@ -18,8 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
-            android:orientation="horizontal"
-            android:paddingRight="10dp">
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:id="@+id/relative_home"
@@ -29,8 +28,7 @@
                 <com.zwonline.top28.utils.ImageViewPlus
                     android:id="@+id/userhead"
                     android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:layout_height="40dp" />
 
                 <ImageView
                     android:id="@+id/da_v"
@@ -83,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="15dp"
                     android:text="删除"
                     android:textColor="#228FFE"
                     android:textSize="16sp"
@@ -139,6 +137,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:lineSpacingExtra="5dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:textColor="#1d1d1d"
@@ -212,7 +211,6 @@
                 android:layout_height="170dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="#f0f0f0"
                 android:gravity="left"
                 android:visibility="gone" />
 
@@ -222,7 +220,6 @@
                 android:layout_height="223dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="#f0f0f0"
                 android:visibility="gone" />
 
             <ImageView
@@ -231,7 +228,6 @@
                 android:layout_height="190dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="#f0f0f0"
                 android:visibility="gone" />
         </RelativeLayout>
 

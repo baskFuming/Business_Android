@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.HomePageActivity;
@@ -130,24 +131,26 @@ public class NewContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             int width = Integer.parseInt(list.get(position).images_arr.get(0).original_size.width);
             int height = Integer.parseInt(list.get(position).images_arr.get(0).original_size.height);
 
+            RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
             if (width < height) {
                 myViewHolder.dynamic_imag_h.setVisibility(View.VISIBLE);
                 myViewHolder.dynamic_imag_z.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                Glide.with(context).load(list.get(position).images_arr.get(0).thumb).into(myViewHolder.dynamic_imag_h);
+
+                Glide.with(context).load(list.get(position).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_h);
             } else if (width > height) {
                 myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_z.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_w.setVisibility(View.VISIBLE);
                 myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                Glide.with(context).load(list.get(position).images_arr.get(0).thumb).into(myViewHolder.dynamic_imag_w);
+                Glide.with(context).load(list.get(position).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_w);
             } else {
                 myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_z.setVisibility(View.VISIBLE);
                 myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                Glide.with(context).load(list.get(position).images_arr.get(0).thumb).into(myViewHolder.dynamic_imag_z);
+                Glide.with(context).load(list.get(position).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_z);
             }
             //单张图片点击放大
             myViewHolder.imag_relative.setOnClickListener(new View.OnClickListener() {

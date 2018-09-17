@@ -1,22 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:id="@+id/main"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:orientation="vertical">
+
     <FrameLayout
         android:id="@+id/framelayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"
-        ></FrameLayout>
-    <com.ashokvarma.bottomnavigation.BottomNavigationBar
-        android:id="@+id/bottom_bar"
+        android:layout_weight="10"></FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/white"
         android:layout_weight="1"
-        app:bnbElevation="-10dp"
-        ></com.ashokvarma.bottomnavigation.BottomNavigationBar>
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/backgroud_zanwei" />
+
+        <RadioGroup
+            android:id="@+id/rg_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_below="@id/tv"
+            android:layout_marginTop="1dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <RadioButton
+                android:id="@+id/rb_home"
+                style="@style/MainButtonStyle"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:checked="true"
+                android:drawableTop="@drawable/home_button_selector"
+                android:text="@string/tabbar_home_page" />
+
+            <RadioButton
+                android:id="@+id/rb_yangshi"
+                style="@style/MainButtonStyle"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ys_button_selector"
+                android:text="@string/tabbar_yangshi"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+
+            <RadioButton
+                android:id="@+id/rb_business_circle"
+                style="@style/MainButtonStyle"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:drawableTop="@drawable/business_circle_button_selector"
+                android:text="@string/tabbar_business_circle" />
+
+            <RadioButton
+                android:id="@+id/rb_info"
+                style="@style/MainButtonStyle"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/info_button_selector"
+                android:text="消息" />
+
+            <RadioButton
+                android:id="@+id/rb_my"
+                style="@style/MainButtonStyle"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/my_button_selector"
+                android:text="@string/tabbar_my_page" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:numColumns="5"
+            android:layout_below="@id/tv"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
+            android:rating="1">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:visibility="invisible" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/btn_msg"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/btn_my"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </LinearLayout>

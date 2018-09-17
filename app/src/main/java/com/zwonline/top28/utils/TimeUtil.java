@@ -1,5 +1,6 @@
 package com.zwonline.top28.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimeUtil {
@@ -21,17 +22,21 @@ public class TimeUtil {
         }
         long diff = new Date().getTime() - date.getTime();
         long r = 0;
-        if (diff > year) {
-            r = (diff / year);
-            return r + "年前";
-        }
-        if (diff > month) {
-            r = (diff / month);
-            return r + "个月前";
-        }
+//        if (diff > year) {
+//            r = (diff / year);
+//            return r + "年前";
+//        }
+//        if (diff > month) {
+//            r = (diff / month);
+//            return r + "个月前";
+//        }
         if (diff > day) {
-            r = (diff / day);
-            return r + "天前";
+            long time = date.getTime();
+//            r = (diff / day);
+            r=time;
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");//这个是你要转成后的时间的格式
+            String sd = sdf.format(r);   // 时间戳转换成时间
+            return sd;
         }
         if (diff > hour) {
             r = (diff / hour);

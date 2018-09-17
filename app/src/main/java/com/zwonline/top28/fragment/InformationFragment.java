@@ -35,6 +35,7 @@ import com.netease.nim.uikit.business.recent.RecentContactsFragment;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
+import com.netease.nimlib.sdk.msg.SystemMessageService;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.xys.libzxing.zxing.encoding.EncodingUtils;
 import com.zwonline.top28.R;
@@ -49,9 +50,13 @@ import com.zwonline.top28.nim.main.activity.GlobalSearchActivity;
 import com.zwonline.top28.nim.main.activity.GroupTagsActivity;
 import com.zwonline.top28.nim.main.fragment.ContactListFragment;
 import com.zwonline.top28.nim.main.fragment.SessionListFragment;
+import com.zwonline.top28.nim.main.reminder.ReminderId;
+import com.zwonline.top28.nim.main.reminder.ReminderItem;
+import com.zwonline.top28.nim.main.reminder.ReminderManager;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.badge.InfoBadgeView;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.popwindow.MyQrCodePopwindow;
@@ -120,13 +125,13 @@ public class InformationFragment extends BasesFragment {
     private SimplePagerTitleView simplePagerTitleView;
     private BadgePagerTitleView badgePagerTitleView;
     private TextView badgeTextView;
-    private Observer<Integer> sysMsgUnreadCountChangedObserver;
 
     @Override
     protected void init(View view) {
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         setHasOptionsMenu(true);
         sp = SharedPreferencesUtils.getUtil();
+        searchMessage = view.findViewById(R.id.search_message);
         accid = (String) sp.getKey(getActivity(), "account", "");
         nickname = (String) sp.getKey(getActivity(), "nickname", "");
         avatar = (String) sp.getKey(getActivity(), "avatar", "");
@@ -137,22 +142,24 @@ public class InformationFragment extends BasesFragment {
         addFuction = view.findViewById(R.id.add_fuction);
         magicIndicator = view.findViewById(R.id.friend_cicler_indicator);
         infoPager = view.findViewById(R.id.info_viewpager);
-        searchMessage = view.findViewById(R.id.search_message);
-        sysMsgUnreadCountChangedObserver = new Observer<Integer>() {
-            @Override
-            public void onEvent(Integer unreadCount) {
-                count = unreadCount;
-                badgeTextView.setText(count + "");
-            }
-        };
         initControls();
+        int unread = NIMClient.getService(SystemMessageService.class)
+                .querySystemMessageUnreadCountBlock();
+        updateUnreadNum(unread);
+        initFragments();
     }
 
     private void updateUnreadNum(int unreadCount) {
-//        count = unreadCount;
-//        badgeTextView.setText(count+"");
-
-//        mBadgeCountList.set(1, unreadCount);
+        if (unreadCount == 0) {
+            badgePagerTitleView.setBadgeView(null);
+        } else {
+            if (unreadCount < 100) {
+                badgeTextView.setText(unreadCount+"");
+            } else {
+                badgeTextView.setText("99+");
+            }
+            badgePagerTitleView.setBadgeView(badgeTextView);
+        }
     }
 
     @Override
@@ -179,14 +186,8 @@ public class InformationFragment extends BasesFragment {
         fList.add(myFragment);
         adapter = new MyAdapter(getActivity().getSupportFragmentManager());
         infoPager.setAdapter(adapter);
-//        initFragments();
+
         friendCircIndicator();
-//        mPagerAdapter = new InfoFragmentPageAdapter(getActivity(), getActivity().getSupportFragmentManager(), fList, mPageTitleList, mBadgeCountList);
-//        infoPager.setAdapter(mPagerAdapter);
-//        setIndicator(infoTab, 5, 5);
-//        infoTab.setupWithViewPager(infoPager);
-//        initBadgeViews();
-//        setUpTabBadge();
     }
 
     private void friendCircIndicator() {
@@ -206,8 +207,8 @@ public class InformationFragment extends BasesFragment {
                 simplePagerTitleView = new ColorTransitionPagerTitleView(context);
                 simplePagerTitleView.setTextSize(16);
                 simplePagerTitleView.setText(titles[index]);
-                simplePagerTitleView.setSelectedColor(Color.parseColor("#000000"));
-                simplePagerTitleView.setNormalColor(Color.parseColor("#9e9e9e"));
+                simplePagerTitleView.setSelectedColor(Color.parseColor("#2F2F2F"));
+                simplePagerTitleView.setNormalColor(Color.parseColor("#807F81"));
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -218,12 +219,12 @@ public class InformationFragment extends BasesFragment {
                 badgePagerTitleView.setInnerPagerTitleView(simplePagerTitleView);
                 if (index == 1) {
                     badgeTextView = (TextView) LayoutInflater.from(context).inflate(R.layout.simple_count_badge_layout, null);
-                    badgePagerTitleView.setBadgeView(badgeTextView);
+                    badgePagerTitleView.setBadgeView(null);
 
                 }
                 if (index == 1) {
-                    badgePagerTitleView.setXBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_RIGHT, -UIUtil.dip2px(context, 2)));
-                    badgePagerTitleView.setYBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_TOP, 0));
+                    badgePagerTitleView.setXBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_RIGHT, -UIUtil.dip2px(context, 4)));
+                    badgePagerTitleView.setYBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_TOP, -UIUtil.dip2px(context, 4)));
                 }
                 badgePagerTitleView.setAutoCancelBadge(false);
                 return badgePagerTitleView;
@@ -280,38 +281,24 @@ public class InformationFragment extends BasesFragment {
     }
 
     private void initFragments() {
-//        int unread = NIMClient.getService(SystemMessageService.class)
-//                .querySystemMessageUnreadCountBlock();
-//        count = unread;
-//        mPageTitleList.add("消息");
-//        mPageTitleList.add("好友");
-//        mBadgeCountList.add(0);
-//        mBadgeCountList.add(count++);
-//        fList.add(SessionListFragment.getInstance(mPageTitleList.get(0)));
-//        fList.add(ContactListFragment.getInstance(mPageTitleList.get(1)));
-//        int unreadCount = SystemMessageUnreadManager.getInstance().getSysMsgUnreadCount();
-//        Observer<Integer> sysMsgUnreadCountChangedObserver = new Observer<Integer>() {
-//            @Override
-//            public void onEvent(Integer unreadCount) {
-//                count= unreadCount;
-//                badgeTextView.setText(count+"");
-////                mBadgeCountList.set(1, unreadCount);
-////                setUpTabBadge();
-//            }
-//        };
-//        NIMClient.getService(SystemMessageObserver.class)
-//                .observeUnreadCountChange(sysMsgUnreadCountChangedObserver, true);
+        Observer<Integer> sysMsgUnreadCountChangedObserver = new Observer<Integer>() {
+            @Override
+            public void onEvent(Integer unreadCount) {
+                updateUnreadNum(unreadCount);
+            }
+        };
+        NIMClient.getService(SystemMessageObserver.class)
+                .observeUnreadCountChange(sysMsgUnreadCountChangedObserver, true);
 
-//        ReminderManager.getInstance().registerUnreadNumChangedCallback(new ReminderManager.UnreadNumChangedCallback() {
-//            @Override
-//            public void onUnreadNumChanged(ReminderItem item) {
-//                if (item.getId() != ReminderId.CONTACT) {
-//                    return;
-//                }
-//                updateUnreadNum(item.getUnread());
-////                setUpTabBadge();
-//            }
-//        });
+        ReminderManager.getInstance().registerUnreadNumChangedCallback(new ReminderManager.UnreadNumChangedCallback() {
+            @Override
+            public void onUnreadNumChanged(ReminderItem item) {
+                if (item.getId() != ReminderId.CONTACT) {
+                    return;
+                }
+                updateUnreadNum(item.getUnread());
+            }
+        });
     }
 
     private void initBadgeViews() {
@@ -347,12 +334,8 @@ public class InformationFragment extends BasesFragment {
                 }
             }
 
-            // 更新CustomView
-//            tab.setCustomView(mPagerAdapter.getTabItemView(i));
         }
 
-        // 需加上以下代码,不然会出现更新Tab角标后,选中的Tab字体颜色不是选中状态的颜色
-//        mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getCustomView().setSelected(true);
     }
 
     @OnClick({R.id.add_fuction, R.id.search_message})
@@ -455,36 +438,6 @@ public class InformationFragment extends BasesFragment {
             return titles[position];
         }
     }
-    //fragment适配器
-//    class Find_tab_Adapter extends FragmentPagerAdapter {
-//        public Find_tab_Adapter(FragmentManager fm) {
-//            super(fm);
-//        }
-//
-//        @Override
-//        public Fragment getItem(int position) {
-//            return fList.get(position);
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return titles.length;
-//        }
-//
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            return titles[position];
-//        }
-
-//        public View getTabItemView(int position) {
-//            View view = LayoutInflater.from(getActivity()).inflate(R.layout.tab_add_red_dot, null);
-//            TextView textView = (TextView) view.findViewById(R.id.tv_tab_title);
-//            textView.setText(titles[position]);
-//
-//            return view;
-//        }
-
-//    }
 
 
     /**
@@ -542,8 +495,6 @@ public class InformationFragment extends BasesFragment {
     @Override
     public void onResume() {
         super.onResume();
-        NIMClient.getService(SystemMessageObserver.class).observeUnreadCountChange(sysMsgUnreadCountChangedObserver, true);
-
         new RecentContactsFragment();
     }
 

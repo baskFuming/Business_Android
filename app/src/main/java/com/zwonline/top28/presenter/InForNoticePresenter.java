@@ -107,7 +107,7 @@ public class InForNoticePresenter extends BasePresenter<InforNoticeActivity> {
 
                         @Override
                         protected boolean isNeedProgressDialog() {
-                            return true;
+                            return false;
                         }
 
                         @Override

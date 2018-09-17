@@ -69,6 +69,7 @@ import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.badge.BadgeView;
+import com.zwonline.top28.utils.badge.InfoBadgeView;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IHomeDetails;
 import com.zwonline.top28.web.MJavascriptInterface;
@@ -330,7 +331,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         commentSpring = (SpringView) findViewById(R.id.comment_spring);
         badgeView = new BadgeView(this);
         badgeView.setTargetView(comment);
-        badgeView.setTextSize(6);
+        badgeView.setBadgeMargin(0,0,0,0);
+        badgeView.setTextSize(8);
     }
 
     /**

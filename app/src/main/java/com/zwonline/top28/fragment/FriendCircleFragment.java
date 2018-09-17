@@ -136,7 +136,7 @@ public class FriendCircleFragment extends BasesFragment {
         adapter = new MyAdapter(getActivity().getSupportFragmentManager());
         friendPager.setAdapter(adapter);
         friendPager.setOffscreenPageLimit(1);
-        friendPager.setCurrentItem(1);
+
         initMagicIndicator();
         //将名称加载tab名字列表，正常情况下，我们应该在values/arrays.xml中进行定义然后调用
         //设置TabLayout的模式
@@ -178,8 +178,8 @@ public class FriendCircleFragment extends BasesFragment {
                 simplePagerTitleView = new ColorTransitionPagerTitleView(context);
                 simplePagerTitleView.setTextSize(16);
                 simplePagerTitleView.setText(titles[index]);
-                simplePagerTitleView.setSelectedColor(Color.parseColor("#000000"));
-                simplePagerTitleView.setNormalColor(Color.parseColor("#9e9e9e"));
+                simplePagerTitleView.setSelectedColor(Color.parseColor("#2F2F2F"));
+                simplePagerTitleView.setNormalColor(Color.parseColor("#807F81"));
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -190,11 +190,11 @@ public class FriendCircleFragment extends BasesFragment {
                 badgePagerTitleView.setInnerPagerTitleView(simplePagerTitleView);
                 if (index == 3) {
                     badgeTextView = (TextView) LayoutInflater.from(context).inflate(R.layout.simple_count_badge_layout, null);
-                    badgePagerTitleView.setBadgeView(badgeTextView);
+                    badgePagerTitleView.setBadgeView(null);
                 }
                 if (index == 3) {
-                    badgePagerTitleView.setXBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_RIGHT, -UIUtil.dip2px(context, 2)));
-                    badgePagerTitleView.setYBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_TOP, 0));
+                    badgePagerTitleView.setXBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_RIGHT, -UIUtil.dip2px(context, 6)));
+                    badgePagerTitleView.setYBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_TOP, -UIUtil.dip2px(context, 4)));
                 }
                 badgePagerTitleView.setAutoCancelBadge(false);
                 return badgePagerTitleView;
@@ -215,7 +215,7 @@ public class FriendCircleFragment extends BasesFragment {
         });
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, friendPager);
-
+        friendPager.setCurrentItem(1);
 
     }
 
@@ -363,24 +363,26 @@ public class FriendCircleFragment extends BasesFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (StringUtil.isNotEmpty(notifyCounts)) {
-            badgeTextView.setText(notifyCounts);
-            badgePagerTitleView.setBadgeView(badgeTextView);
-        }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageFollow messageFollow) {
         if (StringUtil.isNotEmpty(messageFollow.notifyCount)) {
             notifyCounts = messageFollow.notifyCount;
-            badgeTextView.setText(notifyCounts);
             if (notifyCounts.equals(BizConstant.NO_FAVORITE)) {
-                badgeTextView.setVisibility(View.GONE);
                 badgePagerTitleView.setBadgeView(null);
             } else {
+                int count = Integer.parseInt(notifyCounts);
+                if (count < 100) {
+                    badgeTextView.setText(notifyCounts);
+                } else {
+                    badgeTextView.setText("99+");
+                }
                 badgePagerTitleView.setBadgeView(badgeTextView);
             }
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

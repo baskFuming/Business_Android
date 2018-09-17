@@ -65,7 +65,6 @@ public class InfoFragmentPageAdapter extends FragmentPagerAdapter {
         badgeView.setTargetView(target);
         badgeView.setBadgeMargin(0, 6, 10, 0);
         badgeView.setTextSize(6);
-        badgeView.setText(formatBadgeNumber(mBadgeCountList.get(position)));
 
         return view;
     }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.zwonline.top28.R;
 import com.zwonline.top28.bean.HomeClassBean;
 import com.zwonline.top28.constants.BizConstant;
@@ -83,26 +84,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int type = getItemViewType(position);
-//        List<String> list = new ArrayList<>();
-//        List<String> lists = new ArrayList<>();
-//        for (int i = 0; i < homelist.get(position).ArticleImg.size(); i++) {
-//            String path = homelist.get(position).ArticleImg.get(i).path;
-//            list.add(path);
-//        }
-//        int size = list.size();
-//        String is_ad = homelist.get(position).is_ad;
-//        ToastUtils.showToast(context, "is_ad==" + is_ad);
-//        for (int i = 0; i < size; i++) {
-////                System.out.println(list.get(i));
-//            String s = list.get(i);
-////            String replace = s.replace("https", "http");
-//            lists.add(s);
-//        }
-//        int size1 = lists.size();
-//        for (int i = 0; i < size1; i++) {
-//            System.out.println(lists.get(i));
-//
-//        }
+        RequestOptions requestOption = new RequestOptions().placeholder(R.mipmap.gray_logo).error(R.mipmap.gray_logo);
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.gray_logo2).error(R.mipmap.gray_logo2);
         if (type == TYPE_ONE) {
             try {
                 String time = homelist.get(position).showtime;
@@ -147,9 +130,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             final String path1 = homelist.get(position).ArticleImg.get(0).path;
             final String path2 = homelist.get(position).ArticleImg.get(1).path;
             final String path3 = homelist.get(position).ArticleImg.get(2).path;
-            Glide.with(context).load(path1).into(((ViewHolderTypeOne) holder).articleImg1);
-            Glide.with(context).load(path2).into(((ViewHolderTypeOne) holder).articleImg2);
-            Glide.with(context).load(path3).into(((ViewHolderTypeOne) holder).articleImg3);
+            Glide.with(context).load(path1).apply(requestOption).into(((ViewHolderTypeOne) holder).articleImg1);
+            Glide.with(context).load(path2).apply(requestOption).into(((ViewHolderTypeOne) holder).articleImg2);
+            Glide.with(context).load(path3).apply(requestOption).into(((ViewHolderTypeOne) holder).articleImg3);
 //            }
 
 
@@ -170,7 +153,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 } else {
                     viewHolderTypeTwo.top.setVisibility(View.GONE);
                 }
-                Glide.with(context).load(path).into(((ViewHolderTypeTwo) holder).image);
+                Glide.with(context).load(path).apply(requestOption).into(((ViewHolderTypeTwo) holder).image);
                 viewHolderTypeTwo.look_count.setText(homelist.get(position).view + context.getString(R.string.favorite_read));
 //                viewHolderTypeTwo.type.setText(homelist.get(position).cate_name);
                 if (homelist.get(position).show_nickname.equals(BizConstant.ENTERPRISE_tRUE)) {
@@ -196,7 +179,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 String add_time = homelist.get(position).add_time;
 //                String is_ad = homelist.get(position).is_ad;
 //                ToastUtils.showToast(context,"is_ad=="+is_ad);
-                Glide.with(context).load(path).into(((ViewHolderTypeThree) holder).image);
+                Glide.with(context).load(path).apply(requestOptions).into(((ViewHolderTypeThree) holder).image);
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
                 Date date = formatter.parse(add_time);
 //                ToastUtils.showToast(context,add_time);
