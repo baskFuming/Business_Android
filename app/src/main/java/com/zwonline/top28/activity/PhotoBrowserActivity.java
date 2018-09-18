@@ -23,33 +23,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.zwonline.top28.R;
 import com.zwonline.top28.utils.FloatViewPager;
-import com.zwonline.top28.utils.GlideImageLoader;
 import com.zwonline.top28.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-
-import butterknife.OnTouch;
 
 /**
  * 文章详情点击图片查看图片
@@ -183,7 +173,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTo
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            final Animation scale = AnimationUtils.loadAnimation(PhotoBrowserActivity.this, R.anim.anim_small);
+//            final Animation scale = AnimationUtils.loadAnimation(PhotoBrowserActivity.this, R.anim.anim_small);
             if (imgUrls[position] != null) {
 
                 photoView = new PhotoView(getApplicationContext());

@@ -45,7 +45,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.liaoinstan.springview.container.DefaultFooter;
 import com.liaoinstan.springview.widget.SpringView;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -69,7 +68,6 @@ import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.badge.BadgeView;
-import com.zwonline.top28.utils.badge.InfoBadgeView;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IHomeDetails;
 import com.zwonline.top28.web.MJavascriptInterface;
@@ -163,17 +161,20 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     private String[] imageUrls = StringUtil.returnImageUrlsFromHtml();
     private int status;
 
+    //项目修改
+//    private ZWXRecyclerView zwxRecyclerView;
+    //获取屏幕高度
     public void initActivityWindow() {
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 //        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
         ButterKnife.bind(this);
-        activityRootView = findViewById(R.id.root_layout);
+//        activityRootView = findViewById(R.id.root_layout);
         //获取屏幕高度
         screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
         //阀值设置为屏幕高度的1/3
         keyHeight = screenHeight / 3;
     }
-
+    //控制软件盘弹出
     @Override
     public void onLayoutChange(View v, int left, int top, int right,
                                int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -202,12 +203,12 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     @Override
     protected void onResume() {
         super.onResume();
-        //添加layout大小发生改变监听器
-        activityRootView.addOnLayoutChangeListener(this);
-        if (StringUtil.isNotEmpty(sID)) {
-            presenter.mArticleComment(this, sID, "", "", "", page);
-            adapter.notifyDataSetChanged();
-        }
+//        //添加layout大小发生改变监听器
+//        activityRootView.addOnLayoutChangeListener(this);
+//        if (StringUtil.isNotEmpty(sID)) {
+//            presenter.mArticleComment(this, sID, "", "", "", page);
+//            adapter.notifyDataSetChanged();
+//        }
     }
 
     @Override
@@ -227,8 +228,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             sID = intent.getStringExtra("id");
             id = Integer.parseInt(sID);
 
-            commentSpring.setType(SpringView.Type.FOLLOW);
-            commentSpring.setFooter(new DefaultFooter(this));
+//            commentSpring.setType(SpringView.Type.FOLLOW);
+//            commentSpring.setFooter(new DefaultFooter(this));
             if (islogins) {
                 presenter.mHomeDetail(this, id);
             } else {
@@ -237,7 +238,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             presenter.mShareData(this, sID);//分享文章
 //            scrollView.setOnTouchListener(new TouchListenerImpl());
             presenter.mArticleComment(this, String.valueOf(id), "", "", "", page);
-//            presenter.mArticleComment(this,id,"","","",page);
+////            presenter.mArticleComment(this,id,"","","",page);
             adapter = new ArticleCommentAdapter(list, this);
             headerView = getLayoutInflater().inflate(R.layout.home_details_header, null);
             footView = getLayoutInflater().inflate(R.layout.foot_view, null);
@@ -247,8 +248,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             commentListview.setAdapter(adapter);
             webSettingInit();
             StringUtil.textBold(title);
-            StringUtil.textBold(mtitle);//中文字体加粗
-//            adapter.notifyDataSetChanged();
+            StringUtil.textBold(mtitle);//中文字体加粗*/
+            adapter.notifyDataSetChanged();
 //            ScrollVieListener();
 
         } catch (Exception e) {
@@ -310,6 +311,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
 
     //查找控件
     private void initData() {
+//        zwxRecyclerView = (ZWXRecyclerView)findViewById(R.id.zw_xrecycclerView);
         back = (RelativeLayout) findViewById(R.id.back);
         linearhead = (RelativeLayout) findViewById(R.id.linearhead);
 //        scrollView = (ObservableScrollView) findViewById(R.id.Observable_ScrollView);
@@ -334,7 +336,6 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         badgeView.setBadgeMargin(0,0,0,0);
         badgeView.setTextSize(8);
     }
-
     /**
      * 初始化收藏
      */
@@ -359,7 +360,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
      */
     @Override
     public void showArticleComment(final List<ArticleCommentBean.DataBean> articleCommentList) {
-//        list.clear();\if
+////        list.clear();\if
         if (page == 1) {
             list.clear();
         }
@@ -461,7 +462,6 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     protected int setLayoutId() {
         return R.layout.activity_home_details;
     }
-
     //展示数据
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -648,7 +648,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                 if (count % 2 == 1) {
 //                    adapter.notifyDataSetChanged();
                     commentListview.setSelection(1);
-                } else if (count % 2 == 0) {
+                }
+                if (count % 2 == 0) {
                     commentListview.setSelection(0);
                 }
                 break;

@@ -212,21 +212,26 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     private String show_enterprise;
     private String show_position;
 
+    private String enterprise;
+    private String position;
+
     @Override
     protected void init() {
         requestPower();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
         NavigationBar.Statedata(this);
-        api = WXAPIFactory.createWXAPI(this, "wx979d60eb9639eb65");
+        api = WXAPIFactory.createWXAPI(this, "gh_9c5277dd09df");
         initData();//查找控件
         sp = SharedPreferencesUtils.getUtil();
         islogins = (boolean) sp.getKey(this, "islogin", false);
         userUid = (String) sp.getKey(this, "uid", "");
         wx_page_type = (String) sp.getKey(this, "wx_page_type", "");
         //职位 公司名称
-        show_enterprise = (String) sp.getKey(this, "enterprise", show_enterprise);
-        show_position = (String) sp.getKey(this, "position", show_position);
+        enterprise = (String) sp.getKey(this, "enterprise", enterprise);
+        position= (String) sp.getKey(this, "position", position);
+        sp.insertKey(HomePageActivity.this,"enterprise",enterprise);
+        sp.insertKey(HomePageActivity.this,"position",position);
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         sex = intent.getStringExtra("sex");
@@ -248,7 +253,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         issueRecyclerViewData();
         shareRecyclerViewData();
         initView();
-        presenter.mSetting(this, "", realname, 0, "", address, "", "", wexinnumber, "", phone, "", show_enterprise, show_position);
+        presenter.mSetting(this, "", realname, 0, "", address, "", "", wexinnumber, "", phone, "", enterprise, position);
 
 
     }
@@ -534,12 +539,12 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             } else {
                                 checkBoxaddress.setChecked(false);
                             }
-                            if (StringUtil.isNotEmpty(show_enterprise)){
+                            if (StringUtil.isNotEmpty(enterprise)){
                                 checkbox_job.setChecked(true);
                             }else {
                                 checkbox_job.setChecked(false);
                             }
-                            if (StringUtil.isNotEmpty(show_position)){
+                            if (StringUtil.isNotEmpty(position)){
                                 checkbox_adress.setChecked(true);
                             }else {
                                 checkbox_adress.setChecked(false);
@@ -565,13 +570,13 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             } else {
                                 editTextaddress.setText("");
                             }
-                            if (StringUtil.isNotEmpty(show_enterprise)){
-                                share_job.setText(show_enterprise);
+                            if (StringUtil.isNotEmpty(enterprise)){
+                                share_job.setText(enterprise);
                             }else {
                                 share_job.setText("");
                             }
-                            if(StringUtil.isNotEmpty(show_position)){
-                                job_address.setText(show_position);
+                            if(StringUtil.isNotEmpty(position)){
+                                job_address.setText(position);
                             }else {
                                 job_address.setText("");
                             }
@@ -600,16 +605,20 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                         addresss = BizConstant.NO_FAVORITE;
                                     }
                                     if (checkbox_job.isChecked()){
-                                        show_enterprise = BizConstant.ALREADY_FAVORITE;
+                                        enterprise = BizConstant.ALREADY_FAVORITE;
                                     }else {
-                                        show_enterprise = BizConstant.NO_FAVORITE;
+                                        enterprise = BizConstant.NO_FAVORITE;
                                     }
                                     if (checkbox_adress.isChecked()){
-                                        show_position = BizConstant.ALREADY_FAVORITE;
+                                        position = BizConstant.ALREADY_FAVORITE;
                                     }else {
-                                        show_position = BizConstant.NO_FAVORITE;
+                                        position = BizConstant.NO_FAVORITE;
                                     }
-                                    presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss, show_enterprise, show_position);
+                                    enterprise = share_job.getText().toString();
+                                    position = job_address.getText().toString();
+                                    sp.insertKey(HomePageActivity.this,"enterprise",enterprise);
+                                    sp.insertKey(HomePageActivity.this,"position",position);
+                                    presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss, enterprise, position);
                                     presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), Integer.parseInt(sex_id), "", editTextaddress.getText().toString().trim(),
                                             "", "", editTexewxin.getText().toString().trim(),
                                             "", editTextphone.getText().toString().trim(), "", share_job.getText().toString(), job_address.getText().toString());
@@ -847,8 +856,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         });
 
     }
-
-
     /**
      * 判别分享文章是否有数据
      *
@@ -864,7 +871,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             shareRecy.setVisibility(View.GONE);
         }
     }
-
     //分享的文章
     @Override
     public void showMyShareDte(List<MyShareBean.DataBean> shareList) {
@@ -980,8 +986,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             wexinnumber = userInfoBean.data.user.weixin;
             address = userInfoBean.data.user.residence;
             sex_id = userInfoBean.data.user.sex;
-            show_enterprise = userInfoBean.data.user.enterprise;
-            show_position = userInfoBean.data.user.position;
+            enterprise = userInfoBean.data.user.enterprise;
+            position = userInfoBean.data.user.position;
         } else {
             ToastUtil.showToast(this, "请重新登录");
         }
@@ -1001,7 +1007,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        bmp.recycle();
     }
 
     //Dialog弹窗
