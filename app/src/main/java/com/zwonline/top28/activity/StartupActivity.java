@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
 import com.zwonline.top28.R;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.module.Constants;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 
@@ -33,7 +34,8 @@ public class StartupActivity extends AppCompatActivity {
 //            textView.setText("跳过" + count);
             if (count == 0) {
 //                textView.setText("跳过");
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+                intent.putExtra("pos_id", Constants.SplashPosID);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);

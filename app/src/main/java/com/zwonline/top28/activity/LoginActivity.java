@@ -322,7 +322,6 @@ public class LoginActivity extends BaseActivity<ILoginActivity, LoginPresenter> 
             mTimeCount.cancel();
         }
     }
-
     //呼叫电话
     private void showNormalDialog() {
         /* @setIcon 设置对话框图标

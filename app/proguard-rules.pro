@@ -25,6 +25,23 @@
 #-renamesourcefileattribute SourceFile
 ##//--- 基础混淆配置 ---
 ##//指定代码的压缩级别
+
+ -keep class com.qq.e.** {
+        public protected *;
+    }
+    -keep class android.support.v4.**{
+        public *;
+    }
+    -keep class android.support.v7.**{
+        public *;
+    }
+
+    -keep class MTT.ThirdAppInfoNew {
+            *;
+        }
+        -keep class com.tencent.** {
+            *;
+        }
 -optimizationpasses 5
 
 -allowaccessmodification  ##//优化时允许访问并修改有修饰符的类和类的成员
