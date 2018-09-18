@@ -51,6 +51,7 @@ import com.zwonline.top28.nim.session.extension.CustomAttachParser;
 import com.zwonline.top28.nim.yangfen.YangFenAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenViewHolderLink;
 import com.zwonline.top28.utils.GlideImageLoader;
+import com.zwonline.top28.utils.PermissionUtil;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 
 /**
@@ -141,6 +142,7 @@ public class APP extends Application {
     public void onCreate() {
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
         super.onCreate();
+        new PermissionUtil();
         /**
          * 解决Android 7.0权限问题
          */

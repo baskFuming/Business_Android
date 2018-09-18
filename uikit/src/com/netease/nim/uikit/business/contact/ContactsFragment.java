@@ -12,7 +12,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.contact.ContactChangedObserver;
@@ -36,11 +35,9 @@ import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nim.uikit.impl.cache.UIKitLogTag;
 import com.netease.nimlib.sdk.Observer;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 
@@ -88,12 +85,10 @@ public class ContactsFragment extends TFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         // 界面初始化
         initAdapter();
         findViews();
         buildLitterIdx(getView());
-
         // 注册观察者
         registerObserver(true);
         registerOnlineStateChangeListener(true);
@@ -104,14 +99,12 @@ public class ContactsFragment extends TFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         registerObserver(false);
         registerOnlineStateChangeListener(false);
     }
 
     private void initAdapter() {
         IContactDataProvider dataProvider = new ContactDataProvider(ItemTypes.FRIEND);
-
         adapter = new ContactDataAdapter(getActivity(), new ContactsGroupStrategy(), dataProvider) {
             @Override
             protected List<AbsContactItem> onNonDataItems() {
@@ -132,7 +125,6 @@ public class ContactsFragment extends TFragment {
                 loadingFrame.setVisibility(View.GONE);
                 int userCount = NimUIKit.getContactProvider().getMyFriendsCount();
                 countText.setText("共有好友" + userCount + "名");
-
                 onReloadCompleted();
             }
         };
@@ -173,7 +165,6 @@ public class ContactsFragment extends TFragment {
         ContactItemClickListener listener = new ContactItemClickListener();
         listView.setOnItemClickListener(listener);
         listView.setOnItemLongClickListener(listener);
-
         // ios style
         OverScrollDecoratorHelper.setUpOverScroll(listView);
     }
@@ -184,7 +175,6 @@ public class ContactsFragment extends TFragment {
         ImageView imgBackLetter = (ImageView) view.findViewById(R.id.img_hit_letter);
         TextView litterHit = (TextView) view.findViewById(R.id.tv_hit_letter);
         litterIdx = adapter.createLivIndex(listView, livIndex, litterHit, imgBackLetter);
-
         litterIdx.show();
     }
 
