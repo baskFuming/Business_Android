@@ -116,7 +116,6 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
 
     @Override
     protected void init(View view) {
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         initView(view);
         dlist = new ArrayList<>();
         attentionList = new ArrayList<>();
@@ -130,7 +129,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
         uid = (String) sp.getKey(getActivity(), "uid", "");
         nickname = (String) sp.getKey(getActivity(), "nickname", "");
         newContentList = new ArrayList<>();
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         if (islogins) {
             presenter.GetMyNotificationCount(getActivity());
             presenter.MomentLists(getActivity(), page, "", BizConstant.ALREADY_FAVORITE, "");

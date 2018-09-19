@@ -26,22 +26,8 @@
 ##//--- 基础混淆配置 ---
 ##//指定代码的压缩级别
 
- -keep class com.qq.e.** {
-        public protected *;
-    }
-    -keep class android.support.v4.**{
-        public *;
-    }
-    -keep class android.support.v7.**{
-        public *;
-    }
 
-    -keep class MTT.ThirdAppInfoNew {
-            *;
-        }
-        -keep class com.tencent.** {
-            *;
-        }
+
 -optimizationpasses 5
 
 -allowaccessmodification  ##//优化时允许访问并修改有修饰符的类和类的成员
@@ -390,3 +376,19 @@ public static final android.os.Parcelable$Creator *;
 -keepclassmembers class * extends android.webkit.WebViewClient { public void *(android.webkit.WebView, jav.lang.String); }
 #----------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------
+
+#广点通混淆
+ -keep class com.qq.e.** {
+        public protected *;
+    }
+     -keep class android.support.v4.**{
+            public *;
+        }
+        -keep class android.support.v7.**{
+            public *;
+        }
+#        -keep MTT.**{*;}
+#        -keep META-INF.**{*;}
+#         -keep assets.gdt_plugin.**{*;}
+#    -keep com.tencent.*
+#     -keep MTT.*

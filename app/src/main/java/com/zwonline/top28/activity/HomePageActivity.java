@@ -214,6 +214,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
 
     private String enterprise;
     private String position;
+    private String positions;
+    private String enterprises;
 
     @Override
     protected void init() {
@@ -221,17 +223,18 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
         NavigationBar.Statedata(this);
-        api = WXAPIFactory.createWXAPI(this, "gh_9c5277dd09df");
+        api = WXAPIFactory.createWXAPI(this, "wx979d60eb9639eb65");
         initData();//查找控件
         sp = SharedPreferencesUtils.getUtil();
         islogins = (boolean) sp.getKey(this, "islogin", false);
         userUid = (String) sp.getKey(this, "uid", "");
         wx_page_type = (String) sp.getKey(this, "wx_page_type", "");
         //职位 公司名称
-        enterprise = (String) sp.getKey(this, "enterprise", enterprise);
-        position= (String) sp.getKey(this, "position", position);
-        sp.insertKey(HomePageActivity.this,"enterprise",enterprise);
-        sp.insertKey(HomePageActivity.this,"position",position);
+        enterprise = (String) sp.getKey(this, "enterprise", "");
+        position= (String) sp.getKey(this, "position", "");
+//        sp.insertKey(HomePageActivity.this,"enterprise",enterprise);
+//        sp.insertKey(HomePageActivity.this,"position",position);
+        ToastUtils.showToast(getApplicationContext(),enterprise+"||"+position);
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         sex = intent.getStringExtra("sex");
@@ -427,6 +430,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         super.onResume();
         presenter.mExamineChat(this, uid);//检查是否聊过天
         presenter.mCompany(this, uid);
+
     }
 
     @Override
@@ -506,6 +510,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             TextView editTextshare = contentView.findViewById(R.id.textshare);
                             //Editext
                             editTextname = contentView.findViewById(R.id.share_name);
+
                             editTextphone = contentView.findViewById(R.id.share_phone);
                             editTexewxin = contentView.findViewById(R.id.share_wxin);
                             editTextaddress = contentView.findViewById(R.id.share_address);
@@ -605,23 +610,23 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                         addresss = BizConstant.NO_FAVORITE;
                                     }
                                     if (checkbox_job.isChecked()){
-                                        enterprise = BizConstant.ALREADY_FAVORITE;
+                                        enterprises = BizConstant.ALREADY_FAVORITE;
                                     }else {
-                                        enterprise = BizConstant.NO_FAVORITE;
+                                        enterprises = BizConstant.NO_FAVORITE;
                                     }
                                     if (checkbox_adress.isChecked()){
-                                        position = BizConstant.ALREADY_FAVORITE;
+                                        positions = BizConstant.ALREADY_FAVORITE;
                                     }else {
-                                        position = BizConstant.NO_FAVORITE;
+                                        positions = BizConstant.NO_FAVORITE;
                                     }
                                     enterprise = share_job.getText().toString();
                                     position = job_address.getText().toString();
-                                    sp.insertKey(HomePageActivity.this,"enterprise",enterprise);
-                                    sp.insertKey(HomePageActivity.this,"position",position);
-                                    presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss, enterprise, position);
+                                    sp.insertKey(HomePageActivity.this,"enterprise",job_address.getText().toString());
+                                    sp.insertKey(HomePageActivity.this,"position",share_job.getText().toString());
+                                    presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss, enterprises, positions);
                                     presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), Integer.parseInt(sex_id), "", editTextaddress.getText().toString().trim(),
                                             "", "", editTexewxin.getText().toString().trim(),
-                                            "", editTextphone.getText().toString().trim(), "", share_job.getText().toString(), job_address.getText().toString());
+                                            "", editTextphone.getText().toString().trim(), "", job_address.getText().toString(), share_job.getText().toString());
                                     shareWXin(uid);
                                     myQrCodePopwindow.dismiss();
                                     myQrCodePopwindow.backgroundAlpha(HomePageActivity.this, 1f);
@@ -671,6 +676,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         }
     }
 
+
+
     //调起微信小程序
     private void shareWXin(String uid) { //1.正式版本
         if (StringUtil.isNotEmpty(wx_page_type) && wx_page_type.equals(BizConstant.ALREADY_FAVORITE)) {
@@ -680,7 +687,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         }
         WXMiniProgramObject miniProgramObject = new WXMiniProgramObject();
         miniProgramObject.webpageUrl = "https://toutiao.28.com";//小程序网页地址
-        miniProgramObject.userName = "gh_2c9958d8253e";//小程序ID
+        miniProgramObject.userName = "gh_9c5277dd09df";//小程序ID
         miniProgramObject.path = "pages/article/article?user_id=" + uid;//小程序路径
         // 0.正式版本  1.测试版本  2.体验版本
         miniProgramObject.miniprogramType = wXinType;
@@ -1007,6 +1014,10 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if (bmp!=null){
+            bmp.recycle();
+        }
     }
 
     //Dialog弹窗
@@ -1385,4 +1396,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             }
         }
     }
+
+
 }

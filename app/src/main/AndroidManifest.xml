@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.zwonline.top28">
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="9" />
     tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
@@ -724,7 +724,8 @@
             android:name="com.qq.e.comm.DownloadService"
             android:exported="false" />
 
-        <activity android:name=".activity.SplashActivity"></activity>
+        <activity android:name=".activity.SplashActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

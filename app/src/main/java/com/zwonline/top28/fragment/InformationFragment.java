@@ -128,7 +128,7 @@ public class InformationFragment extends BasesFragment {
 
     @Override
     protected void init(View view) {
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         setHasOptionsMenu(true);
         sp = SharedPreferencesUtils.getUtil();
         searchMessage = view.findViewById(R.id.search_message);

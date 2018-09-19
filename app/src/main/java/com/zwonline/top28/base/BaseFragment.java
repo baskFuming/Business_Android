@@ -33,6 +33,7 @@ public abstract class BaseFragment<V,T extends BasePresenter<V>> extends Fragmen
         super.onActivityCreated(savedInstanceState);
         mContentView = inflater.inflate(setLayouId(),container,false);
         StatusBarUtil.setColor(getActivity(),getResources().getColor(R.color.reded),0);
+
         unbinder = ButterKnife.bind(this, mContentView);
         presenter=setPresenter();
         init(mContentView);

@@ -117,16 +117,16 @@
                         android:background="@drawable/rectangle_shape_gay"
                         android:textColor="#FF2B2B"
                         android:textSize="16sp"
-                       />
+                        />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
         <!--<WebView-->
-            <!--android:id="@+id/content_web"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layerType="software"></WebView>-->
+        <!--android:id="@+id/content_web"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layerType="software"></WebView>-->
         <WebView
             android:id="@+id/content_web"
             android:layout_width="match_parent"

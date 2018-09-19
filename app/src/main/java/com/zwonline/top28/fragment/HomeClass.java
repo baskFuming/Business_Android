@@ -67,7 +67,8 @@ public class HomeClass extends BasesFragment<IHomeFragment, HomePresenter> imple
     protected void init(View view) {
         initView(view);
 //        homePgb.setMovieResource(R.drawable.loading);
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.white), 0);
+//        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (NetUtils.isConnected(getActivity())) {
             if (getArguments() != null) {
                 cate_id = getArguments().getString("cate_id");

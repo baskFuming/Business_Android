@@ -85,7 +85,7 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     private RelativeLayout hot_business_relat;
     private LinearLayout home_linear;
     private YangFenUnclaimedWindow yangFenUnclaimedWindow;
-
+    private List<HomeBean.DataBean> list;
 
     //二次修改
     @BindView(R.id.magic_indicator)
@@ -104,8 +104,9 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
 
     @Override
     protected void init(View view) {
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         sp = SharedPreferencesUtils.getUtil();
+        list = new ArrayList<>();
         hotBusiness = (ImageView) view.findViewById(R.id.hot_business);
         hot_business_relat = (RelativeLayout) view.findViewById(R.id.hot_business_relat);
         home_linear = (LinearLayout) view.findViewById(R.id.home_linear);
@@ -168,8 +169,9 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     @Override
     public void showHomeClass(final List<HomeBean.DataBean> classList) {
 //        viewpager.setCurrentItem(1);
-        loadingTablayout(classList);
-
+        list.clear();
+        list.addAll(classList);
+        loadingTablayout();
 //        for (int i = 0; i < classList.size(); i++) {
 //            tablayout.newTab().setText(classList.get(i).cate_name);
 //        }
@@ -192,23 +194,22 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
 //        tablayout.setupWithViewPager(viewpager);
     }
 
-    private void loadingTablayout(final List<HomeBean.DataBean> classList) {
+    private void loadingTablayout() {
         HomeBean.DataBean bean = new HomeBean.DataBean("300", getString(R.string.center_recommend));
-        HomeBean.DataBean bean1 = new HomeBean.DataBean("400", getString(R.string.center_car));
-        classList.add(1, bean);
+        list.add(1, bean);
 //        classList.add(bean1);
 //        classList.add(bean1);
 //        classList.add(bean1);
 //        classList.add(bean1);
-        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getChildFragmentManager(), classList);
+        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getChildFragmentManager(), list);
 //        viewpager.setOffscreenPageLimit(1);
         viewpager.setAdapter(myFragmentAdapter);
 //        viewpager.setCurrentItem(1);
         magicIndicator.setBackgroundColor(Color.parseColor("#FFFFFF"));
         CommonNavigator commonNavigator = new CommonNavigator(getActivity());
-        if (classList.size()>6){
+        if (list.size() > 6) {
             commonNavigator.setAdjustMode(false);  //ture 即标题平分屏幕宽度的模式
-        }else {
+        } else {
             commonNavigator.setAdjustMode(true);  //ture 即标题平分屏幕宽度的模式
         }
         commonNavigator.setScrollPivotX(0.65f);
@@ -216,15 +217,15 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
-                return classList == null ? 0 : classList.size();
+                return list == null ? 0 : list.size();
             }
 
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
                 simplePagerTitleView = new ColorTransitionPagerTitleView(context);
                 simplePagerTitleView.setTextSize(16);
-                for (int i = 0; i < classList.size(); i++) {
-                    simplePagerTitleView.setText(classList.get(index).cate_name);
+                for (int i = 0; i < list.size(); i++) {
+                    simplePagerTitleView.setText(list.get(index).cate_name);
                 }
                 simplePagerTitleView.setSelectedColor(Color.parseColor("#2F2F2F"));
                 simplePagerTitleView.setNormalColor(Color.parseColor("#807F81"));

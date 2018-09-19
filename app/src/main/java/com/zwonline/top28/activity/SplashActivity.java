@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.util.AdError;
 import com.zwonline.top28.R;
 import com.zwonline.top28.module.Constants;
+import com.zwonline.top28.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,23 +36,34 @@ public class SplashActivity extends Activity implements SplashADListener {
     private static final String SKIP_TEXT = "跳过 %d";
 
     public boolean canJump = false;
-
+    /**
+     * 为防止无广告时造成视觉上类似于"闪退"的情况，设定无广告时页面跳转根据需要延迟一定时间，demo
+     * 给出的延时逻辑是从拉取广告开始算开屏最少持续多久，仅供参考，开发者可自定义延时逻辑，如果开发者采用demo
+     * 中给出的延时逻辑，也建议开发者考虑自定义minSplashTimeWhenNoAD的值（单位ms）
+     **/
+    private int minSplashTimeWhenNoAD = 2000;
+    /**
+     * 记录拉取广告的时间
+     */
+    private long fetchSplashADTime = 0;
+    private Handler handler = new Handler(Looper.getMainLooper());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.setTransparent(this);
         setContentView(R.layout.activity_splash);
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        StatusBarUtil.setColor(this, getResources().getColor(R.color.transparent), 0);
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         container = (ViewGroup) this.findViewById(R.id.splash_container);
         skipView = (TextView) findViewById(R.id.skip_view);
         splashHolder = (ImageView) findViewById(R.id.splash_holder);
         // 如果targetSDKVersion >= 23，就要申请好权限。如果您的App没有适配到Android6.0（即targetSDKVersion < 23），那么只需要在这里直接调用fetchSplashAD接口。
-        if (Build.VERSION.SDK_INT >= 23) {
-            checkAndRequestPermission();
-        } else {
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            checkAndRequestPermission();
+//        } else {
             // 如果是Android6.0以下的机器，默认在安装时获得了所有权限，可以直接调用SDK
-            fetchSplashAD(this, container, skipView, Constants.APPID, Constants.SplashPosID, this, 3);
-        }
+            fetchSplashAD(this, container, skipView, Constants.APPID, Constants.SplashPosID, this, 0);
+//        }
     }
 
     /**
@@ -66,18 +79,17 @@ public class SplashActivity extends Activity implements SplashADListener {
      */
     private void fetchSplashAD(Activity activity, ViewGroup adContainer, View skipContainer,
                                String appId, String posId, SplashADListener adListener, int fetchDelay) {
+        fetchSplashADTime = System.currentTimeMillis();
         splashAD = new SplashAD(activity, adContainer, skipContainer, appId, posId, adListener, fetchDelay);
     }
 
     @Override
     public void onADPresent() {
-        Log.i("AD_DEMO", "SplashADPresent");
         splashHolder.setVisibility(View.INVISIBLE); // 广告展示后一定要把预设的开屏图片隐藏起来
     }
 
     @Override
     public void onADClicked() {
-        Log.i("AD_DEMO", "SplashADClicked");
     }
 
     /**
@@ -88,13 +100,11 @@ public class SplashActivity extends Activity implements SplashADListener {
      */
     @Override
     public void onADTick(long millisUntilFinished) {
-        Log.i("AD_DEMO", "SplashADTick " + millisUntilFinished + "ms");
         skipView.setText(String.format(SKIP_TEXT, Math.round(millisUntilFinished / 1000f)));
     }
 
     @Override
     public void onADExposure() {
-
     }
 
     /**
@@ -102,14 +112,28 @@ public class SplashActivity extends Activity implements SplashADListener {
      */
     @Override
     public void onADDismissed() {
-        Log.i("AD_DEMO", "SplashADDismissed");
         next();
     }
 
     @Override
     public void onNoAD(AdError adError) {
-        Log.i("AD_DEMO", "LoadSplashADFail, eCode=" + adError);
-        /** 如果加载广告失败，则直接跳转 */
+        /**
+         * 为防止无广告时造成视觉上类似于"闪退"的情况，设定无广告时页面跳转根据需要延迟一定时间，demo
+         * 给出的延时逻辑是从拉取广告开始算开屏最少持续多久，仅供参考，开发者可自定义延时逻辑，如果开发者采用demo
+         * 中给出的延时逻辑，也建议开发者考虑自定义minSplashTimeWhenNoAD的值
+         **/
+//        long alreadyDelayMills = System.currentTimeMillis() - fetchSplashADTime;//从拉广告开始到onNoAD已经消耗了多少时间
+//        long shouldDelayMills = alreadyDelayMills > minSplashTimeWhenNoAD ? 0 : minSplashTimeWhenNoAD
+//                - alreadyDelayMills;//为防止加载广告失败后立刻跳离开屏可能造成的视觉上类似于"闪退"的情况，根据设置的minSplashTimeWhenNoAD
+//// 计算出还需要延时多久
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                SplashActivity.this.startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//                finish();
+//            }
+//        }, shouldDelayMills);
+//        /** 如果加载广告失败，则直接跳转 */
         this.startActivity(new Intent(this, MainActivity.class));
         this.finish();
     }
@@ -121,7 +145,7 @@ public class SplashActivity extends Activity implements SplashADListener {
     private void next() {
         if (canJump) {
             this.startActivity(new Intent(this, MainActivity.class));
-            this.finish();
+            finish();
         } else {
             canJump = true;
         }

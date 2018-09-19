@@ -96,7 +96,7 @@ public class FriendCircleFragment extends BasesFragment {
     @Subscribe
     @Override
     protected void init(View view) {
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         sp = SharedPreferencesUtils.getUtil();
         if (sp != null) {
             isLogin = (boolean) sp.getKey(getActivity(), "islogin", false);

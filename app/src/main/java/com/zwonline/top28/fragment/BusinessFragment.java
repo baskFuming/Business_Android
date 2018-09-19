@@ -106,8 +106,8 @@ public class BusinessFragment extends BasesFragment<IBusinessClassFra, BusinessC
 
     @Override
     protected void init(final View view) {
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
 //        NavigationBar.Statedata(getActivity());
         initData(view);
 //        NavigationBar.transparencyBar(getActivity());

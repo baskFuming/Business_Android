@@ -4,10 +4,11 @@ package com.zwonline.top28.bean;
 import java.util.List;
 
 /**
-     * 描述：首页分类
-     * @author YSG
-     * @date 2018/1/9
-     */
+ * 描述：首页分类
+ *
+ * @author YSG
+ * @date 2018/1/9
+ */
 public class HomeBean {
 
     /**
@@ -26,6 +27,9 @@ public class HomeBean {
         public DataBean(String cate_id, String cate_name) {
             this.cate_id = cate_id;
             this.cate_name = cate_name;
+        }
+
+        public DataBean() {
         }
 
         public String getCate_id() {

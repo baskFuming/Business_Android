@@ -110,14 +110,13 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
 
     @Override
     protected void init(View view) {
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         sp = SharedPreferencesUtils.getUtil();
         EventBus.getDefault().register(this);
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
         uid = (String) sp.getKey(getActivity(), "uid", "");
         nickname = (String) sp.getKey(getActivity(), "nickname", "");
         newContentList = new ArrayList<>();
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         newcontentRecy = (XRecyclerView) view.findViewById(R.id.newcontent_recy);
         presenter.MomentLists(getActivity(), page, "", "", "");
         presenter.GetMyNotificationCount(getActivity());

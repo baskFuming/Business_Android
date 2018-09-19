@@ -17,10 +17,10 @@
         <!--android:textSize="16sp"-->
         <!--android:src="@mipmap/close_x" />-->
 
-    <com.zwonline.top28.utils.FloatViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/vp_photo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.zwonline.top28.utils.FloatViewPager>
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
     <!--<ImageView-->
         <!--android:id="@+id/loading"-->
         <!--android:layout_width="wrap_content"-->

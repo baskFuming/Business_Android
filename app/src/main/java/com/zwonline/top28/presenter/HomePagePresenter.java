@@ -15,6 +15,8 @@ import com.zwonline.top28.bean.RealBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.model.HomePageModel;
+import com.zwonline.top28.tip.toast.ToastUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IHomePageActivity;
 
 import java.io.IOException;
@@ -395,6 +397,7 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
                          String address, String favourite_industry,
                          String bio,String weixin,String email,String telephone,String job_cate_pid,String enterprise,String position) {
         try {
+
             Flowable<SettingBean> flowable = homePageModel.mSetingModel(context, nick_name, real_name, sex, age, address,
                     favourite_industry, bio,weixin,email,telephone,job_cate_pid,enterprise,position);
             flowable.subscribeOn(Schedulers.io())

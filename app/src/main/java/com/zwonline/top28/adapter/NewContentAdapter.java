@@ -66,7 +66,7 @@ public class NewContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private FunctionInterface functionInterface;
     private LikeMomentInterface likeMomentInterface;
     private boolean islogins;
-
+    public String yuMing="thumb";
     public NewContentAdapter(List<NewContentBean.DataBean> list, Context context) {
         this.list = list;
         this.context = context;
@@ -130,7 +130,12 @@ public class NewContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             myViewHolder.multiImageView.setVisibility(View.GONE);
             int width = Integer.parseInt(list.get(position).images_arr.get(0).original_size.width);
             int height = Integer.parseInt(list.get(position).images_arr.get(0).original_size.height);
-
+            String thumb = list.get(position).images_arr.get(0).thumb;
+            if (StringUtil.isNotEmpty(thumb)&&thumb.contains(yuMing)){
+                thumb=list.get(position).images_arr.get(0).original;
+            }else {
+                thumb = list.get(position).images_arr.get(0).thumb;
+            }
             RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
             if (width < height) {
                 myViewHolder.dynamic_imag_h.setVisibility(View.VISIBLE);
@@ -138,19 +143,19 @@ public class NewContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
 
-                Glide.with(context).load(list.get(position).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_h);
+                Glide.with(context).load(thumb).apply(requestOption).into(myViewHolder.dynamic_imag_h);
             } else if (width > height) {
                 myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_z.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_w.setVisibility(View.VISIBLE);
                 myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                Glide.with(context).load(list.get(position).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_w);
+                Glide.with(context).load(thumb).apply(requestOption).into(myViewHolder.dynamic_imag_w);
             } else {
                 myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_z.setVisibility(View.VISIBLE);
                 myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
                 myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                Glide.with(context).load(list.get(position).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_z);
+                Glide.with(context).load(thumb).apply(requestOption).into(myViewHolder.dynamic_imag_z);
             }
             //单张图片点击放大
             myViewHolder.imag_relative.setOnClickListener(new View.OnClickListener() {

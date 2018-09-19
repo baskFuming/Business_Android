@@ -117,7 +117,9 @@ public class MySettingActivity extends BaseActivity {
                 sp.insertKey(this, "islogin", false);
                 sp.insertKey(this, "isUpdata", false);
                 RecordUserBehavior.recordUserBehavior(this, BizConstant.SIGN_OUT);
-                startActivity(new Intent(this, WithoutCodeLoginActivity.class));
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("loginType", BizConstant.NEW);
+                startActivity(intent);
                 SharedPreferences settings = this.getSharedPreferences("SP", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.remove("diaog");

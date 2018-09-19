@@ -217,10 +217,10 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 sp.insertKey(getActivity(), "follow", userInfoBean.data.user.follow);
                 sp.insertKey(getActivity(), "fans", userInfoBean.data.user.fans);
                 sp.insertKey(getActivity(), "favorite", userInfoBean.data.user.favorite);
-                sp.insertKey(getActivity(),"job_cate_pid",userInfoBean.data.user.job_cate_pid);
-                sp.insertKey(getActivity(),"wx_page_type",userInfoBean.data.user.wx_page_type);
-                sp.insertKey(getActivity(),"enterprise",userInfoBean.data.user.enterprise);
-                sp.insertKey(getActivity(),"position",userInfoBean.data.user.position);
+                sp.insertKey(getActivity(), "job_cate_pid", userInfoBean.data.user.job_cate_pid);
+                sp.insertKey(getActivity(), "wx_page_type", userInfoBean.data.user.wx_page_type);
+                sp.insertKey(getActivity(), "enterprise", userInfoBean.data.user.enterprise);
+                sp.insertKey(getActivity(), "position", userInfoBean.data.user.position);
             }
 
             avatar = userInfoBean.data.user.avatar;
@@ -233,7 +233,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             }
             if (StringUtil.isNotEmpty(userInfoBean.data.user.nickname)) {
                 username = userInfoBean.data.user.nickname;
-                userName.setText(userInfoBean.data.user.nickname+"");
+//                userName.setText(userInfoBean.data.user.nickname+"");
             }
 
             signature = userInfoBean.data.user.signature;
@@ -287,7 +287,6 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             editor.commit();
             getActivity().finish();
             getActivity().overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
-            ToastUtils.showToast(getActivity(), "登录异常，重新登录");
         } else {
             ToastUtils.showToast(getActivity(), userInfoBean.msg);
         }
@@ -350,10 +349,14 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.video://我的主页
-                Intent myintent  = new Intent(getActivity(), HomePageActivity.class);
-                myintent.putExtra("uid",uid);
+//                if (StringUtil.isNotEmpty(uid)){
+                Intent myintent = new Intent(getActivity(), HomePageActivity.class);
+                myintent.putExtra("uid", uid);
                 startActivity(myintent);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//                }else {
+//                }
+//
                 break;
             case R.id.wallet://钱包
                 RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.CLICK_WALLET);
@@ -469,7 +472,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageFollow event) {
-        tvGuanzhuNum.setText(event.followNum);
+//        tvGuanzhuNum.setText(event.followNum);
     }
 
 

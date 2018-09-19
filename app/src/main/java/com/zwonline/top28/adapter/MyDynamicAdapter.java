@@ -106,7 +106,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         String uid = (String) sp.getKey(context, "uid", "");
         islogins = (boolean) sp.getKey(context, "islogin", false);
         if (getItemViewType(position) == TYPE_HEADER) return;
-        final int pos = position-1;
+        final int pos = position - 1;
 //        final int pos = getRealPosition(holder);
 //        if (holder instanceof MyViewHolder) {
         final MyViewHolder myViewHolder = (MyViewHolder) holder;
@@ -174,15 +174,11 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 @Override
                 public void onClick(View v) {
                     String image[] = new String[list.get(pos).images_arr.size()];
-                    String images[] = new String[list.get(pos).images_arr.size()];
                     if (list.get(pos).images_arr != null) {
                         image[0] = list.get(pos).images_arr.get(0).original;
-                        images[0] = list.get(pos).images_arr.get(0).thumb;
                         Intent intent = new Intent(context, PhotoBrowserActivity.class);
                         intent.putExtra("imageUrls", image);
-                        intent.putExtra("imageUrl",images);
                         intent.putExtra("curImg", list.get(pos).images_arr.get(0).original);
-                        intent.putExtra("curImgs", list.get(pos).images_arr.get(0).thumb);
                         context.startActivity(intent);
                     } else {
 
@@ -210,18 +206,14 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             public void onItemClick(View view, int positions) {
                 // To do something or 查看大图.
                 String image[] = new String[list.get(pos).images_arr.size()];
-                String images[] = new String[list.get(pos).images_arr.size()];
                 if (list.get(pos).images_arr != null) {
                     for (int i = 0; i < list.get(pos).images_arr.size(); i++) {
                         image[i] = list.get(pos).images_arr.get(i).original;
-                        images[i] = list.get(pos).images_arr.get(i).thumb;
 
                     }
                     Intent intent = new Intent(context, PhotoBrowserActivity.class);
                     intent.putExtra("imageUrls", image);
-                    intent.putExtra("imageUrl", images);
                     intent.putExtra("curImg", list.get(pos).images_arr.get(positions).original);
-                    intent.putExtra("curImgs", list.get(pos).images_arr.get(positions).thumb);
                     context.startActivity(intent);
                 } else {
 

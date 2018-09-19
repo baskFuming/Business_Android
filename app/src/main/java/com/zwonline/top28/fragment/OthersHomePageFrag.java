@@ -90,14 +90,13 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
      */
     @Override
     protected void init(View view) {
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         sp = SharedPreferencesUtils.getUtil();
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
         uid = (String) sp.getKey(getActivity(), "uid", "");
         Intent intent = getActivity().getIntent();
         userId = intent.getStringExtra("uid");
         newContentList = new ArrayList<>();
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         newcontentRecy = (XRecyclerView) view.findViewById(R.id.newcontent_recy);
         presenter.MomentLists(getActivity(), page, userId, "", "");
         recyclerViewData();

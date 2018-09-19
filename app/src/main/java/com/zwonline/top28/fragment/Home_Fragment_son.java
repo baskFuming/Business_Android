@@ -17,6 +17,7 @@ import com.zwonline.top28.activity.CompanyActivity;
 import com.zwonline.top28.activity.WithoutCodeLoginActivity;
 import com.zwonline.top28.adapter.BusinessAdapter;
 import com.zwonline.top28.base.BaseFragment;
+import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.BusinessListBean;
 import com.zwonline.top28.presenter.BusinessListPresenter;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
@@ -36,7 +37,7 @@ import pl.droidsonroids.gif.GifImageView;
  * 3.@date2017/12/7 11:51
  */
 
-public class Home_Fragment_son extends BaseFragment<IBusinessListFrag, BusinessListPresenter> implements IBusinessListFrag {
+public class Home_Fragment_son extends BasesFragment<IBusinessListFrag, BusinessListPresenter> implements IBusinessListFrag {
 
     private XRecyclerView businessRecycler;
     private GifImageView projectGif;
@@ -52,7 +53,7 @@ public class Home_Fragment_son extends BaseFragment<IBusinessListFrag, BusinessL
 
     @Override
     protected void init(View view) {
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         initData(view);//查找控件
         sp = SharedPreferencesUtils.getUtil();
         if (getArguments() != null) {

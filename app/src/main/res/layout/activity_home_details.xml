@@ -7,8 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="true"
-    >
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/linearhead"
@@ -33,6 +32,7 @@
                 android:layout_marginLeft="10dp"
                 android:src="@mipmap/return_black" />
         </RelativeLayout>
+
         <ImageView
             android:id="@+id/shared"
             android:layout_width="25dp"
@@ -67,20 +67,23 @@
         android:layout_below="@id/linearhead"
         android:layout_marginBottom="50dp"
         android:orientation="vertical">
+
         <com.liaoinstan.springview.widget.SpringView
             android:id="@+id/comment_spring"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <com.zwonline.top28.utils.LazyScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            <com.zwonline.top28.utils.MyListView
-                android:id="@+id/comment_listview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:divider="@null"
-                android:scrollbars="vertical"></com.zwonline.top28.utils.MyListView>
+
+                <com.zwonline.top28.utils.MyListView
+                    android:id="@+id/comment_listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants"
+                    android:divider="@null"
+                    android:scrollbars="vertical"></com.zwonline.top28.utils.MyListView>
             </com.zwonline.top28.utils.LazyScrollView>
 
         </com.liaoinstan.springview.widget.SpringView>
@@ -91,7 +94,6 @@
         android:id="@+id/details_gif"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/linearhead"
         android:scaleType="fitXY"
         android:src="@mipmap/loading"
         android:visibility="visible" />
@@ -102,9 +104,9 @@
         android:layout_height="60dp"></View>
 
     <LinearLayout
-        android:layout_above="@+id/liv"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_above="@+id/liv"
         android:layout_alignParentBottom="true"
         android:background="#ffffff"
         android:orientation="horizontal"
@@ -151,17 +153,41 @@
             android:orientation="horizontal"
             android:visibility="visible">
 
-            <ImageView
-                android:id="@+id/comment"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="15dp"
-                android:src="@mipmap/ic_comment_gray" />
+            <RelativeLayout
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="bottom">
 
+            <ImageView
+            android:id="@+id/comment"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="true"
+            android:src="@mipmap/ic_comment_gray" />
+            <TextView
+            android:id="@+id/badgeview_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_shape"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="8dp"
+            android:padding="1dp"
+            android:visibility="gone"
+            />
+            </RelativeLayout>
+            <!--<ImageView-->
+                <!--android:id="@+id/comment"-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:src="@mipmap/ic_comment_gray" />-->
 
             <CheckBox
-                android:focusable="true"
                 android:id="@+id/collect"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -169,7 +195,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="2dp"
                 android:background="@drawable/selector_collect"
-                android:button="@null" />
+                android:button="@null"
+                android:focusable="true" />
 
             <ImageView
                 android:id="@+id/imageViewShare"
@@ -177,6 +204,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="20dp"
+                android:layout_marginRight="1dp"
                 android:src="@mipmap/share_gray" />
         </LinearLayout>
 
@@ -185,9 +213,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@null"
             android:text="@string/common_btn_send"
             android:textColor="@color/gray"
-            android:background="@null"
             android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

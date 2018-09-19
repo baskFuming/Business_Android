@@ -106,14 +106,14 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
      */
     @Override
     protected void init(View view) {
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.white), 0);
+//        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         sp = SharedPreferencesUtils.getUtil();
         EventBus.getDefault().register(this);
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
         userId = (String) sp.getKey(getActivity(), "uid", "");
         nickname = (String) sp.getKey(getActivity(), "nickname", "");
         newContentList = new ArrayList<>();
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         initView(view);
         if (sp != null && islogins) {
             presenter.MomentLists(getActivity(), page, userId, "", "");

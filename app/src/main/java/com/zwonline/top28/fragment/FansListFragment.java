@@ -15,6 +15,7 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.adapter.MyFansListAdapter;
 import com.zwonline.top28.base.BaseFragment;
+import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.IntegralRecordBean;
 import com.zwonline.top28.bean.MyFansBean;
@@ -34,7 +35,7 @@ import java.util.List;
  * @desc粉丝的列表
  * @date ${Date}
  */
-public class FansListFragment extends BaseFragment<IMyFansActivity, MyFansPresenter> implements IMyFansActivity {
+public class FansListFragment extends BasesFragment<IMyFansActivity, MyFansPresenter> implements IMyFansActivity {
     private int cate_ids;
     private String cate_name;
     private RelativeLayout title_relay;
@@ -53,7 +54,6 @@ public class FansListFragment extends BaseFragment<IMyFansActivity, MyFansPresen
         sp = SharedPreferencesUtils.getUtil();
         myUid = (String) sp.getKey(getActivity(), "uid", "");
         fanList = new ArrayList<>();
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.white), 0);
         myFansRecy = (XRecyclerView) view.findViewById(R.id.myfans_recy);
         title_relay = (RelativeLayout) view.findViewById(R.id.title_relay);
         title_relay.setVisibility(View.GONE);

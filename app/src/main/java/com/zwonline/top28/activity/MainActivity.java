@@ -242,7 +242,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             case R.id.rb_home:
                 rbHome.setChecked(true);
                 switchFragment(homeFragment);
-                StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 page = 1;
                 break;
             case R.id.rb_yangshi:
@@ -250,19 +251,23 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     if (page == 1) {
                         rbHome.setChecked(true);
                         switchFragment(homeFragment);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     } else if (page == 3) {
                         rbBusinessCircle.setChecked(true);
                         switchFragment(businessFragment);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     } else if (page == 4) {
                         rbInfo.setChecked(true);
                         switchFragment(informationFragment);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     } else if (page == 5) {
                         rbMy.setChecked(true);
                         switchFragment(myFragment);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                        StatusBarUtil.setColor(this, getResources().getColor(R.color.reded), 0);
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
                     }
 //
                     startActivity(new Intent(this, YangShiActivity.class));
@@ -279,7 +284,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             case R.id.rb_business_circle:
                 rbBusinessCircle.setChecked(true);
                 switchFragment(businessFragment);
-                StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 page = 3;
                 break;
             case R.id.rb_info:
@@ -290,7 +296,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     rbBusinessCircle.setChecked(false);
                     rbYangShi.setChecked(false);
                     switchFragment(informationFragment);
-                    StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
+                    StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     page = 4;
                 } else {
                     Intent infoIntent = new Intent(this, WithoutCodeLoginActivity.class);
@@ -312,6 +319,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     rbMy.setChecked(true);
                     switchFragment(myFragment);
                     StatusBarUtil.setColor(this, getResources().getColor(R.color.reded), 0);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
                     page = 5;
                 } else {
                     Intent myIntent = new Intent(this, WithoutCodeLoginActivity.class);
@@ -427,9 +435,9 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
      */
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
             if (mIsExit) {
-                this.finish();
+                MainActivity.this.finish();
 
             } else {
                 Toast.makeText(getApplicationContext(), getText(R.string.enter_exit_app), Toast.LENGTH_SHORT).show();
@@ -703,5 +711,6 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         // my own policy
         return "99+";
     }
+
 }
 

@@ -41,13 +41,13 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
-                            android:layout_width="70dp"
-                            android:layout_height="70dp">
+                            android:layout_width="100dp"
+                            android:layout_height="100dp">
 
                             <com.zwonline.top28.utils.ImageViewPlus
                                 android:id="@+id/user_tou"
-                                android:layout_width="70dp"
-                                android:layout_height="70dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginRight="16dp"
@@ -56,10 +56,10 @@
 
                             <ImageView
                                 android:id="@+id/dv_user"
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_marginTop="25dp"
-                                android:layout_marginLeft="40dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginTop="50dp"
+                                android:layout_marginLeft="70dp"
                                 android:src="@mipmap/v_icon"
                                 android:visibility="gone"
                                 />
@@ -174,7 +174,6 @@
                         android:layout_height="0.5dp"
                         android:layout_marginEnd="15dp"
                         android:layout_marginStart="15dp"
-                        android:layout_marginTop="20dp"
                         android:alpha="1"
                         android:background="#ffffffff" />
 
@@ -183,11 +182,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="18dp"
                         android:layout_marginBottom="16dp"
-                        android:layout_marginTop="15dp"
                         android:alpha="0.5"
+                        android:layout_marginTop="8dp"
                         android:text="这个人很懒，什么还没留下"
                         android:textColor="#ffffffff"
                         android:textSize="13sp"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:layout_marginRight="10dp"
                         tools:ignore="RtlCompat"
                         android:layout_marginLeft="21dp" />
                 </LinearLayout>

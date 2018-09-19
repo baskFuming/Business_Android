@@ -1,6 +1,7 @@
 package com.zwonline.top28.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,33 +24,43 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.zwonline.top28.R;
 import com.zwonline.top28.utils.FloatViewPager;
+import com.zwonline.top28.utils.GlideImageLoader;
 import com.zwonline.top28.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+
+import butterknife.OnTouch;
 
 /**
  * 文章详情点击图片查看图片
  */
-public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTouchListener {
+public class PhotoBrowserActivity extends AppCompatActivity  {
     private String curImgUrl;
     private String imgUrls[];
     private String curImgUrls;
     private String imgUrl[];
-    private FloatViewPager viewPager;
+    private ViewPager viewPager;
     private TextView textView;
     private int curPosition;
     //    private PhotoView img;
@@ -73,12 +84,12 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTo
         viewPager.setAdapter(new MyPageAdapter());
         curPosition = returnClickedPosition() == -1 ? 0 : returnClickedPosition();
         viewPager.setCurrentItem(curPosition);//设置当前显示的图片
-        viewPager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PhotoBrowserActivity.this.onBackPressed();
-            }
-        });
+//        viewPager.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PhotoBrowserActivity.this.onBackPressed();
+//            }
+//        });
         textView.setText((curPosition + 1) + "/" + imgUrls.length);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -97,32 +108,25 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTo
 
             }
         });
-        viewPager.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                return false;
-            }
-        });
-        viewPager.setPositionListener(new FloatViewPager.OnPositionChangeListener() {
-            @Override
-            public void onPositionChange(int initTop, int nowTop, float ratio) {
-                float alpha = 1 - Math.min(1, ratio * 5);
-//                mYfBottomLayout.setAlpha(alpha);
-//                mYfTitleLayout.setAlpha(alpha);
-                mBackground.setAlpha(Math.max(0, 1 - ratio));
-            }
-
-            @Override
-            public void onFlingOutFinish() {
-                finish();
-            }
-        });
+//        viewPager.setPositionListener(new FloatViewPager.OnPositionChangeListener() {
+//            @Override
+//            public void onPositionChange(int initTop, int nowTop, float ratio) {
+//                float alpha = 1 - Math.min(1, ratio * 5);
+////                mYfBottomLayout.setAlpha(alpha);
+////                mYfTitleLayout.setAlpha(alpha);
+//                mBackground.setAlpha(Math.max(0, 1 - ratio));
+//            }
+//
+//            @Override
+//            public void onFlingOutFinish() {
+//                finish();
+//            }
+//        });
     }
 
     private void initView() {
-        viewPager = (FloatViewPager) findViewById(R.id.vp_photo);
-        progressBar = (ProgressBar)findViewById(R.id.progress);
+        viewPager = (ViewPager) findViewById(R.id.vp_photo);
+        progressBar = (ProgressBar) findViewById(R.id.progress);
 //        img = (PhotoView)findViewById(R.id.img);
 
         textView = (TextView) findViewById(R.id.tv_photo_order);
@@ -133,9 +137,6 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTo
         curImgUrl = getIntent().getStringExtra("curImg");
 
         imgUrls = getIntent().getStringArrayExtra("imageUrls");
-        curImgUrls = getIntent().getStringExtra("curImgs");
-//        ToastUtils.showToast(getApplicationContext(),curImgUrls);
-        imgUrl = getIntent().getStringArrayExtra("imageUrl");
     }
 
     private int returnClickedPosition() {
@@ -173,11 +174,10 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTo
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-//            final Animation scale = AnimationUtils.loadAnimation(PhotoBrowserActivity.this, R.anim.anim_small);
+            final Animation scale = AnimationUtils.loadAnimation(PhotoBrowserActivity.this, R.anim.anim_small);
             if (imgUrls[position] != null) {
 
                 photoView = new PhotoView(getApplicationContext());
-                final PhotoView photoViews = new PhotoView(getApplicationContext());
                 photoView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -189,24 +189,12 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTo
                 photoView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-
-                        //弹出的“保存图片”的Dialog
-                        AlertDialog.Builder builder = new AlertDialog.Builder(PhotoBrowserActivity.this);
-                        builder.setItems(new String[]{"保存"}, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                saveImageToGallery(PhotoBrowserActivity.this, ((BitmapDrawable) photoView.getDrawable()).getBitmap());
-                            }
-                        });
-                        builder.show();
+                        showNormalDialogs();
                         return true;
                     }
                 });
                 photoView.enable();
                 photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                photoViews.enable();
-                photoViews.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                ProgressBar progressBar1=new ProgressBar(PhotoBrowserActivity.this);
 //                Glide.with(PhotoBrowserActivity.this)
 //                        .load(imgUrl[position])
 //                        .into(new Glide());
@@ -219,9 +207,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTo
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
 //                                ProgressInterceptor.removeListener(url);
 //                                bar.setVisibility(View.GONE);
-                                ToastUtils.showToast(getApplicationContext(),"1");
                                 progressBar.setVisibility(View.VISIBLE);
-                                photoViews.setVisibility(View.VISIBLE);
                                 return false;
                             }
 
@@ -230,7 +216,6 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTo
 //                                ProgressInterceptor.removeListener(url);
 //                                bar.setVisibility(View.GONE);
                                 progressBar.setVisibility(View.GONE);
-                                photoViews.setVisibility(View.GONE);
                                 return false;
                             }
                         })
@@ -297,43 +282,34 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnTo
 
     }
 
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        int action = event.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-
-                isclick = false;//当按下的时候设置isclick为false，具体原因看后边的讲解
-
-                startTime = System.currentTimeMillis();
-                System.out.println("执行顺序down");
-                break;
-            /**
-             * layout(l,t,r,b) l Left position, relative to parent t Top position,
-             * relative to parent r Right position, relative to parent b Bottom
-             * position, relative to parent
-             * */
-            case MotionEvent.ACTION_MOVE:
-                System.out.println("执行顺序move");
-
-                isclick = true;//当按钮被移动的时候设置isclick为true
-
-                break;
-            case MotionEvent.ACTION_UP:
-                endTime = System.currentTimeMillis();
-                //当从点击到弹起小于半秒的时候,则判断为点击,如果超过则不响应点击事件
-                if ((endTime - startTime) > 0.1 * 1000L) {
-                    isclick = true;
-                } else {
-                    isclick = false;
-                }
-                System.out.println("执行顺序up");
-
-                break;
-        }
-        return isclick;
+    //Dialog弹窗
+    private void showNormalDialogs() {
+        /* @setIcon 设置对话框图标
+         * @setTitle 设置对话框标题
+         * @setMessage 设置对话框消息提示
+         * setXXX方法返回Dialog对象，因此可以链式设置属性
+         */
+        final AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(PhotoBrowserActivity.this);
+        normalDialog.setMessage("是否保存图片");
+        normalDialog.setPositiveButton(getString(R.string.save),
+                new DialogInterface.OnClickListener() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveImageToGallery(PhotoBrowserActivity.this, ((BitmapDrawable) photoView.getDrawable()).getBitmap());
+                    }
+                });
+        normalDialog.setNegativeButton(getString(R.string.common_cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        // 显示
+        normalDialog.show();
     }
+
 
 }
 

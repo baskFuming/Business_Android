@@ -44,7 +44,6 @@
 
             <EditText
                 android:id="@+id/share_name"
-                android:cursorVisible="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -78,10 +77,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginLeft="16dp">
+            android:layout_marginLeft="16dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            >
             <EditText
                 android:id="@+id/share_phone"
-                android:cursorVisible="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -112,11 +113,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_marginLeft="16dp">
 
             <EditText
                 android:id="@+id/share_job"
-                android:cursorVisible="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -147,11 +149,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_marginLeft="16dp">
 
             <EditText
                 android:id="@+id/share_wxin"
-                android:cursorVisible="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -183,6 +186,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_marginLeft="16dp">
             <EditText
                 android:id="@+id/share_address"
@@ -191,7 +196,6 @@
                 android:layout_alignParentLeft="true"
                 android:background="@null"
                 android:hint="请输入地址"
-                android:cursorVisible="false"
                 android:textColorHint="#ffd1d1d1"
                 android:textSize="15sp" />
             <CheckBox
@@ -216,6 +220,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_marginLeft="16dp">
             <EditText
                 android:id="@+id/job_address"
@@ -224,7 +230,6 @@
                 android:layout_alignParentLeft="true"
                 android:background="@null"
                 android:hint="请输入公司名称"
-                android:cursorVisible="false"
                 android:textColorHint="#ffd1d1d1"
                 android:textSize="15sp" />
             <CheckBox

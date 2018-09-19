@@ -37,8 +37,9 @@ public abstract class BasesFragment<V, T extends BasePresenter<V>> extends Fragm
         super.onActivityCreated(savedInstanceState);
 //        EventBus.getDefault().register(this);
         mContentView = inflater.inflate(setLayouId(), container, false);
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
-        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
+        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.white), 0);
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         unbinder = ButterKnife.bind(this, mContentView);
         presenter = setPresenter();
         init(mContentView);

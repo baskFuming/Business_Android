@@ -428,6 +428,9 @@ public class SessionListFragment extends TabFragment {
                             NIMClient.getService(MsgService.class).clearChattingHistory(recentContactList.get(i).getContactId(), recentContactList.get(i).getSessionType());
                             NIMClient.getService(MsgService.class).clearUnreadCount(recentContactList.get(i).getContactId(), recentContactList.get(i).getSessionType());
                         }
+                        for (RecentContact r : recentContactList) {
+                            NIMClient.getService(MsgService.class).clearUnreadCount(r.getContactId(), r.getSessionType());
+                        }
                         fragment.clearList();
                         fragment.notifyDataSetChanged();
                     }
