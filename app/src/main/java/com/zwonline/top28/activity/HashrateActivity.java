@@ -86,6 +86,7 @@ public class HashrateActivity extends BaseActivity {
             }
         });
     }
+
     //webview配置
     private void webSettingInit() {
         WebSettings settings = hashrateWeb.getSettings();
@@ -118,7 +119,7 @@ public class HashrateActivity extends BaseActivity {
                     return true;
                 }
                 //点击下载App
-                if (url.contains(".apk")){
+                if (url.contains(".apk")) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
                     intent.setData(Uri.parse(url));
@@ -251,7 +252,7 @@ public class HashrateActivity extends BaseActivity {
                                                 case R.id.copyurl:
                                                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                                                     // 将文本内容放到系统剪贴板里。
-                                                    cm.setText(finalTitle + finalShare_url);
+                                                    cm.setText(finalShare_url + "#" + finalTitle);
                                                     ToastUtils.showToast(getApplicationContext(), "复制成功");
                                                     break;
                                                 default:

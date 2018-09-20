@@ -266,7 +266,7 @@ public class YunYingGuanActivity extends BaseActivity {
                                                 case R.id.copyurl:
                                                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                                                     // 将文本内容放到系统剪贴板里。
-                                                    cm.setText(finalTitle + finalShare_url);
+                                                    cm.setText(finalShare_url+"#"+finalTitle );
                                                     ToastUtils.showToast(getApplicationContext(), "复制成功");
                                                     break;
                                                 default:

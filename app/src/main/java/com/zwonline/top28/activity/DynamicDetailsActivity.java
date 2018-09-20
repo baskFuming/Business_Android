@@ -1032,7 +1032,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 case R.id.copyurl:
                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     // 将文本内容放到系统剪贴板里。
-                    cm.setText(share_title + share_url);
+                    cm.setText(share_url+"#"+share_title);
                     ToastUtils.showToast(getApplicationContext(), "复制成功");
                     break;
                 default:

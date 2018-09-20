@@ -232,9 +232,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         //职位 公司名称
         enterprise = (String) sp.getKey(this, "enterprise", "");
         position= (String) sp.getKey(this, "position", "");
-//        sp.insertKey(HomePageActivity.this,"enterprise",enterprise);
-//        sp.insertKey(HomePageActivity.this,"position",position);
-        ToastUtils.showToast(getApplicationContext(),enterprise+"||"+position);
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         sex = intent.getStringExtra("sex");

@@ -185,6 +185,7 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
                         manageList.add(teams.get(i));
                     }
                 }
+                allList.removeAll(manageList);
             }
 
             @Override

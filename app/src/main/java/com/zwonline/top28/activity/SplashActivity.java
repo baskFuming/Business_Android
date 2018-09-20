@@ -62,7 +62,7 @@ public class SplashActivity extends Activity implements SplashADListener {
 //            checkAndRequestPermission();
 //        } else {
             // 如果是Android6.0以下的机器，默认在安装时获得了所有权限，可以直接调用SDK
-            fetchSplashAD(this, container, skipView, Constants.APPID, Constants.SplashPosID, this, 0);
+            fetchSplashAD(this, container, skipView, Constants.APPID, Constants.SplashPosID, this, 3);
 //        }
     }
 
@@ -202,7 +202,7 @@ public class SplashActivity extends Activity implements SplashADListener {
 
         // 权限都已经有了，那么直接调用SDK
         if (lackedPermission.size() == 0) {
-            fetchSplashAD(this, container, skipView, Constants.APPID,  Constants.SplashPosID, this, 0);
+            fetchSplashAD(this, container, skipView, Constants.APPID,  Constants.SplashPosID, this, 3);
         } else {
             // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
             String[] requestPermissions = new String[lackedPermission.size()];

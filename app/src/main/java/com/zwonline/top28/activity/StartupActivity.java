@@ -115,7 +115,6 @@ public class StartupActivity extends AppCompatActivity  {
                     if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         intentData();
                     } else {
-                        Toast.makeText(getBaseContext(), "授权失败", Toast.LENGTH_SHORT).show();
                         intentData();
                     }
                 }

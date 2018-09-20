@@ -231,8 +231,8 @@ public class RecommendUserActivity extends BaseActivity {
                                                 case R.id.copyurl:
                                                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                                                     // 将文本内容放到系统剪贴板里。
-                                                    cm.setText(finalTitle+finalShare_url);
-                                                    ToastUtils.showToast(RecommendUserActivity.this,"复制成功");
+                                                    cm.setText(finalShare_url + "#" + finalTitle);
+                                                    ToastUtils.showToast(RecommendUserActivity.this, "复制成功");
                                                     break;
                                                 default:
                                                     break;

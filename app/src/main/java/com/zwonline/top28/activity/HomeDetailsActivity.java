@@ -781,7 +781,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                 case R.id.copyurl:
                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     // 将文本内容放到系统剪贴板里。
-                    cm.setText(ititle1 + article_url);
+                    cm.setText( article_url+"#"+ititle1);
                     ToastUtils.showToast(HomeDetailsActivity.this, "复制成功");
                     break;
                 default:
