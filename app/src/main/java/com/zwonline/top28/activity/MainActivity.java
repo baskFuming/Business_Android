@@ -483,7 +483,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             //获取packagemanager的实例
             PackageManager packageManager = getPackageManager();
             //getPackageName()是你当前类的包名，0代表是获取版本信息
-            PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+            PackageInfo packInfo = packageManager.getPackageInfo(this.getPackageName(), 0);
             return packInfo.versionCode;
         } catch (Exception e) {
             e.printStackTrace();

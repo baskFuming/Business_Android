@@ -515,17 +515,22 @@ public class AdvancedTeamInfoActivity extends UI implements
                 tag = teams.getExtension().toString();
             }
             List<String> nameList = new ArrayList<>();
-            JSONObject obj = new JSONObject(tag);
-            JSONArray tngou = obj.getJSONArray("tag_list");//得到数组，再一个个遍历
-            for (int i = 0; i < tngou.length(); i++) {
-                JSONObject object = tngou.getJSONObject(i);
-                String name = object.getString("name");
-                nameList.add(name);
+            JSONObject obj = null;
+            if (!TextUtils.isEmpty(tag)) {
 
+                obj = new JSONObject(tag);
+                JSONArray tngou = obj.getJSONArray("tag_list");//得到数组，再一个个遍历
+                for (int i = 0; i < tngou.length(); i++) {
+                    JSONObject object = tngou.getJSONObject(i);
+                    String name = object.getString("name");
+                    nameList.add(name);
+
+                }
+                tags.setText(listToString(nameList));
             }
-            tags.setText(listToString(nameList));
 
-        } catch (JSONException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }//最外层的JSONObject对象
         teamTags.setOnClickListener(new View.OnClickListener() {

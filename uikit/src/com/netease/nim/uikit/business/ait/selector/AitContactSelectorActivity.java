@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
@@ -27,6 +28,8 @@ import java.util.List;
 
 /**
  * Created by hzchenkang on 2017/6/21.
+ *
+ * @联系人界面
  */
 
 public class AitContactSelectorActivity extends UI {
@@ -79,6 +82,13 @@ public class AitContactSelectorActivity extends UI {
     private void initAdapter(RecyclerView recyclerView) {
         items = new ArrayList<>();
         adapter = new AitContactAdapter(recyclerView, items);
+        RelativeLayout back= (RelativeLayout) findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         List<Integer> noDividerViewTypes = new ArrayList<>(1);

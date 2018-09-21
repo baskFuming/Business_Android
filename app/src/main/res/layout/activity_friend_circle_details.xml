@@ -85,6 +85,7 @@
                                             android:layout_height="wrap_content"
                                             android:ellipsize="end"
                                             android:lines="1"
+                                            android:layout_marginRight="100dp"
                                             android:textColor="#2A292E"
                                             android:textSize="16sp" />
 
