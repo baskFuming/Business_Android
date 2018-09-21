@@ -6,14 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -27,8 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.jaeger.library.StatusBarUtil;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
@@ -58,13 +51,10 @@ import com.zwonline.top28.nim.team.TeamCreateHelper;
 import com.zwonline.top28.presenter.MainPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.LanguageUitils;
-import com.zwonline.top28.utils.LogUtils;
 import com.zwonline.top28.utils.NetUtils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
-import com.zwonline.top28.utils.badge.BadgeView;
-import com.zwonline.top28.utils.badge.InfoBadgeView;
 import com.zwonline.top28.utils.badge.MainBadgeView;
 import com.zwonline.top28.utils.popwindow.CustomPopuWindow;
 import com.zwonline.top28.utils.popwindow.YangFenUnclaimedWindow;
@@ -364,7 +354,6 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                 }
             });
 
-
 //            customPopuWindow.showAtLocation(this.findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         } else {
             if (islogine) {
@@ -413,17 +402,15 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             unreadNum += r.getUnreadCount();
         }
         //获取所有的未读消息
-
         unreadMsgsCount = NIMClient.getService(MsgService.class).getTotalUnreadCount();
         badgeView.setBadgeCount(unreadMsgsCount);
-
     }
 
     //重新获取焦点,着再次刷新一下未读消息
     @Override
     protected void onResume() {
         super.onResume();
-//        updateUnreadCount();
+        updateUnreadCount();
     }
 
 
@@ -589,6 +576,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             description = updateCodeBean.data.description;
             //强制更新
             forceUpdate = updateCodeBean.data.force_update;
+
             package_download_url = updateCodeBean.data.package_download_url;
             checkVersion();
         }
