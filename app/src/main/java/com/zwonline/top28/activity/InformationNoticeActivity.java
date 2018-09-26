@@ -14,9 +14,7 @@ import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.InforNoticeBean;
 import com.zwonline.top28.bean.InforNoticeCleanBean;
 import com.zwonline.top28.bean.TipBean;
-import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.InForNoticePresenter;
-import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.InforNoticeActivity;
 
@@ -47,6 +45,7 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
         initData();
         //加载RecycleView 通知列表
         InforeRecyclerViewData();
+
     }
 
     private void InforeRecyclerViewData() {

@@ -46,7 +46,6 @@
                         android:layout_marginTop="10dp"
                         android:orientation="vertical">
 
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
@@ -62,8 +61,7 @@
                                 <com.zwonline.top28.utils.ImageViewPlus
                                     android:id="@+id/userhead"
                                     android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    />
+                                    android:layout_height="40dp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -83,9 +81,9 @@
                                             android:id="@+id/username"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:layout_marginRight="100dp"
                                             android:ellipsize="end"
                                             android:lines="1"
-                                            android:layout_marginRight="100dp"
                                             android:textColor="#2A292E"
                                             android:textSize="16sp" />
 
@@ -262,8 +260,8 @@
                         android:layout_height="3dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="5dp"
-                        android:visibility="visible"
-                        android:background="@drawable/btn_red_shape" />
+                        android:background="@drawable/btn_red_shape"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -295,165 +293,127 @@
 
             </RelativeLayout>
         </android.support.design.widget.AppBarLayout>
-
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/netScroll"
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical"
+           app:layout_behavior="@string/appbar_scrolling_view_behavior"
+           >
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/comment_xrecy"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:descendantFocusability="blocksDescendants"
-                >
-
-                <!--<com.liaoinstan.springview.widget.SpringView-->
-                <!--android:id="@+id/dynamic_spring"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_below="@id/title_layout"-->
-                <!--android:visibility="visible"-->
-                <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-
-                <!--<ListView-->
-                <!--android:id="@+id/dynamicdetails_list"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:divider="@null"-->
-                <!--android:visibility="visible"></ListView>-->
-                <!--</com.liaoinstan.springview.widget.SpringView>-->
-
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
-                    android:id="@+id/comment_xrecy"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="visible"></com.jcodecraeer.xrecyclerview.XRecyclerView>
-
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
-                    android:id="@+id/zan_recy"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"></com.jcodecraeer.xrecyclerview.XRecyclerView>
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_below="@id/title_layout"-->
-        <!--android:orientation="vertical"-->
-        <!--android:visibility="visible">-->
-        <View
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/zan_recy"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="50dp"
-            android:background="@color/GreyWhite" />
-
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+       </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="50dp"
+        android:background="@color/GreyWhite"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        >
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:background="@color/white"
+            android:id="@+id/linear_share"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/linear_share"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="16dp"
+                android:src="@mipmap/post_share" />
 
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="16dp"
-                    android:src="@mipmap/post_share" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:gravity="center_horizontal"
-                    android:text="分享"
-                    android:textColor="#1d1d1d"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center_vertical"
-                android:background="#ffebebeb" />
-
-            <LinearLayout
-                android:id="@+id/linear_comment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="16dp"
-                    android:src="@mipmap/post_comment" />
-
-                <TextView
-                    android:id="@+id/comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="评论"
-                    android:textColor="#1d1d1d"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center_vertical"
-                android:background="#ffebebeb" />
-
-            <LinearLayout
-                android:id="@+id/linear_like"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/choose_like"
-                    android:layout_width="14dp"
-                    android:layout_height="16dp"
-                    android:background="@drawable/selector_comment_likes"
-                    android:button="@null" />
-
-
-                <TextView
-                    android:id="@+id/is_like"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="点赞"
-                    android:textColor="#1d1d1d"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_horizontal"
+                android:text="分享"
+                android:textColor="#1d1d1d"
+                android:textSize="12sp" />
         </LinearLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center_vertical"
+            android:background="#ffebebeb" />
+
+        <LinearLayout
+            android:id="@+id/linear_comment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="16dp"
+                android:src="@mipmap/post_comment" />
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="评论"
+                android:textColor="#1d1d1d"
+                android:textSize="12sp" />
+        </LinearLayout>
 
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center_vertical"
+            android:background="#ffebebeb" />
+
+        <LinearLayout
+            android:id="@+id/linear_like"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/choose_like"
+                android:layout_width="14dp"
+                android:layout_height="16dp"
+                android:background="@drawable/selector_comment_likes"
+                android:button="@null" />
+
+            <TextView
+                android:id="@+id/is_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="点赞"
+                android:textColor="#1d1d1d"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

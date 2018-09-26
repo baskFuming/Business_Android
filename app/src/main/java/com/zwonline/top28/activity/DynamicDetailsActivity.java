@@ -22,12 +22,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,10 +37,8 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zwonline.top28.R;
-import com.zwonline.top28.adapter.DynamicDetailsAdapter;
 import com.zwonline.top28.adapter.DynamicDetailsComentAdapter;
 import com.zwonline.top28.adapter.LikeListAdapter;
-import com.zwonline.top28.adapter.ShieldUserAdapter;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
@@ -188,26 +184,6 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         Intent intent = getIntent();
         moment_id = intent.getStringExtra("moment_id");
         isComment = intent.getStringExtra("isComment");
-
-//        author_id = intent.getStringExtra("author_id");
-//        avatars = intent.getStringExtra("avatars");
-////        nickname = intent.getStringExtra("nickname");
-//        add_date = intent.getStringExtra("add_date");
-//        content = intent.getStringExtra("content");
-//        moment_id = intent.getStringExtra("moment_id");
-//        type = intent.getStringExtra("type");
-//        hight = intent.getStringExtra("hight");
-//        width = intent.getStringExtra("width");
-//        comment_count = intent.getStringExtra("comment_count");
-//        like_count = getIntent().getStringExtra("like_count");
-//        articleDesc = intent.getStringExtra("target_description");
-//        articleID = intent.getStringExtra("target_id");
-//        articleImage = intent.getStringExtra("target_image");
-//        articleTitle = intent.getStringExtra("target_title");
-//        did_i_follow = intent.getStringExtra("did_i_follow");
-//        did_i_like = intent.getStringExtra("did_i_like");
-//        imageUrls = getIntent().getStringArrayExtra("imageUrls");
-//        orinal_imageUrls = getIntent().getStringArrayExtra("orinal_imageUrls");
         initView();
         presenter.MomentDetail(this, moment_id);
         presenter.mDynamicComment(this, page, moment_id, "", "", "");
@@ -223,7 +199,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      * xRecyclerview配置
      */
     private void recyclerViewData() {
-        dynamicdetailsList.setNestedScrollingEnabled(false);
+//        dynamicdetailsList.setNestedScrollingEnabled(false);
         zanRecy.setNestedScrollingEnabled(false);
         dynamicdetailsList.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         dynamicdetailsList.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -231,11 +207,10 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         dynamicdetailsList.getDefaultRefreshHeaderView().setRefreshTimeVisible(true);
         dynamicdetailsList.getDefaultFootView().setLoadingHint(getString(R.string.loading));
         dynamicdetailsList.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         dynamicdetailsList.setLayoutManager(linearLayoutManager);
         adapter = new DynamicDetailsComentAdapter(this, dynamicList);
         dynamicdetailsList.setAdapter(adapter);
-
         //点赞列表配置
         zanRecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         zanRecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -243,10 +218,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         zanRecy.getDefaultRefreshHeaderView().setRefreshTimeVisible(true);
         zanRecy.getDefaultFootView().setLoadingHint(getString(R.string.loading));
         zanRecy.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
-
-        likeListAdapter = new LikeListAdapter(likeLists, this);
-        LinearLayoutManager linearLayoutManagers = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManagers = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         zanRecy.setLayoutManager(linearLayoutManagers);
+        likeListAdapter = new LikeListAdapter(likeLists, this);
         zanRecy.setAdapter(likeListAdapter);
 
     }
@@ -893,9 +867,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             likeLists.clear();
         }
         likeLists.addAll(likeList);
-
         likeListAdapter.notifyDataSetChanged();
-        likeLoadMore();
+//        likeLoadMore();
     }
 
 
