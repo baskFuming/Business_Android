@@ -859,15 +859,13 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
-        if (page == 1) {
+//        if (page == 1) {
             likeLists.clear();
-        }
+//        }
         likeLists.addAll(likeList);
         likeListAdapter.notifyDataSetChanged();
-//        likeLoadMore();
+        likeLoadMore();
     }
-
-
     /**
      * 上传多张图片
      *
@@ -877,12 +875,10 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     public void showPictures(PictursBean pictursBean) {
 
     }
-
     @Override
     public void showSendNewMoment(SendNewMomentBean sendNewMomentBean) {
 
     }
-
     @Override
     public void showConment(List<NewContentBean.DataBean> newList) {
 
