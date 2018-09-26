@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.ClipboardManager;
@@ -81,6 +82,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -161,6 +163,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private ImageView dynamic_imag_h;
     private ImageView dynamic_imag_z;
     private RelativeLayout imag_relative;
+
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appbarlayout;
 
     @Subscribe
     @Override
@@ -841,7 +846,6 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     public void showAttentionDynamic(List<AtentionDynamicHeadBean.DataBean.ListBean> issueList) {
 
     }
-
     /**
      * 商机圈我的消息提醒
      *
@@ -859,9 +863,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showGetLikeList(List<LikeListBean.DataBean> likeList) {
-//        if (page == 1) {
+        if (page == 1) {
             likeLists.clear();
-//        }
+        }
         likeLists.addAll(likeList);
         likeListAdapter.notifyDataSetChanged();
         likeLoadMore();
@@ -894,7 +898,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      *
      * @param view
      */
-    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear})
+    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear,R.id.appBarLayout})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -956,6 +960,16 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 likeUnderline.setVisibility(View.VISIBLE);
                 dynamicdetailsList.setVisibility(View.GONE);
                 zanRecy.setVisibility(View.VISIBLE);
+                break;
+            case R.id.appBarLayout:
+                appbarlayout.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        dynamicdetailsList.dispatchTouchEvent(event);
+                        zanRecy.dispatchTouchEvent(event);
+                        return false;
+                    }
+                });
                 break;
             default:
                 break;
