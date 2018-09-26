@@ -191,16 +191,12 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         presenter.GetLikeList(this, moment_id, page);
 //        headView = getLayoutInflater().inflate(R.layout.dynamicdetails_head, null);
         initListView();
-
         recyclerViewData();
     }
-
     /**
      * xRecyclerview配置
      */
     private void recyclerViewData() {
-//        dynamicdetailsList.setNestedScrollingEnabled(false);
-        zanRecy.setNestedScrollingEnabled(false);
         dynamicdetailsList.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         dynamicdetailsList.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
         dynamicdetailsList.setArrowImageView(R.drawable.iconfont_downgrey);
@@ -211,6 +207,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         dynamicdetailsList.setLayoutManager(linearLayoutManager);
         adapter = new DynamicDetailsComentAdapter(this, dynamicList);
         dynamicdetailsList.setAdapter(adapter);
+
         //点赞列表配置
         zanRecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         zanRecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -222,7 +219,6 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         zanRecy.setLayoutManager(linearLayoutManagers);
         likeListAdapter = new LikeListAdapter(likeLists, this);
         zanRecy.setAdapter(likeListAdapter);
-
     }
 
     /**
