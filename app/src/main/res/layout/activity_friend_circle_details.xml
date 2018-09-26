@@ -315,7 +315,7 @@
                 <com.jcodecraeer.xrecyclerview.XRecyclerView
                     android:id="@+id/comment_xrecy"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="50dp"
                     android:visibility="visible"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
@@ -323,7 +323,7 @@
                 <com.jcodecraeer.xrecyclerview.XRecyclerView
                     android:id="@+id/zan_recy"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="50dp"
                     android:visibility="gone" />
             </LinearLayout>
