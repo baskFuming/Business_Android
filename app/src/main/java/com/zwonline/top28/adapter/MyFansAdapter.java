@@ -27,6 +27,7 @@ import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -102,20 +103,21 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             public void onClick(View v) {
                 try {
 
-                    long timestamp = new Date().getTime() / 1000;//获取时间戳
+
                     SharedPreferencesUtils sp = SharedPreferencesUtils.getUtil();
                     String token = (String) sp.getKey(context, "dialog", "");
                     if (myViewHolder.guanzhu.getText().toString().trim().equals(context.getString(R.string.common_btn_add_focus))) {
-                        showNormalDialogFollow(String.valueOf(timestamp), token, myViewHolder.guanzhu, position);
+                        mAnttent(token, position);
                     } else {
-                        myViewHolder.guanzhu.setText(R.string.common_btn_add_focus);
+                        long timestamp = new Date().getTime() / 1000;//获取时间戳
+//                        myViewHolder.guanzhu.setText(R.string.common_btn_add_focus);
                         currentNum = Integer.parseInt((String) sp.getKey(context, "follow", "0")) - 1;
                         messageFollow.followNum = currentNum + "";
                         sp.insertKey(context, "follow", messageFollow.followNum);
                         EventBus.getDefault().post(messageFollow);
 
-                        myViewHolder.guanzhu.setBackgroundResource(R.drawable.guanzhu_shape);
-                        myViewHolder.guanzhu.setTextColor(Color.parseColor("#FF2B2B"));
+//                        myViewHolder.guanzhu.setBackgroundResource(R.drawable.guanzhu_shape);
+//                        myViewHolder.guanzhu.setTextColor(Color.parseColor("#FF2B2B"));
                         Map<String, String> map = new HashMap<>();
                         map.put("timestamp", String.valueOf(timestamp));
                         map.put("type", "un_follow");
@@ -130,7 +132,9 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 .subscribeWith(new DisposableSubscriber<AttentionBean>() {
                                     @Override
                                     public void onNext(AttentionBean attentionBean) {
-
+                                        list.get(position).did_i_follow = BizConstant.IS_FAIL;
+                                        ToastUtils.showToast(context, attentionBean.msg);
+                                        notifyDataSetChanged();
                                     }
 
                                     @Override
@@ -182,8 +186,9 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     //关注的请求
-    public void mAnttent(String timestamp, String token, int position) throws IOException {
+    public void mAnttent(String token, final int position) throws IOException {
         messageFollow.followNum = currentNum + "";
+        long timestamp = new Date().getTime() / 1000;
         sp.insertKey(context, "follow", messageFollow.followNum);
         EventBus.getDefault().post(messageFollow);
         Map<String, String> map = new HashMap<>();
@@ -201,7 +206,9 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 .subscribeWith(new DisposableSubscriber<AttentionBean>() {
                     @Override
                     public void onNext(AttentionBean attentionBean) {
-
+                        list.get(position).did_i_follow = BizConstant.IS_SUC;
+                        ToastUtils.showToast(context, attentionBean.msg);
+                        notifyDataSetChanged();
                     }
 
                     @Override
@@ -216,47 +223,6 @@ public class MyFansAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 });
     }
 
-    //关注是否愿意接听电话
-    private void showNormalDialogFollow(final String timestamp, final String token, final TextView consult, final int position) {
-        /* @setIcon 设置对话框图标
-         * @setTitle 设置对话框标题
-         * @setMessage 设置对话框消息提示
-         * setXXX方法返回Dialog对象，因此可以链式设置属性
-         */
-        final AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(context);
-        normalDialog.setMessage(R.string.is_willing_answer_calls);
-        normalDialog.setPositiveButton(R.string.willing,
-                new DialogInterface.OnClickListener() {
-                    @SuppressLint("MissingPermission")
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            mAnttent(timestamp, token, position);
-                            consult.setText(R.string.common_followed);
-                            consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
-                            consult.setTextColor(Color.parseColor("#DDDDDD"));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-        normalDialog.setNegativeButton(R.string.unwillingness,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            mAnttent(timestamp, token, position);
-                            consult.setText(R.string.common_followed);
-                            consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
-                            consult.setTextColor(Color.parseColor("#DDDDDD"));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-        // 显示
-        normalDialog.show();
-    }
+
 
 }

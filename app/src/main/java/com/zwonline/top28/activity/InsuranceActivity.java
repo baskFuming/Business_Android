@@ -33,7 +33,7 @@ import butterknife.OnClick;
  * @author YSG
  * @date 2018/1/10
  */
-public class InsuranceActivity extends BaseActivity {
+public class  InsuranceActivity extends BaseActivity {
 
     @BindView(R.id.back)
     RelativeLayout back;

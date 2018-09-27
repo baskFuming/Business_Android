@@ -27,6 +27,7 @@ import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
+import com.zwonline.top28.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -101,17 +102,17 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (myViewHolder.consult.getText().toString().trim().equals(context.getString(R.string.common_btn_add_focus))) {
 //                        showNormalDialogFollow(String.valueOf(timestamp), token, myViewHolder.consult, position);
                         mAnttent(String.valueOf(timestamp), token, position,BizConstant.ALREADY_FAVORITE);
-                        myViewHolder.consult.setText(R.string.common_followed);
-                        myViewHolder.consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
-                        myViewHolder.consult.setTextColor(Color.parseColor("#DDDDDD"));
+//                        myViewHolder.consult.setText(R.string.common_followed);
+//                        myViewHolder.consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+//                        myViewHolder.consult.setTextColor(Color.parseColor("#DDDDDD"));
                     } else {
-                        myViewHolder.consult.setText(R.string.common_btn_add_focus);
+//                        myViewHolder.consult.setText(R.string.common_btn_add_focus);
                         //currentNum = Integer.parseInt((String) sp.getKey(context, "follow", "0")) - 1;
                         messageFollow.followNum = currentNum + "";
                         sp.insertKey(context, "follow", messageFollow.followNum);
                         EventBus.getDefault().post(messageFollow);
-                        myViewHolder.consult.setBackgroundResource(R.drawable.guanzhu_shape);
-                        myViewHolder.consult.setTextColor(Color.parseColor("#ff2b2b"));
+//                        myViewHolder.consult.setBackgroundResource(R.drawable.guanzhu_shape);
+//                        myViewHolder.consult.setTextColor(Color.parseColor("#ff2b2b"));
                         Map<String, String> map = new HashMap<>();
                         map.put("timestamp", String.valueOf(timestamp));
                         map.put("type", "un_follow");
@@ -126,7 +127,9 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 .subscribeWith(new DisposableSubscriber<AttentionBean>() {
                                     @Override
                                     public void onNext(AttentionBean attentionBean) {
-
+                                        list.get(position).did_i_follow = BizConstant.IS_FAIL;
+                                        ToastUtils.showToast(context, attentionBean.msg);
+                                        notifyDataSetChanged();
                                     }
 
                                     @Override
@@ -179,7 +182,7 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
     //关注的网络请求
-    public void mAnttent(String timestamp, String token, int position, String allow_be_call) throws IOException {
+    public void mAnttent(String timestamp, String token, final int position, String allow_be_call) throws IOException {
         messageFollow.followNum = currentNum + "";
         sp.insertKey(context, "follow", messageFollow.followNum);
         EventBus.getDefault().post(messageFollow);
@@ -199,7 +202,9 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 .subscribeWith(new DisposableSubscriber<AttentionBean>() {
                     @Override
                     public void onNext(AttentionBean attentionBean) {
-
+                        list.get(position).did_i_follow = BizConstant.IS_SUC;
+                        ToastUtils.showToast(context, attentionBean.msg);
+                        notifyDataSetChanged();
                     }
 
                     @Override

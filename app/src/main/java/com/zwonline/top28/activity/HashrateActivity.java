@@ -53,6 +53,9 @@ import java.util.Map;
 
 import butterknife.OnClick;
 
+/**
+ * 鞅分挖矿
+ */
 public class HashrateActivity extends BaseActivity {
     private RelativeLayout back;
     private RelativeLayout backXx;
@@ -134,12 +137,32 @@ public class HashrateActivity extends BaseActivity {
                 }
 
                 //联系客服
-                if (url.contains("http://top28app/callService/")) {
+                if (url.contains("http://top28app//pushToIM/")) {
+                    String urls=url;
 //                    service.setVisibility(View.VISIBLE);
                     String path = "http://top28app//pushToIM/";
                     String uids = url.substring(path.length(), url.length());
                     NimUIKit.startP2PSession(HashrateActivity.this, uids);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    return true;
+                }
+
+                // ------  对alipays:相关的scheme处理 -------
+                if (url.startsWith("alipays:") || url.startsWith("alipay")) {
+                    try {
+                        startActivity(new Intent("android.intent.action.VIEW", Uri.parse(url)));
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(HashrateActivity.this)
+                                .setMessage("未检测到支付宝客户端，请安装后重试。")
+                                .setPositiveButton("立即安装", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Uri alipayUrl = Uri.parse("https://d.alipay.com");
+                                        startActivity(new Intent("android.intent.action.VIEW", alipayUrl));
+                                    }
+                                }).setNegativeButton("取消", null).show();
+                    }
                     return true;
                 }
                 //跳转文章详情

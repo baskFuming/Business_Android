@@ -90,14 +90,6 @@
 
     </LinearLayout>
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/details_gif"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:layout_below="@id/linearhead"
-        android:src="@mipmap/loading"
-        android:visibility="visible" />
 
 
     <View
@@ -219,4 +211,13 @@
             android:textColor="@color/gray"
             android:visibility="gone" />
     </LinearLayout>
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/details_gif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:layout_below="@id/linearhead"
+        android:src="@mipmap/loading"
+        android:visibility="visible" />
+
 </RelativeLayout>

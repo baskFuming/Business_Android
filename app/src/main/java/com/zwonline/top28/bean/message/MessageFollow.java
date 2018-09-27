@@ -16,4 +16,6 @@ public class MessageFollow {
     public String recommendComment;
     public String attentionComment;
     public String myComment;
+    public String avatar;
+    public String nickname;
 }

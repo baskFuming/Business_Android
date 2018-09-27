@@ -48,6 +48,7 @@ import com.zwonline.top28.bean.IndustryBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.SexBean;
 import com.zwonline.top28.bean.UserInfoBean;
+import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.presenter.Settingpresenter;
@@ -59,6 +60,9 @@ import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.popwindow.SexSharePopwindow;
 import com.zwonline.top28.utils.popwindow.SharePopwindow;
 import com.zwonline.top28.view.ISettingView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -132,7 +136,9 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     private TextView textCount;
     private String enterprice;
     private String ad_position;
+    private String headerUrl;
 
+    @Subscribe
     @Override
     protected void init() {
         initView();
@@ -147,8 +153,8 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         intent.putExtra("job_cate_pid", share_job_cate_pid);
         intent.putExtra("residence", shareaddress);
         intent.putExtra("sex_id", sex_id);
-        intent.putExtra("enterprice",enterprice);
-        intent.putExtra("position",ad_position);
+        intent.putExtra("enterprice", enterprice);
+        intent.putExtra("position", ad_position);
 //        presenter.mIndustryBean(getApplicationContext());
         industry_list = new ArrayList<>();
         dlist = new ArrayList<>();
@@ -248,6 +254,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
     public void showIndustrys(List<UserInfoBean.DataBean.UserBean> bbeanList) {
 
     }
+
     /**
      * 上传头像
      *
@@ -255,7 +262,9 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
      */
     @Override
     public void showSettingHead(HeadBean headBean) {
+
         if (headBean.status == 1) {
+            headerUrl = headBean.data;
             Toast.makeText(getApplicationContext(), R.string.update_suc_tip, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getApplicationContext(), R.string.update_fail_tip, Toast.LENGTH_SHORT).show();
@@ -368,7 +377,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                         address.getText().toString().trim(), interested_cate_id,
                         bio.getText().toString().trim(), ed_my_wxin.getText().toString().trim(),
                         ed_my_email.getText().toString().trim(), ed_my_phone.getText().toString().trim(),
-                        job_cate_pid,"","");
+                        job_cate_pid, "", "");
                 RecordUserBehavior.recordUserBehavior(SettingActivity.this, BizConstant.EDITED_PROFILE);
 //                Intent intent = new Intent();
 //                intent.putExtra("nickname", nickName.getText().toString().trim());
@@ -378,6 +387,13 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
 
                 break;
             case R.id.back:
+
+                if (StringUtil.isNotEmpty(headerUrl)) {
+                    MessageFollow messageFollow = new MessageFollow();
+                    messageFollow.avatar = headerUrl;
+                    EventBus.getDefault().post(messageFollow);
+                }
+
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
@@ -452,9 +468,15 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         if (headBean.status == 1) {
             sp.insertKey(getApplicationContext(), "nickname", nickName.getText().toString().trim());
             sp.insertKey(getApplicationContext(), "sign", bio.getText().toString().trim());
-            finish();
-            overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
-            Toast.makeText(this, R.string.update_suc_tip, Toast.LENGTH_SHORT).show();
+            MessageFollow messageFollow = new MessageFollow();
+            if (StringUtil.isNotEmpty(headerUrl)) {
+                messageFollow.avatar = headerUrl;
+            }
+            messageFollow.nickname = nickName.getText().toString().trim();
+            EventBus.getDefault().post(messageFollow);
+//            finish();
+//            overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+//            Toast.makeText(this, R.string.update_suc_tip, Toast.LENGTH_SHORT).show();
 
         } else {
             Toast.makeText(this, headBean.msg, Toast.LENGTH_SHORT).show();
@@ -666,6 +688,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
             String pointsEditT = bio.getText().toString();
 
         }
+
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count,
                                       int after) {
@@ -677,6 +700,7 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                 textCount.setText("0/20");
             }
         }
+
         @Override
         public void afterTextChanged(Editable s) {
             String pointsEditT = bio.getText().toString();
@@ -688,4 +712,12 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
         }
 
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 }

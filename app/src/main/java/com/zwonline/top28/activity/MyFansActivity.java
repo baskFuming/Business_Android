@@ -51,7 +51,6 @@ public class MyFansActivity extends BaseActivity<IMyFansActivity, MyFansPresente
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         fans.setText(intent.getStringExtra("fans"));
-        System.out.print("uid===" + uid);
         presenter.mFans(this, uid, page);
         recyclerViewData();
     }

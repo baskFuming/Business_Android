@@ -153,6 +153,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     private String isDefaultPassword;
     private int imageHeight = 150; //设置渐变高度，一般为导航图片高度，自己控制
     private boolean islogins;
+    private String nicknames;
+    private String avatars;
 
     @Override
     protected void init(View view) {
@@ -179,17 +181,6 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
 
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (islogins) {
-            presenter.mNoticeNotReadCount(getActivity());
-            presenter.mUserInfo(getActivity());
-        } else {
-            Toast.makeText(getActivity(), R.string.user_not_login, Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     protected UserInfoPresenter setPresenter() {
@@ -239,10 +230,6 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             signature = userInfoBean.data.user.signature;
             residence = userInfoBean.data.user.residence;
 
-            //分享  发布 考察数量
-//        myShare.setText(getString(R.string.center_my_share, userInfoBean.data.user.share));
-//        myIssue.setText(getString(R.string.center_my_publish, userInfoBean.data.user.publish));
-//        myInspect.setText(getString(R.string.center_my_inspect, userInfoBean.data.user.inspect_count));
             String is_enterprise_user = userInfoBean.data.user.is_enterprise_auth_user;
 
             try {
@@ -472,7 +459,29 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageFollow event) {
-//        tvGuanzhuNum.setText(event.followNum);
+        nicknames = event.nickname;
+        avatars = event.avatar;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (StringUtil.isNotEmpty(nicknames)) {
+            titleUserName.setText(nicknames);
+            userName.setText(nicknames);
+        }
+        if (StringUtil.isNotEmpty(avatars)) {
+            RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male)
+                    .error(R.mipmap.no_photo_male);
+
+            Glide.with(getActivity()).load(avatars).apply(options).into(userTou);
+        }
+        if (islogins) {
+            presenter.mNoticeNotReadCount(getActivity());
+            presenter.mUserInfo(getActivity());
+        } else {
+            Toast.makeText(getActivity(), R.string.user_not_login, Toast.LENGTH_SHORT).show();
+        }
     }
 
 

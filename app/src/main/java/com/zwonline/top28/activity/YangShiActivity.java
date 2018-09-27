@@ -110,7 +110,6 @@ public class YangShiActivity extends BaseActivity {
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, String url) {
 
-                Log.d("alipay==", url);
                 // ------  对alipays:相关的scheme处理 -------
                 if (url.startsWith("alipays:") || url.startsWith("alipay")) {
                     try {

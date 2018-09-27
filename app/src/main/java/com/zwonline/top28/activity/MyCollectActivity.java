@@ -134,7 +134,6 @@ public class MyCollectActivity extends BaseActivity<IMyCollectActivity, MyCollec
                     startActivity(intent);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 }
-                finish();
             }
         });
         loadMore();

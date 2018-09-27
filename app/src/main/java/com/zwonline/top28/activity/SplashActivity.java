@@ -41,7 +41,7 @@ public class SplashActivity extends Activity implements SplashADListener {
      * 给出的延时逻辑是从拉取广告开始算开屏最少持续多久，仅供参考，开发者可自定义延时逻辑，如果开发者采用demo
      * 中给出的延时逻辑，也建议开发者考虑自定义minSplashTimeWhenNoAD的值（单位ms）
      **/
-    private int minSplashTimeWhenNoAD = 2000;
+    private int minSplashTimeWhenNoAD = 0;
     /**
      * 记录拉取广告的时间
      */
@@ -62,7 +62,7 @@ public class SplashActivity extends Activity implements SplashADListener {
 //            checkAndRequestPermission();
 //        } else {
             // 如果是Android6.0以下的机器，默认在安装时获得了所有权限，可以直接调用SDK
-            fetchSplashAD(this, container, skipView, Constants.APPID, Constants.SplashPosID, this, 3);
+            fetchSplashAD(this, container, skipView, Constants.APPID, Constants.SplashPosID, this, 0);
 //        }
     }
 
@@ -122,20 +122,20 @@ public class SplashActivity extends Activity implements SplashADListener {
          * 给出的延时逻辑是从拉取广告开始算开屏最少持续多久，仅供参考，开发者可自定义延时逻辑，如果开发者采用demo
          * 中给出的延时逻辑，也建议开发者考虑自定义minSplashTimeWhenNoAD的值
          **/
-//        long alreadyDelayMills = System.currentTimeMillis() - fetchSplashADTime;//从拉广告开始到onNoAD已经消耗了多少时间
-//        long shouldDelayMills = alreadyDelayMills > minSplashTimeWhenNoAD ? 0 : minSplashTimeWhenNoAD
-//                - alreadyDelayMills;//为防止加载广告失败后立刻跳离开屏可能造成的视觉上类似于"闪退"的情况，根据设置的minSplashTimeWhenNoAD
-//// 计算出还需要延时多久
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                SplashActivity.this.startActivity(new Intent(SplashActivity.this, MainActivity.class));
-//                finish();
-//            }
-//        }, shouldDelayMills);
+        long alreadyDelayMills = System.currentTimeMillis() - fetchSplashADTime;//从拉广告开始到onNoAD已经消耗了多少时间
+        long shouldDelayMills = alreadyDelayMills > minSplashTimeWhenNoAD ? 0 : minSplashTimeWhenNoAD
+                - alreadyDelayMills;//为防止加载广告失败后立刻跳离开屏可能造成的视觉上类似于"闪退"的情况，根据设置的minSplashTimeWhenNoAD
+// 计算出还需要延时多久
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SplashActivity.this.startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+        }, shouldDelayMills);
 //        /** 如果加载广告失败，则直接跳转 */
-        this.startActivity(new Intent(this, MainActivity.class));
-        this.finish();
+//        this.startActivity(new Intent(this, MainActivity.class));
+//        this.finish();
     }
 
     /**
@@ -202,7 +202,7 @@ public class SplashActivity extends Activity implements SplashADListener {
 
         // 权限都已经有了，那么直接调用SDK
         if (lackedPermission.size() == 0) {
-            fetchSplashAD(this, container, skipView, Constants.APPID,  Constants.SplashPosID, this, 3);
+            fetchSplashAD(this, container, skipView, Constants.APPID,  Constants.SplashPosID, this, 0);
         } else {
             // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
             String[] requestPermissions = new String[lackedPermission.size()];

@@ -387,8 +387,3 @@ public static final android.os.Parcelable$Creator *;
         -keep class android.support.v7.**{
             public *;
         }
-#        -keep MTT.**{*;}
-#        -keep META-INF.**{*;}
-#         -keep assets.gdt_plugin.**{*;}
-#    -keep com.tencent.*
-#     -keep MTT.*
