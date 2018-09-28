@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.netease.nim.uikit.R;
@@ -55,6 +56,7 @@ import java.util.Set;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog.onSeparateItemClickListener;
+
 /**
  * 最近联系人列表(会话列表)
  * <p/>
@@ -78,9 +80,10 @@ public class RecentContactsFragment extends TFragment {
     private RecentContactsCallback callback;
 
     private UserInfoObserver userInfoObserver;
-    private ImageView yunYingGuan;
+    private RelativeLayout yunYingGuan;
     private ImageView empty;
     private LinearLayout linearLayout;
+    private ImageView advertising;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -124,17 +127,20 @@ public class RecentContactsFragment extends TFragment {
         emptyHint = findView(R.id.message_list_empty_hint);
         yunYingGuan = findView(R.id.yunyingguan);
         empty = findView(R.id.empty);
+        advertising = findView(R.id.advertising);
         yunYingGuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.yunYingGun();
+                callback.advertising();
             }
         });
+        callback.yunYingGun(yunYingGuan, advertising);
         recyclerView.setNestedScrollingEnabled(false);
         linearLayout = findView(R.id.lv);
         linearLayout.setNestedScrollingEnabled(false);
 
     }
+
     /**
      * 初始化消息列表
      */
@@ -198,7 +204,13 @@ public class RecentContactsFragment extends TFragment {
             }
 
             @Override
-            public void yunYingGun() {
+            public void yunYingGun(RelativeLayout linearLayout, ImageView imageView) {
+                yunYingGuan = linearLayout;
+                advertising = imageView;
+            }
+
+            @Override
+            public void advertising() {
 
             }
 
@@ -210,6 +222,7 @@ public class RecentContactsFragment extends TFragment {
                     NimUIKit.startP2PSession(getActivity(), recent.getContactId());
                 }
             }
+
             @Override
             public void onItemLongClick(RecentContact recent) {
 
@@ -469,9 +482,11 @@ public class RecentContactsFragment extends TFragment {
     private void registerTeamUpdateObserver(boolean register) {
         NimUIKit.getTeamChangedObservable().registerTeamDataChangedObserver(teamDataChangedObserver, register);
     }
+
     private void registerTeamMemberUpdateObserver(boolean register) {
         NimUIKit.getTeamChangedObservable().registerTeamMemberDataChangedObserver(teamMemberDataChangedObserver, register);
     }
+
     private void registerDropCompletedListener(boolean register) {
         if (register) {
             DropManager.getInstance().addDropCompletedListener(dropCompletedListener);
@@ -479,6 +494,7 @@ public class RecentContactsFragment extends TFragment {
             DropManager.getInstance().removeDropCompletedListener(dropCompletedListener);
         }
     }
+
     // 暂存消息，当RecentContact 监听回来时使用，结束后清掉
     private Map<String, Set<IMMessage>> cacheMessages = new HashMap<>();
 
@@ -665,9 +681,11 @@ public class RecentContactsFragment extends TFragment {
         }
         NimUIKit.getUserInfoObservable().registerObserver(userInfoObserver, true);
     }
-    public void clearList(){
+
+    public void clearList() {
         items.clear();
     }
+
     private void unregisterUserInfoObserver() {
         if (userInfoObserver != null) {
             NimUIKit.getUserInfoObservable().registerObserver(userInfoObserver, false);

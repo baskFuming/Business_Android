@@ -386,7 +386,6 @@ public class SendFriendCircleModel {
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<RefotPasswordBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .iBlockUser(String.valueOf(timestamp), token, sign, versionName, userId, type);
@@ -413,7 +412,6 @@ public class SendFriendCircleModel {
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .iLikeMoment(String.valueOf(timestamp), token, sign, versionName, moment_id);
@@ -440,7 +438,6 @@ public class SendFriendCircleModel {
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<ShieldUserBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .iBlockUserList(String.valueOf(timestamp), token, sign, versionName, page);
@@ -468,7 +465,6 @@ public class SendFriendCircleModel {
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .iLikeMomentComment(String.valueOf(timestamp), token, sign, versionName, comment_id);
@@ -496,7 +492,6 @@ public class SendFriendCircleModel {
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .iDeleteComment(String.valueOf(timestamp), token, sign, versionName, moment_id, comment_id);
@@ -521,7 +516,6 @@ public class SendFriendCircleModel {
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<BusinessCircleBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .GetRecommendUser(String.valueOf(timestamp), token, sign, versionName);
@@ -547,7 +541,6 @@ public class SendFriendCircleModel {
         map.put("item_id", String.valueOf(item_id));
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<AddFollowBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .GetRecommendUserList(String.valueOf(timestamp), token, sign, versionName, item_id);
@@ -555,7 +548,7 @@ public class SendFriendCircleModel {
     }
 
     /**
-     * 关注动态顶部banner接口
+     * 推荐动态顶部banner接口
      *
      * @param context
      * @return
@@ -572,7 +565,6 @@ public class SendFriendCircleModel {
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<AtentionDynamicHeadBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .bannerRecommendUserList(String.valueOf(timestamp), token, sign, versionName);
@@ -596,7 +588,6 @@ public class SendFriendCircleModel {
         map.put("timestamp", String.valueOf(timestamp));
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .getMyNotificationCount(String.valueOf(timestamp), token, sign);
@@ -624,7 +615,6 @@ public class SendFriendCircleModel {
         map.put("page", String.valueOf(page));
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<LikeListBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .getLikeList(String.valueOf(timestamp), token, sign, moment_id, versionName, page);
@@ -648,10 +638,60 @@ public class SendFriendCircleModel {
         map.put("timestamp", String.valueOf(timestamp));
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        SignUtils.removeNullValue(map);
         Flowable<DynamicDetailsesBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .momentDetail(String.valueOf(timestamp), token, sign, moment_id);
         return flowable;
     }
+
+    /**
+     * 举报接口
+     *
+     * @param context
+     * @return
+     * @throws IOException
+     */
+    public Flowable<AttentionBean> mReport(Context context, String target_type, String junk_type, String target_id) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("target_id", target_id);
+        map.put("token", token);
+        map.put("target_type", target_type);
+        map.put("junk_type", junk_type);
+        SignUtils.removeNullValue(map);
+        map.put("timestamp", String.valueOf(timestamp));
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .report(String.valueOf(timestamp), token, sign, target_type, junk_type, target_id);
+        return flowable;
+    }
+
+
+
+    /**
+     * 关注动态顶部banner接口
+     *
+     * @param context
+     * @return
+     * @throws IOException
+     */
+    public Flowable<AtentionDynamicHeadBean> mStarRecommendUserList(Context context) throws IOException {
+        String versionName = LanguageUitils.getVersionName(context);
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<AtentionDynamicHeadBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .starRecommendUserList(String.valueOf(timestamp), token, sign);
+        return flowable;
+    }
+
 }

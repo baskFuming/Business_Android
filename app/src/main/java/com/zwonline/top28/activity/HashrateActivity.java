@@ -136,6 +136,13 @@ public class HashrateActivity extends BaseActivity {
                     return true;
                 }
 
+                if (url.contains("open28app")) {
+                    Uri uri = Uri.parse(url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                    return true;
+                }
+
                 //联系客服
                 if (url.contains("http://top28app//pushToIM/")) {
                     String urls=url;

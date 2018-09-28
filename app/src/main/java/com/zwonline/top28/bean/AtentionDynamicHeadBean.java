@@ -42,6 +42,7 @@ public class AtentionDynamicHeadBean {
             public String identity_type;
             public String nickname;
             public String uid;
+            public String signature;
         }
     }
 }

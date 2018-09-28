@@ -561,6 +561,15 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
 
     }
 
+    /**
+     * 举报
+     * @param attentionBean
+     */
+    @Override
+    public void showReport(AttentionBean attentionBean) {
+
+    }
+
 
     @Override
     public void onLayoutChange(View v, int left, int top, int right,

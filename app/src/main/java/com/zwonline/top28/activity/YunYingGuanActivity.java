@@ -61,12 +61,13 @@ public class YunYingGuanActivity extends BaseActivity {
     private WebView yygWeb;
     private SharedPreferencesUtils sp;
     private String token;
-    private String url = Api.baseUrl() + "/Home/Activity/recruit";
+    private String url;
     private RewritePopwindow mPopwindow;
     private TextView tvYygs;
 
     @Override
     protected void init() {
+        url = getIntent().getStringExtra("jump_path");
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
         initView();
@@ -101,9 +102,10 @@ public class YunYingGuanActivity extends BaseActivity {
         settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
+//        settings.setUserAgentString("Mozilla/5.0 (Linux; Android 4.4.4; SAMSUNG-SM-N900A Build/tt) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/33.0.0.0 Mobile Safari/537.36:app28/");
         settings.setJavaScriptEnabled(true);
-        settings.setUserAgentString("app28/");
         settings.setSupportZoom(true);
+        settings.setUserAgentString("app28/");
         settings.setBlockNetworkImage(false);//解决图片不显示
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
@@ -120,12 +122,12 @@ public class YunYingGuanActivity extends BaseActivity {
             public boolean shouldOverrideUrlLoading(final WebView view, String url) {
 //                ToastUtil.showToast(getApplicationContext(),url);
                 //跳转到个人主页http://top28app//backToLastNativePage
-                if (url.contains("http://top28app/computePower/")) {
-                    Intent intent1 = new Intent(YunYingGuanActivity.this, IntegralActivity.class);
-                    startActivity(intent1);
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                    return true;
-                }
+//                if (url.contains("http://top28app/computePower/")) {
+//                    Intent intent1 = new Intent(YunYingGuanActivity.this, IntegralActivity.class);
+//                    startActivity(intent1);
+//                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//                    return true;
+//                }
                 //点击返回原生界面
                 if (url.contains("http://top28app//backToLastNativePage")) {
                     finish();
@@ -139,16 +141,9 @@ public class YunYingGuanActivity extends BaseActivity {
                     intent.setData(Uri.parse(url));
                     startActivity(intent);
                 }
-                //赚取算力
-                if (url.contains("http://top28app/computePowerTask/")) {
-                    Intent intent1 = new Intent(YunYingGuanActivity.this, EarnIntegralActivity.class);
-                    startActivity(intent1);
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                    return true;
-                }
 
                 //联系客服
-                if (url.contains("http://top28app/callService/")) {
+                if (url.contains("http://top28app//pushToIM/")) {
 //                    service.setVisibility(View.VISIBLE);
                     String path = "http://top28app//pushToIM/";
                     String uids = url.substring(path.length(), url.length());
@@ -266,7 +261,7 @@ public class YunYingGuanActivity extends BaseActivity {
                                                 case R.id.copyurl:
                                                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                                                     // 将文本内容放到系统剪贴板里。
-                                                    cm.setText(finalShare_url+"#"+finalTitle );
+                                                    cm.setText(finalShare_url + "#" + finalTitle);
                                                     ToastUtils.showToast(getApplicationContext(), "复制成功");
                                                     break;
                                                 default:

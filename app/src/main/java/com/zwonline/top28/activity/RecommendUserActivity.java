@@ -66,12 +66,14 @@ public class RecommendUserActivity extends BaseActivity {
     private SharedPreferencesUtils sp;
     private String uid;
     private String token;
-    private String url = "http://toutiao.28.com/Members/recommend_list.html";
+//    private String url = "http://toutiao.28.com/Members/recommend_list.html";
+    private String url;
     private RewritePopwindow mPopwindow;
 
     @Override
     protected void init() {
         sp = SharedPreferencesUtils.getUtil();
+        url = getIntent().getStringExtra("jumPath");
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
         synCookies(url, cookieString);

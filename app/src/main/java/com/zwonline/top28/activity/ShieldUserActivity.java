@@ -229,6 +229,16 @@ public class ShieldUserActivity extends BaseActivity<ISendFriendCircleActivity, 
 
     }
 
+    /**
+     * 举报
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showReport(AttentionBean attentionBean) {
+
+    }
+
 
     @Override
     public void onClick(View v) {

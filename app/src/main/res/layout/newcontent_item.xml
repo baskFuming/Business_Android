@@ -327,7 +327,7 @@
                 android:layout_height="16dp"
                 android:background="@drawable/selector_comment_likes"
                 android:button="@null"
-                android:enabled="false" />
+                android:enabled="true" />
 
 
             <TextView

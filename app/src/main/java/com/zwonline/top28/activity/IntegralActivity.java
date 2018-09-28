@@ -136,8 +136,9 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
             case R.id.earn_integral_tw:
-                startActivity(new Intent(this, EarnIntegralActivity.class));
-                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                Intent intent = new Intent(this, RecommendUserActivity.class);
+                intent.putExtra("jumPath",BizConstant.EARNINTEGRAL);
+                startActivity(intent);
                 break;
             case R.id.convert_tw:
                 startActivity(new Intent(IntegralActivity.this, ConvertBOCActivity.class));
@@ -151,8 +152,9 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
             case R.id.integral_tab:
                 break;
             case R.id.earn_integral_ch:
-                startActivity(new Intent(this, EarnIntegralActivity.class));
-                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                Intent intent1 = new Intent(this, RecommendUserActivity.class);
+                intent1.putExtra("jumPath",BizConstant.EARNINTEGRAL);
+                startActivity(intent1);
                 break;
             case R.id.integtal_pay_ch:
                 startActivity(new Intent(IntegralActivity.this, IntegralPayActivity.class));

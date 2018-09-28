@@ -367,7 +367,9 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 break;
             case R.id.recommend_user://推荐用户
                 RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.CLICK_RECOMMEND_USER);
-                startActivity(new Intent(getActivity(), RecommendUserActivity.class));
+                Intent intent1 = new Intent(getActivity(), RecommendUserActivity.class);
+                intent1.putExtra("jumPath",BizConstant.RECOMMENTUSER);
+                startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.insurance://守约宝

@@ -156,6 +156,6 @@ public class StartupActivity extends AppCompatActivity  {
         intent.putExtra("pos_id", Constants.SplashPosID);
         startActivity(intent);
         finish();
-        overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//        overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
     }
 }

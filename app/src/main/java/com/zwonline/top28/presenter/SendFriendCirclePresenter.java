@@ -859,7 +859,7 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
 
 
     /**
-     * 商机圈我的消息未读数量
+     * 商机圈动态详情接口
      *
      * @param context
      */
@@ -890,6 +890,74 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
 
                         }
 
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 举报接口
+     *
+     * @param context
+     */
+    public void Report(Context context, String target_type, String junk_type, String target_id) {
+        try {
+            Flowable<AttentionBean> flowable = sendFriendCircleModel.mReport(context, target_type, junk_type, target_id);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new BaseDisposableSubscriber<AttentionBean>(context) {
+
+                        @Override
+                        protected void onBaseNext(AttentionBean dynamicDetailsesBean) {
+                            iSendFriendCircleActivity.showReport(dynamicDetailsesBean);
+                        }
+
+                        @Override
+                        protected String getTitleMsg() {
+                            return null;
+                        }
+
+                        @Override
+                        protected boolean isNeedProgressDialog() {
+                            return false;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
+
+                        }
+
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 推荐动态顶部banner接口
+     *
+     * @param context
+     */
+    public void StarRecommendUserList(Context context) {
+        try {
+            Flowable<AtentionDynamicHeadBean> flowable = sendFriendCircleModel.mStarRecommendUserList(context);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<AtentionDynamicHeadBean>() {
+                        @Override
+                        public void onNext(AtentionDynamicHeadBean attentionBean) {
+                            iSendFriendCircleActivity.showAttentionDynamic(attentionBean.data.list);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
                     });
         } catch (IOException e) {
             e.printStackTrace();

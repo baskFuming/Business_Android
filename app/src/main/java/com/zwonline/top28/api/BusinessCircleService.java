@@ -452,7 +452,7 @@ public interface BusinessCircleService {
             @Field("show_address") String show_address,
             @Field("show_enterprise") String show_enterprise,
             @Field("show_position") String show_position
-            );
+    );
 
     //微信分享名片更新用户
     @FormUrlEncoded
@@ -508,6 +508,7 @@ public interface BusinessCircleService {
 
     /**
      * 动态详情接口
+     *
      * @param timestamp
      * @param token
      * @param sign
@@ -522,4 +523,43 @@ public interface BusinessCircleService {
             @Field("sign") String sign,
             @Field("moment_id") String moment_id
     );
+
+    /**
+     * 举报接口
+     *
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @param target_id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/BusinessCircle/report")
+    Flowable<AttentionBean> report(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign,
+            @Field("target_type") String target_type,
+            @Field("junk_type") String junk_type,
+            @Field("target_id") String target_id
+    );
+
+    /**
+     * 商机圈明星推荐
+     *
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/BusinessCircle/starRecommendUserList")
+    Flowable<AtentionDynamicHeadBean> starRecommendUserList(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
+
+    );
+
+
 }

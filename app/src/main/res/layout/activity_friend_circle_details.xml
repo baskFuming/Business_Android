@@ -22,8 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/title_layout"
-            android:layout_gravity="center"
-            >
+            android:layout_gravity="center">
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appBarLayout"
@@ -204,7 +203,6 @@
                                     android:id="@+id/dynamic_imag_w"
                                     android:layout_width="224dp"
                                     android:layout_height="170dp"
-                                    android:background="#f0f0f0"
                                     android:gravity="left"
                                     android:visibility="gone" />
 
@@ -212,7 +210,6 @@
                                     android:id="@+id/dynamic_imag_h"
                                     android:layout_width="170dp"
                                     android:layout_height="223dp"
-                                    android:background="#f0f0f0"
                                     android:gravity="left"
                                     android:visibility="gone" />
 
@@ -220,7 +217,6 @@
                                     android:id="@+id/dynamic_imag_z"
                                     android:layout_width="190dp"
                                     android:layout_height="190dp"
-                                    android:background="#f0f0f0"
                                     android:visibility="gone" />
                             </RelativeLayout>
 
@@ -244,8 +240,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                     <LinearLayout
                         android:id="@+id/comment_acount_linear"
@@ -268,7 +264,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="5dp"
                             android:background="@drawable/btn_red_shape"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -311,19 +307,19 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <com.jcodecraeer.xrecyclerview.XRecyclerView
+                    android:id="@+id/zan_recy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="50dp"
+                    android:visibility="gone" />
+
+                <com.jcodecraeer.xrecyclerview.XRecyclerView
                     android:id="@+id/comment_xrecy"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="50dp"
                     android:visibility="visible"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
-                    android:id="@+id/zan_recy"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="50dp"
-                    android:visibility="gone" />
             </LinearLayout>
         </android.support.design.widget.CoordinatorLayout>
 

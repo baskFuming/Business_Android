@@ -111,7 +111,6 @@ public class AttentionDynamicAdapter extends RecyclerView.Adapter<RecyclerView.V
 //        if (holder instanceof MyViewHolder) {
             final MyViewHolder myViewHolder = (MyViewHolder) holder;
             myViewHolder.username.setText(list.get(pos).author.nickname);
-
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
             Date date = null;
             try {
@@ -366,11 +365,17 @@ public class AttentionDynamicAdapter extends RecyclerView.Adapter<RecyclerView.V
                     likeMomentInterface.onclick(v, pos, myViewHolder.choose_like, myViewHolder.like_num);
                 }
             });
+            myViewHolder.choose_like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    likeMomentInterface.onclick(v, pos, myViewHolder.choose_like, myViewHolder.like_num);
+                }
+            });
             String did_i_like = list.get(pos).did_i_like;
             if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
 
                 myViewHolder.choose_like.setChecked(false);
-                myViewHolder.choose_like.setEnabled(false);
+                myViewHolder.choose_like.setEnabled(true);
                 myViewHolder.like_num.setTextColor(Color.parseColor("#1d1d1d"));
             } else {
                 myViewHolder.choose_like.setChecked(true);

@@ -11,8 +11,10 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.ClipboardManager;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,7 +27,9 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.DynamicDetailsActivity;
 import com.zwonline.top28.activity.HomeDetailsActivity;
-import com.zwonline.top28.adapter.NewContentAdapter;
+import com.zwonline.top28.adapter.AttentionDynamicAdapter;
+import com.zwonline.top28.adapter.RecommendDynamicHeadAdapter;
+import com.zwonline.top28.adapter.BusinessProductAdapter;
 import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
@@ -67,7 +71,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
 
     private XRecyclerView newcontentRecy;
     private int page = 1;
-    private NewContentAdapter adapter;
+    private AttentionDynamicAdapter adapter;
     private RewritePopwindow mPopwindow;
     private String share_url;
     private String share_icon;
@@ -87,20 +91,25 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
     private int likePosition;
     private int intentPositions;
     private String nickname;
+    private RecommendDynamicHeadAdapter attentionDynamicHeadAdapter;
+    private List<AtentionDynamicHeadBean.DataBean.ListBean> attentionList;
 //    private List<String> comment_list = new ArrayList<>();
 
     @Override
     protected void init(View view) {
 //        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+        attentionList=new ArrayList<>();
         sp = SharedPreferencesUtils.getUtil();
         EventBus.getDefault().register(this);
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
         uid = (String) sp.getKey(getActivity(), "uid", "");
+
         nickname = (String) sp.getKey(getActivity(), "nickname", "");
         newContentList = new ArrayList<>();
         newcontentRecy = (XRecyclerView) view.findViewById(R.id.newcontent_recy);
         presenter.MomentLists(getActivity(), page, "", "", BizConstant.ALREADY_FAVORITE);
         presenter.GetMyNotificationCount(getActivity());
+        presenter.StarRecommendUserList(getActivity());
         recyclerViewData();
     }
 
@@ -127,9 +136,21 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         newcontentRecy.setLayoutManager(linearLayoutManager);
-        adapter = new NewContentAdapter(newContentList, getActivity());
+        adapter = new AttentionDynamicAdapter(newContentList, getActivity());
+        setHeader(newcontentRecy);
         newcontentRecy.setAdapter(adapter);
 
+    }
+
+    private void setHeader(XRecyclerView view) {
+        //渲染header布局
+        View header = LayoutInflater.from(getActivity()).inflate(R.layout.attention_dynamic_head, null);
+        RecyclerView recommendRecy = (RecyclerView) header.findViewById(R.id.recommend_recy);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recommendRecy.setLayoutManager(linearLayoutManager);
+        attentionDynamicHeadAdapter = new RecommendDynamicHeadAdapter(attentionList, getActivity());
+        recommendRecy.setAdapter(attentionDynamicHeadAdapter);
+        adapter.setHeaderView(header);
     }
 
     @Override
@@ -164,7 +185,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
 
         adapter.notifyDataSetChanged();
         loadMore();//上拉刷新下拉加载
-        adapter.setOnClickItemListener(new NewContentAdapter.OnClickItemListener() {
+        adapter.setOnClickItemListener(new AttentionDynamicAdapter.OnClickItemListener() {
 
             @Override
             public void setOnItemClick(View view, int position) {
@@ -172,7 +193,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
                     return;
                 }
 
-                intentPositions = position - 1;
+                intentPositions = position - 2;
                 Intent intent = new Intent(getActivity(), DynamicDetailsActivity.class);
                 intent.putExtra("moment_id", newContentList.get(intentPositions).moment_id);
                 intent.putExtra("author_id", newContentList.get(intentPositions).user_id);
@@ -219,7 +240,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             }
         });
         //分享动态
-        adapter.shareSetOnclick(new NewContentAdapter.ShareInterface() {
+        adapter.shareSetOnclick(new AttentionDynamicAdapter.ShareInterface() {
             @Override
             public void onclick(View view, int position) {
                 moment_id = newContentList.get(position).moment_id;
@@ -230,7 +251,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             }
         });
         //更多功能
-        adapter.funtcionSetOnclick(new NewContentAdapter.FunctionInterface() {
+        adapter.funtcionSetOnclick(new AttentionDynamicAdapter.FunctionInterface() {
             @Override
             public void onclick(View view, int position, TextView attention) {
                 functionPosition = position;
@@ -248,7 +269,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             }
         });
         //刪除动态
-        adapter.deleteSetOnclick(new NewContentAdapter.DeleteInterface() {
+        adapter.deleteSetOnclick(new AttentionDynamicAdapter.DeleteInterface() {
             @Override
             public void onclick(View view, int position) {
                 positions = position;
@@ -256,7 +277,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             }
         });
         //文章详情
-        adapter.articleSetOnclick(new NewContentAdapter.ArticleInterface() {
+        adapter.articleSetOnclick(new AttentionDynamicAdapter.ArticleInterface() {
             @Override
             public void onclick(View view, int position) {
                 Intent intent = new Intent(getActivity(), HomeDetailsActivity.class);
@@ -266,7 +287,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             }
         });
         //关注
-        adapter.attentionSetOnclick(new NewContentAdapter.AttentionInterface() {
+        adapter.attentionSetOnclick(new AttentionDynamicAdapter.AttentionInterface() {
             @Override
             public void onclick(View view, int position, TextView attention) {
                 String user_id = newContentList.get(position).user_id;
@@ -284,7 +305,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             }
         });
         //点赞
-        adapter.likeMomentSetOnclick(new NewContentAdapter.LikeMomentInterface() {
+        adapter.likeMomentSetOnclick(new AttentionDynamicAdapter.LikeMomentInterface() {
 
 
             @Override
@@ -293,6 +314,10 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
                 if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
                     presenter.LikeMoment(getActivity(), newContentList.get(position).moment_id);
                     likePosition = position;
+                    newContentList.get(likePosition).did_i_like = "1";
+                    int likeCount = Integer.parseInt(newContentList.get(likePosition).like_count);
+                    newContentList.get(likePosition).like_count = String.valueOf(likeCount + 1);
+                    adapter.notifyDataSetChanged();
                 } else {
                     ToastUtils.showToast(getActivity(), "您已经赞过了哦");
                 }
@@ -445,13 +470,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
      */
     @Override
     public void showLikeMoment(AttentionBean attentionBean) {
-        if (attentionBean.status == 1) {
-            newContentList.get(likePosition).did_i_like = "1";
-            int likeCount = Integer.parseInt(newContentList.get(likePosition).like_count);
-            newContentList.get(likePosition).like_count = String.valueOf(likeCount + 1);
-            adapter.notifyDataSetChanged();
-        }
-        ToastUtils.showToast(getActivity(), attentionBean.msg);
+
     }
 
     /**
@@ -519,7 +538,9 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
      */
     @Override
     public void showAttentionDynamic(List<AtentionDynamicHeadBean.DataBean.ListBean> issueList) {
-
+        attentionList.clear();
+        attentionList.addAll(issueList);
+        attentionDynamicHeadAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -554,6 +575,16 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
      */
     @Override
     public void showMomentDetail(DynamicDetailsesBean mommentList) {
+
+    }
+
+    /**
+     * 举报
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showReport(AttentionBean attentionBean) {
 
     }
 
@@ -660,6 +691,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
                     public void run() {
                         page = 1;
                         presenter.MomentLists(getActivity(), page, "", "", BizConstant.ALREADY_FAVORITE);
+                        presenter.StarRecommendUserList(getActivity());
                         if (newcontentRecy != null)
                             newcontentRecy.refreshComplete();
                     }
@@ -817,6 +849,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
                         //销毁弹出框
                         dynamicFunctionPopwindow.dismiss();
                         dynamicFunctionPopwindow.backgroundAlpha(getActivity(), 1f);
+                        presenter.Report(getActivity(), BizConstant.DYNAMIC, BizConstant.TYPE_ONE, newContentList.get(functionPosition).moment_id);
                         ToastUtils.showToast(getActivity(), "举报成功");
                     } else {
                         ToastUtils.showToast(getActivity(), "请先登录");

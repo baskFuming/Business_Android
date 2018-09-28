@@ -101,7 +101,7 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     String token = (String) sp.getKey(context, "dialog", "");
                     if (myViewHolder.consult.getText().toString().trim().equals(context.getString(R.string.common_btn_add_focus))) {
 //                        showNormalDialogFollow(String.valueOf(timestamp), token, myViewHolder.consult, position);
-                        mAnttent(String.valueOf(timestamp), token, position,BizConstant.ALREADY_FAVORITE);
+                        mAnttent(String.valueOf(timestamp), token, position, BizConstant.ALREADY_FAVORITE);
 //                        myViewHolder.consult.setText(R.string.common_followed);
 //                        myViewHolder.consult.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
 //                        myViewHolder.consult.setTextColor(Color.parseColor("#DDDDDD"));
@@ -118,6 +118,7 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         map.put("type", "un_follow");
                         map.put("token", token);
                         map.put("uid", list.get(position).followid);
+                        SignUtils.removeNullValue(map);
                         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
                         Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                                 .getClientApi(PayService.class, Api.url)
@@ -193,6 +194,7 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         map.put("token", token);
         map.put("uid", list.get(position).followid);
         map.put("allow_be_call", allow_be_call);
+        SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
@@ -235,7 +237,7 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            mAnttent(timestamp, token, position,BizConstant.ALREADY_FAVORITE);
+                            mAnttent(timestamp, token, position, BizConstant.ALREADY_FAVORITE);
                             consult.setText(R.string.common_followed);
                             consult.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
                             consult.setTextColor(Color.parseColor("#FDFDFD"));
@@ -249,7 +251,7 @@ public class MyAttentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            mAnttent(timestamp, token, position,BizConstant.NO_FAVORITE);
+                            mAnttent(timestamp, token, position, BizConstant.NO_FAVORITE);
                             consult.setText(R.string.common_followed);
                             consult.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
                             consult.setTextColor(Color.parseColor("#FDFDFD"));

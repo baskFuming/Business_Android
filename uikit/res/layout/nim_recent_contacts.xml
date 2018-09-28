@@ -29,15 +29,36 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <ImageView
+                <RelativeLayout
                     android:id="@+id/yunyingguan"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
-                    android:layout_marginTop="11dp"
-                    android:src="@drawable/banners" />
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/advertising"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginRight="14dp"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/advertising_shape"
+                        android:gravity="center"
+                        android:text="广告"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
             </android.support.design.widget.CollapsingToolbarLayout>
             <!--悬浮效果-->
             <RelativeLayout

@@ -1,6 +1,9 @@
 package com.netease.nim.uikit.business.recent;
 
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
@@ -28,9 +31,14 @@ public interface RecentContactsCallback {
     void txCallBack(int pos, RecentContact recent);
 
     /**
-     * 运营官
+     * 广告位图片
      */
-    void yunYingGun();
+    void yunYingGun(RelativeLayout linearLayout, ImageView imageView);
+
+    /**
+     * 广告位
+     */
+    void advertising();
 
     /**
      * 最近联系人点击响应回调函数，以供打开会话窗口时传入定制化参数，或者做其他动作

@@ -8,6 +8,7 @@ import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.AttentionChatBean;
 import com.zwonline.top28.bean.BalanceBean;
 import com.zwonline.top28.bean.BankBean;
+import com.zwonline.top28.bean.BannerAdBean;
 import com.zwonline.top28.bean.BannerBean;
 import com.zwonline.top28.bean.BusinessClassifyBean;
 import com.zwonline.top28.bean.BusinessListBean;
@@ -800,4 +801,23 @@ public interface ApiService {
             @Field("sign") String sign
 
     );
+
+    /**
+     * 消息顶部banner广告接口
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Im/bannerAd")
+    Flowable<BannerAdBean> bannerAd(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
+
+    );
+
+
+
 }

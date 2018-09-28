@@ -198,6 +198,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         initListView();
         recyclerViewData();
     }
+
     /**
      * xRecyclerview配置
      */
@@ -260,6 +261,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showMomentDetail(DynamicDetailsesBean mommentList) {
+        commentUnderline.setVisibility(View.VISIBLE);
         author_id = mommentList.data.user_id;
         avatars = mommentList.data.author.avatars;
         nickname = mommentList.data.author.nickname;
@@ -377,6 +379,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         if (imageUrls != null && imageUrls.length > 0) {
             imagLinear.setVisibility(View.VISIBLE);
             if (imageUrls.length == 1) {
+                RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
                 if (StringUtil.isNotEmpty(hight) && StringUtil.isNotEmpty(width)) {
                     int widths = Integer.parseInt(width);
                     int hights = Integer.parseInt(hight);
@@ -385,20 +388,20 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                         dynamic_imag_w.setVisibility(View.GONE);
                         dynamic_imag_z.setVisibility(View.GONE);
                         dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                        Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).into(dynamic_imag_h);
+                        Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).apply(requestOption).into(dynamic_imag_h);
                     } else if (widths > hights) {
                         dynamic_imag_h.setVisibility(View.GONE);
                         dynamic_imag_w.setVisibility(View.VISIBLE);
                         dynamic_imag_z.setVisibility(View.GONE);
                         dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                        Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).into(dynamic_imag_w);
+                        Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).apply(requestOption).into(dynamic_imag_w);
 
                     } else if (widths == hights) {
                         dynamic_imag_h.setVisibility(View.GONE);
                         dynamic_imag_w.setVisibility(View.GONE);
                         dynamic_imag_z.setVisibility(View.VISIBLE);
                         dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                        Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).into(dynamic_imag_z);
+                        Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).apply(requestOption).into(dynamic_imag_z);
                     }
 
                 }
@@ -444,6 +447,16 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             isLike.setText("已赞");
             isLike.setTextColor(Color.parseColor("#ff2b2b"));
         }
+    }
+
+    /**
+     * 举报
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showReport(AttentionBean attentionBean) {
+
     }
 
     @Override
@@ -846,6 +859,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     public void showAttentionDynamic(List<AtentionDynamicHeadBean.DataBean.ListBean> issueList) {
 
     }
+
     /**
      * 商机圈我的消息提醒
      *
@@ -870,6 +884,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         likeListAdapter.notifyDataSetChanged();
         likeLoadMore();
     }
+
     /**
      * 上传多张图片
      *
@@ -879,10 +894,12 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     public void showPictures(PictursBean pictursBean) {
 
     }
+
     @Override
     public void showSendNewMoment(SendNewMomentBean sendNewMomentBean) {
 
     }
+
     @Override
     public void showConment(List<NewContentBean.DataBean> newList) {
 
@@ -898,7 +915,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      *
      * @param view
      */
-    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear,R.id.appBarLayout})
+    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear, R.id.appBarLayout})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -1011,7 +1028,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 case R.id.copyurl:
                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     // 将文本内容放到系统剪贴板里。
-                    cm.setText(share_url+"#"+share_title);
+                    cm.setText(share_url + "#" + share_title);
                     ToastUtils.showToast(getApplicationContext(), "复制成功");
                     break;
                 default:

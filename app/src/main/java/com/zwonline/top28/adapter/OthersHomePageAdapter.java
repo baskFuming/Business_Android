@@ -340,11 +340,17 @@ public class OthersHomePageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 likeMomentInterface.onclick(v, position, myViewHolder.choose_like, myViewHolder.like_num);
             }
         });
+        myViewHolder.choose_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeMomentInterface.onclick(v, position, myViewHolder.choose_like, myViewHolder.like_num);
+            }
+        });
         String did_i_like = list.get(position).did_i_like;
         if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
 
             myViewHolder.choose_like.setChecked(false);
-            myViewHolder.choose_like.setEnabled(false);
+            myViewHolder.choose_like.setEnabled(true);
             myViewHolder.like_num.setTextColor(Color.parseColor("#1d1d1d"));
         } else {
             myViewHolder.choose_like.setChecked(true);

@@ -258,6 +258,16 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
 
     }
 
+    /**
+     * 举报
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showReport(AttentionBean attentionBean) {
+
+    }
+
 
     @Override
     protected SendFriendCirclePresenter setPresenter() {
@@ -461,6 +471,11 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
                 if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
                     presenter.LikeMoment(getActivity(), newContentList.get(position).moment_id);
                     likePosition = position;
+                    newContentList.get(likePosition).did_i_like = "1";
+                    int likeCount = Integer.parseInt(newContentList.get(likePosition).like_count);
+                    newContentList.get(likePosition).like_count = String.valueOf(likeCount + 1);
+                    adapter.notifyDataSetChanged();
+
                 } else {
                     ToastUtils.showToast(getActivity(), "您已经赞过了哦");
                 }
@@ -693,13 +708,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
      */
     @Override
     public void showLikeMoment(AttentionBean attentionBean) {
-        if (attentionBean.status == 1) {
-            newContentList.get(likePosition).did_i_like = "1";
-            int likeCount = Integer.parseInt(newContentList.get(likePosition).like_count);
-            newContentList.get(likePosition).like_count = String.valueOf(likeCount + 1);
-            adapter.notifyDataSetChanged();
-        }
-        ToastUtils.showToast(getActivity(), attentionBean.msg);
+
     }
 
     /**
@@ -1003,6 +1012,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
                         //销毁弹出框
                         dynamicFunctionPopwindow.dismiss();
                         dynamicFunctionPopwindow.backgroundAlpha(getActivity(), 1f);
+                        presenter.Report(getActivity(), BizConstant.DYNAMIC, BizConstant.TYPE_ONE, newContentList.get(functionPosition).moment_id);
                         ToastUtils.showToast(getActivity(), "举报成功");
                     } else {
                         ToastUtils.showToast(getActivity(), "请先登录");

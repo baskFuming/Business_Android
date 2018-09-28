@@ -22,6 +22,7 @@ import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
+import com.netease.nim.uikit.business.recent.RecentContactsFragment;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -40,6 +41,7 @@ import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.zwonline.top28.activity.MainActivity;
+import com.zwonline.top28.activity.SplashActivity;
 import com.zwonline.top28.exception.AppCrashHandler;
 import com.zwonline.top28.nim.NimSDKOptionConfig;
 import com.zwonline.top28.nim.chatroom.ChatRoomSessionHelper;
@@ -143,6 +145,7 @@ public class APP extends Application {
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
         super.onCreate();
         new PermissionUtil();
+        new SplashActivity();
         /**
          * 解决Android 7.0权限问题
          */
@@ -201,6 +204,7 @@ public class APP extends Application {
         // 通讯录列表定制初始化
         ContactHelper.init();
         new MessageFragment();
+        new RecentContactsFragment();
         // 添加自定义推送文案以及选项，请开发者在各端（Android、IOS、PC、Web）消息发送时保持一致，以免出现通知不一致的情况
         NimUIKit.setCustomPushContentProvider(new DemoPushContentProvider());
         NIMClient.getService(MsgService.class).registerCustomAttachmentParser(new CustomAttachParser());

@@ -226,15 +226,29 @@ public class BizConstant {
     /**
      * 商机圈评论返回EventBus通知
      */
-    public static final String NEW="1";
-    public static final String RECOMMEND="2";
-    public static final String ATTENTION="3";
-    public static final String MY="4";
+    public static final String NEW = "1";
+    public static final String RECOMMEND = "2";
+    public static final String ATTENTION = "3";
+    public static final String MY = "4";
 
 
-    public static final int MAGIC=0;
+    public static final int MAGIC = 0;
 
+    /**
+     * 举报
+     */
 
+    public static final String USER = "1";
+    public static final String articleARTICLE = "2";
+    public static final String DYNAMIC = "3";
+    public static final String COMMENT = "4";
 
-
+    /**
+     * 赚取算力
+     */
+    public static final String EARNINTEGRAL = "http://toutiao.28.com/Members/boc_list.html";
+    /**
+     * 推荐用户
+     */
+    public static final String RECOMMENTUSER = "http://toutiao.28.com/Members/recommend_list.html";
 }

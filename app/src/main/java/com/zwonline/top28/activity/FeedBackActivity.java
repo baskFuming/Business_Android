@@ -424,6 +424,14 @@ public class FeedBackActivity extends BaseActivity<ISendFriendCircleActivity, Se
 
     }
 
+    /**
+     * 举报
+     * @param attentionBean
+     */
+    @Override
+    public void showReport(AttentionBean attentionBean) {
+
+    }
 
     private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
         SelectDialog dialog = new SelectDialog(this, R.style.transparentFrameWindowStyle, listener, names);

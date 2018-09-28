@@ -181,4 +181,11 @@ public interface ISendFriendCircleActivity {
      * @param mommentList
      */
     void showMomentDetail(DynamicDetailsesBean mommentList);
+
+    /**
+     * 举报接口
+     *
+     * @param attentionBean
+     */
+    void showReport(AttentionBean attentionBean);
 }

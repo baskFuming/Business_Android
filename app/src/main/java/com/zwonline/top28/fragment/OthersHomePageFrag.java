@@ -279,6 +279,10 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
                 if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
                     presenter.LikeMoment(getActivity(), newContentList.get(position).moment_id);
                     likePosition = position;
+                    newContentList.get(likePosition).did_i_like = "1";
+                    int likeCount = Integer.parseInt(newContentList.get(likePosition).like_count);
+                    newContentList.get(likePosition).like_count = String.valueOf(likeCount + 1);
+                    adapter.notifyDataSetChanged();
                 } else {
                     ToastUtils.showToast(getActivity(), "您已经赞过了哦");
                 }
@@ -431,13 +435,7 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
      */
     @Override
     public void showLikeMoment(AttentionBean attentionBean) {
-        if (attentionBean.status == 1) {
-            newContentList.get(likePosition).did_i_like = "1";
-            int likeCount = Integer.parseInt(newContentList.get(likePosition).like_count);
-            newContentList.get(likePosition).like_count = String.valueOf(likeCount + 1);
-            adapter.notifyDataSetChanged();
-        }
-        ToastUtils.showToast(getActivity(), attentionBean.msg);
+
     }
 
     /**
@@ -535,6 +533,15 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
      */
     @Override
     public void showMomentDetail(DynamicDetailsesBean mommentList) {
+
+    }
+
+    /**
+     * 举报
+     * @param attentionBean
+     */
+    @Override
+    public void showReport(AttentionBean attentionBean) {
 
     }
 

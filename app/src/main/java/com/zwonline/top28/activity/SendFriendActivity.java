@@ -433,6 +433,14 @@ public class SendFriendActivity extends BaseActivity<ISendFriendCircleActivity, 
 
     }
 
+    /**
+     * 举报
+     * @param attentionBean
+     */
+    @Override
+    public void showReport(AttentionBean attentionBean) {
+
+    }
 
     //点击事件
     @OnClick({R.id.back, R.id.publish})

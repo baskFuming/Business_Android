@@ -11,8 +11,8 @@ android {
     defaultConfig {
         applicationId "com.zwonline.top28"
         minSdkVersion 16
-        versionCode 21
-        versionName "3.3.0"
+        versionCode 22
+        versionName "3.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             targetSdkVersion 26
@@ -211,6 +211,7 @@ dependencies {
     compile 'com.github.hackware1993:MagicIndicator:1.5.0'
     //    implementation 'im.unicolas:trollbadgeview:1.3'
     //    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
-//    implementation project(':xrecyclerview')
+    //    implementation project(':xrecyclerview')
     implementation files('libs/GDTUnionSDK.TBS.4.19.574.min.jar')
+    implementation files('libs/android-query-full.0.26.7.jar')
 }

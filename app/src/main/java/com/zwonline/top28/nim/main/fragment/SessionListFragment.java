@@ -2,7 +2,9 @@ package com.zwonline.top28.nim.main.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,9 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
@@ -40,9 +45,16 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.AddFriendsActivity;
+import com.zwonline.top28.activity.CompanyActivity;
 import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.activity.YunYingGuanActivity;
+import com.zwonline.top28.api.Api;
+import com.zwonline.top28.api.ApiRetrofit;
+import com.zwonline.top28.api.ApiService;
+import com.zwonline.top28.api.PayService;
 import com.zwonline.top28.base.BaseMainActivity;
+import com.zwonline.top28.bean.AttentionBean;
+import com.zwonline.top28.bean.BannerAdBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.nim.config.preference.Preferences;
 import com.zwonline.top28.nim.login.LoginActivity;
@@ -60,13 +72,25 @@ import com.zwonline.top28.nim.session.extension.StickerAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.nim.yangfen.YangFenAttachment;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.badge.BadgeViews;
 import com.zwonline.top28.utils.popwindow.EmptyPopwindow;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
  * Created by zhoujianghua on 2015/8/17.
@@ -90,10 +114,16 @@ public class SessionListFragment extends TabFragment {
     private ImageView noticeImg;
     private String has_permission;
     private EmptyPopwindow mPopwindow;
+    private ImageView advertisings;
+    private RelativeLayout adLayout;
     private List<RecentContact> recentContactList;
     private RecentContactAdapter recentContactAdapter;
 
     private static final String PAGE_NAME_KEY = "PAGE_NAME_KEY";
+    private String jump_path;
+    private String is_jump_off;
+    private String is_webview;
+    private String project_id;
 
     public static SessionListFragment getInstance(String pageName) {
         Bundle args = new Bundle();
@@ -110,6 +140,11 @@ public class SessionListFragment extends TabFragment {
         View view = inflater.inflate(R.layout.session_list, null);
         initView(view);
         sp = SharedPreferencesUtils.getUtil();
+        try {
+            BannerAd(getActivity());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         badgeView = new BadgeViews(getActivity());
         badgeView.setTargetView(noticeImg);
         recentContactList = new ArrayList<>();
@@ -301,9 +336,38 @@ public class SessionListFragment extends TabFragment {
             }
 
             @Override
-            public void yunYingGun() {
-                startActivity(new Intent(getActivity(), YunYingGuanActivity.class));
-                getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+            public void yunYingGun(RelativeLayout linearLayout, ImageView imageView) {
+//
+                advertisings = imageView;
+                adLayout = linearLayout;
+            }
+
+            /**
+             * 顶部广告点击
+             */
+            @Override
+            public void advertising() {
+                if (StringUtil.isNotEmpty(is_webview) && is_webview.endsWith(BizConstant.IS_SUC)) {
+                    if (StringUtil.isNotEmpty(is_jump_off) && is_jump_off.equals(BizConstant.IS_FAIL)) {
+                        Intent intent = new Intent(getActivity(), YunYingGuanActivity.class);
+                        if (StringUtil.isNotEmpty(jump_path)) {
+                            intent.putExtra("jump_path", jump_path);
+                        }
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    } else {
+                        Uri uri = Uri.parse(jump_path);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                } else {
+                    Intent intent = new Intent(getActivity(), CompanyActivity.class);
+                    intent.putExtra("pid", project_id);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                }
+
+
             }
 
             @Override
@@ -441,4 +505,51 @@ public class SessionListFragment extends TabFragment {
         }
 
     };
+
+
+    //消息顶部的网络请求
+    public void BannerAd(final Context context) throws IOException {
+
+        long timestamp = new Date().getTime() / 1000;//获取时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("token", token);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<BannerAdBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(ApiService.class, Api.url)
+                .bannerAd(String.valueOf(timestamp), token, sign);
+        flowable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSubscriber<BannerAdBean>() {
+                    @Override
+                    public void onNext(BannerAdBean attentionBean) {
+                        if (attentionBean.status == 1) {
+                            String is_show = attentionBean.data.is_show;
+                            if (StringUtil.isNotEmpty(is_show)&&is_show.equals(BizConstant.IS_FAIL)){
+                                adLayout.setVisibility(View.GONE);
+                            }else {
+                                adLayout.setVisibility(View.VISIBLE);
+                            }
+                            RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
+                            Glide.with(context).load(attentionBean.data.images).apply(requestOption).into(advertisings);
+                            jump_path = attentionBean.data.jump_path;
+                            is_jump_off = attentionBean.data.is_jump_off;
+                            is_webview = attentionBean.data.is_webview;
+                            project_id = attentionBean.data.project_id;
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 }
