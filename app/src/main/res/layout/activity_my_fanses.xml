@@ -43,7 +43,12 @@
     <!--app:tabSelectedTextColor="@color/red"-->
     <!--app:tabTextColor="@color/black"-->
     <!--app:tabTextAppearance="@style/MyTabLayoutText"></android.support.design.widget.TabLayout>-->
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/fans_magicindicator"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"></net.lucode.hackware.magicindicator.MagicIndicator>
     <android.support.design.widget.TabLayout
+        android:visibility="gone"
         android:id="@+id/fans_tab"
         android:layout_width="match_parent"
         android:layout_height="50dp"
