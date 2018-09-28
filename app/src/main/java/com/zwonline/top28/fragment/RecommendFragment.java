@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -871,6 +870,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             EventBus.getDefault().unregister(this);
         }
     }
+
 
 }
 
