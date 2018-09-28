@@ -125,10 +125,17 @@
             android:text="查看全部评论"
             android:textColor="#228FFE"
             android:textSize="14sp" />
+
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:visibility="visible" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/fenge"/>
 </LinearLayout>

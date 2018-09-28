@@ -388,26 +388,33 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         } else {
             text_singnature.setText("这个人很懒，什么也没有留下!");
         }
-        if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
-            if (companyBean.data.did_i_follow.equals("0")) {
-                add_foll_befor.setText(R.string.common_btn_add_focus);
-                add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
-                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
-            } else if (companyBean.data.did_i_follow.equals("1")) {
-                add_foll_befor.setText(R.string.common_followed);
-                add_foll_befor.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+        if (islogins){
+            if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
+                if (companyBean.data.did_i_follow.equals("0")) {
+                    add_foll_befor.setText(R.string.common_btn_add_focus);
+                    add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                    add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+                } else if (companyBean.data.did_i_follow.equals("1")) {
+                    add_foll_befor.setText(R.string.common_followed);
+                    add_foll_befor.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
+                    add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+                }
+            } else {
+                if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !companyBean.data.did_i_follow.equals("0")) {
+                    add_foll_befor.setText("分享");
+                    add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                    add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+                } else if (!companyBean.data.did_i_follow.equals("1")) {
+                    add_foll_befor.setText("分享");
+                    add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+                    add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+                }
             }
-        } else {
-            if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !companyBean.data.did_i_follow.equals("0")) {
-                add_foll_befor.setText("分享");
-                add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
-                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
-            } else if (!companyBean.data.did_i_follow.equals("1")) {
-                add_foll_befor.setText("分享");
-                add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
-                add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
-            }
+        }else {
+            add_foll_befor.setText(R.string.common_btn_add_focus);
+            add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
+            add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
+            add_fr_befor.setText("+好友");
         }
 
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
@@ -738,6 +745,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
      * @param isFriend
      */
     private void updateAlias(final boolean isFriend) {
+
         if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
             if (isFriend) {
                 add_fr_befor.setText("聊天");
@@ -750,16 +758,20 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         add_fr_befor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
-                    if (isFriend) {
-                        NimUIKit.startP2PSession(HomePageActivity.this, uid);
+                if (islogins){
+                    if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
+                        if (isFriend) {
+                            NimUIKit.startP2PSession(HomePageActivity.this, uid);
+                        } else {
+                            onAddFriendByVerify(uid);
+                        }
                     } else {
-                        onAddFriendByVerify(uid);
+                        Intent intent = new Intent(HomePageActivity.this, DataAnalysisActivity.class);
+                        intent.putExtra("uid", uid);
+                        startActivity(intent);
                     }
-                } else {
-                    Intent intent = new Intent(HomePageActivity.this, DataAnalysisActivity.class);
-                    intent.putExtra("uid", uid);
-                    startActivity(intent);
+                }else {
+                    ToastUtils.showToast(getApplicationContext(),"请先登录！");
                 }
             }
         });
