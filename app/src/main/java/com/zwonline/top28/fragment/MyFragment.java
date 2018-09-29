@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,7 +39,9 @@ import com.zwonline.top28.activity.SettingActivity;
 import com.zwonline.top28.activity.TransmitActivity;
 import com.zwonline.top28.activity.WalletActivity;
 import com.zwonline.top28.activity.WithoutCodeLoginActivity;
+import com.zwonline.top28.adapter.MyOneMunuAdapter;
 import com.zwonline.top28.base.BaseFragment;
+import com.zwonline.top28.bean.MyPageBean;
 import com.zwonline.top28.bean.NoticeNotReadCountBean;
 import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.bean.message.MessageFollow;
@@ -47,6 +51,7 @@ import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.presenter.UserInfoPresenter;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.ObservableScrollView;
+import com.zwonline.top28.utils.ScrollLinearLayoutManager;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
@@ -56,6 +61,9 @@ import com.zwonline.top28.view.IUserInfo;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -139,6 +147,10 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     LinearLayout tvShoucangLinear;
     @BindView(R.id.my_relative)
     RelativeLayout myRelative;
+    @BindView(R.id.native_menu)
+    LinearLayout nativeMenu;
+    @BindView(R.id.menu_recy)
+    RecyclerView menuRecy;
     Unbinder unbinder1;
     @BindView(R.id.notice_img)
     NotificationButton noticeImg;
@@ -155,20 +167,22 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     private boolean islogins;
     private String nicknames;
     private String avatars;
+    private List<MyPageBean.DataBean> menuList;
+    private MyOneMunuAdapter myOneMenuAdapter;
 
     @Override
     protected void init(View view) {
+        menuList = new ArrayList<>();
 //        NavigationBar.Statedata(getActivity());
         getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.reded), 0);
         sp = SharedPreferencesUtils.getUtil();
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
-
-
         EventBus.getDefault().register(this);
         if (islogins) {
             presenter.mNoticeNotReadCount(getActivity());
             presenter.mUserInfo(getActivity());
+            presenter.PersonCenterMenu(getActivity());
         } else {
             Toast.makeText(getActivity(), R.string.user_not_login, Toast.LENGTH_SHORT).show();
         }
@@ -177,6 +191,13 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
         Glide.with(getActivity()).load(sp.getKey(getActivity(), "avatar", "")).apply(options).into(userTou);
 //        UserDatas();
+        myOneMenuAdapter = new MyOneMunuAdapter(menuList,getActivity());
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        ScrollLinearLayoutManager scrollLinearLayoutManager = new ScrollLinearLayoutManager(getActivity());
+        scrollLinearLayoutManager.setScrollEnabled(false);
+        menuRecy.setLayoutManager(scrollLinearLayoutManager);
+        menuRecy.setNestedScrollingEnabled(false);
+        menuRecy.setAdapter(myOneMenuAdapter);
         ScrollVieListener();
 
     }
@@ -368,7 +389,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             case R.id.recommend_user://推荐用户
                 RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.CLICK_RECOMMEND_USER);
                 Intent intent1 = new Intent(getActivity(), RecommendUserActivity.class);
-                intent1.putExtra("jumPath",BizConstant.RECOMMENTUSER);
+                intent1.putExtra("jumPath", BizConstant.RECOMMENTUSER);
                 startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
@@ -521,6 +542,20 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             noticeImg.setNotificationNumber(Integer.parseInt(noticeNotReadCountBean.data.noticeNotReadCount));
         }
 
+    }
+
+    /**
+     * 菜单一级列表
+     *
+     * @param menuLists
+     */
+    @Override
+    public void showPersonCenterMenu(List<MyPageBean.DataBean> menuLists) {
+        nativeMenu.setVisibility(View.GONE);
+        menuRecy.setVisibility(View.VISIBLE);
+        menuList.clear();
+        menuList.addAll(menuLists);
+        myOneMenuAdapter.notifyDataSetChanged();
     }
 
 

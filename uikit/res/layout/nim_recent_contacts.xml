@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:snser="http://schemas.android.com/apk/res-auto"
     android:id="@+id/messages_list_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,27 +37,31 @@
                     android:layout_marginTop="5dp"
                     android:visibility="gone">
 
-                    <ImageView
+                    <com.netease.nim.uikit.business.session.ImageViewPluls
                         android:id="@+id/advertising"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="14dp"
                         android:layout_marginRight="14dp"
-                        android:scaleType="fitXY" />
-
+                        android:scaleType="fitXY"
+                        snser:rectRoundRadius="6dp"
+                        snser:type="rounded_rect"
+                        />
                     <TextView
+                        android:id="@+id/ad_tv"
                         android:layout_width="40dp"
                         android:layout_height="20dp"
+                        android:text="广告"
+                        android:textSize="14sp"
+                        android:layout_marginRight="20dp"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/advertising_shape"
                         android:gravity="center"
-                        android:text="广告"
+                        android:layout_marginBottom="5dp"
                         android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:visibility="gone"
+                        android:background="@drawable/advertising_shape"/>
                 </RelativeLayout>
 
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -122,6 +127,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
+            android:layout_marginTop="40dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <RelativeLayout

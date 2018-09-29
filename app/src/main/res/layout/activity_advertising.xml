@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zwonline.top28.activity.AdvertisingActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
@@ -14,22 +15,24 @@
         <RelativeLayout
             android:id="@+id/back"
             android:layout_width="40dp"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
+
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="21dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:src="@mipmap/return_black" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/back_xx"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/back"
             android:visibility="gone">
+
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -38,15 +41,21 @@
                 android:layout_marginLeft="10dp"
                 android:src="@mipmap/back_x" />
         </RelativeLayout>
+
         <TextView
             android:id="@+id/tv_advertising"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/back"
+            android:ellipsize="end"
+            android:lines="1"
             android:textColor="#2B2B2B"
             android:textSize="18sp" />
 
     </RelativeLayout>
+
     <ProgressBar
         android:id="@+id/advertising_progress_Bar"
         style="?android:attr/progressBarStyleHorizontal"

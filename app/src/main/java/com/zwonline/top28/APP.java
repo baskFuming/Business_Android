@@ -22,6 +22,7 @@ import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
+import com.netease.nim.uikit.business.contact.core.query.PinYin;
 import com.netease.nim.uikit.business.recent.RecentContactsFragment;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nimlib.sdk.NIMClient;
@@ -114,14 +115,14 @@ public class APP extends Application {
     {
 
         //微信
-        PlatformConfig.setWeixin("wx979d60eb9639eb65","4f4240eeb5ff17c06591f786d1389b4d");
+        PlatformConfig.setWeixin("wx979d60eb9639eb65", "4f4240eeb5ff17c06591f786d1389b4d");
         //新浪微博(第三个参数为回调地址)
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com/sina2/callback");
+        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com/sina2/callback");
         //QQ
         PlatformConfig.setQQZone("101481060", "ed6507cde4458ce21b2f2e7b78a910f8");
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
 
         return mContext;
 
@@ -179,6 +180,8 @@ public class APP extends Application {
             // 1、UI相关初始化操作
             // 2、相关Service调用
             initUIKit();
+            PinYin.init(this);
+            PinYin.validate();
         }
         initTBS();
 
@@ -229,6 +232,7 @@ public class APP extends Application {
         });
 
     }
+
     private void initImagePicker() {
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
@@ -244,12 +248,14 @@ public class APP extends Application {
         imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
         //保存文件的高度。单位像素
     }
+
     private UIKitOptions buildUIKitOptions() {
         UIKitOptions options = new UIKitOptions();
         // 设置app图片/音频/日志等缓存目录
         options.appCacheDir = NimSDKOptionConfig.getAppCacheDir(this) + "/app";
         return options;
     }
+
     // 如果返回值为 null，则全部使用默认参数。
     private SDKOptions options() {
         SDKOptions options = new SDKOptions();
@@ -269,7 +275,7 @@ public class APP extends Application {
         // 配置保存图片，文件，log 等数据的目录
         // 如果 options 中没有设置这个值，SDK 会使用采用默认路径作为 SDK 的数据目录。
         // 该目录目前包含 log, file, image, audio, video, thumb 这6个目录。
-        String sdkPath = Environment.getExternalStorageDirectory() + "/" + getPackageName() + "/nim";
+        String sdkPath = Environment.getExternalStorageDirectory() + "/" + this.getPackageName() + "/nim";
         // 如果第三方 APP 需要缓存清理功能， 清理这个目录下面个子目录的内容即可。
         options.sdkStorageRootPath = sdkPath;
         // 配置是否需要预下载附件缩略图，默认为 true
@@ -305,14 +311,13 @@ public class APP extends Application {
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
     private LoginInfo loginInfo() {
-        sp=SharedPreferencesUtils.getUtil();
+        sp = SharedPreferencesUtils.getUtil();
 
-        String accid= (String) sp.getKey(getApplicationContext(),"account","");
-        String token= (String) sp.getKey(getApplicationContext(),"token","");
-        Log.i("NIMNIM",accid + "==" + token);
+        String accid = (String) sp.getKey(getApplicationContext(), "account", "");
+        String token = (String) sp.getKey(getApplicationContext(), "token", "");
 
-        if(!TextUtils.isEmpty(accid) && !TextUtils.isEmpty(token)){
-            return new LoginInfo(accid,token);
+        if (!TextUtils.isEmpty(accid) && !TextUtils.isEmpty(token)) {
+            return new LoginInfo(accid, token);
         }
         return null;
     }
@@ -321,12 +326,14 @@ public class APP extends Application {
     private String getChannel() {
         try {
             PackageManager pm = getPackageManager();
-            ApplicationInfo appInfo = pm.getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            ApplicationInfo appInfo = pm.getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
             return appInfo.metaData.getString("UMENG_CHANNEL");
-        } catch (PackageManager.NameNotFoundException ignored) {}
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
         return "";
     }
-//    /**
+
+    //    /**
 //     * 初始化TBS浏览服务X5内核
 //     */
     private void initTBS() {

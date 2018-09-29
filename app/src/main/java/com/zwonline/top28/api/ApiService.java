@@ -30,6 +30,7 @@ import com.zwonline.top28.bean.MyCurrencyBean;
 import com.zwonline.top28.bean.MyExamine;
 import com.zwonline.top28.bean.MyFansBean;
 import com.zwonline.top28.bean.MyIssueBean;
+import com.zwonline.top28.bean.MyPageBean;
 import com.zwonline.top28.bean.MyShareBean;
 import com.zwonline.top28.bean.PaymentBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
@@ -804,6 +805,7 @@ public interface ApiService {
 
     /**
      * 消息顶部banner广告接口
+     *
      * @param timestamp
      * @param token
      * @param sign
@@ -818,6 +820,23 @@ public interface ApiService {
 
     );
 
+    /**
+     * 个人中心菜单接口
+     *
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Public/person_center_menu")
+    Flowable<MyPageBean> personCenterMenu(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("app_version") String app_version,
+            @Field("sign") String sign
+
+    );
 
 
 }

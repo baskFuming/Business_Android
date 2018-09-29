@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,13 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
 import com.netease.nim.uikit.business.recent.RecentContactsCallback;
 import com.netease.nim.uikit.business.recent.RecentContactsFragment;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
+import com.netease.nim.uikit.business.session.ImageViewPluls;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.common.fragment.TabFragment;
@@ -71,6 +77,7 @@ import com.zwonline.top28.nim.session.extension.SnapChatAttachment;
 import com.zwonline.top28.nim.session.extension.StickerAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.nim.yangfen.YangFenAttachment;
+import com.zwonline.top28.utils.ImageViewPlu;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.StringUtil;
@@ -114,8 +121,9 @@ public class SessionListFragment extends TabFragment {
     private ImageView noticeImg;
     private String has_permission;
     private EmptyPopwindow mPopwindow;
-    private ImageView advertisings;
+    private ImageViewPluls advertisings;
     private RelativeLayout adLayout;
+    private TextView adTv;
     private List<RecentContact> recentContactList;
     private RecentContactAdapter recentContactAdapter;
 
@@ -336,10 +344,11 @@ public class SessionListFragment extends TabFragment {
             }
 
             @Override
-            public void yunYingGun(RelativeLayout linearLayout, ImageView imageView) {
+            public void yunYingGun(RelativeLayout linearLayout, ImageViewPluls imageView,TextView textView) {
 //
                 advertisings = imageView;
                 adLayout = linearLayout;
+                adTv=textView;
             }
 
             /**
@@ -529,11 +538,24 @@ public class SessionListFragment extends TabFragment {
                             String is_show = attentionBean.data.is_show;
                             if (StringUtil.isNotEmpty(is_show)&&is_show.equals(BizConstant.IS_FAIL)){
                                 adLayout.setVisibility(View.GONE);
+
                             }else {
                                 adLayout.setVisibility(View.VISIBLE);
                             }
                             RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
-                            Glide.with(context).load(attentionBean.data.images).apply(requestOption).into(advertisings);
+                            Glide.with(context).load(attentionBean.data.images).apply(requestOption).listener(new RequestListener<Drawable>() {
+
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    adTv.setVisibility(View.VISIBLE);
+                                    return false;
+                                }
+                            }).into(advertisings);
                             jump_path = attentionBean.data.jump_path;
                             is_jump_off = attentionBean.data.is_jump_off;
                             is_webview = attentionBean.data.is_webview;

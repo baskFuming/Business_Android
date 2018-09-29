@@ -4,8 +4,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
+import com.netease.nim.uikit.business.session.ImageViewPluls;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
@@ -33,7 +35,7 @@ public interface RecentContactsCallback {
     /**
      * 广告位图片
      */
-    void yunYingGun(RelativeLayout linearLayout, ImageView imageView);
+    void yunYingGun(RelativeLayout linearLayout, ImageViewPluls imageView, TextView textView);
 
     /**
      * 广告位

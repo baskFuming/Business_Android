@@ -1,7 +1,9 @@
 package com.zwonline.top28.presenter;
 
 import android.content.Context;
+
 import com.zwonline.top28.base.BasePresenter;
+import com.zwonline.top28.bean.MyPageBean;
 import com.zwonline.top28.bean.NoticeNotReadCountBean;
 import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.model.UserInfoModel;
@@ -32,6 +34,7 @@ public class UserInfoPresenter extends BasePresenter<IUserInfo> {
 
     /**
      * 个人信息
+     *
      * @param context
      */
     public void mUserInfo(final Context context) {
@@ -68,6 +71,11 @@ public class UserInfoPresenter extends BasePresenter<IUserInfo> {
         }
     }
 
+    /**
+     * 通告
+     *
+     * @param context
+     */
     public void mNoticeNotReadCount(final Context context) {
         try {
             Flowable<NoticeNotReadCountBean> flowable = userInfoModel.NoticeNotReadCount(context);
@@ -76,7 +84,38 @@ public class UserInfoPresenter extends BasePresenter<IUserInfo> {
                     .subscribeWith(new DisposableSubscriber<NoticeNotReadCountBean>() {
                         @Override
                         public void onNext(NoticeNotReadCountBean noticeNotReadCountBean) {
-                        iUserInfo.showNoticeNoRead(noticeNotReadCountBean);
+                            iUserInfo.showNoticeNoRead(noticeNotReadCountBean);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            iUserInfo.showErro();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 个人中心菜单
+     *
+     * @param context
+     */
+    public void PersonCenterMenu(final Context context) {
+        try {
+            Flowable<MyPageBean> flowable = userInfoModel.mPersonCenterMenu(context);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<MyPageBean>() {
+                        @Override
+                        public void onNext(MyPageBean myPageBean) {
+                            iUserInfo.showPersonCenterMenu(myPageBean.data);
                         }
 
                         @Override

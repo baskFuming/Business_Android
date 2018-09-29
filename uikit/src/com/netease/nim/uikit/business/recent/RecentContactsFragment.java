@@ -21,6 +21,7 @@ import com.netease.nim.uikit.api.model.team.TeamDataChangedObserver;
 import com.netease.nim.uikit.api.model.team.TeamMemberDataChangedObserver;
 import com.netease.nim.uikit.api.model.user.UserInfoObserver;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
+import com.netease.nim.uikit.business.session.ImageViewPluls;
 import com.netease.nim.uikit.business.session.helper.ScrollLinearLayoutManagers;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.badger.Badger;
@@ -83,7 +84,8 @@ public class RecentContactsFragment extends TFragment {
     private RelativeLayout yunYingGuan;
     private ImageView empty;
     private LinearLayout linearLayout;
-    private ImageView advertising;
+    private ImageViewPluls advertising;
+    private TextView adTv;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -128,16 +130,16 @@ public class RecentContactsFragment extends TFragment {
         yunYingGuan = findView(R.id.yunyingguan);
         empty = findView(R.id.empty);
         advertising = findView(R.id.advertising);
+        adTv = findView(R.id.ad_tv);
         yunYingGuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callback.advertising();
             }
         });
-        callback.yunYingGun(yunYingGuan, advertising);
+        callback.yunYingGun(yunYingGuan, advertising, adTv);
         recyclerView.setNestedScrollingEnabled(false);
         linearLayout = findView(R.id.lv);
-        linearLayout.setNestedScrollingEnabled(false);
 
     }
 
@@ -204,9 +206,10 @@ public class RecentContactsFragment extends TFragment {
             }
 
             @Override
-            public void yunYingGun(RelativeLayout linearLayout, ImageView imageView) {
+            public void yunYingGun(RelativeLayout linearLayout, ImageViewPluls imageView, TextView textView) {
                 yunYingGuan = linearLayout;
                 advertising = imageView;
+                adTv = textView;
             }
 
             @Override

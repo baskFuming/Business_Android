@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
-    >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/my_relative"
@@ -67,7 +66,7 @@
     <com.zwonline.top28.utils.ObservableScrollView
         android:id="@+id/my_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/my_relative"
         android:overScrollMode="never">
 
@@ -280,381 +279,397 @@
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="10dp"-->
             <!--android:background="@color/white"></View>-->
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="23dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="25dp"
-                android:text="@string/article_quick_publish"
-                android:textColor="#383838"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:visibility="visible"/>
-
-
             <LinearLayout
+                android:id="@+id/native_menu"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/article"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_fbwz"
-                    android:gravity="center"
-                    android:text="@string/article_publish"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="23dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="25dp"
+                    android:text="@string/article_quick_publish"
                     android:textColor="#383838"
-                    android:textSize="14sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/article"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_fbwz"
+                        android:gravity="center"
+                        android:text="@string/article_publish"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+
+
+                    <TextView
+                        android:id="@+id/transmit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_zzwz"
+                        android:gravity="center"
+                        android:text="@string/article_reprinted_articles"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+
+                    <!--android:drawableTop="@mipmap/ic_video"-->
+                    <TextView
+                        android:id="@+id/video"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_qygl"
+                        android:gravity="center"
+                        android:text="我的主页"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#ffededed"></View>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/white"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="25dp"
+                    android:paddingStart="25dp"
+                    android:text="@string/user_function"
+                    android:textColor="#383838"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:id="@+id/wallet"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_qb"
+                        android:gravity="center"
+                        android:text="@string/pay_syb"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+
+
+                    <TextView
+                        android:id="@+id/my_business"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_jf"
+                        android:gravity="center"
+                        android:text="@string/integral"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+
+
+                    <TextView
+                        android:id="@+id/insurance"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_syb"
+                        android:gravity="center"
+                        android:text="@string/sub_security_plan"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/recommend_user"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_tjyh"
+                        android:gravity="center"
+                        android:text="@string/user_suggested_users"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#ffededed"></View>
 
 
                 <TextView
-                    android:id="@+id/transmit"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/white"
                     android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_zzwz"
-                    android:gravity="center"
-                    android:text="@string/article_reprinted_articles"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="25dp"
+                    android:text="@string/user_my_operation"
                     android:textColor="#383838"
-                    android:textSize="14sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                <!--android:drawableTop="@mipmap/ic_video"-->
-                <TextView
-                    android:id="@+id/video"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:drawableTop="@mipmap/wode_qygl"
-                    android:text="我的主页"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:id="@+id/my_issue"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_wdfb"
+                        android:gravity="center"
+                        android:text="@string/center_my_publishs"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/my_share"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_wdfx"
+                        android:gravity="center"
+                        android:text="@string/share_my_sharing"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/generalize"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:drawablePadding="10dp"-->
+                    <!--android:drawableTop="@mipmap/ic_generalize"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="推广服务"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:textSize="14sp" />-->
+                    <TextView
+                        android:id="@+id/my_inspect"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_wdkc"
+                        android:gravity="center"
+                        android:text="@string/user_my_inspect"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:textColor="#383838"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#ffededed"></View>
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/white"
                     android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
+                    android:gravity="center_vertical"
+                    android:paddingLeft="25dp"
+                    android:text="@string/enterprise_service"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+
+                    <TextView
+                        android:id="@+id/aeo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_rzqy"
+                        android:gravity="center"
+                        android:text="@string/enterprise_aeo"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <!--<View-->
+                    <!--android:layout_width="2dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="#F5F5F9"></View>-->
+                    <TextView
+                        android:id="@+id/management"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_qygl"
+                        android:gravity="center"
+                        android:text="@string/enterprise_manager"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+
+                    <TextView
+                        android:id="@+id/ensure_pool"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/pool"
+                        android:gravity="center"
+                        android:text="@string/safeguard_pool"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+
+                    <TextView
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#ffededed"></View>
             </LinearLayout>
 
-            <View
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/menu_recy"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ffededed"></View>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:background="@color/white"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="25dp"
-                android:paddingStart="25dp"
-                android:text="@string/user_function"
-                android:textColor="#383838"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-
-                <TextView
-                    android:id="@+id/wallet"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_qb"
-                    android:gravity="center"
-                    android:text="@string/pay_syb"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
+                android:layout_marginTop="18dp"
+                android:visibility="gone"></android.support.v7.widget.RecyclerView>
 
 
-                <TextView
-                    android:id="@+id/my_business"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_jf"
-                    android:gravity="center"
-                    android:text="@string/integral"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
-
-
-                <TextView
-                    android:id="@+id/insurance"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_syb"
-                    android:gravity="center"
-                    android:text="@string/sub_security_plan"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/recommend_user"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_tjyh"
-                    android:gravity="center"
-                    android:text="@string/user_suggested_users"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ffededed"></View>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:background="@color/white"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="25dp"
-                android:text="@string/user_my_operation"
-                android:textColor="#383838"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-
-                <TextView
-                    android:id="@+id/my_issue"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_wdfb"
-                    android:gravity="center"
-                    android:text="@string/center_my_publishs"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/my_share"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_wdfx"
-                    android:gravity="center"
-                    android:text="@string/share_my_sharing"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
-
-
-                <!--<TextView-->
-                <!--android:id="@+id/generalize"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_weight="1"-->
-                <!--android:drawablePadding="10dp"-->
-                <!--android:drawableTop="@mipmap/ic_generalize"-->
-                <!--android:gravity="center"-->
-                <!--android:text="推广服务"-->
-                <!--android:textColor="@color/black"-->
-                <!--android:textSize="14sp" />-->
-                <TextView
-                    android:id="@+id/my_inspect"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_wdkc"
-                    android:gravity="center"
-                    android:text="@string/user_my_inspect"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:textColor="#383838"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ffededed"></View>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:background="@color/white"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="25dp"
-                android:text="@string/enterprise_service"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-
-
-                <TextView
-                    android:id="@+id/aeo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_rzqy"
-                    android:gravity="center"
-                    android:text="@string/enterprise_aeo"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-                <!--<View-->
-                <!--android:layout_width="2dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="#F5F5F9"></View>-->
-                <TextView
-                    android:id="@+id/management"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/wode_qygl"
-                    android:gravity="center"
-                    android:text="@string/enterprise_manager"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
-
-
-                <TextView
-                    android:id="@+id/ensure_pool"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/pool"
-                    android:gravity="center"
-                    android:text="@string/safeguard_pool"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-
-                <TextView
-
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-                <TextView
-
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ffededed"></View>
 
             <TextView
                 android:id="@+id/exit"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:layout_marginBottom="5dp"
                 android:background="@color/white"
                 android:gravity="center"

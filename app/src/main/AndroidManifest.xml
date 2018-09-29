@@ -73,7 +73,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <!-- targetSdkVersion >= 26 时需要配置此权限，否则无法进行安装app的动作 -->
     <application
         android:name=".APP"

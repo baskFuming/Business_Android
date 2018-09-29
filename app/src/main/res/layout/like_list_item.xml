@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="30dp">
+    android:layout_marginTop="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -34,7 +34,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="打开个角度看哈哈肯定看哈哈肯定好卡好卡啊的机会卡卡的哈客户端看"
                 android:textColor="#7B7B7B"
                 android:textSize="16sp" />
 
@@ -45,13 +44,15 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/username"
                 android:textColor="#C2C2C2"
+                android:ellipsize="end"
+                android:lines="1"
                 android:textSize="12sp" />
         </LinearLayout>
 
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:src="@mipmap/post2_thumb3" />
     </RelativeLayout>
@@ -59,6 +60,12 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="10dp"
         android:visibility="visible" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#eff0f7"/>
 </LinearLayout>

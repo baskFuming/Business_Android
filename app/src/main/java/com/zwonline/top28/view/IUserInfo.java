@@ -1,5 +1,6 @@
 package com.zwonline.top28.view;
 
+import com.zwonline.top28.bean.MyPageBean;
 import com.zwonline.top28.bean.NoticeNotReadCountBean;
 import com.zwonline.top28.bean.UserInfoBean;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public interface IUserInfo {
     /**
      * 个人信息
+     *
      * @param userInfoBean
      */
     void showUserInfo(UserInfoBean userInfoBean);
@@ -24,7 +26,15 @@ public interface IUserInfo {
 
     /**
      * 查询公告未读数量
+     *
      * @param noticeNotReadCountBean
      */
     void showNoticeNoRead(NoticeNotReadCountBean noticeNotReadCountBean);
+
+    /**
+     * 个人中心菜单
+     *
+     * @param menuList
+     */
+    void showPersonCenterMenu(List<MyPageBean.DataBean> menuList);
 }

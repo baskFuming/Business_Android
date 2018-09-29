@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
@@ -131,6 +133,7 @@ public class MySettingActivity extends BaseActivity {
                 editor.remove("nickname");
                 editor.clear();
                 editor.commit();
+                NIMClient.getService(AuthService.class).logout();//退出网易云信
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;

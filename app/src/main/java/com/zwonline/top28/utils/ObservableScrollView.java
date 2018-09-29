@@ -1,10 +1,11 @@
 package com.zwonline.top28.utils;
 
 import android.content.Context;
+import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
-public class ObservableScrollView extends ScrollView {
+public class ObservableScrollView extends NestedScrollView {
   
     public interface ScrollViewListener {  
   

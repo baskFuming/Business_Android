@@ -37,6 +37,7 @@ public class AdvertisingActivity extends BaseActivity {
     private ProgressBar advertisingProgressBar;
     private WebView advertisingWeb;
     private String url;
+
     @Override
     protected void init() {
         initView();
@@ -78,7 +79,7 @@ public class AdvertisingActivity extends BaseActivity {
                 super.onReceivedTitle(view, title);
 //                tvAdvertising.setText(title);
                 if (advertisingWeb.canGoBack()) {
-                    backXx.setVisibility(View.VISIBLE);
+                    backXx.setVisibility(View.GONE);
                 } else {
                     backXx.setVisibility(View.GONE);
 
@@ -161,11 +162,12 @@ public class AdvertisingActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
-                if (advertisingWeb.canGoBack()) {
-                    advertisingWeb.goBack();// 返回前一个页面
-                } else {
-                    finish();
-                }
+//                if (advertisingWeb.canGoBack()) {
+//                    advertisingWeb.goBack();// 返回前一个页面
+//                } else {
+//                    finish();
+//                }
+                finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
 
