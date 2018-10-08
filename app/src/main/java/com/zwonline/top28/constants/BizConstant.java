@@ -55,6 +55,7 @@ public class BizConstant {
      */
     public static final String CHANNEL_TW = "com.zwonline.top28.zhtw";
     public static final String CHANNEL_ZH = "com.zwonline.top28";
+    public static final String PACKGE = "com.zwonline.top28.activity.";
     public static final String YINGYONGBAO = "com.tencent.android.qqdownloader";
     public static final String XIAOMI = "com.xiaomi.market";
     public static final String OPPO = "com.oppo.market";

@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.zwonline.top28.R;
 import com.zwonline.top28.bean.MyPageBean;
+import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,7 @@ import java.util.List;
 public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<MyPageBean.DataBean> list;
     private Context context;
-
+    private SharedPreferencesUtils sp;
     public MyOneMunuAdapter(List<MyPageBean.DataBean> list, Context context) {
         this.list = list;
         this.context = context;
@@ -40,6 +43,8 @@ public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        sp=SharedPreferencesUtils.getUtil();
+        final String uid= (String) sp.getKey(context,"uid","" );
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         myViewHolder.type_section.setText(list.get(position).section);
         final List<MyPageBean.DataBean.FunctionsBean> twoList = new ArrayList<>();
@@ -49,24 +54,25 @@ public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         MyTwoMunuAdapter myTwoMunuAdapter = new MyTwoMunuAdapter(twoList, context);
         myViewHolder.fuction_gridview.setAdapter(myTwoMunuAdapter);
-//        myViewHolder.fuction_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int positions, long id) {
-//                String activityName=twoList.get(positions).link;
-//
-//                Class clazz= null;
-//                try {
-//                    clazz = Class.forName(activityName);
-//                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                Intent intent=new Intent(context,clazz);
-//
-//                context.startActivity(intent);
-//
-//            }
-//        });
+        myViewHolder.fuction_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int positions, long id) {
+                String activityName=twoList.get(positions).link;
+                Class clazz= null;
+                try {
+                    clazz = Class.forName(BizConstant.PACKGE+activityName);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                Intent intent=new Intent(context,clazz);
+                intent.putExtra("uid",uid);
+                intent.putExtra("jumPath", BizConstant.RECOMMENTUSER);
+                intent.putExtra("project", BizConstant.ALIPAY_METHOD);
+                context.startActivity(intent);
+
+            }
+        });
         myTwoMunuAdapter.notifyDataSetChanged();
     }
 

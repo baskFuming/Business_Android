@@ -99,7 +99,7 @@ public class YangShiActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //设置缓存
+//        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //设置缓存
         settings.setDomStorageEnabled(true);//设置适应Html5的一些方法
         //请求头
         Map<String, String> headMap = new HashMap<>();
@@ -208,7 +208,12 @@ public class YangShiActivity extends BaseActivity {
                     showNormalDialogs(invitationCode);
                     return true;
                 }
-
+                if (url.contains("open28app")) {
+                    Uri uri = Uri.parse(url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                    return true;
+                }
                 //判断用户单击的是那个超连接
                 String tag = "tel";
                 if (url.contains(tag)) {
@@ -299,7 +304,7 @@ public class YangShiActivity extends BaseActivity {
                                                 case R.id.copyurl:
                                                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                                                     // 将文本内容放到系统剪贴板里。
-                                                    cm.setText(finalShare_url + "#"+finalTitle);
+                                                    cm.setText(finalShare_url + "#" + finalTitle);
                                                     ToastUtils.showToast(getApplicationContext(), "复制成功");
                                                     break;
                                                 default:
@@ -398,6 +403,15 @@ public class YangShiActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+//        if (yangShiWeb != null) {
+//            yangShiWeb.stopLoading();
+//            yangShiWeb.clearHistory();
+//            yangShiWeb.clearCache(true);
+//            yangShiWeb.pauseTimers();
+//            yangShiWeb.removeAllViews();
+//            yangShiWeb.destroy();
+//            yangShiWeb = null;
+//        }
         yangShiWeb.stopLoading();
         yangShiWeb.removeAllViews();
         yangShiWeb.destroy();

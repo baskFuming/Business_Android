@@ -85,7 +85,7 @@ import butterknife.Unbinder;
 import static com.zwonline.top28.adapter.InfoFragmentPageAdapter.formatBadgeNumber;
 
 /**
- * 1.类的用途
+ * 1.消息界面
  * 2.@authorDell
  * 3.@date2017/12/6 14:27
  */

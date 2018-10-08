@@ -761,4 +761,14 @@ public class AeosActivity extends BaseActivity<IAeoActivity, AeoPresenter> imple
         editText.setFocusableInTouchMode(flag);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (presenter != null) {
+            presenter = null;
+        }
+        if (sp != null) {
+            sp = null;
+        }
+    }
 }

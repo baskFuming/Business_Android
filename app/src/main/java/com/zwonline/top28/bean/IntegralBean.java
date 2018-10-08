@@ -6,7 +6,7 @@ import java.util.List;
  * Created by sdh on 2018/3/10.
  */
 
-public class IntegralBean  {
+public class IntegralBean {
 
     /**
      * status : 1

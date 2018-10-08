@@ -11,8 +11,8 @@ android {
     defaultConfig {
         applicationId "com.zwonline.top28"
         minSdkVersion 16
-        versionCode 22
-        versionName "3.3.1"
+        versionCode 23
+        versionName "3.3.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             targetSdkVersion 26
@@ -26,7 +26,6 @@ android {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             minifyEnabled false
-
 //            zipAlignEnabled true
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

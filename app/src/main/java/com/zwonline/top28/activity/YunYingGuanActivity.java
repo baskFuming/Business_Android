@@ -122,12 +122,12 @@ public class YunYingGuanActivity extends BaseActivity {
             public boolean shouldOverrideUrlLoading(final WebView view, String url) {
 //                ToastUtil.showToast(getApplicationContext(),url);
                 //跳转到个人主页http://top28app//backToLastNativePage
-//                if (url.contains("http://top28app/computePower/")) {
-//                    Intent intent1 = new Intent(YunYingGuanActivity.this, IntegralActivity.class);
-//                    startActivity(intent1);
-//                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-//                    return true;
-//                }
+                if (url.contains("http://top28app/computePower/")) {
+                    Intent intent1 = new Intent(YunYingGuanActivity.this, IntegralActivity.class);
+                    startActivity(intent1);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    return true;
+                }
                 //点击返回原生界面
                 if (url.contains("http://top28app//backToLastNativePage")) {
                     finish();

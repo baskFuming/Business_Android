@@ -145,7 +145,7 @@ public class HashrateActivity extends BaseActivity {
 
                 //联系客服
                 if (url.contains("http://top28app//pushToIM/")) {
-                    String urls = url;
+                    String urls=url;
 //                    service.setVisibility(View.VISIBLE);
                     String path = "http://top28app//pushToIM/";
                     String uids = url.substring(path.length(), url.length());
