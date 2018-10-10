@@ -18,36 +18,45 @@ package com.xys.libzxing.zxing.utils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
 import com.google.zxing.Result;
-import com.xys.libzxing.R;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.xys.libzxing.zxing.camera.CameraManager;
+import com.xys.libzxing.zxing.common.Constant;
 import com.xys.libzxing.zxing.decode.DecodeThread;
+import com.xys.libzxing.zxing.view.ViewfinderResultPointCallback;
 
 /**
  * This class handles all the messaging which comprises the state machine for
- * capture.
+ * capture. 该类用于处理有关拍摄状态的所有信息
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-public class CaptureActivityHandler extends Handler {
+public final class CaptureActivityHandler extends Handler {
+
+    private static final String TAG = CaptureActivityHandler.class
+            .getSimpleName();
 
     private final CaptureActivity activity;
     private final DecodeThread decodeThread;
-    private final CameraManager cameraManager;
     private State state;
+    private final CameraManager cameraManager;
 
-    public CaptureActivityHandler(CaptureActivity activity, CameraManager cameraManager, int decodeMode) {
+    private enum State {
+        PREVIEW, SUCCESS, DONE
+    }
+
+    public CaptureActivityHandler(CaptureActivity activity, CameraManager cameraManager) {
         this.activity = activity;
-        decodeThread = new DecodeThread(activity, decodeMode);
+        decodeThread = new DecodeThread(activity,  new ViewfinderResultPointCallback(
+                activity.getViewfinderView()));
         decodeThread.start();
         state = State.SUCCESS;
 
         // Start ourselves capturing previews and decoding.
+        // 开始拍摄预览和解码
         this.cameraManager = cameraManager;
         cameraManager.startPreview();
         restartPreviewAndDecode();
@@ -55,32 +64,48 @@ public class CaptureActivityHandler extends Handler {
 
     @Override
     public void handleMessage(Message message) {
-        if (message.what == R.id.restart_preview) {
-            restartPreviewAndDecode();
+        switch (message.what) {
+            case Constant.RESTART_PREVIEW:
+                // 重新预览
 
-        } else if (message.what == R.id.decode_succeeded) {
-            state = State.SUCCESS;
-            Bundle bundle = message.getData();
+                restartPreviewAndDecode();
+                break;
+            case Constant.DECODE_SUCCEEDED:
+                // 解码成功
 
-            activity.handleDecode((Result) message.obj, bundle);
+                state = State.SUCCESS;
+                activity.handleDecode((Result) message.obj);
 
-        } else if (message.what == R.id.decode_failed) {// We're decoding as fast as possible, so when one
-            // decode fails,
-            // start another.
-            state = State.PREVIEW;
-            cameraManager.requestPreviewFrame(decodeThread.getHandler(), R.id.decode);
+                break;
+            case Constant.DECODE_FAILED:
 
-        } else if (message.what == R.id.return_scan_result) {
-            activity.setResult(Activity.RESULT_OK, (Intent) message.obj);
-            activity.finish();
+                // 尽可能快的解码，以便可以在解码失败时，开始另一次解码
 
+                state = State.PREVIEW;
+                cameraManager.requestPreviewFrame(decodeThread.getHandler(),
+                        Constant.DECODE);
+                break;
+            case Constant.RETURN_SCAN_RESULT:
+
+                activity.setResult(Activity.RESULT_OK, (Intent) message.obj);
+                activity.finish();
+                break;
+            case Constant.FLASH_OPEN:
+                activity.switchFlashImg(Constant.FLASH_OPEN);
+                break;
+            case Constant.FLASH_CLOSE:
+                activity.switchFlashImg(Constant.FLASH_CLOSE);
+                break;
         }
     }
 
+    /**
+     * 完全退出
+     */
     public void quitSynchronously() {
         state = State.DONE;
         cameraManager.stopPreview();
-        Message quit = Message.obtain(decodeThread.getHandler(), R.id.quit);
+        Message quit = Message.obtain(decodeThread.getHandler(), Constant.QUIT);
         quit.sendToTarget();
         try {
             // Wait at most half a second; should be enough time, and onPause()
@@ -91,19 +116,18 @@ public class CaptureActivityHandler extends Handler {
         }
 
         // Be absolutely sure we don't send any queued up messages
-        removeMessages(R.id.decode_succeeded);
-        removeMessages(R.id.decode_failed);
+        //确保不会发送任何队列消息
+        removeMessages(Constant.DECODE_SUCCEEDED);
+        removeMessages(Constant.DECODE_FAILED);
     }
 
-    private void restartPreviewAndDecode() {
+    public void restartPreviewAndDecode() {
         if (state == State.SUCCESS) {
             state = State.PREVIEW;
-            cameraManager.requestPreviewFrame(decodeThread.getHandler(), R.id.decode);
+            cameraManager.requestPreviewFrame(decodeThread.getHandler(),
+                    Constant.DECODE);
+            activity.drawViewfinder();
         }
-    }
-
-    private enum State {
-        PREVIEW, SUCCESS, DONE
     }
 
 }

@@ -13,6 +13,8 @@ import com.netease.nimlib.sdk.msg.model.SystemMessage;
 import com.zwonline.top28.R;
 import com.zwonline.top28.nim.main.helper.MessageHelper;
 
+import java.util.List;
+
 /**
  * 同意拒绝
  * Created by huangjun on 2015/3/18.

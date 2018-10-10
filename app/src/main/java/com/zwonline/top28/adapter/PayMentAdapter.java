@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * 描述：收付款记录适配器
+ *
  * @author YSG
  * @date 2017/12/27
  */
@@ -34,8 +35,8 @@ public class PayMentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.wallet_item,parent,false);
-        final MyViewHolder holder=new MyViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.wallet_item, parent, false);
+        final MyViewHolder holder = new MyViewHolder(view);
 //        view.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -48,40 +49,43 @@ public class PayMentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MyViewHolder myViewHolder= (MyViewHolder) holder;
-        RequestOptions options=new RequestOptions().placeholder(R.mipmap.ic_launcher)
+        MyViewHolder myViewHolder = (MyViewHolder) holder;
+        RequestOptions options = new RequestOptions().placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher);
         Glide.with(context).load(list.get(position).create_member.avatar)
                 .apply(options).into(myViewHolder.avatar);
-        if (list.get(position).is_confirm.equals("1")){
-            myViewHolder.confirm.setText(context.getString(R.string.pay_completed , list.get(position).create_member.username));
-        }else {
+        if (list.get(position).is_confirm.equals("1")) {
+            myViewHolder.confirm.setTextColor(Color.parseColor("#888888"));
+            myViewHolder.confirm.setText(context.getString(R.string.pay_completed, list.get(position).create_member.username));
+        } else {
             myViewHolder.confirm.setText(R.string.pay_paymenting);
             myViewHolder.confirm.setTextColor(Color.RED);
         }
-        if (list.get(position).is_paid.equals("1")){
+        if (list.get(position).is_paid.equals("1")) {
             myViewHolder.payment.setText(R.string.pay_payment);
-        }else {
+        } else {
             myViewHolder.payment.setText(R.string.pay_collection);
         }
         myViewHolder.ctime.setText(list.get(position).ctime);
-        myViewHolder.money.setText(list.get(position).amount+"");
+        myViewHolder.money.setText(list.get(position).amount + "");
     }
 
     @Override
     public int getItemCount() {
         return list != null ? list.size() : 0;
     }
-    static class MyViewHolder extends RecyclerView.ViewHolder{
+
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView avatar;
-        TextView payment,confirm,money,ctime;
+        TextView payment, confirm, money, ctime;
+
         public MyViewHolder(View itemView) {
             super(itemView);
-            avatar=(ImageView)itemView.findViewById(R.id.userhead);
-            payment=(TextView)itemView.findViewById(R.id.payment);
-            confirm=(TextView)itemView.findViewById(R.id.confirm);
-            money=(TextView)itemView.findViewById(R.id.money);
-            ctime=(TextView)itemView.findViewById(R.id.ctime);
+            avatar = (ImageView) itemView.findViewById(R.id.userhead);
+            payment = (TextView) itemView.findViewById(R.id.payment);
+            confirm = (TextView) itemView.findViewById(R.id.confirm);
+            money = (TextView) itemView.findViewById(R.id.money);
+            ctime = (TextView) itemView.findViewById(R.id.ctime);
         }
     }
 

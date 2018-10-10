@@ -64,7 +64,7 @@ public class StartupActivity extends AppCompatActivity  {
     private RelativeLayout main;
     private String mPermissions[] = {Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_FINE_LOCATION};
+            Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

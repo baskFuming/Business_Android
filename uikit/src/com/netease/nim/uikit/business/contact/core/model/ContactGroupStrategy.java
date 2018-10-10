@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 通讯录分组策略
+ * 通讯录分组策略ABC排列
  * Created by huangjun on 2015/2/10.
  */
 
@@ -42,8 +42,8 @@ public class ContactGroupStrategy implements Comparator<String> {
     protected final int addABC(int order) {
         String id = ContactGroupStrategy.GROUP_SHARP;
 
-        add(id, order++, id);
 
+        add(id, 28, id);
         for (char i = 0; i < 26; i++) {
             id = Character.toString((char) ('A' + i));
 

@@ -10,6 +10,9 @@ import com.zwonline.top28.nim.main.viewholder.SystemMessageViewHolder;
 
 import java.util.List;
 
+/**
+ * 系统消息的适配器
+ */
 public class SystemMessageAdapter extends TAdapter {
 
     private SystemMessageViewHolder.SystemMessageListener systemMessageListener;

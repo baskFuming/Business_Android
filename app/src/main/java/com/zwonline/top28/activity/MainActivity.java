@@ -35,6 +35,7 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.CreateTeamResult;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.umeng.socialize.UMShareAPI;
+import com.xys.libzxing.zxing.common.Constant;
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseMainActivity;
 import com.zwonline.top28.bean.HongbaoPermissionBean;
@@ -422,7 +423,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
      */
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mIsExit) {
                 MainActivity.this.finish();
 
@@ -511,16 +512,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         try {
             if (resultCode == Activity.RESULT_OK) {
 
-            }
-            if (resultCode == Activity.RESULT_OK) {
+                String result = data.getStringExtra(Constant.CODED_CONTENT);
 
-                String result = data.getExtras().getString("result");
-                if (businessFragment != null) {
-                    businessFragment.onActivityResult(requestCode & 0xffff, requestCode, data);
-                }
-                if (myFragment != null) {
-                    myFragment.onActivityResult(requestCode & 0xffff, requestCode, data);
-                }
                 if (StringUtil.isNotEmpty(result)) {
                     JSONObject jobj = new JSONObject(result.toString());
                     String qrType = jobj.getString("qr_Type");
@@ -534,6 +527,13 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                         ToastUtils.showToast(getApplicationContext(), result);
                     }
                 }
+                if (businessFragment != null) {
+                    businessFragment.onActivityResult(requestCode & 0xffff, requestCode, data);
+                }
+                if (myFragment != null) {
+                    myFragment.onActivityResult(requestCode & 0xffff, requestCode, data);
+                }
+
 
                 //创建群回传
                 if (requestCode == REQUEST_CODE_ADVANCED) {

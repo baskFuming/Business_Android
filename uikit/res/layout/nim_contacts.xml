@@ -48,6 +48,7 @@
         <com.netease.nim.uikit.common.ui.liv.LetterIndexView
             android:id="@+id/liv_index"
             android:layout_width="15dip"
+            android:layout_marginRight="@dimen/dp_4"
             android:layout_height="fill_parent"
             android:layout_alignParentRight="true"
             android:background="#00000000"/>

@@ -1,104 +1,123 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:orientation="vertical">
-    <RelativeLayout
-        android:id="@+id/relaytive"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="#ffffff">
+    >
+    <!-- 整体透明画布 -->
 
-        <RelativeLayout
-            android:id="@+id/back"
-            android:layout_width="30dp"
-            android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="11dp"
-                android:layout_height="21dp"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/back" />
-        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/collect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="扫码"
-            android:textColor="#333333"
-            android:textSize="18sp" />
-    </RelativeLayout>
     <SurfaceView
-        android:id="@+id/capture_preview"
+        android:id="@+id/preview_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/relaytive"
-        />
-
-    <RelativeLayout
-        android:id="@+id/capture_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/relaytive"
-       >
-
-        <ImageView
-            android:id="@+id/capture_mask_top"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/shadow" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/capture_crop_view"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_below="@id/capture_mask_top"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/zxing_code_bg">
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="top"
+            android:background="#99000000">
 
-            <ImageView
-                android:id="@+id/capture_scan_line"
-                android:layout_width="match_parent"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/backIv"
+                android:layout_width="42dp"
+                android:layout_height="match_parent"
+                android:padding="6dp"
+                app:srcCompat="@drawable/ic_back"
+                tools:ignore="VectorDrawableCompat" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/zxing_line" />
+                android:layout_centerInParent="true"
+                android:text="扫一扫"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/capture_mask_bottom"
+
+        <!-- 扫描取景框 -->
+        <com.xys.libzxing.zxing.view.ViewfinderView
+            android:id="@+id/viewfinder_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@id/capture_crop_view"
-            android:background="@drawable/shadow" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-        <ImageView
-            android:id="@+id/capture_mask_left"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_above="@id/capture_mask_bottom"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/capture_mask_top"
-            android:layout_toLeftOf="@id/capture_crop_view"
-            android:background="@drawable/shadow" />
 
-        <ImageView
-            android:id="@+id/capture_mask_right"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_above="@id/capture_mask_bottom"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/capture_mask_top"
-            android:layout_toRightOf="@id/capture_crop_view"
-            android:background="@drawable/shadow" />
-    </RelativeLayout>
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/bottomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_gravity="bottom"
+            android:background="#99000000"
+            android:orientation="horizontal">
 
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/flashLightLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/flashLightIv"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:srcCompat="@drawable/ic_close"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:id="@+id/flashLightTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="打开闪光灯"
+                    android:textColor="#ffffff" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/albumLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/albumIv"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:tint="#ffffffff"
+                    app:srcCompat="@drawable/ic_photo"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="相册"
+
+                    android:textColor="#ffffff" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </android.support.v7.widget.LinearLayoutCompat>
 </RelativeLayout>

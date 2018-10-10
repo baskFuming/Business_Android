@@ -16,18 +16,17 @@
 
 package com.xys.libzxing.zxing.decode;
 
+
 import android.os.Handler;
 import android.os.Looper;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
+import com.google.zxing.ResultPointCallback;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.Map;
+import java.util.Hashtable;
+import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -35,49 +34,36 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-public class DecodeThread extends Thread {
-
-    public static final String BARCODE_BITMAP = "barcode_bitmap";
-
-    public static final int BARCODE_MODE = 0X100;
-    public static final int QRCODE_MODE = 0X200;
-    public static final int ALL_MODE = 0X300;
+public final class DecodeThread extends Thread {
 
     private final CaptureActivity activity;
-    private final Map<DecodeHintType, Object> hints;
-    private final CountDownLatch handlerInitLatch;
+    private final Hashtable<DecodeHintType, Object> hints;
+    private final Vector<BarcodeFormat> decodeFormats;
     private Handler handler;
+    private final CountDownLatch handlerInitLatch;
 
-    public DecodeThread(CaptureActivity activity, int decodeMode) {
+    public DecodeThread(CaptureActivity activity, ResultPointCallback resultPointCallback) {
 
         this.activity = activity;
         handlerInitLatch = new CountDownLatch(1);
 
-        hints = new EnumMap<DecodeHintType, Object>(DecodeHintType.class);
+        hints = new Hashtable<>();
 
-        Collection<BarcodeFormat> decodeFormats = new ArrayList<BarcodeFormat>();
-        decodeFormats.addAll(EnumSet.of(BarcodeFormat.AZTEC));
-        decodeFormats.addAll(EnumSet.of(BarcodeFormat.PDF_417));
 
-        switch (decodeMode) {
-            case BARCODE_MODE:
-                decodeFormats.addAll(DecodeFormatManager.getBarCodeFormats());
-                break;
+        decodeFormats = new Vector<BarcodeFormat>();
 
-            case QRCODE_MODE:
-                decodeFormats.addAll(DecodeFormatManager.getQrCodeFormats());
-                break;
 
-            case ALL_MODE:
-                decodeFormats.addAll(DecodeFormatManager.getBarCodeFormats());
-                decodeFormats.addAll(DecodeFormatManager.getQrCodeFormats());
-                break;
-
-            default:
-                break;
+        /*是否解析有条形码（一维码）*/
+        if (activity.config.isDecodeBarCode()) {
+            decodeFormats.addAll(DecodeFormatManager.ONE_D_FORMATS);
         }
 
+        decodeFormats.addAll(DecodeFormatManager.QR_CODE_FORMATS);
+        decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
         hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
+        hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
+        hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
+
     }
 
     public Handler getHandler() {

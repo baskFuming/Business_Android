@@ -56,7 +56,6 @@ public class RecentContactAdapter extends BaseMultiItemQuickAdapter<RecentContac
                 Team team = NimUIKit.getTeamProvider().getTeamById(item.getContactId());
                 if (team != null) {
                     String extServer = team.getExtServer();
-                    Log.d("extServer===", extServer + "=======" + team.getId());
                     if (extServer == null || "".equals(extServer)) {
                         group_icon.setImageResource(R.drawable.qun_icon);
                     } else {

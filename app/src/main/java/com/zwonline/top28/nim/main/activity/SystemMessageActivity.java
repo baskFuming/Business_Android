@@ -170,6 +170,12 @@ public class SystemMessageActivity extends UI implements TAdapterDelegate,
 
     private void initAdapter() {
         adapter = new SystemMessageAdapter(this, items, this, this);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                ToastUtils.showToast(getApplicationContext(), "点击");
+//            }
+//        });
     }
 
     private void initListView() {
@@ -184,12 +190,8 @@ public class SystemMessageActivity extends UI implements TAdapterDelegate,
 
         // listener
         listView.setOnRefreshListener(this);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ToastUtils.showToast(getApplicationContext(), "点击");
-            }
-        });
+
+
     }
 
 
@@ -369,6 +371,7 @@ public class SystemMessageActivity extends UI implements TAdapterDelegate,
      */
     @Override
     public void onClickPressed(SystemMessage message) {
+//        ToastUtils.showToast(getApplicationContext(),"点击");
     }
 
     private void onSystemNotificationDeal(final SystemMessage message, final boolean pass) {

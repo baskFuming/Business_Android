@@ -14,65 +14,76 @@
  * limitations under the License.
  */
 package com.xys.libzxing.zxing.activity;
-
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.Result;
 import com.xys.libzxing.R;
+import com.xys.libzxing.zxing.android.FinishListener;
+import com.xys.libzxing.zxing.bean.ZxingConfig;
 import com.xys.libzxing.zxing.camera.CameraManager;
-import com.xys.libzxing.zxing.decode.DecodeThread;
+import com.xys.libzxing.zxing.common.Constant;
+import com.xys.libzxing.zxing.decode.DecodeImgCallback;
+import com.xys.libzxing.zxing.decode.DecodeImgThread;
+import com.xys.libzxing.zxing.decode.ImageUtil;
 import com.xys.libzxing.zxing.utils.BeepManager;
 import com.xys.libzxing.zxing.utils.CaptureActivityHandler;
 import com.xys.libzxing.zxing.utils.InactivityTimer;
+import com.xys.libzxing.zxing.view.ViewfinderView;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
+
 
 /**
- * This activity opens the camera and does the actual scanning on a background
- * thread. It draws a viewfinder to help the user place the barcode correctly,
- * shows feedback as the image processing is happening, and then overlays the
- * results when a scan is successful.
- *
- * @author dswitkin@google.com (Daniel Switkin)
- * @author Sean Owen
+ * @author: yzq
+ * @date: 2017/10/26 15:22
+ * @declare :扫一扫
  */
-public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.Callback {
+
+public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.Callback, View.OnClickListener {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
-
-    private CameraManager cameraManager;
-    private CaptureActivityHandler handler;
+    public ZxingConfig config;
+    private SurfaceView previewView;
+    private ViewfinderView viewfinderView;
+    private AppCompatImageView flashLightIv;
+    private TextView flashLightTv;
+    private AppCompatImageView backIv;
+    private LinearLayoutCompat flashLightLayout;
+    private LinearLayoutCompat albumLayout;
+    private LinearLayoutCompat bottomLayout;
+    private boolean hasSurface;
     private InactivityTimer inactivityTimer;
     private BeepManager beepManager;
+    private CameraManager cameraManager;
+    private CaptureActivityHandler handler;
+    private SurfaceHolder surfaceHolder;
 
-    private SurfaceView scanPreview = null;
-    private RelativeLayout scanContainer;
-    private RelativeLayout scanCropView;
-    private ImageView scanLine;
 
-    private Rect mCropRect = null;
-    private boolean isHasSurface = false;
+    public ViewfinderView getViewfinderView() {
+        return viewfinderView;
+    }
 
     public Handler getHandler() {
         return handler;
@@ -82,64 +93,204 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
         return cameraManager;
     }
 
-    @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public void drawViewfinder() {
+        viewfinderView.drawViewfinder();
+    }
 
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // 保持Activity处于唤醒状态
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(Color.BLACK);
+        }
+
+        /*先获取配置信息*/
+        try {
+            config = (ZxingConfig) getIntent().getExtras().get(Constant.INTENT_ZXING_CONFIG);
+        } catch (Exception e) {
+
+            Log.i("config", e.toString());
+        }
+
+        if (config == null) {
+            config = new ZxingConfig();
+        }
+
+
         setContentView(R.layout.activity_capture);
-        RelativeLayout back= (RelativeLayout) findViewById(R.id.back);
-        scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
-        scanContainer = (RelativeLayout) findViewById(R.id.capture_container);
-        scanCropView = (RelativeLayout) findViewById(R.id.capture_crop_view);
-        scanLine = (ImageView) findViewById(R.id.capture_scan_line);
+
+
+        initView();
+
+        hasSurface = false;
 
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
+        beepManager.setPlayBeep(config.isPlayBeep());
+        beepManager.setVibrate(config.isShake());
 
-        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation
-                .RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT,
-                0.9f);
-        animation.setDuration(4500);
-        animation.setRepeatCount(-1);
-        animation.setRepeatMode(Animation.RESTART);
-        scanLine.startAnimation(animation);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
     }
+
+
+    private void initView() {
+        previewView = (SurfaceView) findViewById(R.id.preview_view);
+        previewView.setOnClickListener(this);
+
+        viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+        viewfinderView.setZxingConfig(config);
+
+
+        backIv = (AppCompatImageView) findViewById(R.id.backIv);
+        backIv.setOnClickListener(this);
+
+        flashLightIv = (AppCompatImageView) findViewById(R.id.flashLightIv);
+        flashLightTv = (TextView) findViewById(R.id.flashLightTv);
+
+        flashLightLayout = (LinearLayoutCompat) findViewById(R.id.flashLightLayout);
+        flashLightLayout.setOnClickListener(this);
+        albumLayout = (LinearLayoutCompat) findViewById(R.id.albumLayout);
+        albumLayout.setOnClickListener(this);
+        bottomLayout = (LinearLayoutCompat) findViewById(R.id.bottomLayout);
+
+
+        switchVisibility(bottomLayout, config.isShowbottomLayout());
+        switchVisibility(flashLightLayout, config.isShowFlashLight());
+        switchVisibility(albumLayout, config.isShowAlbum());
+
+
+        /*有闪光灯就显示手电筒按钮  否则不显示*/
+        if (isSupportCameraLedFlash(getPackageManager())) {
+            flashLightLayout.setVisibility(View.VISIBLE);
+        } else {
+            flashLightLayout.setVisibility(View.GONE);
+        }
+
+    }
+
+
+    /**
+     * @param pm
+     * @return 是否有闪光灯
+     */
+    public static boolean isSupportCameraLedFlash(PackageManager pm) {
+        if (pm != null) {
+            FeatureInfo[] features = pm.getSystemAvailableFeatures();
+            if (features != null) {
+                for (FeatureInfo f : features) {
+                    if (f != null && PackageManager.FEATURE_CAMERA_FLASH.equals(f.name)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param flashState 切换闪光灯图片
+     */
+    public void switchFlashImg(int flashState) {
+
+        if (flashState == Constant.FLASH_OPEN) {
+            flashLightIv.setImageResource(R.drawable.ic_open);
+            flashLightTv.setText("关闭闪光灯");
+        } else {
+            flashLightIv.setImageResource(R.drawable.ic_close);
+            flashLightTv.setText("打开闪光灯");
+        }
+
+    }
+
+    /**
+     * @param rawResult 返回的扫描结果
+     */
+    public void handleDecode(Result rawResult) {
+
+        inactivityTimer.onActivity();
+
+        beepManager.playBeepSoundAndVibrate();
+
+        Intent intent = getIntent();
+        intent.putExtra(Constant.CODED_CONTENT, rawResult.getText());
+        setResult(RESULT_OK, intent);
+        this.finish();
+
+
+    }
+
+
+    private void switchVisibility(View view, boolean b) {
+        if (b) {
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        // CameraManager must be initialized here, not in onCreate(). This is
-        // necessary because we don't
-        // want to open the camera driver and measure the screen size if we're
-        // going to show the help on
-        // first launch. That led to bugs where the scanning rectangle was the
-        // wrong size and partially
-        // off screen.
-        cameraManager = new CameraManager(getApplication());
+        cameraManager = new CameraManager(getApplication(),config);
 
+        viewfinderView.setCameraManager(cameraManager);
         handler = null;
 
-        if (isHasSurface) {
-            // The activity was paused but not stopped, so the surface still
-            // exists. Therefore
-            // surfaceCreated() won't be called, so init the camera here.
-            initCamera(scanPreview.getHolder());
+        surfaceHolder = previewView.getHolder();
+        if (hasSurface) {
+
+            initCamera(surfaceHolder);
         } else {
-            // Install the callback and wait for surfaceCreated() to init the
-            // camera.
-            scanPreview.getHolder().addCallback(this);
+            // 重置callback，等待surfaceCreated()来初始化camera
+            surfaceHolder.addCallback(this);
         }
 
+        beepManager.updatePrefs();
         inactivityTimer.onResume();
+
+    }
+
+    private void initCamera(SurfaceHolder surfaceHolder) {
+        if (surfaceHolder == null) {
+            throw new IllegalStateException("No SurfaceHolder provided");
+        }
+        if (cameraManager.isOpen()) {
+            return;
+        }
+        try {
+            // 打开Camera硬件设备
+            cameraManager.openDriver(surfaceHolder);
+            // 创建一个handler来打开预览，并抛出一个运行时异常
+            if (handler == null) {
+                handler = new CaptureActivityHandler(this, cameraManager);
+            }
+        } catch (IOException ioe) {
+            Log.w(TAG, ioe);
+            displayFrameworkBugMessageAndExit();
+        } catch (RuntimeException e) {
+            Log.w(TAG, "Unexpected error initializing camera", e);
+            displayFrameworkBugMessageAndExit();
+        }
+    }
+
+    private void displayFrameworkBugMessageAndExit() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("扫一扫");
+        builder.setMessage(getString(R.string.msg_camera_framework_bug));
+        builder.setPositiveButton(R.string.button_ok, new FinishListener(this));
+        builder.setOnCancelListener(new FinishListener(this));
+        builder.show();
     }
 
     @Override
@@ -151,8 +302,10 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
         inactivityTimer.onPause();
         beepManager.close();
         cameraManager.closeDriver();
-        if (!isHasSurface) {
-            scanPreview.getHolder().removeCallback(this);
+
+        if (!hasSurface) {
+
+            surfaceHolder.removeCallback(this);
         }
         super.onPause();
     }
@@ -165,164 +318,67 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        if (holder == null) {
-            Log.e(TAG, "*** WARNING *** surfaceCreated() gave us a null surface!");
-        }
-        if (!isHasSurface) {
-            isHasSurface = true;
+        if (!hasSurface) {
+            hasSurface = true;
             initCamera(holder);
         }
     }
 
+
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        isHasSurface = false;
+        hasSurface = false;
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width,
+                               int height) {
 
     }
 
-    /**
-     * A valid barcode has been found, so give an indication of success and show
-     * the results.
-     *
-     * @param rawResult The contents of the barcode.
-     * @param bundle    The extras
-     */
-    public void handleDecode(Result rawResult, Bundle bundle) {
-        inactivityTimer.onActivity();
-        beepManager.playBeepSoundAndVibrate();
+    @Override
+    public void onClick(View view) {
 
-        Intent resultIntent = new Intent();
-        bundle.putInt("width", mCropRect.width());
-        bundle.putInt("height", mCropRect.height());
-        bundle.putString("result", rawResult.getText());
-        resultIntent.putExtras(bundle);
-        this.setResult(RESULT_OK, resultIntent);
-        CaptureActivity.this.finish();
-    }
-
-    private void initCamera(SurfaceHolder surfaceHolder) {
-        if (surfaceHolder == null) {
-            throw new IllegalStateException("No SurfaceHolder provided");
+        int id = view.getId();
+        if (id == R.id.flashLightLayout) {
+            /*切换闪光灯*/
+            cameraManager.switchFlashLight(handler);
+        } else if (id == R.id.albumLayout) {
+            /*打开相册*/
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, Constant.REQUEST_IMAGE);
+        } else if (id == R.id.backIv) {
+            finish();
         }
-        if (cameraManager.isOpen()) {
-            Log.w(TAG, "initCamera() while already open -- late SurfaceView callback?");
-            return;
-        }
-        try {
-            cameraManager.openDriver(surfaceHolder);
-            // Creating the handler starts the preview, which can also throw a
-            // RuntimeException.
-            if (handler == null) {
-                handler = new CaptureActivityHandler(this, cameraManager, DecodeThread.ALL_MODE);
-            }
 
-            initCrop();
-        } catch (IOException ioe) {
-            displayFrameworkBugMessageAndExit();
-        } catch (RuntimeException e) {
-            // Barcode Scanner has seen crashes in the wild of this variety:
-            // java.?lang.?RuntimeException: Fail to connect to camera service
-            displayFrameworkBugMessageAndExit();
-        }
+
     }
 
-    private void displayFrameworkBugMessageAndExit() {
-        requestPower();
-        // camera error
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(getString(R.string.zxing_bar_name));
-//        builder.setMessage("Camera error");
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                finish();
-//            }
-//
-//        });
-//        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//                finish();
-//            }
-//        });
-//        builder.show();
-    }
-    public void requestPower() {
-        //判断是否已经赋予权限
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            //如果应用之前请求过此权限但用户拒绝了请求，此方法将返回 true。
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CAMERA)) {//这里可以写个对话框之类的项向用户解释为什么要申请权限，并在对话框的确认键后续再次申请权限
-            } else {
-                //申请权限，字符串数组内是一个或多个要申请的权限，1是申请权限结果的返回参数，在onRequestPermissionsResult可以得知申请结果
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA,}, 1);
-            }
-        }
-    }
-    public void restartPreviewAfterDelay(long delayMS) {
-        if (handler != null) {
-            handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constant.REQUEST_IMAGE && resultCode == RESULT_OK) {
+            String path = ImageUtil.getImageAbsolutePath(this, data.getData());
+
+            new DecodeImgThread(path, new DecodeImgCallback() {
+                @Override
+                public void onImageDecodeSuccess(Result result) {
+                    handleDecode(result);
+                }
+
+                @Override
+                public void onImageDecodeFailed() {
+                    Toast.makeText(CaptureActivity.this, "抱歉，解析失败,换个图片试试.", Toast.LENGTH_SHORT).show();
+                }
+            }).run();
+
+
         }
     }
 
-    public Rect getCropRect() {
-        return mCropRect;
-    }
 
-    /**
-     * 初始化截取的矩形区域
-     */
-    private void initCrop() {
-        int cameraWidth = cameraManager.getCameraResolution().y;
-        int cameraHeight = cameraManager.getCameraResolution().x;
-
-        /** 获取布局中扫描框的位置信息 */
-        int[] location = new int[2];
-        scanCropView.getLocationInWindow(location);
-
-        int cropLeft = location[0];
-        int cropTop = location[1] - getStatusBarHeight();
-
-        int cropWidth = scanCropView.getWidth();
-        int cropHeight = scanCropView.getHeight();
-
-        /** 获取布局容器的宽高 */
-        int containerWidth = scanContainer.getWidth();
-        int containerHeight = scanContainer.getHeight();
-
-        /** 计算最终截取的矩形的左上角顶点x坐标 */
-        int x = cropLeft * cameraWidth / containerWidth;
-        /** 计算最终截取的矩形的左上角顶点y坐标 */
-        int y = cropTop * cameraHeight / containerHeight;
-
-        /** 计算最终截取的矩形的宽度 */
-        int width = cropWidth * cameraWidth / containerWidth;
-        /** 计算最终截取的矩形的高度 */
-        int height = cropHeight * cameraHeight / containerHeight;
-
-        /** 生成最终的截取的矩形 */
-        mCropRect = new Rect(x, y, width + x, height + y);
-    }
-
-    private int getStatusBarHeight() {
-        try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
-            Object obj = c.newInstance();
-            Field field = c.getField("status_bar_height");
-            int x = Integer.parseInt(field.get(obj).toString());
-            return getResources().getDimensionPixelSize(x);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
 }

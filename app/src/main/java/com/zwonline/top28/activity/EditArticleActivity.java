@@ -62,47 +62,47 @@ import butterknife.OnClick;
  */
 public class EditArticleActivity extends BaseActivity {
     @BindView(R.id.back)
-    RelativeLayout  back;
+    RelativeLayout back;
     @BindView(R.id.progress_Bar)
-    ProgressBar  progressBar;
+    ProgressBar progressBar;
     @BindView(R.id.webview)
-    WebView  webview;
+    WebView webview;
     private SharedPreferencesUtils sp;
-    private  String  token;
-    public  String  url  =  Api.baseUrl()+"/Members/add_url.html";
+    private String token;
+    public String url = Api.baseUrl() + "/Members/add_url.html";
 
-    private  WebView  mWebView;
-    private  ValueCallback<Uri>  mUploadMessage;//  表单的数据信息
-    private  ValueCallback<Uri[]>  mUploadCallbackAboveL;
+    private WebView mWebView;
+    private ValueCallback<Uri> mUploadMessage;//  表单的数据信息
+    private ValueCallback<Uri[]> mUploadCallbackAboveL;
 
-    private  final  static  int  FILECHOOSER_RESULTCODE  =  1;//  表单的结果回调</span>
-    private  Uri  imageUri;
+    private final static int FILECHOOSER_RESULTCODE = 1;//  表单的结果回调</span>
+    private Uri imageUri;
     /**
-     *  拍照/选择文件请求码
+     * 拍照/选择文件请求码
      */
-    private  static  final  int  REQUEST_UPLOAD_FILE_CODE  =  12343;
-    private  String  htmls;
-    private  String  backUrl  =  "http://top28app//popToArticleList/";
+    private static final int REQUEST_UPLOAD_FILE_CODE = 12343;
+    private String htmls;
+    private String backUrl = "http://top28app//popToArticleList/";
 
 
     @Override
-    protected  void  init()  {
+    protected void init() {
         initView();
     }
 
     @Override
-    protected BasePresenter getPresenter()  {
-        return  null;
+    protected BasePresenter getPresenter() {
+        return null;
     }
 
     @Override
-    protected  int  setLayoutId()  {
-        return  R.layout.activity_edit_article;
+    protected int setLayoutId() {
+        return R.layout.activity_edit_article;
     }
 
-    @RequiresApi(api  =  Build.VERSION_CODES.JELLY_BEAN)
-    private  void  initView()  {
-        TextView  textView  =  new  TextView(this);
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void initView() {
+        TextView textView = new TextView(this);
 //            Intent intent = getIntent();
         String Url = (String) WeakDataHolder.getInstance().getData("url");
         if (TextUtils.isEmpty((CharSequence) WeakDataHolder.getInstance().getData("html"))) {
@@ -111,7 +111,7 @@ public class EditArticleActivity extends BaseActivity {
 
             htmls = (String) WeakDataHolder.getInstance().getData("html");
         }
-        Log.d("当前",htmls);
+        Log.d("当前", htmls);
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
         mWebView = (WebView) findViewById(R.id.webview);
@@ -437,21 +437,22 @@ public class EditArticleActivity extends BaseActivity {
     public void onViewClicked() {
         Intent intent = new Intent();
         intent.setClass(this, EditActivity.class);
-        WeakDataHolder.getInstance().setData("URL",url);
+        WeakDataHolder.getInstance().setData("URL", url);
         finish();
         startActivity(intent);
         overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode== KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             Intent myIntent;
-            myIntent = new Intent(EditArticleActivity.this,EditActivity.class);
-            WeakDataHolder.getInstance().setData("URL",url);
+            myIntent = new Intent(EditArticleActivity.this, EditActivity.class);
+            WeakDataHolder.getInstance().setData("URL", url);
             this.finish();
             startActivity(myIntent);
             overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
-            return  true;
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }

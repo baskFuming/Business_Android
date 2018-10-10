@@ -16,14 +16,13 @@
 
 package com.xys.libzxing.zxing.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.xys.libzxing.R;
@@ -31,10 +30,12 @@ import com.xys.libzxing.R;
 import java.io.Closeable;
 import java.io.IOException;
 
+
 /**
- * Manages beeps and vibrations for {@link CaptureActivity}.
+ * 管理声音和震动
  */
-public class BeepManager implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, Closeable {
+public final class BeepManager implements MediaPlayer.OnCompletionListener,
+        MediaPlayer.OnErrorListener, Closeable {
 
     private static final String TAG = BeepManager.class.getSimpleName();
 
@@ -52,53 +53,67 @@ public class BeepManager implements MediaPlayer.OnCompletionListener, MediaPlaye
         updatePrefs();
     }
 
-    private static boolean shouldBeep(SharedPreferences prefs, Context activity) {
-        boolean shouldPlayBeep = true;
-        if (shouldPlayBeep) {
-            // See if sound settings overrides this
-            AudioManager audioService = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
-            if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
-                shouldPlayBeep = false;
-            }
-        }
-        return shouldPlayBeep;
+
+    public void setPlayBeep(boolean playBeep) {
+        this.playBeep = playBeep;
     }
 
-    private synchronized void updatePrefs() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-        playBeep = shouldBeep(prefs, activity);
-        vibrate = true;
+
+    public void setVibrate(boolean vibrate) {
+        this.vibrate = vibrate;
+    }
+
+    public synchronized void updatePrefs() {
+
+
         if (playBeep && mediaPlayer == null) {
             // The volume on STREAM_SYSTEM is not adjustable, and users found it
             // too loud,
             // so we now play on the music stream.
+            // 设置activity音量控制键控制的音频流
             activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
             mediaPlayer = buildMediaPlayer(activity);
         }
     }
 
+    /**
+     * 开启响铃和震动
+     */
+    @SuppressLint("MissingPermission")
     public synchronized void playBeepSoundAndVibrate() {
         if (playBeep && mediaPlayer != null) {
             mediaPlayer.start();
         }
         if (vibrate) {
-            Vibrator vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+            Vibrator vibrator = (Vibrator) activity
+                    .getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(VIBRATE_DURATION);
         }
     }
 
+    /**
+     * 创建MediaPlayer
+     *
+     * @param activity
+     * @return
+     */
     private MediaPlayer buildMediaPlayer(Context activity) {
         MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        // 监听是否播放完成
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnErrorListener(this);
+        // 配置播放资源
         try {
-            AssetFileDescriptor file = activity.getResources().openRawResourceFd(R.raw.beep);
+            AssetFileDescriptor file = activity.getResources()
+                    .openRawResourceFd(R.raw.beep);
             try {
-                mediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(), file.getLength());
+                mediaPlayer.setDataSource(file.getFileDescriptor(),
+                        file.getStartOffset(), file.getLength());
             } finally {
                 file.close();
             }
+            // 设置音量
             mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
             mediaPlayer.prepare();
             return mediaPlayer;

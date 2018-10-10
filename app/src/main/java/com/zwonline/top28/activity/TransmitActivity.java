@@ -87,13 +87,19 @@ public class TransmitActivity extends BaseActivity {
                 editWeb.setText("");
                 break;
             case R.id.compile://编辑
-                if (!StringUtil.isEmpty(editWeb.getText().toString())) {
-                    Intent intent = new Intent(TransmitActivity.this, EditActivity.class);
-                    intent.putExtra("url", editWeb.getText().toString().trim());
-                    startActivity(intent);
-                    editWeb.setText("");
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                    finish();
+                String s = editWeb.getText().toString();
+                if (!StringUtil.isEmpty(s) ){
+                     if (s.contains("https")||s.contains("http")||s.contains("www")){
+                         Intent intent = new Intent(TransmitActivity.this, EditActivity.class);
+                         intent.putExtra("url", editWeb.getText().toString().trim());
+                         startActivity(intent);
+                         editWeb.setText("");
+                         overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                         finish();
+                     }else {
+                         ToastUtils.showToast(TransmitActivity.this, "请输入正确的链接！");
+                     }
+
                 } else {
                     ToastUtils.showToast(TransmitActivity.this, getString(R.string.article_not_empty));
                 }

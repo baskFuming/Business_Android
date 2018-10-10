@@ -1,7 +1,12 @@
 package com.zwonline.top28.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.webkit.WebView;
@@ -11,6 +16,8 @@ import android.widget.TextView;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
+import com.xys.libzxing.zxing.bean.ZxingConfig;
+import com.xys.libzxing.zxing.common.Constant;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.PayMentAdapter;
 import com.zwonline.top28.api.Api;
@@ -71,7 +78,9 @@ public class WalletActivity extends BaseActivity<IPayMentView, WallletPresenter>
     private int times = 0;
     private int status;
     private String backMy;
-
+    private int REQUEST_CODE_SCAN = 111;
+    private String mPermissions[] = {Manifest.permission.CAMERA};
+    private static final int Permissions_CAMERA_KEY = 2;
     @Override
     protected void init() {
         Intent intent = getIntent();
@@ -227,7 +236,12 @@ public class WalletActivity extends BaseActivity<IPayMentView, WallletPresenter>
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.richScan://扫一扫
-                startActivityForResult(new Intent(WalletActivity.this, CaptureActivity.class), 0);
+                if (Build.VERSION.SDK_INT >= 23) {
+                    setPermissions(Permissions_CAMERA_KEY);
+                } else {
+                    saoData();
+                }
+
                 break;
             case R.id.gathering://收款
 //                startActivity(new Intent(WalletActivity.this, GatheringActivity.class));
@@ -287,7 +301,7 @@ public class WalletActivity extends BaseActivity<IPayMentView, WallletPresenter>
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            String result = data.getExtras().getString("result");
+            String result = data.getStringExtra(Constant.CODED_CONTENT);
 //            System.out.print("result==" + result);
 //            Toast.makeText(WalletActivity.this, result + "", Toast.LENGTH_SHORT).show();
             String id = result.substring(BizConstant.ORDERINFO.length(), result.length());
@@ -350,5 +364,65 @@ public class WalletActivity extends BaseActivity<IPayMentView, WallletPresenter>
         }
 
     }
+    public void setPermissions(int mPermissions_KEY) {
+        /*
+        要添加List原因是想判断数组里如果有个别已经授权的权限，就不需要再添加到List中。添加到List中的权限后续将转成数组去申请权限
+         */
+        List<String> permissionsList = new ArrayList<>();
+        //判断系统版本
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (int i = 0; i < mPermissions.length; i++) {
+                //判断一个权限是否已经允许授权，如果没有授权就会将单个未授权的权限添加到List里面
+                if (ContextCompat.checkSelfPermission(this, mPermissions[i]) != PackageManager.PERMISSION_GRANTED) {
+                    permissionsList.add(mPermissions[i]);
+                }
+            }
+            //判断List不是空的，如果有内容就运行获取权限
+            if (!permissionsList.isEmpty()) {
+                String[] permissions = permissionsList.toArray(new String[permissionsList.size()]);
+                for (int j = 0; j < permissions.length; j++) {
+                }
+                //执行授权的代码。此处执行后会弹窗授权
+                ActivityCompat.requestPermissions(this, permissions, mPermissions_KEY);
+            } else { //如果是空的说明全部权限都已经授权了，就不授权了,直接执行进入相机或者图库
+                saoData();
+            }
+        } else {
+            saoData();
+        }
+    }
+    public void saoData(){
+        Intent saoIntent = new Intent(this, CaptureActivity.class);
+        /*ZxingConfig是配置类
+         *可以设置是否显示底部布局，闪光灯，相册，
+         * 是否播放提示音  震动
+         * 设置扫描框颜色等
+         * 也可以不传这个参数
+         * */
+        ZxingConfig config = new ZxingConfig();
+        config.setPlayBeep(true);//是否播放扫描声音 默认为true
+        config.setShake(true);//是否震动  默认为true
+        config.setDecodeBarCode(false);//是否扫描条形码 默认为true
+        config.setReactColor(R.color.white);//设置扫描框四个角的颜色 默认为淡蓝色
+        config.setFrameLineColor(R.color.transparent);//设置扫描框边框颜色 默认无色
+        config.setFullScreenScan(true);//是否全屏扫描  默认为true  设为false则只会在扫描框中扫描
+        saoIntent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+        startActivityForResult(saoIntent, REQUEST_CODE_SCAN);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Permissions_CAMERA_KEY) {
+            if (grantResults.length > 0) { //安全写法，如果小于0，肯定会出错了
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        saoData();
+                    } else {
+                        saoData();
+                    }
+                }
+            }
+        }
 
+    }
 }
