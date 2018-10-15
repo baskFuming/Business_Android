@@ -281,7 +281,7 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
             sp.insertKey(getApplicationContext(), "follow", loginWechatBean.getData().getUser().getFollow());
             sp.insertKey(getApplicationContext(), "fans", loginWechatBean.getData().getUser().getFans());
             sp.insertKey(getApplicationContext(), "favorite", loginWechatBean.getData().getUser().getFavorite());
-            Toast.makeText(getApplicationContext(),"授权登陆成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"微信授权登陆成功", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getApplicationContext(),"授权登录失败", Toast.LENGTH_SHORT).show();
         }
@@ -416,7 +416,7 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
         UMShareAPI.get(this).getPlatformInfo(this, weixin, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {
-                ToastUtils.showToast(PasswordLoginActivity.this, "platform" + "授权开始");
+                ToastUtils.showToast(PasswordLoginActivity.this, "微信授权登录");
             }
             /**
              * @desc 授权成功的回调
@@ -426,7 +426,6 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
              */
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> map) {
-                ToastUtils.showToast(PasswordLoginActivity.this,platform+"授权成功");
                 sp.insertKey(PasswordLoginActivity.this, "islogin", true);
                 //sdk是6.4.4的,但是获取值的时候用的是6.2以前的(access_token)才能获取到值,未知原因
                 String uid = map.get("uid");
@@ -443,6 +442,7 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
                 presenter.loginWechatListen(PasswordLoginActivity.this,union_id,open_id,gender,name,iconurl,"");
             }
 
+
             /**
              * @desc 授权失败的回调
              * @param platform 平台名称
@@ -451,7 +451,7 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
              */
             @Override
             public void onError(SHARE_MEDIA platform, int action, Throwable throwable) {
-                ToastUtils.showToast(PasswordLoginActivity.this,"授权失败"+throwable.getMessage());
+                ToastUtils.showToast(PasswordLoginActivity.this,"授权失败");
             }
             /**
              * @desc 授权取消的回调

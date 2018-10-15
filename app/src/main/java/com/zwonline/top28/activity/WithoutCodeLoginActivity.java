@@ -25,7 +25,6 @@ import android.widget.ToggleButton;
 
 import com.geetest.sdk.Bind.GT3GeetestBindListener;
 import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
-import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -235,9 +234,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
         msg = loginBean.getMsg();
         if (status == 1) {
             sp.insertKey(WithoutCodeLoginActivity.this, "islogin", true);
-            ToastUtils.showToast(getApplicationContext(),dialog);
             sp.insertKey(WithoutCodeLoginActivity.this, "dialog", dialog);
-
             RecordUserBehavior.recordUserBehavior(this, BizConstant.SIGN_IN);
             Intent intent = new Intent(WithoutCodeLoginActivity.this, MainActivity.class);
 
@@ -289,6 +286,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
             ToastUtils.showToast(WithoutCodeLoginActivity.this, shortMessage.getMsg());
         }
     }
+
 
     @Override
     public void loginShowWechat(LoginWechatBean loginWechatBean) {
@@ -581,7 +579,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
         UMShareAPI.get(this).getPlatformInfo(this, weixin, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {
-                ToastUtils.showToast(WithoutCodeLoginActivity.this, "platform" + "授权开始");
+                ToastUtils.showToast(WithoutCodeLoginActivity.this, "微信授权登录");
             }
             /**
              * @desc 授权成功的回调
@@ -591,7 +589,6 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
              */
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> map) {
-                ToastUtils.showToast(WithoutCodeLoginActivity.this, platform + "授权成功");
                 sp.insertKey(WithoutCodeLoginActivity.this, "islogin", true);
                 //sdk是6.4.4的,但是获取值的时候用的是6.2以前的(access_token)才能获取到值,未知原因
                 String uid = map.get("uid");
@@ -614,8 +611,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
              */
             @Override
             public void onError(SHARE_MEDIA platform, int action, Throwable throwable) {
-                ToastUtils.showToast(WithoutCodeLoginActivity.this, "授权失败" + throwable.getMessage());
-                LogUtil.d("message", throwable.getMessage());
+                ToastUtils.showToast(WithoutCodeLoginActivity.this, "授权失败");
             }
 
             /**
