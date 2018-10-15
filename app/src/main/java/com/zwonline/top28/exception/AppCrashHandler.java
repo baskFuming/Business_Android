@@ -52,7 +52,6 @@ public class AppCrashHandler implements Thread.UncaughtExceptionHandler{
     public AppCrashHandler() {
 
     }
-
     /**
      * 获取CrashHandler实例 ,单例模式
      */

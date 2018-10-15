@@ -1,9 +1,7 @@
 package com.zwonline.top28.view;
 
-import com.zwonline.top28.bean.HeadBean;
 import com.zwonline.top28.bean.LoginBean;
-import com.zwonline.top28.bean.RefotPasswordBean;
-import com.zwonline.top28.bean.SettingBean;
+import com.zwonline.top28.bean.LoginWechatBean;
 
 /**
  * 1.类的用途
@@ -24,4 +22,10 @@ public interface ILoginActivity {
      * @param settingBean
      */
     void showForgetPossword(LoginBean settingBean);
+
+    //微信授权登录
+    void isWechatSuccess(int status, String dialog, String token, String account);
+    void wecahtSuccess(LoginWechatBean loginWechatBean);
+
+
 }

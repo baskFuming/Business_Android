@@ -2,8 +2,14 @@ package com.zwonline.top28.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,18 +20,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.geetest.sdk.Bind.GT3GeetestBindListener;
 import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
+import com.netease.nim.uikit.common.util.log.LogUtil;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.zwonline.top28.APP;
 import com.zwonline.top28.R;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.PayService;
 import com.zwonline.top28.base.BaseActivity;
+import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShortMessage;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.presenter.RegisterPresenter;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
@@ -77,18 +91,18 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
     private TextView text_fenge;
     private TextView countryCity;
     private TextView quHao;
-
+    private TextView te_spcolor;
+    private String str = "注册登录即代表您同意《用户协议》和《隐私政策》";
+    private LinearLayout WX_loginl;
+    private String msg;
     @Override
     protected void init() {
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
         initView();
         Intent intent = getIntent();
         login_type = intent.getStringExtra("login_type");
         sp = SharedPreferencesUtils.getUtil();
         login = getIntent().getStringExtra("login");
         iphone.addTextChangedListener(textWatcher);
-//        initGt3GeetestUtils();
     }
 
     @Override
@@ -111,11 +125,53 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
         posswodLinear = (LinearLayout) findViewById(R.id.posswod_linear);
         withoutBack = (RelativeLayout) findViewById(R.id.without_back);
         countryCity = (TextView) findViewById(R.id.country_city);
+        //用户协议----隐私条款
+        SpannableStringBuilder spannableString = new SpannableStringBuilder();
+        spannableString.append(str);
+        spannableString.setSpan(new ClickableSpan() {
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(Color.parseColor("#228FFE"));
+                ds.setUnderlineText(false);
+                ds.clearShadowLayer();
+            }
+
+            @Override
+            public void onClick(View widget) {
+                //执行用户协议
+                startActivity(new Intent(WithoutCodeLoginActivity.this, UserProTocolActivity.class));
+            }
+        }, 10, 16, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        spannableString.setSpan(new ClickableSpan() {
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(Color.parseColor("#228FFE"));
+                ds.setUnderlineText(false);
+                ds.clearShadowLayer();
+            }
+
+            @Override
+            public void onClick(View widget) {
+                //执行隐私政策
+                startActivity(new Intent(WithoutCodeLoginActivity.this, PrivacyPolicyActivity.class));
+            }
+        }, 17, 23, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        te_spcolor = (TextView) findViewById(R.id.te_spcolor);
+        te_spcolor.setText(spannableString);
+        te_spcolor.setHighlightColor(Color.WHITE);
+        te_spcolor.setMovementMethod(LinkMovementMethod.getInstance());
+
+        WX_loginl = (LinearLayout) findViewById(R.id.WX_login);
         quHao = (TextView) findViewById(R.id.quhao);
         next.setOnClickListener(this);
         posswodLinear.setOnClickListener(this);
         withoutBack.setOnClickListener(this);
         countryCity.setOnClickListener(this);
+        WX_loginl.setOnClickListener(this);
         // 添加监听开关
         mswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -149,11 +205,10 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.without_back:
-                Intent backIntent=new Intent(WithoutCodeLoginActivity.this, MainActivity.class);
-                if (StringUtil.isNotEmpty(login_type)&&login_type.equals(BizConstant.ALIPAY_METHOD)){
+                Intent backIntent = new Intent(WithoutCodeLoginActivity.this, MainActivity.class);
+                if (StringUtil.isNotEmpty(login_type) && login_type.equals(BizConstant.ALIPAY_METHOD)) {
                     backIntent.putExtra("loginType", login_type);
                 }
-
                 startActivity(backIntent);
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
@@ -162,9 +217,39 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                 startActivityForResult(new Intent(WithoutCodeLoginActivity.this, CityActivity.class), 1);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
+            //威信授权登录
+            case R.id.WX_login:
+                if (!APP.mWxApi.isWXAppInstalled()) {
+                    Toast.makeText(this, "您还未安装微信客户端", Toast.LENGTH_SHORT).show();
+                } else {
+                    authorization(SHARE_MEDIA.WEIXIN);
+                }
+                break;
         }
     }
 
+    //微信登录
+    @Override
+    public void isSuccess(int status, String dialog, String token, String account) {
+        LoginWechatBean loginBean = new LoginWechatBean();
+        msg = loginBean.getMsg();
+        if (status == 1) {
+            sp.insertKey(WithoutCodeLoginActivity.this, "islogin", true);
+            sp.insertKey(WithoutCodeLoginActivity.this, "dialog", loginBean.getDialog());
+
+            RecordUserBehavior.recordUserBehavior(this, BizConstant.SIGN_IN);
+            Intent intent = new Intent(WithoutCodeLoginActivity.this, MainActivity.class);
+
+            intent.putExtra("loginType", getIntent().getStringExtra("login_type"));
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+        } else if (status == -1) {
+            Toast.makeText(WithoutCodeLoginActivity.this,"授权失败", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(WithoutCodeLoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public void getToken(String token) {
@@ -172,6 +257,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
     }
 
     @Override
+
     public void isSuccess(int status) {
 
     }
@@ -200,6 +286,22 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
             overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
         } else {
             ToastUtils.showToast(WithoutCodeLoginActivity.this, shortMessage.getMsg());
+        }
+    }
+
+    @Override
+    public void loginShowWechat(LoginWechatBean loginWechatBean) {
+        if (loginWechatBean.getStatus() == 1) {
+            sp.insertKey(getApplicationContext(), "avatar", loginWechatBean.getData().getUser().getAvatar());
+            sp.insertKey(getApplicationContext(), "uid", loginWechatBean.getData().getUser().getUid());
+            sp.insertKey(getApplicationContext(), "nickname", loginWechatBean.getData().getUser().getNickname());
+            sp.insertKey(getApplicationContext(), "sign", loginWechatBean.getData().getUser().getSignature());
+            sp.insertKey(getApplicationContext(), "follow", loginWechatBean.getData().getUser().getFollow());
+            sp.insertKey(getApplicationContext(), "fans", loginWechatBean.getData().getUser().getFans());
+            sp.insertKey(getApplicationContext(), "favorite", loginWechatBean.getData().getUser().getFavorite());
+            Toast.makeText(getApplicationContext(), "微信授权登录成功", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "授权登录失败", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -328,7 +430,6 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                     public boolean gt3SetIsCustom() {
                         return true;
                     }
-
                     /**
                      * 拿到第二个url（API2）需要的数据
                      * 该方法只适用于不使用自定义api2时使用
@@ -362,12 +463,11 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                             geetest_validates = jobj.getString("geetest_validate");
                             geetest_seccodes = jobj.getString("geetest_seccode");
                             yanZhengApi2(geetest_challenges, geetest_validates, geetest_seccodes);
-                        } catch (Exception e) {
+                        } catch (Exception e)
+                        {
                             e.printStackTrace();
                         }
                         if (status) {
-
-
                         }
                     }
 
@@ -395,7 +495,6 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
         } else {
             ToastUtils.showToast(getApplicationContext(), getString(R.string.user_empty_phone));
         }
-
         //设置是否可以点击屏幕边缘关闭验证码
         gt3GeetestUtils.setDialogTouch(false);
     }
@@ -477,6 +576,58 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
         }
     }
 
+    private void authorization(SHARE_MEDIA weixin) {
+        UMShareAPI.get(this).getPlatformInfo(this, weixin, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA platform) {
+                ToastUtils.showToast(WithoutCodeLoginActivity.this, "platform" + "授权开始");
+            }
+            /**
+             * @desc 授权成功的回调
+             * @param platform 平台名称
+             * @param action 行为序号，开发者用不上
+             * @param map 用户资料返回
+             */
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> map) {
+                ToastUtils.showToast(WithoutCodeLoginActivity.this, platform + "授权成功");
+                //sdk是6.4.4的,但是获取值的时候用的是6.2以前的(access_token)才能获取到值,未知原因
+                String uid = map.get("uid");
+                String open_id = map.get("openid");//微博没有
+                String union_id = map.get("unionid");//微博没有
+                String access_token = map.get("access_token");
+                String refresh_token = map.get("refresh_token");//微信,qq,微博都没有获取到
+                String expires_in = map.get("expires_in");
+                String name = map.get("name");
+                String gender = map.get("gender");
+                String iconurl = map.get("iconurl");
+                //拿到信息去请求登录接口。。。差一个接口
+                ToastUtils.showToast(WithoutCodeLoginActivity.this,name+"=="+gender);
+                presenter.loginWechatListen(WithoutCodeLoginActivity.this,union_id,open_id,gender,"","","");
+            }
+            /**
+             * @desc 授权失败的回调
+             * @param platform 平台名称
+             * @param action 行为序号，开发者用不上
+             * @param throwable 错误原因
+             */
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable throwable) {
+                ToastUtils.showToast(WithoutCodeLoginActivity.this, "授权失败" + throwable.getMessage());
+                LogUtil.d("message", throwable.getMessage());
+            }
+
+            /**
+             * @desc 授权取消的回调
+             * @param platform 平台名称
+             * @param action 行为序号，开发者用不上
+             */
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+                ToastUtils.showToast(WithoutCodeLoginActivity.this, "授权取消");
+            }
+        });
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -486,7 +637,6 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                 quHao.setText(data.getStringExtra("area"));
             }
         }
-
-
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

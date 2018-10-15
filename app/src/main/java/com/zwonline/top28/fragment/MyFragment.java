@@ -169,7 +169,6 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     private String avatars;
     private List<MyPageBean.DataBean> menuList;
     private MyOneMunuAdapter myOneMenuAdapter;
-
     @Override
     protected void init(View view) {
         menuList = new ArrayList<>();

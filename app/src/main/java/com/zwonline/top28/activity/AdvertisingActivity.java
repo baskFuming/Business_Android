@@ -16,11 +16,9 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
-
 import butterknife.OnClick;
 
 /**

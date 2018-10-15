@@ -1,5 +1,6 @@
 package com.zwonline.top28.view;
 
+import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.ShortMessage;
 
 /**
@@ -9,8 +10,10 @@ import com.zwonline.top28.bean.ShortMessage;
  */
 
 public interface IRegisterActivity {
+    void isSuccess(int status, String dialog, String token, String account);
     void getToken(String token);
     void isSuccess(int status);
     void onErro();
     void showStatus(ShortMessage shortMessage);
+    void loginShowWechat(LoginWechatBean bean);
 }

@@ -23,6 +23,7 @@ import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.PayService;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.LoginBean;
+import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.edittextutils.VerifyCodeView;
@@ -254,6 +255,16 @@ public class CodeLoginActivity extends BaseActivity<ILoginActivity, LoginPresent
             loginProgress.setVisibility(View.GONE);
             codeLogins.setEnabled(true);
         }
+    }
+
+    @Override
+    public void isWechatSuccess(int status, String dialog, String token, String account) {
+
+    }
+
+    @Override
+    public void wecahtSuccess(LoginWechatBean loginWechatBean) {
+
     }
 
     /**

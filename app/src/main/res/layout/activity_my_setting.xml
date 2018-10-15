@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff0f3f5"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.zwonline.top28.activity.MySettingActivity">
 
@@ -63,12 +63,17 @@
             android:textSize="18sp" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="14dp"
+            android:layout_height="16dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
 
     <RelativeLayout
         android:id="@+id/amentpossword"
@@ -89,13 +94,17 @@
             android:textSize="18sp" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="14dp"
+            android:layout_height="16dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
-
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
     <RelativeLayout
         android:id="@+id/join_group"
         android:layout_width="match_parent"
@@ -123,6 +132,35 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/about_owen"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="关于我们"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/more_icon" />
+    </RelativeLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
+    <RelativeLayout
         android:id="@+id/shield_settting"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -140,12 +178,17 @@
             android:textSize="18sp" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="14dp"
+            android:layout_height="16dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
 
     <RelativeLayout
         android:id="@+id/feedback"
@@ -166,21 +209,45 @@
             android:textSize="18sp" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="14dp"
+            android:layout_height="16dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
 
-    <TextView
+    <RelativeLayout
         android:id="@+id/exit_login"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:background="@color/white"
-        android:gravity="center"
-        android:text="@string/user_logout"
-        android:textColor="@color/reded"
-        android:textSize="18sp" />
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="@string/user_logout"
+            android:textColor="@color/reded"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/more_icon" />
+    </RelativeLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
 </LinearLayout>

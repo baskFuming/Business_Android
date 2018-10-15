@@ -9,4 +9,8 @@ public class Constants {
 //     */
     public static final String APPID = "1107780169";
     public static final String SplashPosID = "2090740053051082";
+
+    //微信appid
+    public static final String WEIXIN_APP_ID = "wx979d60eb9639eb65";
+
 }

@@ -23,6 +23,7 @@ import com.zwonline.top28.bean.HotExamineBean;
 import com.zwonline.top28.bean.IndustryBean;
 import com.zwonline.top28.bean.JZHOBean;
 import com.zwonline.top28.bean.LoginBean;
+import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.MyAttentionBean;
 import com.zwonline.top28.bean.MyBillBean;
 import com.zwonline.top28.bean.MyCollectBean;
@@ -120,6 +121,21 @@ public interface ApiService {
             @Field("timestamp") String timestamp,
             @Field("sign") String sign,
             @Field("incode") String incode,
+            @Field("token") String token
+    );
+
+    //微信登录Login
+    @FormUrlEncoded
+    @POST("/App/Public/login_wechat")
+    Flowable<LoginWechatBean> loginWechat(
+            @Field("union_id") String union_id,
+            @Field("open_id") String open_id,
+            @Field("gender") String gender,
+            @Field("nickname") String nickname,
+            @Field("avatar") String avatar,
+            @Field("country_code") String country_code,
+            @Field("timestamp") String timestamp,
+            @Field("sign") String sign,
             @Field("token") String token
     );
 

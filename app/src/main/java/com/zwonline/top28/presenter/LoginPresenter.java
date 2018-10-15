@@ -5,10 +5,8 @@ import android.util.Log;
 
 import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BasePresenter;
-import com.zwonline.top28.bean.HeadBean;
 import com.zwonline.top28.bean.LoginBean;
-import com.zwonline.top28.bean.RefotPasswordBean;
-import com.zwonline.top28.bean.SettingBean;
+import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.ShortMessage;
 import com.zwonline.top28.model.LoginModel;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
@@ -43,7 +41,7 @@ public class LoginPresenter extends BasePresenter<ILoginActivity> {
     //账号密码登录
     public void loginNumber(String mobile, String password) {
         try {
-            Flowable<LoginBean> flowable = model.loginUserNumber(context,mobile, password);
+            Flowable<LoginBean> flowable = model.loginUserNumber(context, mobile, password);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<LoginBean>() {
@@ -62,7 +60,6 @@ public class LoginPresenter extends BasePresenter<ILoginActivity> {
                                 sp.insertKey(context, "token", loginBean.getData().getYunxin().getToken());
                                 sp.insertKey(context, "dialog", loginBean.getDialog());
                             }
-
                             iLoginActivity.isSuccess(loginBean.getStatus(), loginBean.getDialog(),
                                     loginBean.getData().getYunxin().getToken(),
                                     loginBean.getData().getYunxin().getAccount()
@@ -86,8 +83,8 @@ public class LoginPresenter extends BasePresenter<ILoginActivity> {
     }
 
     //验证忘记密码手机验证码
-    public void mforGetPossword(Context context,String phone, String code,String token) {
-        Flowable<LoginBean> flowable = model.forGetPossword(context,phone, code,token);
+    public void mforGetPossword(Context context, String phone, String code, String token) {
+        Flowable<LoginBean> flowable = model.forGetPossword(context, phone, code, token);
         flowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSubscriber<LoginBean>() {
@@ -110,8 +107,8 @@ public class LoginPresenter extends BasePresenter<ILoginActivity> {
     }
 
     //获取手机验证码
-    public void getPhoneCode(String phone, String type,String token,String country_code) {
-        Flowable<ShortMessage> flowable = model.getPhoneCode(phone, type,token,country_code);
+    public void getPhoneCode(String phone, String type, String token, String country_code) {
+        Flowable<ShortMessage> flowable = model.getPhoneCode(phone, type, token, country_code);
         flowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new BaseDisposableSubscriber<ShortMessage>(context) {
@@ -146,7 +143,7 @@ public class LoginPresenter extends BasePresenter<ILoginActivity> {
     //获取手机验证码登录
     public void loginVerify(String mobile, String verify, String token) {
         try {
-            Flowable<LoginBean> flowable = model.loginUserVerify(context,mobile, verify, token);
+            Flowable<LoginBean> flowable = model.loginUserVerify(context, mobile, verify, token);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<LoginBean>() {
@@ -187,9 +184,9 @@ public class LoginPresenter extends BasePresenter<ILoginActivity> {
     }
 
     //获取手机验证码登录有邀请码的
-    public void loginVerifys(String mobile, String verify, String token,String incode) {
+    public void loginVerifys(String mobile, String verify, String token, String incode) {
         try {
-            Flowable<LoginBean> flowable = model.loginUserVerifys(context,mobile, verify, token,incode);
+            Flowable<LoginBean> flowable = model.loginUserVerifys(context, mobile, verify, token, incode);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<LoginBean>() {
@@ -217,6 +214,49 @@ public class LoginPresenter extends BasePresenter<ILoginActivity> {
                         @Override
                         public void onError(Throwable t) {
                             iLoginActivity.showErro();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //微信登录
+    public void loginWechatListen(final Context context, String union_id, String open_id, String gender, String nickname, String avatar, String country_code) {
+        try {
+            Flowable<LoginWechatBean> flowable = model.loginWechat(context, union_id, open_id, gender, nickname, avatar, country_code);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<LoginWechatBean>() {
+                        @Override
+                        public void onNext(LoginWechatBean loginWechatBean) {
+                            if (loginWechatBean != null && loginWechatBean.getData() != null) {
+                                iLoginActivity.wecahtSuccess(loginWechatBean);
+                                if (loginWechatBean.getStatus() == 1) {
+                                    //登录云信
+                                    model.doLogin(loginWechatBean.getData().getYunxin().getAccount(), loginWechatBean.getData().getYunxin().getToken());
+                                    sp.insertKey(context, "account", loginWechatBean.getData().getYunxin().getAccount());
+                                    sp.insertKey(context, "token", loginWechatBean.getData().getYunxin().getToken());
+                                    iLoginActivity.isSuccess(loginWechatBean.getStatus(), loginWechatBean.getDialog(),
+                                            loginWechatBean.getData().getYunxin().getToken(),
+                                            loginWechatBean.getData().getYunxin().getAccount()
+                                    );
+                                    iLoginActivity.getToken(loginWechatBean.getDialog());
+                                }
+                            } else {
+                                iLoginActivity.onErro();
+
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            iLoginActivity.onErro();
                         }
 
                         @Override

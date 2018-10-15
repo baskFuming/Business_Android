@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BasePresenter;
+import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.RegisterBean;
 import com.zwonline.top28.bean.ShortMessage;
 import com.zwonline.top28.model.RegisterModel;
@@ -105,5 +106,48 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
             e.printStackTrace();
         }
     }
+    //微信登录
+    public void loginWechatListen(final Context context, String union_id, String open_id, String gender, String nickname, String avatar, String country_code) {
+        try {
+            Flowable<LoginWechatBean> flowable = model.loginWechat(context,union_id, open_id, gender, nickname,avatar,country_code);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<LoginWechatBean>() {
+                        @Override
+                        public void onNext(LoginWechatBean loginWechatBean) {
+                            if (loginWechatBean!=null&&loginWechatBean.getData()!=null){
+                                iRegisterActivity.loginShowWechat(loginWechatBean);
+                                if (loginWechatBean.getStatus()==1){
+                                    //登录云信
+                                    model.doLogin(loginWechatBean.getData().getYunxin().getAccount(), loginWechatBean.getData().getYunxin().getToken());
+                                    sp.insertKey(context, "account", loginWechatBean.getData().getYunxin().getAccount());
+                                    sp.insertKey(context, "token", loginWechatBean.getData().getYunxin().getToken());
+                                    iRegisterActivity.isSuccess(loginWechatBean.getStatus(), loginWechatBean.getDialog(),
+                                            loginWechatBean.getData().getYunxin().getToken(),
+                                            loginWechatBean.getData().getYunxin().getAccount()
+                                    );
+                                    iRegisterActivity.getToken(loginWechatBean.getDialog());
+                                }
+                            }else {
+                                iRegisterActivity.onErro();
+
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            iRegisterActivity.onErro();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

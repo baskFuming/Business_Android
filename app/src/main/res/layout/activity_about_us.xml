@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".activity.AboutUsActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="21dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/return_black" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="关于我们"
+            android:textColor="#2B2B2B"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:background="#f0f3f5"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="69dp"
+            android:layout_height="95dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/about_icon"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/feedback"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/tv_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="当前版本"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/te_visioncode"
+            android:layout_width="38dp"
+            android:layout_height="22dp"
+            android:text="------"
+            android:textColor="#ff2a394c"
+            android:textSize="16sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
+    <RelativeLayout
+        android:id="@+id/user_protocol"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="用户协议"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/more_icon" />
+    </RelativeLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
+    <RelativeLayout
+        android:id="@+id/privacy_policy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="隐私条款"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/more_icon" />
+    </RelativeLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
+</LinearLayout>

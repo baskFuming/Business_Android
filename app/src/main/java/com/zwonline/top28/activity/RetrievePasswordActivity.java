@@ -19,6 +19,7 @@ import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.PayService;
 import com.zwonline.top28.base.BaseActivity;
+import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShortMessage;
 import com.zwonline.top28.constants.BizConstant;
@@ -133,6 +134,16 @@ public class RetrievePasswordActivity extends BaseActivity<IRegisterActivity, Re
         } else {
             ToastUtils.showToast(RetrievePasswordActivity.this, shortMessage.getMsg());
         }
+    }
+
+    @Override
+    public void loginShowWechat(LoginWechatBean bean) {
+
+    }
+
+    @Override
+    public void isSuccess(int status, String dialog, String token, String account) {
+
     }
 
     @Override

@@ -39,7 +39,7 @@ public class MySettingActivity extends BaseActivity {
     private RelativeLayout back;
     private ImageViewPlus imagHead;
     private TextView nickname;
-    private TextView exitLogin;
+    private RelativeLayout exitLogin;
     private RelativeLayout amend;
     private RelativeLayout amentpossword;
     private String avatar;
@@ -70,7 +70,7 @@ public class MySettingActivity extends BaseActivity {
         back = (RelativeLayout) findViewById(R.id.back);
         imagHead = (ImageViewPlus) findViewById(R.id.imag_head);
         nickname = (TextView) findViewById(R.id.nickname);
-        exitLogin = (TextView) findViewById(R.id.exit_login);
+        exitLogin = (RelativeLayout) findViewById(R.id.exit_login);
         amend = (RelativeLayout) findViewById(R.id.amend);
         amentpossword = (RelativeLayout) findViewById(R.id.amentpossword);
     }
@@ -86,7 +86,7 @@ public class MySettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.join_group})
+    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.join_group,R.id.about_owen})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -148,6 +148,10 @@ public class MySettingActivity extends BaseActivity {
                 break;
             case R.id.join_group:
                 startActivity(new Intent(MySettingActivity.this, GroupActivity.class));
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.about_owen:
+                startActivity(new Intent(MySettingActivity.this, AboutUsActivity.class));
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
         }

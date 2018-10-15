@@ -21,36 +21,24 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.zwonline.top28.R;
-import com.zwonline.top28.utils.FloatViewPager;
-import com.zwonline.top28.utils.GlideImageLoader;
 import com.zwonline.top28.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-
-import butterknife.OnTouch;
 
 /**
  * 文章详情点击图片查看图片
@@ -128,17 +116,14 @@ public class PhotoBrowserActivity extends AppCompatActivity  {
         viewPager = (ViewPager) findViewById(R.id.vp_photo);
         progressBar = (ProgressBar) findViewById(R.id.progress);
 //        img = (PhotoView)findViewById(R.id.img);
-
         textView = (TextView) findViewById(R.id.tv_photo_order);
         mBackground = findViewById(R.id.background_view);
     }
 
     public void getLastIntent() {
         curImgUrl = getIntent().getStringExtra("curImg");
-
         imgUrls = getIntent().getStringArrayExtra("imageUrls");
     }
-
     private int returnClickedPosition() {
         if (imgUrls == null || curImgUrl == null) {
             return -1;
@@ -174,7 +159,7 @@ public class PhotoBrowserActivity extends AppCompatActivity  {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            final Animation scale = AnimationUtils.loadAnimation(PhotoBrowserActivity.this, R.anim.anim_small);
+//            final Animation scale = AnimationUtils.loadAnimation(PhotoBrowserActivity.this, R.anim.anim_small);
             if (imgUrls[position] != null) {
 
                 photoView = new PhotoView(getApplicationContext());

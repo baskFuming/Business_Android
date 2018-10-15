@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.LoginBean;
+import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.LoginPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
@@ -39,7 +40,6 @@ import butterknife.OnClick;
  * 登录页
  */
 public class LoginActivity extends BaseActivity<ILoginActivity, LoginPresenter> implements ILoginActivity {
-
 
     @BindView(R.id.tv_zhanghao)
     TextView tvZhanghao;
@@ -294,7 +294,15 @@ public class LoginActivity extends BaseActivity<ILoginActivity, LoginPresenter> 
 
     }
 
+    @Override
+    public void isWechatSuccess(int status, String dialog, String token, String account) {
 
+    }
+
+    @Override
+    public void wecahtSuccess(LoginWechatBean loginWechatBean) {
+
+    }
 
 
     //手机号格式验证

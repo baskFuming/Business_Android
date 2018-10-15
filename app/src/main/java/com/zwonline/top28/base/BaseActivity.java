@@ -12,7 +12,6 @@ import com.jaeger.library.StatusBarUtil;
 import com.tencent.smtt.sdk.CookieSyncManager;
 import com.umeng.analytics.MobclickAgent;
 import com.zwonline.top28.R;
-import com.zwonline.top28.utils.StatusBarUtils;
 
 import org.greenrobot.eventbus.EventBus;
 

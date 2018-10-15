@@ -16,7 +16,6 @@ import android.os.Process;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
@@ -36,6 +35,8 @@ import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 import com.netease.nimlib.sdk.util.NIMUtil;
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.Config;
@@ -44,6 +45,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.activity.SplashActivity;
 import com.zwonline.top28.exception.AppCrashHandler;
+import com.zwonline.top28.module.Constants;
 import com.zwonline.top28.nim.NimSDKOptionConfig;
 import com.zwonline.top28.nim.chatroom.ChatRoomSessionHelper;
 import com.zwonline.top28.nim.contact.ContactHelper;
@@ -110,6 +112,11 @@ public class APP extends Application {
         return mMainLooper;
     }
 
+    /*
+     微信授权操作
+     */
+    public static IWXAPI mWxApi;
+
     private SharedPreferencesUtils sp;
 
     {
@@ -174,6 +181,7 @@ public class APP extends Application {
 //        }
         UMShareAPI.get(this);
         Config.DEBUG = true;
+        registerToWX();
         // ... your codes
         if (NIMUtil.isMainProcess(getApplicationContext())) {
             // 注意：以下操作必须在主进程中进行
@@ -188,6 +196,13 @@ public class APP extends Application {
         //获取CrashHandler实例并初始化CrashHandler
         AppCrashHandler.getInstance().init(getApplicationContext());
         initImagePicker();
+    }
+
+    private void registerToWX() {
+        //通过WXAPIFactory工厂，获取IWXAPI的实例
+         mWxApi = WXAPIFactory.createWXAPI(this,Constants.WEIXIN_APP_ID,true);
+        //将应用的APPID注册到微信
+         mWxApi.registerApp(Constants.WEIXIN_APP_ID);
     }
 
 
@@ -353,4 +368,6 @@ public class APP extends Application {
 //        //x5内核初始化接口
 //        QbSdk.initX5Environment(getApplicationContext(), cb);
     }
+
+
 }
