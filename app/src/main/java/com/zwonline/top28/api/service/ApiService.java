@@ -135,8 +135,7 @@ public interface ApiService {
             @Field("avatar") String avatar,
             @Field("country_code") String country_code,
             @Field("timestamp") String timestamp,
-            @Field("sign") String sign,
-            @Field("token") String token
+            @Field("sign") String sign
     );
 
     //首页

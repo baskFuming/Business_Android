@@ -235,7 +235,8 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
         msg = loginBean.getMsg();
         if (status == 1) {
             sp.insertKey(WithoutCodeLoginActivity.this, "islogin", true);
-            sp.insertKey(WithoutCodeLoginActivity.this, "dialog", loginBean.getDialog());
+            ToastUtils.showToast(getApplicationContext(),dialog);
+            sp.insertKey(WithoutCodeLoginActivity.this, "dialog", dialog);
 
             RecordUserBehavior.recordUserBehavior(this, BizConstant.SIGN_IN);
             Intent intent = new Intent(WithoutCodeLoginActivity.this, MainActivity.class);

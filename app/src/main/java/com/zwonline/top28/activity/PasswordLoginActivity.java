@@ -255,7 +255,7 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
         if (status == 1) {
             loginProgress.setVisibility(View.GONE);
             sp.insertKey(PasswordLoginActivity.this, "islogin", true);
-            sp.insertKey(PasswordLoginActivity.this, "dialog", loginWechatBean.getDialog());
+            sp.insertKey(PasswordLoginActivity.this, "dialog", dialog);
 
             RecordUserBehavior.recordUserBehavior(this, BizConstant.SIGN_IN);
             Intent intent = new Intent(PasswordLoginActivity.this, MainActivity.class);

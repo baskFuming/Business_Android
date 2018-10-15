@@ -70,8 +70,8 @@ public class RegisterModel {
     //微信授权登录
     public Flowable<LoginWechatBean> loginWechat(Context context, String union_id, String open_id, String gender
     ,String nickname,String avatar,String country_code) throws IOException {
-        sp = SharedPreferencesUtils.getUtil();
-        String token = (String) sp.getKey(context, "dialog", "");
+//        sp = SharedPreferencesUtils.getUtil();
+//        String token = (String) sp.getKey(context, "dialog", "");
         long timestamp = new Date().getTime() / 1000;//时间戳
         Map<String, String> map = new HashMap<>();
         map.put("union_id", union_id);
@@ -81,10 +81,10 @@ public class RegisterModel {
         map.put("avatar",avatar);
         map.put("country_code",country_code);
         map.put("timestamp", String.valueOf(timestamp));
-        map.put("token", token);
+//        map.put("token", token);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<LoginWechatBean> flowable = ApiRetrofit.getInstance().getClientApi(ApiService.class, Api.url).loginWechat(
-                union_id, open_id, gender,nickname,avatar,country_code,String.valueOf(timestamp),token,sign);
+                union_id, open_id, gender,nickname,avatar,country_code,String.valueOf(timestamp),sign);
         return flowable;
     }
 

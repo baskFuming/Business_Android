@@ -128,10 +128,9 @@ public class LoginModel {
         map.put("avatar",avatar);
         map.put("country_code",country_code);
         map.put("timestamp", String.valueOf(timestamp));
-        map.put("token", token);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<LoginWechatBean> flowable = ApiRetrofit.getInstance().getClientApi(ApiService.class, Api.url).loginWechat(
-                union_id, open_id, gender,nickname,avatar,country_code,String.valueOf(timestamp),token,sign);
+                union_id, open_id, gender,nickname,avatar,country_code,String.valueOf(timestamp),sign);
         return flowable;
     }
 
