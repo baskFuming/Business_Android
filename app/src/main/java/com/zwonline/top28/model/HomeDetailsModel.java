@@ -4,15 +4,14 @@ import android.content.Context;
 
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.ApiService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.ArticleCommentBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
 import com.zwonline.top28.bean.ShareDataBean;
-import com.zwonline.top28.bean.UserBean;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
 

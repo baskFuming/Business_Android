@@ -91,6 +91,8 @@ public class AnnouncementActivity extends BaseActivity<IAnnouncementActivity, An
                 int positions = position - 1;
                 if (iList.get(positions).is_read.equals(BizConstant.ENTERPRISE_tRUE)) {
                     presenter.mreadNotice(getApplicationContext(), iList.get(positions).notice_id);
+                    iList.get(positions).is_read=BizConstant.IS_SUC;
+                    adapter.notifyDataSetChanged();
                 }
                 Intent intent = new Intent(getApplicationContext(), NotifyDetailsActivity.class);
                 intent.putExtra("noticeId", iList.get(positions).notice_id);

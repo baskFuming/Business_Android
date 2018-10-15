@@ -1,15 +1,11 @@
 package com.zwonline.top28.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,8 +14,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.zwonline.top28.R;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.ApiService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.MyFansBean;
 import com.zwonline.top28.bean.message.MessageFollow;

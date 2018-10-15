@@ -8,7 +8,7 @@ import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
+import com.zwonline.top28.api.service.ApiService;
 import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.RegisterBean;
 import com.zwonline.top28.bean.ShortMessage;

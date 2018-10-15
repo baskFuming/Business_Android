@@ -2,13 +2,13 @@ package com.zwonline.top28.model;
 
 import android.content.Context;
 
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.DetailsBean;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
+import com.zwonline.top28.api.service.ApiService;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
 

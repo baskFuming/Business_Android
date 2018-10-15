@@ -31,7 +31,7 @@ import com.zwonline.top28.adapter.CommentDetailsAdapter;
 import com.zwonline.top28.adapter.CommentsAdapter;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.ArticleCommentBean;

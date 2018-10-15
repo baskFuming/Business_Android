@@ -3,11 +3,9 @@ package com.zwonline.top28.utils;
 import android.content.Context;
 
 import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
-import com.zwonline.top28.activity.WithoutCodeLoginActivity;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.PayService;
-import com.zwonline.top28.bean.NoticeNotReadCountBean;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.SettingBean;
 
 import java.io.IOException;

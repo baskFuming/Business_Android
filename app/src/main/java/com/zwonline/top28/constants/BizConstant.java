@@ -252,4 +252,7 @@ public class BizConstant {
      * 推荐用户
      */
     public static final String RECOMMENTUSER = "http://toutiao.28.com/Members/recommend_list.html";
+    public static final String YSMY="http://store-toutiao.28.com/wap/index.php?ctl=settings";
+    public static final String YSSEARCH="http://store-toutiao.28.com/wap/index.php?ctl=deals";
+
 }

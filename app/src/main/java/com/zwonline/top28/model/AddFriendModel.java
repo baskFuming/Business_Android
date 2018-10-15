@@ -4,9 +4,7 @@ import android.content.Context;
 
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
-import com.zwonline.top28.api.PayService;
-import com.zwonline.top28.bean.AddBankBean;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AddFriendBean;
 import com.zwonline.top28.bean.RecommendTeamsBean;
 import com.zwonline.top28.utils.SharedPreferencesUtils;

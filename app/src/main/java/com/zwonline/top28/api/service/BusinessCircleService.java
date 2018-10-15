@@ -1,4 +1,4 @@
-package com.zwonline.top28.api;
+package com.zwonline.top28.api.service;
 
 import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AddFollowBean;

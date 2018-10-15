@@ -24,7 +24,7 @@ import com.netease.nim.uikit.api.NimUIKit;
 import com.zwonline.top28.R;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AmountPointsBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.ExamineChatBean;

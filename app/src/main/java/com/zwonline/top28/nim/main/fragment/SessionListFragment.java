@@ -56,10 +56,8 @@ import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.activity.YunYingGuanActivity;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.ApiService;
 import com.zwonline.top28.base.BaseMainActivity;
-import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BannerAdBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.nim.config.preference.Preferences;
@@ -77,15 +75,11 @@ import com.zwonline.top28.nim.session.extension.SnapChatAttachment;
 import com.zwonline.top28.nim.session.extension.StickerAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.nim.yangfen.YangFenAttachment;
-import com.zwonline.top28.utils.ImageViewPlu;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.StringUtil;
-import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.badge.BadgeViews;
 import com.zwonline.top28.utils.popwindow.EmptyPopwindow;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;

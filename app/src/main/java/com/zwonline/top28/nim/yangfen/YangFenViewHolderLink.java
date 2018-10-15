@@ -14,31 +14,22 @@ import com.bumptech.glide.request.RequestOptions;
 import com.netease.nim.uikit.business.chatroom.adapter.ChatRoomMsgAdapter;
 import com.netease.nim.uikit.business.session.module.ModuleProxy;
 import com.netease.nim.uikit.business.session.module.list.MsgAdapter;
-import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderBase;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
 import com.zwonline.top28.R;
-import com.zwonline.top28.activity.AddFriendsActivity;
-import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.api.subscriber.BaseDisposableSubscribers;
 import com.zwonline.top28.bean.GetHongBaoBean;
 import com.zwonline.top28.bean.HongBaoLeftCountBean;
-import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.constants.BizConstant;
-import com.zwonline.top28.nim.redpacket.NIMOpenRpCallback;
-import com.zwonline.top28.nim.redpacket.NIMRedPacketClient;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.ImageViewPlus;
-import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.MyYAnimation;
 import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.StringUtil;
-import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
-import com.zwonline.top28.utils.popwindow.MyQrCodePopwindow;
 
 import java.io.IOException;
 import java.util.Date;
@@ -48,7 +39,6 @@ import java.util.Map;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 public class YangFenViewHolderLink extends MsgViewHolder {
 

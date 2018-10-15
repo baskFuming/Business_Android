@@ -21,7 +21,7 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.utils.StringUtil;
 
 /**
- * 添加合同
+ * 动态详情评论
  */
 public class DynamicCommentPopuWindow extends PopupWindow {
     private TextView cancel, send;
@@ -39,7 +39,7 @@ public class DynamicCommentPopuWindow extends PopupWindow {
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mView = mInflater.inflate(R.layout.dynamic_comment_pop, null);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-         cancel = (TextView) mView.findViewById(R.id.cancel);
+        cancel = (TextView) mView.findViewById(R.id.cancel);
         send = (TextView) mView.findViewById(R.id.send);
 
         //设置按钮监听

@@ -25,32 +25,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.HomePageActivity;
-import com.zwonline.top28.api.Api;
-import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.PayService;
 import com.zwonline.top28.bean.ArticleCommentBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
-import com.zwonline.top28.bean.ZanBean;
-import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
-import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.TimeUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.TextClick;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 public class DynamicCommentDetailsAdapter extends BaseAdapter {
     private List<DynamicDetailsBean.DataBean.CommentsExcerptBean> list;

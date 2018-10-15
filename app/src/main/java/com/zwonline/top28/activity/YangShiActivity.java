@@ -26,6 +26,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.netease.nim.uikit.api.NimUIKit;
 import com.umeng.socialize.UMShareAPI;
@@ -39,6 +41,7 @@ import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtils;
@@ -46,8 +49,11 @@ import com.zwonline.top28.wxapi.ShareUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import butterknife.OnClick;
 
 /**
  * 鞅市
@@ -56,10 +62,17 @@ public class YangShiActivity extends BaseActivity {
 
     private SharedPreferencesUtils sp;
     private WebView yangShiWeb;
-    private String url = "https://store-toutiao.28.com/api/login.php?from=sjtt&token=";
+    //    private String url = "https://store-toutiao.28.com/api/login.php?from=sjtt&token=";
     private String token;
     private ProgressBar progressBar;
     private RewritePopwindow mPopwindow;
+    private String url;
+    private RelativeLayout yygBack;
+    private RelativeLayout yygBackXx;
+    private TextView tvYyg;
+    private TextView tvYygs;
+    private static final String APP_CACAHE_DIRNAME = "/webcache";
+    private String content;
 
     @Override
     protected void init() {
@@ -68,10 +81,22 @@ public class YangShiActivity extends BaseActivity {
 
     //初始化
     private void initView() {
-        yangShiWeb = (WebView) findViewById(R.id.yangshi_web);
-        progressBar = (ProgressBar) findViewById(R.id.progress_Bar);
+        content = getIntent().getStringExtra("content");
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
+        if (StringUtil.isNotEmpty(content)) {
+            url = getIntent().getStringExtra("jump_url") + "&platform=app" + "&token=" + token + "&k=" + content;
+        } else {
+            url = getIntent().getStringExtra("jump_url") + "&platform=app" + "&token="+token;
+        }
+        yangShiWeb = (WebView) findViewById(R.id.yangshi_web);
+        progressBar = (ProgressBar) findViewById(R.id.progress_Bar);
+        yygBack = (RelativeLayout) findViewById(R.id.yyg_back);
+        yygBackXx = (RelativeLayout) findViewById(R.id.yyg_back_xx);
+        tvYyg = (TextView) findViewById(R.id.tv_yyg);
+        tvYygs = (TextView) findViewById(R.id.tv_yygs);
+
+        clearWebViewCache();
         webSettingInit();
     }
 
@@ -99,12 +124,17 @@ public class YangShiActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-//        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //设置缓存
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE); //设置缓存
         settings.setDomStorageEnabled(true);//设置适应Html5的一些方法
         //请求头
         Map<String, String> headMap = new HashMap<>();
         headMap.put("Accept-Language", LanguageUitils.getCurCountryLan());
-        yangShiWeb.loadUrl(url + token, headMap);
+        yangShiWeb.loadUrl(url, headMap);
+        webData();
+    }
+
+
+    public void webData() {
         yangShiWeb.setWebViewClient(new WebViewClient() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
@@ -152,26 +182,26 @@ public class YangShiActivity extends BaseActivity {
                 }
 
                 //从新登陆
-                if (url.contains("http://top28app//reLogin/")) {
-                    sp.insertKey(YangShiActivity.this, "islogin", false);
-                    sp.insertKey(YangShiActivity.this, "isUpdata", false);
-                    RecordUserBehavior.recordUserBehavior(YangShiActivity.this, BizConstant.SIGN_OUT);
-                    startActivity(new Intent(YangShiActivity.this, WithoutCodeLoginActivity.class));
-                    SharedPreferences settings = YangShiActivity.this.getSharedPreferences("SP", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.remove("diaog");
-                    editor.remove("avatar");
-                    editor.remove("uid");
-                    editor.remove("has_permission");
-                    editor.remove("nickname");
-                    editor.remove("token");
-                    editor.remove("account");
-                    editor.clear();
-                    editor.commit();
-                    finish();
-                    overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
-                    return true;
-                }
+//                if (url.contains("http://top28app//reLogin/")) {
+//                    sp.insertKey(YangShiActivity.this, "islogin", false);
+//                    sp.insertKey(YangShiActivity.this, "isUpdata", false);
+//                    RecordUserBehavior.recordUserBehavior(YangShiActivity.this, BizConstant.SIGN_OUT);
+//                    startActivity(new Intent(YangShiActivity.this, WithoutCodeLoginActivity.class));
+//                    SharedPreferences settings = YangShiActivity.this.getSharedPreferences("SP", Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = settings.edit();
+//                    editor.remove("diaog");
+//                    editor.remove("avatar");
+//                    editor.remove("uid");
+//                    editor.remove("has_permission");
+//                    editor.remove("nickname");
+//                    editor.remove("token");
+//                    editor.remove("account");
+//                    editor.clear();
+//                    editor.commit();
+//                    finish();
+//                    overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+//                    return true;
+//                }
                 //赚取算力
                 if (url.contains("http://top28app/computePowerTask/")) {
                     Intent intent1 = new Intent(YangShiActivity.this, EarnIntegralActivity.class);
@@ -337,6 +367,18 @@ public class YangShiActivity extends BaseActivity {
             public void onPageFinished(WebView view, String url) {
                 // TODO Auto-generated method stub
                 super.onPageFinished(view, url);
+                //编写 javaScript方法
+                String javascript = "javascript:function hideOther() {" +
+                        "var headers = document.getElementsByTagName('header');" +
+                        "var header = headers[0];" +
+                        "header.remove();" +
+                        "}";
+
+                //创建方法
+                view.loadUrl(javascript);
+
+                //加载方法
+                view.loadUrl("javascript:hideOther();");
             }
         });
         yangShiWeb.setWebChromeClient(new WebChromeClient() {
@@ -344,6 +386,21 @@ public class YangShiActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
+                if (title.length() > 14) {
+                    tvYyg.setText(title);
+                    tvYyg.setVisibility(View.VISIBLE);
+                    tvYygs.setVisibility(View.GONE);
+                } else {
+                    tvYygs.setText(title);
+                    tvYygs.setVisibility(View.VISIBLE);
+                    tvYyg.setVisibility(View.GONE);
+                }
+                if (yangShiWeb.canGoBack()) {
+                    yygBackXx.setVisibility(View.VISIBLE);
+                } else {
+                    yygBackXx.setVisibility(View.GONE);
+
+                }
 
             }
 
@@ -415,6 +472,7 @@ public class YangShiActivity extends BaseActivity {
         yangShiWeb.stopLoading();
         yangShiWeb.removeAllViews();
         yangShiWeb.destroy();
+        yangShiWeb.clearCache(true);
         yangShiWeb = null;
 
     }
@@ -479,4 +537,88 @@ public class YangShiActivity extends BaseActivity {
         return componentName != null;
     }
 
+    /**
+     * 清除WebView缓存
+     */
+    public void clearWebViewCache() {
+
+        //清理Webview缓存数据库
+        try {
+            deleteDatabase("webview.db");
+            deleteDatabase("webviewCache.db");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //WebView 缓存文件
+        File appCacheDir = new File(getFilesDir().getAbsolutePath() + APP_CACAHE_DIRNAME);
+
+        File webviewCacheDir = new File(getCacheDir().getAbsolutePath() + "/webviewCache");
+
+        //删除webview 缓存目录
+        if (webviewCacheDir.exists()) {
+            deleteFile(webviewCacheDir);
+        }
+        //删除webview 缓存 缓存目录
+        if (appCacheDir.exists()) {
+            deleteFile(appCacheDir);
+        }
+    }
+
+    /**
+     * 递归删除 文件/文件夹
+     *
+     * @param file
+     */
+    public void deleteFile(File file) {
+
+
+        if (file.exists()) {
+            if (file.isFile()) {
+                file.delete();
+            } else if (file.isDirectory()) {
+                File files[] = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFile(files[i]);
+                }
+            }
+            file.delete();
+        } else {
+        }
+    }
+
+    @OnClick({R.id.yyg_back, R.id.yyg_back_xx})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.yyg_back:
+                if (yangShiWeb.canGoBack()) {
+                    yangShiWeb.goBack();// 返回前一个页面
+                } else {
+                    finish();
+                }
+                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                break;
+            case R.id.yyg_back_xx:
+                finish();
+                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                break;
+        }
+    }
+    /**
+     * 监听返回键
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if ((keyCode == KeyEvent.KEYCODE_BACK) && yangShiWeb.canGoBack()) {
+//            yangShiWeb.goBack();// 返回前一个页面
+//            yygBackXx.setVisibility(View.VISIBLE);
+//            return true;
+//        } else {
+//            yygBackXx.setVisibility(View.GONE);
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

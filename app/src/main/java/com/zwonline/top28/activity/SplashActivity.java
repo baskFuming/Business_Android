@@ -129,12 +129,12 @@ public class SplashActivity extends Activity implements SplashADListener {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                SplashActivity.this.startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                SplashActivity.this.startActivity(new Intent(SplashActivity.this, GuideActivity.class));
                 finish();
             }
         }, shouldDelayMills);
 //        /** 如果加载广告失败，则直接跳转 */
-//        this.startActivity(new Intent(this, MainActivity.class));
+//        this.startActivity(new Intent(this, GuideActivity.class));
 //        this.finish();
     }
 
@@ -144,7 +144,7 @@ public class SplashActivity extends Activity implements SplashADListener {
      */
     private void next() {
         if (canJump) {
-            this.startActivity(new Intent(this, MainActivity.class));
+            this.startActivity(new Intent(this, GuideActivity.class));
             finish();
         } else {
             canJump = true;

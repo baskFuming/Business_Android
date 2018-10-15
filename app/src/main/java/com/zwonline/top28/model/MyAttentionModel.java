@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
+import com.zwonline.top28.api.service.ApiService;
 import com.zwonline.top28.bean.MyAttentionBean;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;

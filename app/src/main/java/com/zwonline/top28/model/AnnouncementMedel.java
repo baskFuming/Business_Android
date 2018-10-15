@@ -4,8 +4,7 @@ import android.content.Context;
 
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AnnouncementBean;
 import com.zwonline.top28.bean.NoticeNotReadCountBean;
 import com.zwonline.top28.bean.NotifyDetailsBean;

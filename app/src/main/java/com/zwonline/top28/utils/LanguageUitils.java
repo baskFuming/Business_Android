@@ -227,4 +227,34 @@ public class LanguageUitils {
         }
         return verName;
     }
+
+    /**
+     * 系统软键盘管理
+     * @param context
+     * @param isShow
+     */
+    public static void showKeyboard(Activity context, boolean isShow) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (null == imm)
+            return;
+
+        if (isShow) {
+            if (context.getCurrentFocus() != null) {
+                //有焦点打开
+                imm.showSoftInput(context.getCurrentFocus(), 0);
+            } else {
+                //无焦点打开
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            }
+        } else {
+            if (context.getCurrentFocus() != null) {
+                //有焦点关闭
+                imm.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            } else {
+                //无焦点关闭
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+            }
+        }
+    }
 }

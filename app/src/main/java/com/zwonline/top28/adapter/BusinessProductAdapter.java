@@ -10,42 +10,25 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.HomePageActivity;
-import com.zwonline.top28.api.Api;
-import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
-import com.zwonline.top28.api.PayService;
-import com.zwonline.top28.bean.AttentionBean;
-import com.zwonline.top28.bean.BusinessCircle;
 import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
-import com.zwonline.top28.utils.SignUtils;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 import static com.netease.nim.uikit.common.util.sys.ScreenUtil.dip2px;
 

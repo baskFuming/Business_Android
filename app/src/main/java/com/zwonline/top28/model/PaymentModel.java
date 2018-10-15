@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AmountPointsBean;
 import com.zwonline.top28.bean.OrderInfoBean;
 import com.zwonline.top28.bean.PrepayPayBean;
@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 
 /**
  * Created by sdh on 2018/3/12.

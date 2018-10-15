@@ -22,7 +22,7 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.PayMentAdapter;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.BalanceBean;

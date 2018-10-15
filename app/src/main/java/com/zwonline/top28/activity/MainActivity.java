@@ -47,6 +47,7 @@ import com.zwonline.top28.fragment.FriendCircleFragment;
 import com.zwonline.top28.fragment.HomeFragment;
 import com.zwonline.top28.fragment.InformationFragment;
 import com.zwonline.top28.fragment.MyFragment;
+import com.zwonline.top28.fragment.YangShiFragment;
 import com.zwonline.top28.nim.session.SessionHelper;
 import com.zwonline.top28.nim.team.TeamCreateHelper;
 import com.zwonline.top28.presenter.MainPresenter;
@@ -78,6 +79,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private FriendCircleFragment businessFragment;
     private InformationFragment informationFragment;
     private MyFragment myFragment;
+    private YangShiFragment yangShiFragment;
     private ExamineFragment examineFragment;
     private List<RecentContact> items;
     private int unreadMsgsCount;
@@ -120,6 +122,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         businessFragment = new FriendCircleFragment();
         informationFragment = new InformationFragment();
         myFragment = new MyFragment();
+        yangShiFragment=new YangShiFragment();
         initView();
 //        ToastUtils.showToast(this,LanguageUitils.getVersionName(this)+"");
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -239,30 +242,38 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                 break;
             case R.id.rb_yangshi:
                 if (islogine) {
-                    if (page == 1) {
-                        rbHome.setChecked(true);
-                        switchFragment(homeFragment);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    } else if (page == 3) {
-                        rbBusinessCircle.setChecked(true);
-                        switchFragment(businessFragment);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    } else if (page == 4) {
-                        rbInfo.setChecked(true);
-                        switchFragment(informationFragment);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    } else if (page == 5) {
-                        rbMy.setChecked(true);
-                        switchFragment(myFragment);
-                        StatusBarUtil.setColor(this, getResources().getColor(R.color.reded), 0);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
-                    }
+//                    if (page == 1) {
+//                        rbHome.setChecked(true);
+//                        switchFragment(homeFragment);
+//                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                    } else if (page == 3) {
+//                        rbBusinessCircle.setChecked(true);
+//                        switchFragment(businessFragment);
+//                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                    } else if (page == 4) {
+//                        rbInfo.setChecked(true);
+//                        switchFragment(informationFragment);
+//                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                    } else if (page == 5) {
+//                        rbMy.setChecked(true);
+//                        switchFragment(myFragment);
+//                        StatusBarUtil.setColor(this, getResources().getColor(R.color.reded), 0);
+//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
+//                    }
 //
-                    startActivity(new Intent(this, YangShiActivity.class));
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//                    startActivity(new Intent(this, YangShiActivity.class));
+//                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    rbInfo.setChecked(false);
+                    rbHome.setChecked(false);
+                    rbMy.setChecked(false);
+                    rbBusinessCircle.setChecked(false);
+                    rbYangShi.setChecked(true);
+                    switchFragment(yangShiFragment);
+                    StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 } else {
                     Intent infoIntent = new Intent(this, WithoutCodeLoginActivity.class);
 //                    infoIntent.putExtra("login_type", BizConstant.BUSINESS_LOGIN);
@@ -643,6 +654,12 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     public boolean dispatchTouchEvent(MotionEvent ev) {
         for (MyTouchListener listener : myTouchListeners) {
             listener.onTouchEvent(ev);
+            View v = getCurrentFocus();
+//            if (LanguageUitils.isShouldHideInput(v, ev)) {
+//                if (LanguageUitils.hideInputMethod(this, v)) {
+//                    return true; //隐藏键盘时，其他控件不响应点击事件==》注释则不拦截点击事件
+//                }
+//            }
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -699,6 +716,5 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         // my own policy
         return "99+";
     }
-
 }
 

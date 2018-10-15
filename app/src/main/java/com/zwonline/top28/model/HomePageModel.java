@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.ApiService;
-import com.zwonline.top28.api.BusinessCircleService;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.ApiService;
+import com.zwonline.top28.api.service.BusinessCircleService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AmountPointsBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.ExamineChatBean;

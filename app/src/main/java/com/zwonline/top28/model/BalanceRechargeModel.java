@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AmountPointsBean;
 import com.zwonline.top28.bean.BalanceRechargeBean;
 import com.zwonline.top28.bean.OrderInfoBean;

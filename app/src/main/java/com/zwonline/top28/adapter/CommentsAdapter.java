@@ -17,7 +17,7 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
-import com.zwonline.top28.api.PayService;
+import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.ArticleCommentBean;
 import com.zwonline.top28.bean.ZanBean;
 import com.zwonline.top28.utils.ImageViewPlus;
