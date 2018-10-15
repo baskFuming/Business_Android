@@ -253,6 +253,7 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
         LoginWechatBean loginWechatBean = new LoginWechatBean();
         msg = loginWechatBean.getMsg();
         if (status == 1) {
+            loginProgress.setVisibility(View.GONE);
             sp.insertKey(PasswordLoginActivity.this, "islogin", true);
             sp.insertKey(PasswordLoginActivity.this, "dialog", loginWechatBean.getDialog());
 
@@ -439,7 +440,7 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
                 String iconurl = map.get("iconurl");
 //                ToastUtils.showToast(PasswordLoginActivity.this, "name=" + name + ",gender=" + gender);
                 //拿到信息去请求登录接口。。。  差一个接口
-                presenter.loginWechatListen(PasswordLoginActivity.this,union_id,open_id,gender,"","","");
+                presenter.loginWechatListen(PasswordLoginActivity.this,union_id,open_id,gender,name,iconurl,"");
             }
 
             /**

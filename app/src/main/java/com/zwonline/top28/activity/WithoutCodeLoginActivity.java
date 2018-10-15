@@ -591,6 +591,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
             @Override
             public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> map) {
                 ToastUtils.showToast(WithoutCodeLoginActivity.this, platform + "授权成功");
+                sp.insertKey(WithoutCodeLoginActivity.this, "islogin", true);
                 //sdk是6.4.4的,但是获取值的时候用的是6.2以前的(access_token)才能获取到值,未知原因
                 String uid = map.get("uid");
                 String open_id = map.get("openid");//微博没有
@@ -602,8 +603,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                 String gender = map.get("gender");
                 String iconurl = map.get("iconurl");
                 //拿到信息去请求登录接口。。。差一个接口
-                ToastUtils.showToast(WithoutCodeLoginActivity.this,name+"=="+gender);
-                presenter.loginWechatListen(WithoutCodeLoginActivity.this,union_id,open_id,gender,"","","");
+                presenter.loginWechatListen(WithoutCodeLoginActivity.this,union_id,open_id,gender,name,iconurl,"");
             }
             /**
              * @desc 授权失败的回调
