@@ -437,9 +437,13 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
                 String name = map.get("name");
                 String gender = map.get("gender");
                 String iconurl = map.get("iconurl");
+                String city = map.get("city");
+                String province = map.get("province");
+                String country = map.get("country");
+                String language  = map.get("language");
 //                ToastUtils.showToast(PasswordLoginActivity.this, "name=" + name + ",gender=" + gender);
                 //拿到信息去请求登录接口。。。  差一个接口
-                presenter.loginWechatListen(PasswordLoginActivity.this,union_id,open_id,gender,name,iconurl,"");
+                presenter.loginWechatListen(PasswordLoginActivity.this,union_id,open_id,gender,name,iconurl,"",city,province,country,language);
             }
 
 

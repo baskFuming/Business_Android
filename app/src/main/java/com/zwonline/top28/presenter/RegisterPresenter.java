@@ -107,11 +107,12 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
             e.printStackTrace();
         }
     }
-
+    //city province country language
     //微信登录
-    public void loginWechatListen(final Context context, String union_id, String open_id, String gender, String nickname, String avatar, String country_code) {
+    public void loginWechatListen(final Context context, String union_id, String open_id, String gender, String nickname, String avatar, String country_code
+    ,String city,String province,String country,String language) {
         try {
-            Flowable<LoginWechatBean> flowable = model.loginWechat(context, union_id, open_id, gender, nickname, avatar, country_code);
+            Flowable<LoginWechatBean> flowable = model.loginWechat(context, union_id, open_id, gender, nickname, avatar, country_code,city,province,country,language);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<LoginWechatBean>() {
@@ -124,6 +125,7 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
                                     model.doLogin(loginWechatBean.getData().getYunxin().getAccount(), loginWechatBean.getData().getYunxin().getToken());
                                     sp.insertKey(context, "account", loginWechatBean.getData().getYunxin().getAccount());
                                     sp.insertKey(context, "token", loginWechatBean.getData().getYunxin().getToken());
+                                    sp.insertKey(context, "dialog", loginWechatBean.getDialog());
                                     iRegisterActivity.isSuccess(loginWechatBean.getStatus(), loginWechatBean.getDialog(),
                                             loginWechatBean.getData().getYunxin().getToken(),
                                             loginWechatBean.getData().getYunxin().getAccount()

@@ -113,10 +113,10 @@ public class LoginModel {
         Flowable<LoginBean> flowable = ApiRetrofit.getInstance().getClientApi(ApiService.class, Api.url).loginUserVerifys(mobile, shortmsg, String.valueOf(timestamp), sign, incode, dialog);
         return flowable;
     }
-
+    //city province country language
     //微信授权登录
     public Flowable<LoginWechatBean> loginWechat(Context context, String union_id, String open_id, String gender
-            , String nickname, String avatar, String country_code) throws IOException {
+            , String nickname, String avatar, String country_code,String city,String province,String country,String language) throws IOException {
         sp = SharedPreferencesUtils.getUtil();
         String token = (String) sp.getKey(context, "dialog", "");
         long timestamp = new Date().getTime() / 1000;//时间戳
@@ -127,10 +127,15 @@ public class LoginModel {
         map.put("nickname",nickname);
         map.put("avatar",avatar);
         map.put("country_code",country_code);
+        map.put("city",city);
+        map.put("province",province);
+        map.put("country",country);
+        map.put("language",language);
         map.put("timestamp", String.valueOf(timestamp));
+        map.put("token", token);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<LoginWechatBean> flowable = ApiRetrofit.getInstance().getClientApi(ApiService.class, Api.url).loginWechat(
-                union_id, open_id, gender,nickname,avatar,country_code,String.valueOf(timestamp),sign);
+                union_id, open_id, gender,nickname,avatar,country_code,city,province,country,language,String.valueOf(timestamp),token,sign);
         return flowable;
     }
 

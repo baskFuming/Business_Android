@@ -620,9 +620,13 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                 String name = map.get("name");
                 String gender = map.get("gender");
                 String iconurl = map.get("iconurl");
-
+                //city province country language
+                String city = map.get("city");
+                String province = map.get("province");
+                String country = map.get("country");
+                String language  = map.get("language");
                 //拿到信息去请求登录接口。。。差一个接口
-                presenter.loginWechatListen(WithoutCodeLoginActivity.this,union_id,open_id,gender,name,iconurl,"");
+                presenter.loginWechatListen(WithoutCodeLoginActivity.this,union_id,open_id,gender,name,iconurl,"",city,province,country,language);
             }
             /**
              * @desc 授权失败的回调

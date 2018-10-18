@@ -157,8 +157,14 @@ public interface ApiService {
             @Field("nickname") String nickname,
             @Field("avatar") String avatar,
             @Field("country_code") String country_code,
+            @Field("city") String city,
+            @Field("province") String province,
+            @Field("country") String country,
+            @Field("language") String language,
             @Field("timestamp") String timestamp,
+            @Field("token") String token,
             @Field("sign") String sign
+
     );
 
     //首页
