@@ -137,7 +137,7 @@
             android:process=":core" />
 
         <activity
-            android:name=".activity.StartupActivity"
+            android:name=".activity.SplashActivity"
             android:configChanges="locale|layoutDirection"
             android:theme="@style/Theme.MyAppTheme">
             <intent-filter>
@@ -465,12 +465,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".nim.main.activity.NoDisturbActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity
             android:name=".nim.contact.activity.AddFriendActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
@@ -581,17 +575,7 @@
             android:configChanges="keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- map -->
-        <activity
-            android:name=".nim.location.activity.LocationAmapActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".nim.location.activity.NavigationAmapActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+
 
         <!-- 消息历史搜索 -->
         <activity
@@ -698,7 +682,6 @@
         <activity android:name=".activity.InformationNoticeActivity" />
         <activity android:name=".activity.DataAnalysisActivity" />
         <activity android:name=".activity.GroupActivity" />
-        <activity android:name=".expandlistview.activity.ExpandableActivity" />
 
         <!-- targetSDKVersion >= 24时才需要添加这个provider。provider的authorities属性的值为${applicationId}.fileprovider，请开发者根据自己的${applicationId}来设置这个值，例如本例中applicationId为"com.qq.e.union.demo"。 -->
         <provider
@@ -714,33 +697,35 @@
         <!-- 声明SDK所需要的组件 -->
         <service
             android:name="com.qq.e.comm.DownloadService"
-            android:exported="false" />
+            android:exported="false" ></service>
         <!-- 请开发者注意字母的大小写，ADActivity，而不是AdActivity -->
         <!-- 请开发者注意字母的大小写，ADActivity，而不是AdActivity -->
         <activity
             android:name="com.qq.e.ads.ADActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <!-- 声明SDK所需要的组件 -->
-        <service
-            android:name="com.qq.e.comm.DownloadService"
-            android:exported="false" />
 
+        <!--<activity-->
+            <!--android:name=".activity.SplashActivity"-->
+            <!--android:launchMode="singleTask" />-->
         <activity
-            android:name=".activity.SplashActivity"
-            android:launchMode="singleTask" />
-        <activity android:name=".activity.UserProTocolActivity"
+            android:name=".activity.UserProTocolActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.PrivacyPolicyActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.PrivacyPolicyActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
-            />
-        <activity android:name=".activity.AboutUsActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.AboutUsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".activity.GuideActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.GuideActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activity.BindPhoneActivity" />
+        <activity android:name=".activity.BindSuccessActivity"></activity>
     </application>
 
 </manifest>

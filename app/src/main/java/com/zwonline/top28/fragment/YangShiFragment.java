@@ -28,6 +28,7 @@ import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.HomeSearchActivity;
+import com.zwonline.top28.activity.InformationNoticeActivity;
 import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.activity.YangShiActivity;
 import com.zwonline.top28.base.BasesFragment;
@@ -113,7 +114,7 @@ public class YangShiFragment extends BasesFragment<IYangShiActivity, YangShiPres
             public void onClick(View v) {
                 search_relative.setVisibility(View.GONE);
                 search.setText("");
-                LanguageUitils.showKeyboard(getActivity(),false);
+                LanguageUitils.showKeyboard(getActivity(), false);
             }
         });
         search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -264,6 +265,7 @@ public class YangShiFragment extends BasesFragment<IYangShiActivity, YangShiPres
                 Intent intent = new Intent(getActivity(), YangShiActivity.class);
                 intent.putExtra("jump_url", BizConstant.YSMY);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
 
             case R.id.ys_search:
@@ -272,9 +274,7 @@ public class YangShiFragment extends BasesFragment<IYangShiActivity, YangShiPres
                 search.setFocusableInTouchMode(true);
                 search.requestFocus();
                 search.findFocus();
-//                InputMethodManager inputMethodManager=(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                LanguageUitils.showKeyboard(getActivity(),true);
+                LanguageUitils.showKeyboard(getActivity(), true);
                 break;
         }
     }

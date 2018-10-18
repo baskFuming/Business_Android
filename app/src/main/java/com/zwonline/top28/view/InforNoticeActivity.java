@@ -17,7 +17,7 @@ public interface InforNoticeActivity {
     /**
      * 获取集合列表
      */
-    void inForNoticeList(List<InforNoticeBean.DataBean> dataBeanList);
+    void inForNoticeList(InforNoticeBean dataBeanList);
 
     /**
      * 获取第二个集合属性

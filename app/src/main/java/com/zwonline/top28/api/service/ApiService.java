@@ -112,6 +112,29 @@ public interface ApiService {
             @Field("token") String token
     );
 
+    //绑定手机号
+    @FormUrlEncoded
+    @POST("/App/Public/bindMobile")
+    Flowable<AttentionBean> bindMobile(
+            @Field("mobile") String mobile,
+            @Field("union_id") String union_id,
+            @Field("timestamp") String timestamp,
+            @Field("sign") String sign,
+            @Field("token") String token
+    );
+
+    //验证短信验证码是否正确
+    @FormUrlEncoded
+    @POST("/App/Public/verifySmsCode")
+    Flowable<AttentionBean> verifySmsCode(
+            @Field("mobile") String mobile,
+            @Field("code") String code,
+            @Field("timestamp") String timestamp,
+            @Field("sign") String sign,
+            @Field("token") String token
+    );
+
+
     //验证码登录有邀请码
     @FormUrlEncoded
     @POST("/App/Public/login_sms")

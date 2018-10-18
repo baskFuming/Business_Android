@@ -289,7 +289,11 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                         @Override
                         protected void onBaseNext(DynamicDetailsBean dynamicDetailsBean) {
                             Log.e("newContentBean", dynamicDetailsBean.msg);
-                            iSendFriendCircleActivity.showDynamicComment(dynamicDetailsBean.data);
+                            if (dynamicDetailsBean.status==1){
+                                iSendFriendCircleActivity.showDynamicComment(dynamicDetailsBean.data);
+                            }else {
+                                ToastUtils.showToast(context,dynamicDetailsBean.msg);
+                            }
                         }
 
                         @Override
@@ -839,7 +843,9 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                     .subscribeWith(new DisposableSubscriber<LikeListBean>() {
                         @Override
                         public void onNext(LikeListBean likeListBean) {
-                            iSendFriendCircleActivity.showGetLikeList(likeListBean.data);
+                            if (likeListBean.status==1){
+                                iSendFriendCircleActivity.showGetLikeList(likeListBean.data);
+                            }
                         }
 
                         @Override

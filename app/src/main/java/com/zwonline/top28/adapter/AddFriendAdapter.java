@@ -29,6 +29,7 @@ import com.zwonline.top28.nim.DemoCache;
 import com.zwonline.top28.nim.contact.activity.UserProfileActivity;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.ImageViewPlus;
+import com.zwonline.top28.utils.ToastUtils;
 
 import java.util.List;
 

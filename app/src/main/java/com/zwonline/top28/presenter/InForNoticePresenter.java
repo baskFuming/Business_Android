@@ -34,7 +34,7 @@ public class InForNoticePresenter extends BasePresenter<InforNoticeActivity> {
                     .subscribeWith(new BaseDisposableSubscriber<InforNoticeBean>(context) {
                         @Override
                         protected void onBaseNext(InforNoticeBean myIssueBean) {
-                            iHomePageActivity.inForNoticeList(myIssueBean.data);
+                            iHomePageActivity.inForNoticeList(myIssueBean);
 
                         }
 

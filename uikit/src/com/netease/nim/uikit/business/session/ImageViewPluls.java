@@ -70,6 +70,10 @@ public class ImageViewPluls extends ImageView {
         mRectRoundRadius = ta.getDimensionPixelSize(R.styleable.ImageViewPlu_rectRoundRadius, dip2px(DEFAULT_RECT_ROUND_RADIUS));
         ta.recycle();
     }
+    public ImageViewPluls(Context context) {
+        super(context);
+
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {

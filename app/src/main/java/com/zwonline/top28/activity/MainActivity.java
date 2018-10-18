@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -114,6 +116,9 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private RadioButton rbInfo;
     private RadioButton rbMy;
     private MainBadgeView badgeView;
+    private ImageView infoGuide;
+    private SharedPreferences fristInfo;
+    private boolean isFristInfo;
 
     @Override
     protected void init() {
@@ -122,8 +127,9 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         businessFragment = new FriendCircleFragment();
         informationFragment = new InformationFragment();
         myFragment = new MyFragment();
-        yangShiFragment=new YangShiFragment();
+        yangShiFragment = new YangShiFragment();
         initView();
+
 //        ToastUtils.showToast(this,LanguageUitils.getVersionName(this)+"");
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
@@ -216,7 +222,16 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         mian = (LinearLayout) findViewById(R.id.main);
         RadioGroup navigationBar = (RadioGroup) findViewById(R.id.rg_main);
         rbHome = (RadioButton) findViewById(R.id.rb_home);
-
+        infoGuide = findView(R.id.info_guide);
+        infoGuide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor edit = fristInfo.edit();//创建状态储存文件
+                edit.putBoolean("isFristInfo", false);//将参数put，改变其状态
+                edit.commit();//保证文件的创建和编辑
+                infoGuide.setVisibility(View.GONE);
+            }
+        });
         rbYangShi = (RadioButton) findViewById(R.id.rb_yangshi);
         rbBusinessCircle = (RadioButton) findViewById(R.id.rb_business_circle);
         rbInfo = (RadioButton) findViewById(R.id.rb_info);
@@ -292,11 +307,22 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                 break;
             case R.id.rb_info:
                 if (islogine) {
+                    fristInfo = getSharedPreferences("fristInfo", 0);
+                    //这个文件里面的布尔常量名，和它的初始状态，状态为是，则触发下面的方法
+                    isFristInfo = fristInfo.getBoolean("isFristInfo", true);
                     rbInfo.setChecked(true);
                     rbHome.setChecked(false);
                     rbMy.setChecked(false);
                     rbBusinessCircle.setChecked(false);
                     rbYangShi.setChecked(false);
+                    if (isFristInfo) {
+                        infoGuide.setVisibility(View.VISIBLE);
+                        SharedPreferences.Editor edit = fristInfo.edit();//创建状态储存文件
+                        edit.putBoolean("isFristInfo", false);//将参数put，改变其状态
+                        edit.commit();//保证文件的创建和编辑
+                    } else {
+                        infoGuide.setVisibility(View.GONE);
+                    }
                     switchFragment(informationFragment);
                     StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -423,6 +449,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     protected void onResume() {
         super.onResume();
         updateUnreadCount();
+
     }
 
 
@@ -716,5 +743,6 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         // my own policy
         return "99+";
     }
+
 }
 

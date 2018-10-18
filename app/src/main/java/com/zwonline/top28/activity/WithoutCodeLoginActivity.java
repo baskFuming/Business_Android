@@ -34,6 +34,7 @@ import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.base.BaseActivity;
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShortMessage;
@@ -216,7 +217,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                 startActivityForResult(new Intent(WithoutCodeLoginActivity.this, CityActivity.class), 1);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
-            //威信授权登录
+            //微信授权登录
             case R.id.WX_login:
                 if (!APP.mWxApi.isWXAppInstalled()) {
                     Toast.makeText(this, "您还未安装微信客户端", Toast.LENGTH_SHORT).show();
@@ -302,6 +303,25 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
         } else {
             Toast.makeText(getApplicationContext(), "授权登录失败", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * 验证短信验证码是否正确
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showVerifySmsCode(AttentionBean attentionBean) {
+    }
+
+    /**
+     * 绑定手机号
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showBindMobile(AttentionBean attentionBean) {
+
     }
 
     //系统返回键
@@ -600,6 +620,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                 String name = map.get("name");
                 String gender = map.get("gender");
                 String iconurl = map.get("iconurl");
+
                 //拿到信息去请求登录接口。。。差一个接口
                 presenter.loginWechatListen(WithoutCodeLoginActivity.this,union_id,open_id,gender,name,iconurl,"");
             }

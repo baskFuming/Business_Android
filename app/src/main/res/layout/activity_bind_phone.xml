@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.BindPhoneActivity">
+
+    <include layout="@layout/base_title_helper" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="35dp"
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="51dp"
+            android:src="@mipmap/binding_icon1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="为了您的账户安全\n请及时绑定手机"
+            android:textSize="18sp"
+            android:textColor="@color/reded"
+            android:layout_marginLeft="15dp"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/bind_countries"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:paddingRight="10dp"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="国家和地区"
+            android:textColor="#3D3D3D"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="20dp"
+                android:text="中国"
+                android:textColor="#3D3D3D"
+                android:textSize="16sp"
+                android:visibility="visible" />
+
+
+            <ImageView
+                android:id="@+id/bind_imag"
+                android:layout_width="14dp"
+                android:layout_height="16dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/more_icon" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E1E2E4"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/quhao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+86"
+            android:textColor="#404040"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/iphone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="26dp"
+            android:background="@null"
+            android:hint="@string/without_import_phone_num"
+            android:inputType="number"
+            android:maxLength="15"
+            android:textColor="#404040"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="15dp"
+        android:background="#E1E2E4"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_yanzheng"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="4"
+            android:background="@null"
+            android:hint="请输入短信验证码"
+            android:inputType="number"
+           android:maxLength="8"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_yanzheng"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:gravity="right"
+            android:text="获取验证码"
+            android:textColor="#228FFE"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="15dp"
+        android:background="#E1E2E4"></View>
+
+
+    <TextView
+        android:id="@+id/btn_bind"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/btn_register_shape"
+        android:text="立即绑定"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+</LinearLayout>

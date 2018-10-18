@@ -69,17 +69,18 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
+
     <View
-        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
         android:background="#E1E2E4"></View>
 
     <RelativeLayout
         android:id="@+id/amentpossword"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
         android:paddingRight="10dp">
 
@@ -100,42 +101,74 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
+
     <View
-        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:background="#E1E2E4"></View>
+
     <RelativeLayout
-        android:id="@+id/join_group"
+        android:id="@+id/bind_phone"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
-        android:visibility="gone"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:text="加群设置"
+            android:text="绑定手机号"
             android:textColor="@color/black"
             android:textSize="18sp" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_alignParentRight="true"
+    >
+    <TextView
+        android:id="@+id/bind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="未绑定"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_gravity="center_vertical"
+        android:visibility="visible" />
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/more_icon" />
+
+    <ImageView
+
+        android:id="@+id/bind_imag"
+        android:layout_width="14dp"
+        android:layout_height="16dp"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:src="@mipmap/more_icon" />
+</LinearLayout>
+
     </RelativeLayout>
+
+    <View
+
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:background="#E1E2E4"></View>
 
     <RelativeLayout
         android:id="@+id/about_owen"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
         android:paddingRight="10dp">
 
@@ -155,16 +188,19 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
+
     <View
-        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:background="#E1E2E4"></View>
+
     <RelativeLayout
         android:id="@+id/shield_settting"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
         android:paddingRight="10dp">
 
@@ -184,17 +220,19 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
+
     <View
-        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:background="#E1E2E4"></View>
 
     <RelativeLayout
         android:id="@+id/feedback"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
         android:paddingRight="10dp">
 
@@ -215,17 +253,19 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
+
     <View
-        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:background="#E1E2E4"></View>
 
     <RelativeLayout
         android:id="@+id/exit_login"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
         android:paddingRight="10dp">
 
@@ -245,9 +285,11 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/more_icon" />
     </RelativeLayout>
+
     <View
-        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:background="#E1E2E4"></View>
 </LinearLayout>

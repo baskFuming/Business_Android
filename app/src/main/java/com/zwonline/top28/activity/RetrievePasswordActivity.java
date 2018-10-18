@@ -19,6 +19,7 @@ import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.base.BaseActivity;
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShortMessage;
@@ -138,6 +139,25 @@ public class RetrievePasswordActivity extends BaseActivity<IRegisterActivity, Re
 
     @Override
     public void loginShowWechat(LoginWechatBean bean) {
+
+    }
+
+    /**
+     * 验证短信验证码是否正确
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showVerifySmsCode(AttentionBean attentionBean) {
+    }
+
+    /**
+     * 绑定手机号
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showBindMobile(AttentionBean attentionBean) {
 
     }
 

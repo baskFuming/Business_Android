@@ -75,7 +75,7 @@
                     android:id="@+id/yangshi_banner"
                     android:layout_width="match_parent"
                     android:layout_height="137dp"
-                    android:background="@mipmap/gray_logo2"
+                    android:background="@mipmap/gray_logo3"
                     app:image_scale_type="fit_xy">
 
                 </com.youth.banner.Banner>
@@ -170,6 +170,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/relative"
-            android:background="#26000000" />
+            android:background="#59000000" />
     </RelativeLayout>
 </RelativeLayout>

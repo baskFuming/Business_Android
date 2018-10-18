@@ -85,7 +85,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int type = getItemViewType(position);
         RequestOptions requestOption = new RequestOptions().placeholder(R.mipmap.gray_logo).error(R.mipmap.gray_logo);
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.gray_logo2).error(R.mipmap.gray_logo2);
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.gray_logo3).error(R.mipmap.gray_logo3);
         if (type == TYPE_ONE) {
             try {
                 String time = homelist.get(position).showtime;

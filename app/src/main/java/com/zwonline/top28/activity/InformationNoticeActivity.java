@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.netease.nim.uikit.business.robot.parser.elements.base.Element;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.InforNoticeAdpater;
 import com.zwonline.top28.base.BaseActivity;
@@ -15,6 +16,7 @@ import com.zwonline.top28.bean.InforNoticeBean;
 import com.zwonline.top28.bean.InforNoticeCleanBean;
 import com.zwonline.top28.bean.TipBean;
 import com.zwonline.top28.presenter.InForNoticePresenter;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.InforNoticeActivity;
 
@@ -90,11 +92,11 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
     }
 
     @Override
-    public void inForNoticeList(List<InforNoticeBean.DataBean> dataBeanList) {
+    public void inForNoticeList(final InforNoticeBean dataBeanList) {
         if (page == 1) {
             dList.clear();
         }
-        dList.addAll(dataBeanList);
+        dList.addAll(dataBeanList.data);
         adpater.notifyDataSetChanged();
         adpater.setOnClickItemListener(new InforNoticeAdpater.OnClickItemListener() {
             @Override
@@ -102,15 +104,19 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
                 if (AntiShake.check(view.getId())) {    //判断是否多次点击
                     return;
                 }
-                String url = dList.get(position).url;
-                String[] str = url.split("/");
-
+                if (dataBeanList.status==1){
+                    String url = dList.get(position).url;
+                    String[] str = url.split("/");
 //                //跳转到动态详情页面
-                Intent intent = new Intent(getApplicationContext(), DynamicDetailsActivity.class);
-                intent.putExtra("moment_id", str[1]);
-                startActivity(intent);
-                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-            }
+                    Intent intent = new Intent(getApplicationContext(), DynamicDetailsActivity.class);
+                    intent.putExtra("moment_id", str[1]);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                }else {
+                    ToastUtils.showToast(getApplicationContext(),dataBeanList.msg);
+                }
+                }
+
         });
         inForNoticeLoadMore();
     }

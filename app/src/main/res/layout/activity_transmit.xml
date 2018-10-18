@@ -8,6 +8,41 @@
     tools:context="com.zwonline.top28.activity.TransmitActivity">
 
     <RelativeLayout
+        android:id="@+id/transmit_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/guide_vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/guide_ll_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"></LinearLayout>
+
+        <Button
+            android:id="@+id/guide_ib_start"
+            android:layout_width="123dp"
+            android:layout_height="52dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/btn_red_shape"
+            android:text="朕已阅"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/white">
@@ -16,6 +51,7 @@
             android:id="@+id/back"
             android:layout_width="50dp"
             android:layout_height="match_parent">
+
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="21dp"
@@ -34,59 +70,65 @@
             android:textColor="#2B2B2B"
             android:textSize="18sp" />
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_marginTop="20dp"
         android:background="@color/white">
 
         <EditText
             android:id="@+id/edit_web"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:paddingTop="5dp"
-            android:inputType="textMultiLine"
-            android:gravity="top"
             android:layout_marginTop="5dp"
             android:background="@drawable/rectangle_shape_gay"
+            android:gravity="top"
             android:hint="@string/article_press_paste"
+            android:inputType="textMultiLine"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
             android:textColor="#888888" />
     </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/transmit_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="70dp"
         android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:orientation="horizontal"
 
         >
+
         <Button
             android:id="@+id/empty"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="@string/common_btn_empty"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_register_shape"
             android:layout_marginRight="20dp"
-            />
+            android:background="@drawable/btn_register_shape"
+            android:text="@string/common_btn_empty"
+            android:textColor="@color/white" />
+
         <Button
             android:id="@+id/compile"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/btn_register_shape"
             android:text="@string/common_btn_edit"
             android:textColor="@color/white"
-            android:background="@drawable/btn_register_shape"
-            android:layout_marginLeft="20dp"
 
             />
     </LinearLayout>
+
     <WebView
+        android:id="@+id/transmit_web"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/transmit_web"
         android:visibility="gone"></WebView>
 </LinearLayout>

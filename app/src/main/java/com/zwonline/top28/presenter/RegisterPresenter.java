@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BasePresenter;
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.RegisterBean;
 import com.zwonline.top28.bean.ShortMessage;
@@ -40,8 +41,8 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
 
 
     //获取手机验证码
-    public void getPhoneCode(String phone, String type,String token,String country_code) {
-        Flowable<ShortMessage> flowable = model.getPhoneCode(phone, type,token,country_code);
+    public void getPhoneCode(String phone, String type, String token, String country_code) {
+        Flowable<ShortMessage> flowable = model.getPhoneCode(phone, type, token, country_code);
         flowable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new BaseDisposableSubscriber<ShortMessage>(context) {
@@ -77,7 +78,7 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
     //注册用户
     public void inject(String mobile, String smscode, String password, String passwordVerify, String token) {
         try {
-            Flowable<RegisterBean> flowable = model.registerUser(context,mobile, smscode, password, passwordVerify, token);
+            Flowable<RegisterBean> flowable = model.registerUser(context, mobile, smscode, password, passwordVerify, token);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<RegisterBean>() {
@@ -106,18 +107,19 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
             e.printStackTrace();
         }
     }
+
     //微信登录
     public void loginWechatListen(final Context context, String union_id, String open_id, String gender, String nickname, String avatar, String country_code) {
         try {
-            Flowable<LoginWechatBean> flowable = model.loginWechat(context,union_id, open_id, gender, nickname,avatar,country_code);
+            Flowable<LoginWechatBean> flowable = model.loginWechat(context, union_id, open_id, gender, nickname, avatar, country_code);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<LoginWechatBean>() {
                         @Override
                         public void onNext(LoginWechatBean loginWechatBean) {
-                            if (loginWechatBean!=null&&loginWechatBean.getData()!=null){
+                            if (loginWechatBean != null && loginWechatBean.getData() != null) {
                                 iRegisterActivity.loginShowWechat(loginWechatBean);
-                                if (loginWechatBean.getStatus()==1){
+                                if (loginWechatBean.getStatus() == 1) {
                                     //登录云信
                                     model.doLogin(loginWechatBean.getData().getYunxin().getAccount(), loginWechatBean.getData().getYunxin().getToken());
                                     sp.insertKey(context, "account", loginWechatBean.getData().getYunxin().getAccount());
@@ -128,7 +130,7 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
                                     );
                                     iRegisterActivity.getToken(loginWechatBean.getDialog());
                                 }
-                            }else {
+                            } else {
                                 iRegisterActivity.onErro();
 
                             }
@@ -149,5 +151,70 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
         }
     }
 
+    /**
+     * 验证短信验证码是否正确
+     *
+     * @param context
+     * @param mobile
+     * @param code
+     * @param token
+     */
+    public void VerifySmsCode(Context context, String mobile, String code, String token) {
+        try {
+            Flowable<AttentionBean> flowable = model.mVerifySmsCode(context, mobile, code, token);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<AttentionBean>() {
+                        @Override
+                        public void onNext(AttentionBean registerBean) {
+                            iRegisterActivity.showVerifySmsCode(registerBean);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 绑定手机号
+     *
+     * @param context
+     * @param mobile
+     * @param union_id
+     * @param token
+     */
+    public void BindMobile(Context context, String mobile, String union_id, String token) {
+        try {
+            Flowable<AttentionBean> flowable = model.mBindMobile(context, mobile, union_id, token);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<AttentionBean>() {
+                        @Override
+                        public void onNext(AttentionBean registerBean) {
+                            iRegisterActivity.showBindMobile(registerBean);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

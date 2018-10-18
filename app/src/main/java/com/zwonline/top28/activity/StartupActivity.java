@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  * @date 2018/1/12
  */
 public class StartupActivity extends AppCompatActivity  {
-    private int count = 2;
+    private int count = 1;
     private Timer timer;
     private SharedPreferencesUtils sp;
     private SplashAD splashAD;

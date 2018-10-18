@@ -162,8 +162,12 @@ public class SessionListFragment extends TabFragment {
         notice = (LinearLayout) view.findViewById(R.id.notice);
         noticeImg = (ImageView) view.findViewById(R.id.notice_img);
         infoScan = (LinearLayout) view.findViewById(R.id.info_scan);
-
-
+//        private ImageViewPluls advertisings;
+//        private RelativeLayout adLayout;
+//        private TextView adTv;
+        adLayout=new RelativeLayout(getActivity());
+        advertisings=new ImageViewPluls(getActivity());
+        adTv=new TextView(getActivity());
         notice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -532,8 +536,7 @@ public class SessionListFragment extends TabFragment {
                             String is_show = attentionBean.data.is_show;
                             if (StringUtil.isNotEmpty(is_show)&&is_show.equals(BizConstant.IS_FAIL)){
                                 adLayout.setVisibility(View.GONE);
-
-                            }else {
+                            }else if (StringUtil.isNotEmpty(is_show)&&is_show.equals(BizConstant.IS_SUC)){
                                 adLayout.setVisibility(View.VISIBLE);
                             }
                             RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);

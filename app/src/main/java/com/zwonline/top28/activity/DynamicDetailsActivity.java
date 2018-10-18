@@ -190,10 +190,13 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         moment_id = intent.getStringExtra("moment_id");
         isComment = intent.getStringExtra("isComment");
         initView();
-        presenter.MomentDetail(this, moment_id);
-        presenter.mDynamicComment(this, page, moment_id, "", "", "");
-        presenter.mDynamicShare(this, moment_id);
-        presenter.GetLikeList(this, moment_id, page);
+//        if (StringUtil.strIsNum(moment_id)){
+            presenter.MomentDetail(this, moment_id);
+            presenter.mDynamicComment(this, page, moment_id, "", "", "");
+            presenter.mDynamicShare(this, moment_id);
+            presenter.GetLikeList(this, moment_id, page);
+//        }
+
 //        headView = getLayoutInflater().inflate(R.layout.dynamicdetails_head, null);
         initListView();
         recyclerViewData();
@@ -261,192 +264,196 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showMomentDetail(DynamicDetailsesBean mommentList) {
-        commentUnderline.setVisibility(View.VISIBLE);
-        author_id = mommentList.data.user_id;
-        avatars = mommentList.data.author.avatars;
-        nickname = mommentList.data.author.nickname;
-        add_date = mommentList.data.add_time;
-        content = mommentList.data.content;
-        type = mommentList.data.type;
-
-        comment_count = mommentList.data.comment_count;
-        like_count = mommentList.data.like_count;
-        articleDesc = mommentList.data.extend_content.target_description;
-        articleID = mommentList.data.extend_content.target_id;
-        articleImage = mommentList.data.extend_content.target_image;
-        articleTitle = mommentList.data.extend_content.target_title;
-        did_i_follow = mommentList.data.did_i_follow;
-        did_i_like = mommentList.data.did_i_like;
-        if (mommentList.data.images_arr != null) {
-            String image[] = new String[mommentList.data.images_arr.size()];
-            String images[] = new String[mommentList.data.images_arr.size()];
-            for (int i = 0; i < mommentList.data.images_arr.size(); i++) {
-                image[i] = mommentList.data.images_arr.get(i).original;
-                images[i] = mommentList.data.images_arr.get(i).thumb;
-            }
-            if (mommentList.data.images_arr.size() == 1) {
-                hight = mommentList.data.images_arr.get(0).original_size.height;
-                width = mommentList.data.images_arr.get(0).original_size.width;
-            }
-            imageUrls = images;
-            orinal_imageUrls = image;
-        }
-        commentAcount.setText("评论 " + comment_count + "条");
-        likeAcount.setText("赞 " + like_count);
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
-        Glide.with(this).load(avatars).apply(requestOptions).into(userHead);
-        userName.setText(nickname);
-
-
-        userHead.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DynamicDetailsActivity.this, HomePageActivity.class);
-                intent.putExtra("uid", author_id);
-                startActivity(intent);
-                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-            }
-        });
-        //时间转换
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
-        Date date = null;
-        try {
-            date = formatter.parse(add_date);
-            time.setText(TimeUtil.getTimeFormatText(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(author_id) && uid.equals(author_id)) {
-            attention.setVisibility(View.GONE);
-        }
-        //判断是否一关注
-        if (StringUtil.isNotEmpty(did_i_follow) && did_i_follow.equals(BizConstant.IS_FAIL)) {
-            attention.setText(R.string.common_btn_add_focus);
-            attention.setBackgroundResource(R.drawable.dynamic_guanzhu_shape);
-            attention.setTextColor(Color.parseColor("#FF2B2B"));
-        } else if (StringUtil.isNotEmpty(did_i_follow) && did_i_follow.equals(BizConstant.IS_SUC)) {
-            attention.setText(R.string.common_followed);
-            attention.setBackgroundResource(R.drawable.dynamic_unguanzhu_shape);
-            attention.setTextColor(Color.parseColor("#ffffff"));
-        }
-        //点击关注或取消关注
-        attention.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (islogins) {
-                    if (StringUtil.isNotEmpty(did_i_follow) && did_i_follow.equals(BizConstant.IS_FAIL)) {
-
-                        if (StringUtil.isNotEmpty(uid) && !uid.equals(author_id)) {
-                            presenter.mAttention(getApplicationContext(), "follow", author_id, BizConstant.ALREADY_FAVORITE);
-                        } else {
-                            ToastUtils.showToast(getApplicationContext(), "自己不能关注自己");
-                        }
-                    } else {
-                        presenter.mUnAttention(getApplicationContext(), "un_follow", author_id);
-                    }
-                } else {
-                    ToastUtils.showToast(getApplicationContext(), "请先登录");
+        if (mommentList.status==1){
+            commentUnderline.setVisibility(View.VISIBLE);
+            author_id = mommentList.data.user_id;
+            avatars = mommentList.data.author.avatars;
+            nickname = mommentList.data.author.nickname;
+            add_date = mommentList.data.add_time;
+            content = mommentList.data.content;
+            type = mommentList.data.type;
+            comment_count = mommentList.data.comment_count;
+            like_count = mommentList.data.like_count;
+            articleDesc = mommentList.data.extend_content.target_description;
+            articleID = mommentList.data.extend_content.target_id;
+            articleImage = mommentList.data.extend_content.target_image;
+            articleTitle = mommentList.data.extend_content.target_title;
+            did_i_follow = mommentList.data.did_i_follow;
+            did_i_like = mommentList.data.did_i_like;
+            if (mommentList.data.images_arr != null) {
+                String image[] = new String[mommentList.data.images_arr.size()];
+                String images[] = new String[mommentList.data.images_arr.size()];
+                for (int i = 0; i < mommentList.data.images_arr.size(); i++) {
+                    image[i] = mommentList.data.images_arr.get(i).original;
+                    images[i] = mommentList.data.images_arr.get(i).thumb;
                 }
+                if (mommentList.data.images_arr.size() == 1) {
+                    hight = mommentList.data.images_arr.get(0).original_size.height;
+                    width = mommentList.data.images_arr.get(0).original_size.width;
+                }
+                imageUrls = images;
+                orinal_imageUrls = image;
+            }
+            commentAcount.setText("评论 " + comment_count + "条");
+            likeAcount.setText("赞 " + like_count);
+            RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+            Glide.with(this).load(avatars).apply(requestOptions).into(userHead);
+            userName.setText(nickname);
 
-            }
-        });
-        //判断内容类型
-        if (type.equals(BizConstant.ALREADY_FAVORITE)) {
-            article_linear.setVisibility(View.GONE);
-            dynamicConment.setVisibility(View.VISIBLE);
-            if (StringUtil.isNotEmpty(content)) {
-                dynamicConment.setText(content);
-            } else {
-                dynamicConment.setVisibility(View.GONE);
-            }
-        } else {
-            article_linear.setVisibility(View.VISIBLE);
-            dynamicConment.setVisibility(View.GONE);
-            article_title.setText(articleTitle);
-            article_desc.setText(articleDesc);
-            RequestOptions requestOption = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
-            Glide.with(this).load(articleImage).apply(requestOption).into(article_img);
-            article_linear.setOnClickListener(new View.OnClickListener() {
+
+            userHead.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), HomeDetailsActivity.class);
-                    intent.putExtra("id", articleID);
+                    Intent intent = new Intent(DynamicDetailsActivity.this, HomePageActivity.class);
+                    intent.putExtra("uid", author_id);
                     startActivity(intent);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 }
             });
-        }
-        if (imageUrls != null && imageUrls.length > 0) {
-            imagLinear.setVisibility(View.VISIBLE);
-            if (imageUrls.length == 1) {
-                RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
-                if (StringUtil.isNotEmpty(hight) && StringUtil.isNotEmpty(width)) {
-                    int widths = Integer.parseInt(width);
-                    int hights = Integer.parseInt(hight);
-                    if (widths < hights) {
-                        dynamic_imag_h.setVisibility(View.VISIBLE);
-                        dynamic_imag_w.setVisibility(View.GONE);
-                        dynamic_imag_z.setVisibility(View.GONE);
-                        dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                        Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).apply(requestOption).into(dynamic_imag_h);
-                    } else if (widths > hights) {
-                        dynamic_imag_h.setVisibility(View.GONE);
-                        dynamic_imag_w.setVisibility(View.VISIBLE);
-                        dynamic_imag_z.setVisibility(View.GONE);
-                        dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                        Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).apply(requestOption).into(dynamic_imag_w);
+            //时间转换
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
+            Date date = null;
+            try {
+                date = formatter.parse(add_date);
+                time.setText(TimeUtil.getTimeFormatText(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(author_id) && uid.equals(author_id)) {
+                attention.setVisibility(View.GONE);
+            }
+            //判断是否一关注
+            if (StringUtil.isNotEmpty(did_i_follow) && did_i_follow.equals(BizConstant.IS_FAIL)) {
+                attention.setText(R.string.common_btn_add_focus);
+                attention.setBackgroundResource(R.drawable.dynamic_guanzhu_shape);
+                attention.setTextColor(Color.parseColor("#FF2B2B"));
+            } else if (StringUtil.isNotEmpty(did_i_follow) && did_i_follow.equals(BizConstant.IS_SUC)) {
+                attention.setText(R.string.common_followed);
+                attention.setBackgroundResource(R.drawable.dynamic_unguanzhu_shape);
+                attention.setTextColor(Color.parseColor("#ffffff"));
+            }
+            //点击关注或取消关注
+            attention.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (islogins) {
+                        if (StringUtil.isNotEmpty(did_i_follow) && did_i_follow.equals(BizConstant.IS_FAIL)) {
 
-                    } else if (widths == hights) {
-                        dynamic_imag_h.setVisibility(View.GONE);
-                        dynamic_imag_w.setVisibility(View.GONE);
-                        dynamic_imag_z.setVisibility(View.VISIBLE);
-                        dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                        Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).apply(requestOption).into(dynamic_imag_z);
+                            if (StringUtil.isNotEmpty(uid) && !uid.equals(author_id)) {
+                                presenter.mAttention(getApplicationContext(), "follow", author_id, BizConstant.ALREADY_FAVORITE);
+                            } else {
+                                ToastUtils.showToast(getApplicationContext(), "自己不能关注自己");
+                            }
+                        } else {
+                            presenter.mUnAttention(getApplicationContext(), "un_follow", author_id);
+                        }
+                    } else {
+                        ToastUtils.showToast(getApplicationContext(), "请先登录");
                     }
 
                 }
-
-                imag_relative.setOnClickListener(new View.OnClickListener() {
+            });
+            //判断内容类型
+            if (type.equals(BizConstant.ALREADY_FAVORITE)) {
+                article_linear.setVisibility(View.GONE);
+                dynamicConment.setVisibility(View.VISIBLE);
+                if (StringUtil.isNotEmpty(content)) {
+                    dynamicConment.setText(content);
+                } else {
+                    dynamicConment.setVisibility(View.GONE);
+                }
+            } else {
+                article_linear.setVisibility(View.VISIBLE);
+                dynamicConment.setVisibility(View.GONE);
+                article_title.setText(articleTitle);
+                article_desc.setText(articleDesc);
+                RequestOptions requestOption = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+                Glide.with(this).load(articleImage).apply(requestOption).into(article_img);
+                article_linear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), PhotoBrowserActivity.class);
-                        intent.putExtra("imageUrls", orinal_imageUrls);
-                        intent.putExtra("curImg", orinal_imageUrls[0]);
+                        Intent intent = new Intent(getApplicationContext(), HomeDetailsActivity.class);
+                        intent.putExtra("id", articleID);
                         startActivity(intent);
-                    }
-                });
-            } else if (imageUrls.length > 1) {
-                List<PhotoInfos> images = new ArrayList<>();
-                for (int i = 0; i < imageUrls.length; i++) {
-                    PhotoInfos bean = new PhotoInfos();
-                    bean.url = imageUrls[i];
-                    images.add(bean);
-                }
-                multiImage.setList(images);
-                multiImage.setOnItemClickListener(new MultiImageView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int positions) {
-                        Intent intent = new Intent(getApplicationContext(), PhotoBrowserActivity.class);
-                        intent.putExtra("imageUrls", orinal_imageUrls);
-                        intent.putExtra("curImg", orinal_imageUrls[positions]);
-                        startActivity(intent);
+                        overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     }
                 });
             }
-        } else {
-            imagLinear.setVisibility(View.GONE);
+            if (imageUrls != null && imageUrls.length > 0) {
+                imagLinear.setVisibility(View.VISIBLE);
+                if (imageUrls.length == 1) {
+                    RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
+                    if (StringUtil.isNotEmpty(hight) && StringUtil.isNotEmpty(width)) {
+                        int widths = Integer.parseInt(width);
+                        int hights = Integer.parseInt(hight);
+                        if (widths < hights) {
+                            dynamic_imag_h.setVisibility(View.VISIBLE);
+                            dynamic_imag_w.setVisibility(View.GONE);
+                            dynamic_imag_z.setVisibility(View.GONE);
+                            dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
+                            Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).apply(requestOption).into(dynamic_imag_h);
+                        } else if (widths > hights) {
+                            dynamic_imag_h.setVisibility(View.GONE);
+                            dynamic_imag_w.setVisibility(View.VISIBLE);
+                            dynamic_imag_z.setVisibility(View.GONE);
+                            dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
+                            Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).apply(requestOption).into(dynamic_imag_w);
+
+                        } else if (widths == hights) {
+                            dynamic_imag_h.setVisibility(View.GONE);
+                            dynamic_imag_w.setVisibility(View.GONE);
+                            dynamic_imag_z.setVisibility(View.VISIBLE);
+                            dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
+                            Glide.with(DynamicDetailsActivity.this).load(imageUrls[0]).apply(requestOption).into(dynamic_imag_z);
+                        }
+
+                    }
+
+                    imag_relative.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getApplicationContext(), PhotoBrowserActivity.class);
+                            intent.putExtra("imageUrls", orinal_imageUrls);
+                            intent.putExtra("curImg", orinal_imageUrls[0]);
+                            startActivity(intent);
+                        }
+                    });
+                } else if (imageUrls.length > 1) {
+                    List<PhotoInfos> images = new ArrayList<>();
+                    for (int i = 0; i < imageUrls.length; i++) {
+                        PhotoInfos bean = new PhotoInfos();
+                        bean.url = imageUrls[i];
+                        images.add(bean);
+                    }
+                    multiImage.setList(images);
+                    multiImage.setOnItemClickListener(new MultiImageView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int positions) {
+                            Intent intent = new Intent(getApplicationContext(), PhotoBrowserActivity.class);
+                            intent.putExtra("imageUrls", orinal_imageUrls);
+                            intent.putExtra("curImg", orinal_imageUrls[positions]);
+                            startActivity(intent);
+                        }
+                    });
+                }
+            } else {
+                imagLinear.setVisibility(View.GONE);
+            }
+            if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
+                choose_like.setChecked(false);
+                choose_like.setEnabled(false);
+                isLike.setText("点赞");
+                isLike.setTextColor(Color.parseColor("#1d1d1d"));
+            } else {
+                choose_like.setChecked(true);
+                choose_like.setEnabled(false);
+                isLike.setText("已赞");
+                isLike.setTextColor(Color.parseColor("#ff2b2b"));
+            }
+        }else {
+            ToastUtils.showToast(getApplicationContext(),mommentList.msg);
         }
-        if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
-            choose_like.setChecked(false);
-            choose_like.setEnabled(false);
-            isLike.setText("点赞");
-            isLike.setTextColor(Color.parseColor("#1d1d1d"));
-        } else {
-            choose_like.setChecked(true);
-            choose_like.setEnabled(false);
-            isLike.setText("已赞");
-            isLike.setTextColor(Color.parseColor("#ff2b2b"));
-        }
+
     }
 
     /**
@@ -490,6 +497,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showDynamicComment(List<DynamicDetailsBean.DataBean> dataBeanList) {
+
         if (page == 1) {
             dynamicList.clear();
         }
@@ -661,6 +669,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             share_icon = dynamicShareBean.data.share_icon;
             share_description = dynamicShareBean.data.share_description;
             share_title = dynamicShareBean.data.share_title;
+        }else {
+            ToastUtils.showToast(getApplicationContext(),dynamicShareBean.msg);
         }
     }
 

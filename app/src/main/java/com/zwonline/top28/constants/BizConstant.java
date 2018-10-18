@@ -13,6 +13,7 @@ public class BizConstant {
      */
     public static final String TYPE_LOGIN = "login";
     public static final String TYPE_FINDPWD = "findpwd";
+    public static final String TYPE_BIND = "bind_mobile";
     /**
      * 热商机
      */

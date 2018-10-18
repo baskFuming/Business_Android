@@ -543,7 +543,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
      */
     private void setComPany(final HomeDetailsBean homeDetails) {
         try {
-            if (homeDetails.data.company.equals("") && homeDetails.data.company == null) {
+            if ( homeDetails.data.company == null) {
                 companyName.setVisibility(View.GONE);
             } else {
                 companyName.setVisibility(View.VISIBLE);

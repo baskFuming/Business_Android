@@ -3,8 +3,10 @@ package com.zwonline.top28.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,9 +22,12 @@ import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 
 import butterknife.OnClick;
+
+import static com.zwonline.top28.R.color.reded;
 
 /**
  * 描述：设置页面
@@ -44,12 +49,17 @@ public class MySettingActivity extends BaseActivity {
     private RelativeLayout amentpossword;
     private String avatar;
     private String nicknames;
+    private String mobile;
+    private TextView bind;
+    private RelativeLayout bindPhone;
+    private ImageView bindImag;
 
     @Override
     protected void init() {
-        initData();
         settingPassword = (TextView) findViewById(R.id.setting_password);
         sp = SharedPreferencesUtils.getUtil();
+        mobile = (String) sp.getKey(this, "mobile", "");
+        initData();
         Intent intent = getIntent();
         avatar = (String) sp.getKey(getApplicationContext(), "avatar", "");
         nicknames = (String) sp.getKey(getApplicationContext(), "nickname", "");
@@ -72,7 +82,20 @@ public class MySettingActivity extends BaseActivity {
         nickname = (TextView) findViewById(R.id.nickname);
         exitLogin = (RelativeLayout) findViewById(R.id.exit_login);
         amend = (RelativeLayout) findViewById(R.id.amend);
+        bindPhone = (RelativeLayout) findViewById(R.id.bind_phone);
         amentpossword = (RelativeLayout) findViewById(R.id.amentpossword);
+        bindImag = (ImageView) findViewById(R.id.bind_imag);
+        bind = (TextView) findViewById(R.id.bind);
+        if (StringUtil.isNotEmpty(mobile)) {
+            bind.setText("已绑定");
+            bindPhone.setClickable(false);
+            bindImag.setVisibility(View.GONE);
+            bind.setTextColor(Color.parseColor("#d1d1d1"));
+        } else {
+            bind.setText("未绑定");
+            bind.setTextColor(Color.parseColor("#ff2b2b"));
+            bindImag.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -86,7 +109,7 @@ public class MySettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.join_group,R.id.about_owen})
+    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.bind_phone, R.id.about_owen})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -146,8 +169,8 @@ public class MySettingActivity extends BaseActivity {
                 startActivity(new Intent(MySettingActivity.this, ShieldUserActivity.class));
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
-            case R.id.join_group:
-                startActivity(new Intent(MySettingActivity.this, GroupActivity.class));
+            case R.id.bind_phone:
+                startActivity(new Intent(MySettingActivity.this, BindPhoneActivity.class));
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.about_owen:

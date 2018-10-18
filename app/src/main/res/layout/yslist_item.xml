@@ -41,7 +41,7 @@
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:lines="2"
-            android:textColor="#E1E1E1"
+            android:textColor="#A6A6A8"
             android:textSize="12sp" />
 
         <TextView
