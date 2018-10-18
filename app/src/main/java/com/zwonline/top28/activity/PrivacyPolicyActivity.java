@@ -8,6 +8,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.zwonline.top28.R;
@@ -23,7 +24,8 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
     @BindView(R.id.progress_Bar)
     ProgressBar progressBar;
     private String UserPro = "https://toutiao.28.com/app/privacy.html";
-
+    @BindView(R.id.title)
+    TextView te_title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,20 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
         //加载静态网页链接
         webViewUser.loadUrl(UserPro);
         webViewUser.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                if (title.length()>0){
+                    if (title.length() > 0) {
+                        te_title.setText(title);
+                        te_title.setVisibility(View.VISIBLE);
+                    } else {
+                        te_title.setText(title);
+                        te_title.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 if (newProgress == 100) {

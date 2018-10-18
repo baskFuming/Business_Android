@@ -68,7 +68,7 @@
 
         <TextView
             android:id="@+id/te_visioncode"
-            android:layout_width="38dp"
+            android:layout_width="wrap_content"
             android:layout_height="22dp"
             android:text="------"
             android:textColor="#ff2a394c"
