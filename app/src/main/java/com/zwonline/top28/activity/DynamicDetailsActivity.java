@@ -191,10 +191,10 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         isComment = intent.getStringExtra("isComment");
         initView();
 //        if (StringUtil.strIsNum(moment_id)){
-            presenter.MomentDetail(this, moment_id);
-            presenter.mDynamicComment(this, page, moment_id, "", "", "");
-            presenter.mDynamicShare(this, moment_id);
-            presenter.GetLikeList(this, moment_id, page);
+        presenter.MomentDetail(this, moment_id);
+        presenter.mDynamicComment(this, page, moment_id, "", "", "");
+        presenter.mDynamicShare(this, moment_id);
+        presenter.GetLikeList(this, moment_id, page);
 //        }
 
 //        headView = getLayoutInflater().inflate(R.layout.dynamicdetails_head, null);
@@ -264,7 +264,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showMomentDetail(DynamicDetailsesBean mommentList) {
-        if (mommentList.status==1){
+        if (mommentList.status == 1) {
             commentUnderline.setVisibility(View.VISIBLE);
             author_id = mommentList.data.user_id;
             avatars = mommentList.data.author.avatars;
@@ -450,8 +450,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 isLike.setText("已赞");
                 isLike.setTextColor(Color.parseColor("#ff2b2b"));
             }
-        }else {
-            ToastUtils.showToast(getApplicationContext(),mommentList.msg);
+        } else {
+            ToastUtils.showToast(getApplicationContext(), mommentList.msg);
         }
 
     }
@@ -518,6 +518,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 intent.putExtra("content_num", comment_count);
                 intent.putExtra("did_i_vote", dynamicList.get(positions).did_i_vote);
                 intent.putExtra("avatarss", dynamicList.get(positions).member.avatars);
+                intent.putExtra("type", type);
                 startActivityForResult(intent, 100);
                 overridePendingTransition(R.anim.activity_bottom_in, R.anim.activity_top_out);
             }
@@ -569,7 +570,11 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 commentLikePosition = position;
                 if (islogins) {
                     if (dynamicList.get(position).did_i_vote.equals(BizConstant.IS_FAIL)) {
-                        presenter.LikeMomentComment(getApplicationContext(), dynamicList.get(position).comment_id);
+                        if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
+                            presenter.LikeMomentComment(getApplicationContext(), dynamicList.get(position).comment_id, BizConstant.IS_SUC);
+                        } else {
+                            presenter.LikeMomentComment(getApplicationContext(), dynamicList.get(position).comment_id, BizConstant.ALIPAY_METHOD);
+                        }
                     } else {
                         ToastUtils.showToast(getApplicationContext(), "已经点过赞了哦");
                     }
@@ -669,8 +674,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             share_icon = dynamicShareBean.data.share_icon;
             share_description = dynamicShareBean.data.share_description;
             share_title = dynamicShareBean.data.share_title;
-        }else {
-            ToastUtils.showToast(getApplicationContext(),dynamicShareBean.msg);
+        } else {
+            ToastUtils.showToast(getApplicationContext(), dynamicShareBean.msg);
         }
     }
 

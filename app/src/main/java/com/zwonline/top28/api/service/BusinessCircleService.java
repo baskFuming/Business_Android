@@ -247,6 +247,7 @@ public interface BusinessCircleService {
             @Field("token") String token,
             @Field("sign") String sign,
             @Field("app_version") String app_version,
+            @Field("type") String type,
             @Field("comment_id") String comment_id
     );
 

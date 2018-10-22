@@ -575,8 +575,6 @@
             android:configChanges="keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
 
-
-
         <!-- 消息历史搜索 -->
         <activity
             android:name=".nim.session.search.SearchMessageActivity"
@@ -697,7 +695,7 @@
         <!-- 声明SDK所需要的组件 -->
         <service
             android:name="com.qq.e.comm.DownloadService"
-            android:exported="false" ></service>
+            android:exported="false" />
         <!-- 请开发者注意字母的大小写，ADActivity，而不是AdActivity -->
         <!-- 请开发者注意字母的大小写，ADActivity，而不是AdActivity -->
         <activity
@@ -705,9 +703,10 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <!-- 声明SDK所需要的组件 -->
 
-        <!--<activity-->
-            <!--android:name=".activity.SplashActivity"-->
-            <!--android:launchMode="singleTask" />-->
+
+        <!-- <activity -->
+        <!-- android:name=".activity.SplashActivity" -->
+        <!-- android:launchMode="singleTask" /> -->
         <activity
             android:name=".activity.UserProTocolActivity"
             android:screenOrientation="portrait"
@@ -725,7 +724,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activity.BindPhoneActivity" />
-        <activity android:name=".activity.BindSuccessActivity"></activity>
+        <activity android:name=".activity.BindSuccessActivity" />
+        <activity android:name=".web.BaseWebViewActivity"></activity>
     </application>
 
 </manifest>

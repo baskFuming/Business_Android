@@ -23,6 +23,7 @@ import com.zwonline.top28.presenter.YangShiPresenter;
 import com.zwonline.top28.utils.LogUtils;
 import com.zwonline.top28.utils.NetUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IYangShiActivity;
 
 import java.util.ArrayList;
@@ -100,6 +101,9 @@ public class YangShiListFragment extends BasesFragment<IYangShiActivity, YangShi
         ysListAdapter.setOnClickItemListener(new YSListAdapter.OnClickItemListener() {
             @Override
             public void setOnItemClick(View view, int position) {
+                if (AntiShake.check(view.getId())) {    //判断是否多次点击
+                    return;
+                }
                 Intent intent = new Intent(getActivity(), YangShiActivity.class);
                 intent.putExtra("jump_url", ysLists.get(position).url);
                 startActivity(intent);

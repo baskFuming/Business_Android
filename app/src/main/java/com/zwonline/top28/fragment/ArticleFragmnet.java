@@ -25,7 +25,7 @@ import com.zwonline.top28.view.IHomeWordActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticleFragmnet extends BasesFragment<IHomeWordActivity,IHomeWordPresenter> implements IHomeWordActivity{
+public class ArticleFragmnet extends BasesFragment<IHomeWordActivity, IHomeWordPresenter> implements IHomeWordActivity {
     private XRecyclerView xRecyclerView;
     private String uid;
     private SharedPreferencesUtils sp;
@@ -41,6 +41,7 @@ public class ArticleFragmnet extends BasesFragment<IHomeWordActivity,IHomeWordPr
     private int times = 0;
     private int page = 1;
     private LinearLayout linearLayout;
+
     @Override
     protected void init(View view) {
 //        NavigationBar.Statedata(getActivity());
@@ -65,6 +66,7 @@ public class ArticleFragmnet extends BasesFragment<IHomeWordActivity,IHomeWordPr
     protected IHomeWordPresenter setPresenter() {
         return new IHomeWordPresenter(this);
     }
+
     @Override
     protected int setLayouId() {
         return R.layout.activity_art;
@@ -72,8 +74,9 @@ public class ArticleFragmnet extends BasesFragment<IHomeWordActivity,IHomeWordPr
 
     @Override
     public void onErro() {
-        Toast.makeText(getActivity(),"数据加载错误",Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "数据加载错误", Toast.LENGTH_LONG).show();
     }
+
     @Override
     public void showMyIssue(boolean flag) {
 //        if (flag) {
@@ -105,6 +108,7 @@ public class ArticleFragmnet extends BasesFragment<IHomeWordActivity,IHomeWordPr
         });
         IssueLoadMore();
     }
+
     @Override
     public void issueNoLoadMore() {
 //        if (this == null) {
@@ -118,6 +122,7 @@ public class ArticleFragmnet extends BasesFragment<IHomeWordActivity,IHomeWordPr
 //        }
 
     }
+
     private void IssueLoadMore() {
         xRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -150,6 +155,7 @@ public class ArticleFragmnet extends BasesFragment<IHomeWordActivity,IHomeWordPr
             }
         });
     }
+
     /**
      * xRecyclerview发布文章配置
      */

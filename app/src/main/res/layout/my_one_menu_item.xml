@@ -13,21 +13,21 @@
         android:gravity="center_vertical"
         android:paddingLeft="25dp"
         android:paddingStart="25dp"
-        android:text="@string/user_function"
         android:textColor="#383838"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <GridView
+    <com.zwonline.top28.utils.ScrollGridView
         android:id="@+id/fuction_gridview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:numColumns="4"
+        android:listSelector="@android:color/transparent"
+        android:verticalSpacing="@dimen/ui_20_dip"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"></GridView>
+        android:paddingRight="10dp"></com.zwonline.top28.utils.ScrollGridView>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

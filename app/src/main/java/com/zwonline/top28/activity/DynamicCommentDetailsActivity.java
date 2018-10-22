@@ -111,6 +111,7 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
     private int keyHeight = 0;
     private LinearLayout linearLike;
     private String content_num;
+    private String type;
 
     @Override
     protected void init() {
@@ -123,6 +124,7 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
         ownName = (String) sp.getKey(this, "nickname", "");
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
+        type = intent.getStringExtra("type");
         content_num = intent.getStringExtra("content_num");
         commentId = intent.getStringExtra("comment_id");
         article_id = intent.getStringExtra("article_id");
@@ -385,7 +387,11 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
             case R.id.linear_like:
                 if (islogins) {
                     if (did_i_votes.equals(BizConstant.IS_FAIL)) {
-                        presenter.LikeMomentComment(getApplicationContext(), commentId);
+                        if (StringUtil.isNotEmpty(type)&&type.equals(BizConstant.IS_SUC)){
+                            presenter.LikeMomentComment(getApplicationContext(), commentId,BizConstant.IS_SUC);
+                        }else {
+                            presenter.LikeMomentComment(getApplicationContext(), commentId,BizConstant.ALIPAY_METHOD);
+                        }
                     } else {
                         ToastUtils.showToast(getApplicationContext(), "已经点过赞了哦");
                     }

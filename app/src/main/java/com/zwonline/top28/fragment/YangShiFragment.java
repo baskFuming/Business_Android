@@ -44,6 +44,7 @@ import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
+import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IYangShiActivity;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -260,7 +261,11 @@ public class YangShiFragment extends BasesFragment<IYangShiActivity, YangShiPres
 
     @Override
     public void onClick(View v) {
+        if (AntiShake.check(v.getId())) {    //判断是否多次点击
+            return;
+        }
         switch (v.getId()) {
+
             case R.id.ys_my:
                 Intent intent = new Intent(getActivity(), YangShiActivity.class);
                 intent.putExtra("jump_url", BizConstant.YSMY);

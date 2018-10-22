@@ -13,8 +13,11 @@ import android.widget.TextView;
 import com.zwonline.top28.R;
 import com.zwonline.top28.bean.MyPageBean;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.utils.ScrollGridView;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
+import com.zwonline.top28.web.BaseWebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<MyPageBean.DataBean> list;
     private Context context;
     private SharedPreferencesUtils sp;
+
     public MyOneMunuAdapter(List<MyPageBean.DataBean> list, Context context) {
         this.list = list;
         this.context = context;
@@ -42,9 +46,9 @@ public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        sp=SharedPreferencesUtils.getUtil();
-        final String uid= (String) sp.getKey(context,"uid","" );
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        sp = SharedPreferencesUtils.getUtil();
+        final String uid = (String) sp.getKey(context, "uid", "");
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         myViewHolder.type_section.setText(list.get(position).section);
         final List<MyPageBean.DataBean.FunctionsBean> twoList = new ArrayList<>();
@@ -57,19 +61,28 @@ public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         myViewHolder.fuction_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int positions, long id) {
-                String activityName=twoList.get(positions).link;
-                Class clazz= null;
-                try {
-                    clazz = Class.forName(BizConstant.PACKGE+activityName);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                String activityName = twoList.get(positions).link;
+                if (StringUtil.isNotEmpty(activityName) && activityName.contains("http")) {
+                    Intent intent = new Intent(context, BaseWebViewActivity.class);
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("weburl", activityName);
+                    intent.putExtra("project", BizConstant.ALIPAY_METHOD);
+                    context.startActivity(intent);
+                } else {
+                    Class clazz = null;
+                    try {
+                        clazz = Class.forName(BizConstant.PACKGE + activityName);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
 
-                Intent intent=new Intent(context,clazz);
-                intent.putExtra("uid",uid);
-                intent.putExtra("jumPath", BizConstant.RECOMMENTUSER);
-                intent.putExtra("project", BizConstant.ALIPAY_METHOD);
-                context.startActivity(intent);
+                    Intent intent = new Intent(context, clazz);
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("jumPath", BizConstant.RECOMMENTUSER);
+                    intent.putExtra("project", BizConstant.ALIPAY_METHOD);
+                    context.startActivity(intent);
+
+                }
 
             }
         });
@@ -84,12 +97,12 @@ public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView type_section;
-        GridView fuction_gridview;
+        ScrollGridView fuction_gridview;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             type_section = (TextView) itemView.findViewById(R.id.type_section);
-            fuction_gridview = (GridView) itemView.findViewById(R.id.fuction_gridview);
+            fuction_gridview = (ScrollGridView) itemView.findViewById(R.id.fuction_gridview);
         }
     }
 

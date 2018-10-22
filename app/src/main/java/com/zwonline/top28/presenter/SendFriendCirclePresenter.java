@@ -677,9 +677,9 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
      * @param context
      * @param comment_id
      */
-    public void LikeMomentComment(Context context, String comment_id) {
+    public void LikeMomentComment(Context context, String comment_id,String type) {
         try {
-            Flowable<AttentionBean> flowable = sendFriendCircleModel.likeMomentComment(context, comment_id);
+            Flowable<AttentionBean> flowable = sendFriendCircleModel.likeMomentComment(context, comment_id,type);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<AttentionBean>() {

@@ -444,7 +444,7 @@ public class SendFriendCircleModel {
      * @return
      * @throws IOException
      */
-    public Flowable<AttentionBean> likeMomentComment(Context context, String comment_id) throws IOException {
+    public Flowable<AttentionBean> likeMomentComment(Context context, String comment_id,String type) throws IOException {
         String versionName = LanguageUitils.getVersionName(context);
         sp = SharedPreferencesUtils.getUtil();
         long timestamp = new Date().getTime() / 1000;//时间戳
@@ -453,12 +453,13 @@ public class SendFriendCircleModel {
         map.put("token", token);
         map.put("timestamp", String.valueOf(timestamp));
         map.put("comment_id", comment_id);
+        map.put("type", type);
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
-                .iLikeMomentComment(String.valueOf(timestamp), token, sign, versionName, comment_id);
+                .iLikeMomentComment(String.valueOf(timestamp), token, sign, versionName,type, comment_id);
         return flowable;
     }
 

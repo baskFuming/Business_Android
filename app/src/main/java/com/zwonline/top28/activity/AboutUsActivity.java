@@ -61,7 +61,7 @@ public class AboutUsActivity extends BaseActivity {
             case R.id.back:
                 Intent backIntent = new Intent(AboutUsActivity.this, MySettingActivity.class);
                 startActivity(backIntent);
-                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out );
                 break;
             case R.id.user_protocol:
                 Intent intent = new Intent(AboutUsActivity.this, UserProTocolActivity.class);
