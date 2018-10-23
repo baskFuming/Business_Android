@@ -183,8 +183,6 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
-
-
                         <LinearLayout
                             android:id="@+id/imag_linear"
                             android:layout_width="match_parent"
@@ -267,7 +265,6 @@
                                         android:layout_height="wrap_content"
                                         android:src="@mipmap/reward_gift1"
                                         android:layout_gravity="center"/>
-                                    >
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
