@@ -1011,7 +1011,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 rewardPopWindow = new RewardPopWindow(this);
                 rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
                 View contentView = rewardPopWindow.getContentView();
-                //查找控件
+                //查找 控件
                 break;
             default:
                 break;
