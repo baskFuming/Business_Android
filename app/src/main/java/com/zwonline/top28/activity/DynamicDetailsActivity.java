@@ -69,6 +69,7 @@ import com.zwonline.top28.utils.TimeUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.popwindow.DynamicCommentPopuWindow;
+import com.zwonline.top28.utils.popwindow.RewardPopWindow;
 import com.zwonline.top28.view.ISendFriendCircleActivity;
 import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtilses;
@@ -163,9 +164,11 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private ImageView dynamic_imag_h;
     private ImageView dynamic_imag_z;
     private RelativeLayout imag_relative;
-
     @BindView(R.id.appBarLayout)
     AppBarLayout appbarlayout;
+    //打赏功能
+    private ImageView reward_Image;
+    private RewardPopWindow rewardPopWindow;
 
     @Subscribe
     @Override
@@ -254,7 +257,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         dynamic_imag_h = (ImageView) findViewById(R.id.dynamic_imag_h);
         dynamic_imag_z = (ImageView) findViewById(R.id.dynamic_imag_z);
         imag_relative = (RelativeLayout) findViewById(R.id.imag_relative);
-
+        reward_Image = (ImageView)findViewById(R.id.reward_image);
     }
 
     /**
@@ -930,7 +933,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      *
      * @param view
      */
-    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear, R.id.appBarLayout})
+    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear, R.id.appBarLayout,R.id.reward_image})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -1002,6 +1005,13 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                         return false;
                     }
                 });
+                break;
+                //打赏弹框
+            case R.id.reward_image:
+                rewardPopWindow = new RewardPopWindow(this);
+                rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                View contentView = rewardPopWindow.getContentView();
+                //查找控件
                 break;
             default:
                 break;

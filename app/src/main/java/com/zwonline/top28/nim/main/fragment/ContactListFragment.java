@@ -1,5 +1,4 @@
 package com.zwonline.top28.nim.main.fragment;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.contact.ContactsCustomization;
 import com.netease.nim.uikit.business.contact.ContactsFragment;
@@ -44,11 +42,8 @@ import com.zwonline.top28.nim.main.reminder.ReminderManager;
 import com.zwonline.top28.nim.session.SessionHelper;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.badge.BadgeViews;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
 /**
  * 集成通讯录列表
  * <p/>
@@ -63,7 +58,6 @@ public class ContactListFragment extends TabFragment {
         args.putString(PAGE_NAME_KEY, pageName);
         ContactListFragment pageFragment = new ContactListFragment();
         pageFragment.setArguments(args);
-
         return pageFragment;
     }
 
@@ -72,7 +66,6 @@ public class ContactListFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.contacts_list, null);
         addContactFragment();  // 集成通讯录页面
-
         return view;
     }
 

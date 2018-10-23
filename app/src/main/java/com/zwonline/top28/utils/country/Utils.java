@@ -1,14 +1,11 @@
 package com.zwonline.top28.utils.country;
-
 import android.text.TextUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
-
 public class Utils {
     public static String getFirstLetter(final String pinyin) {
         if (TextUtils.isEmpty(pinyin)) return "热门国家或地区";

@@ -40,14 +40,10 @@ import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.zwonline.top28.R;
 import com.zwonline.top28.nim.session.SessionHelper;
 import com.zwonline.top28.utils.ImageViewPlus;
-import com.zwonline.top28.utils.LogUtils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
-import com.zwonline.top28.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.netease.nimlib.sdk.team.constant.TeamMemberType.Owner;
 
 /**
  * 群列表(通讯录)
@@ -76,7 +72,6 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
         Intent intent = new Intent();
         intent.setClass(context, TeamListActivity.class);
         intent.putExtra(EXTRA_DATA_ITEM_TYPES, teamItemTypes);
-
         context.startActivity(intent);
     }
 
@@ -320,7 +315,7 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
             return convertView;
         }
 
-        /*#TODO 填充二级列表*/
+        /*TODO 填充二级列表*/
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
             ChildViewHolder childViewHolder;
@@ -349,7 +344,7 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
 
 
     }
-
+    //绑定数据
     static class ChildViewHolder {
         ImageViewPlus team_head;
         TextView team_name;

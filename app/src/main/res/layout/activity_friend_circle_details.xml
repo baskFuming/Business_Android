@@ -227,7 +227,30 @@
                                 android:layout_height="wrap_content" />
 
                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:id="@+id/reward_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/reward_btn"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="28dp"/>
+                            <TextView
+                                android:layout_width="182dp"
+                                android:layout_height="18dp"
+                                android:text="打赏作者，和会赚钱的人在一起"
+                                android:textColor="#ffa8a8a8"
+                                android:textSize="13sp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="21dp"/>
+                            <android.support.v7.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="120dp"></android.support.v7.widget.RecyclerView>
 
+                        </LinearLayout>
                     </LinearLayout>
 
                     <View

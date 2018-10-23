@@ -8,7 +8,6 @@ import android.widget.RelativeLayout;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.netease.nim.uikit.business.robot.parser.elements.base.Element;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.InforNoticeAdpater;
 import com.zwonline.top28.base.BaseActivity;
@@ -47,7 +46,6 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
         initData();
         //加载RecycleView 通知列表
         InforeRecyclerViewData();
-
     }
 
     private void InforeRecyclerViewData() {
@@ -62,6 +60,7 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
         noticerecyclerView.setLayoutManager(linearLayoutManager);
         adpater = new InforNoticeAdpater(this, dList);
         noticerecyclerView.setAdapter(adpater);
+
 
     }
 

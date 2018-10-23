@@ -85,6 +85,7 @@ public class CodeLoginActivity extends BaseActivity<ILoginActivity, LoginPresent
     private String geetest_challenges;
     private String quhao;
 
+
     @Override
     protected void init() {
         initView();

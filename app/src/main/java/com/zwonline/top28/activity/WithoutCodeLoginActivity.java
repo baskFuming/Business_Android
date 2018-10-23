@@ -625,6 +625,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                 String province = map.get("province");
                 String country = map.get("country");
                 String language  = map.get("language");
+                String countrycode = map.get("countrycode");
                 //拿到信息去请求登录接口。。。差一个接口
                 presenter.loginWechatListen(WithoutCodeLoginActivity.this,union_id,open_id,gender,name,iconurl,"",city,province,country,language);
             }

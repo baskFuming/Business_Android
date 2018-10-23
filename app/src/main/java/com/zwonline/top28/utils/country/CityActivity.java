@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zwonline.top28.R;
-import com.zwonline.top28.utils.ToastUtils;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -265,7 +264,6 @@ public class CityActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.iv_search_clear:
                 iv_search_clear.setVisibility(View.GONE);
                 et_search.setText("");
@@ -282,10 +280,8 @@ public class CityActivity extends AppCompatActivity implements View.OnClickListe
     //This is to hide keyboard when off focus
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-
         View v = getCurrentFocus();
         boolean ret = super.dispatchTouchEvent(event);
-
         if (v instanceof EditText) {
             View w = getCurrentFocus();
             int scrcoords[] = new int[2];
@@ -295,7 +291,6 @@ public class CityActivity extends AppCompatActivity implements View.OnClickListe
 
 //            Log.d("Activity", "Touch event " + event.getRawX() + "," + event.getRawY() + " " + x + "," + y + " rect " + w.getLeft() + "," + w.getTop() + "," + w.getRight() + "," + w.getBottom() + " coords " + scrcoords[0] + "," + scrcoords[1]);
             if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom())) {
-
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
             }
