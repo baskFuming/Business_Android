@@ -135,8 +135,121 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_height="2dp"
             android:background="#F5F5F9"></View>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/reward_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/reward_btn"
+                android:layout_gravity="center"
+                android:layout_marginTop="28dp"/>
+            <TextView
+                android:layout_width="182dp"
+                android:layout_height="18dp"
+                android:text="打赏作者，和会赚钱的人在一起"
+                android:textColor="#ffa8a8a8"
+                android:textSize="13sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="21dp"/>
+            <LinearLayout
+                android:layout_marginTop="21dp"
+                android:paddingLeft="43dp"
+                android:paddingRight="43dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/reward_gift1"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="43"
+                        android:layout_gravity="center"
+                        android:textColor="#ffa8a8a8"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/reward_gift2"
+                        android:layout_gravity="center"/>
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="43"
+                        android:layout_gravity="center"
+                        android:textColor="#ffa8a8a8"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/reward_gift3"
+                        android:layout_gravity="center"/>
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="43"
+                        android:layout_gravity="center"
+                        android:textColor="#ffa8a8a8"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/reward_gift4"
+                        android:layout_gravity="center"/>
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="43"
+                        android:layout_gravity="center"
+                        android:textColor="#ffa8a8a8"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -147,12 +260,10 @@
             android:textColor="#2F2F2F"
             android:textSize="18sp"
             android:textStyle="bold" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="31dp"
             android:background="@color/white"></View>
-
     </LinearLayout>
 
 </LinearLayout>

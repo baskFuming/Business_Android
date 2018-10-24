@@ -69,6 +69,7 @@ import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
+import com.zwonline.top28.utils.popwindow.RewardPopWindow;
 import com.zwonline.top28.view.IHomeDetails;
 import com.zwonline.top28.web.MJavascriptInterface;
 import com.zwonline.top28.wxapi.RewritePopwindow;
@@ -160,6 +161,10 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     private String[] imageUrls = StringUtil.returnImageUrlsFromHtml();
     private int status;
     private TextView badgeviewTv;
+
+    //打赏
+    private ImageView image_reward;
+    private RewardPopWindow rewardPopWindow;
 
     public void initActivityWindow() {
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -303,6 +308,17 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         attention = (Button) headerView.findViewById(R.id.attention);
         contentWeb = (WebView) headerView.findViewById(R.id.content_web);
         relativeHome = (RelativeLayout) headerView.findViewById(R.id.relative_home);
+        //添加打赏功能
+        image_reward = (ImageView)headerView.findViewById(R.id.reward_image);
+        image_reward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rewardPopWindow = new RewardPopWindow(HomeDetailsActivity.this);
+                rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                View contentView = rewardPopWindow.getContentView();
+                //查找 控件
+            }
+        });
 
     }
 
@@ -698,8 +714,6 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                 }
 
                 break;
-//
-
         }
     }
 
