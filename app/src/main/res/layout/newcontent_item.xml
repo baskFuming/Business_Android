@@ -59,9 +59,9 @@
                             android:id="@+id/username"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="120dp"
                             android:ellipsize="end"
                             android:lines="1"
-                            android:layout_marginRight="120dp"
                             android:textColor="#2A292E"
                             android:textSize="16sp" />
 
@@ -121,8 +121,8 @@
                             android:layout_width="15dp"
                             android:layout_height="8dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@mipmap/post_more"
                             android:layout_marginTop="16dp"
+                            android:src="@mipmap/post_more"
                             android:visibility="visible" />
                     </RelativeLayout>
 
@@ -261,19 +261,20 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="16dp"
+                android:layout_gravity="center_horizontal"
                 android:src="@mipmap/post_share" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:gravity="center_horizontal"
                 android:text="分享"
+                android:layout_gravity="center_horizontal"
                 android:textColor="#1d1d1d"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -290,19 +291,20 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="16dp"
+                android:layout_gravity="center_horizontal"
                 android:src="@mipmap/post_comment" />
 
             <TextView
                 android:id="@+id/comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:textColor="#1d1d1d"
+                android:layout_gravity="center_horizontal"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -319,7 +321,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <CheckBox
                 android:id="@+id/choose_like"
@@ -327,6 +329,7 @@
                 android:layout_height="16dp"
                 android:background="@drawable/selector_comment_likes"
                 android:button="@null"
+                android:layout_gravity="center_horizontal"
                 android:enabled="true" />
 
 
@@ -334,7 +337,38 @@
                 android:id="@+id/like_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:textColor="#1d1d1d"
+                android:layout_gravity="center_horizontal"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center_vertical"
+            android:background="#ffebebeb" />
+
+        <LinearLayout
+            android:id="@+id/linear_reward"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/post_shang" />
+
+            <TextView
+                android:id="@+id/reward_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="打赏"
+                android:layout_gravity="center_horizontal"
                 android:textColor="#1d1d1d"
                 android:textSize="12sp" />
         </LinearLayout>

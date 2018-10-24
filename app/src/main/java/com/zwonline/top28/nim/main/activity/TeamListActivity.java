@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.api.model.team.TeamDataChangedObserver;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.business.contact.core.item.AbsContactItem;
@@ -28,22 +29,31 @@ import com.netease.nim.uikit.business.contact.core.provider.ContactDataProvider;
 import com.netease.nim.uikit.business.contact.core.query.IContactDataProvider;
 import com.netease.nim.uikit.business.contact.core.viewholder.ContactHolder;
 import com.netease.nim.uikit.business.contact.core.viewholder.LabelHolder;
+import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.team.TeamService;
 import com.netease.nimlib.sdk.team.constant.TeamMemberType;
 import com.netease.nimlib.sdk.team.constant.TeamTypeEnum;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.zwonline.top28.R;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.nim.session.SessionHelper;
+import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.utils.ImageViewPlus;
+import com.zwonline.top28.utils.LogUtils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.netease.nimlib.sdk.team.constant.TeamMemberType.Owner;
 
 /**
  * 群列表(通讯录)
@@ -67,11 +77,12 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
     private List<Team> manageList;
     private List<List<Team>> lists;
     private MyExpandableListView myExpandableListView;
-
+    private String has_permission;
     public static final void start(Context context, int teamItemTypes) {
         Intent intent = new Intent();
         intent.setClass(context, TeamListActivity.class);
         intent.putExtra(EXTRA_DATA_ITEM_TYPES, teamItemTypes);
+
         context.startActivity(intent);
     }
 
@@ -86,6 +97,7 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
         setContentView(R.layout.group_list_activity);
         sp = SharedPreferencesUtils.getUtil();
         uid = (String) sp.getKey(getApplicationContext(), "uid", "");
+        has_permission = (String) sp.getKey(getApplicationContext(), "has_permission", "");
         ToolBarOptions options = new NimToolBarOptions();
         options.titleId = itemType == ItemTypes.TEAMS.ADVANCED_TEAM ? R.string.advanced_team : R.string.normal_team;
         setToolBar(R.id.toolbar, options);
@@ -114,6 +126,16 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                SessionCustomization sessionCustomization = new SessionCustomization();
+
+                ArrayList<BaseAction> actions = new ArrayList<>();
+                if (StringUtil.isEmpty(has_permission) || has_permission.equals(BizConstant.ENTERPRISE_tRUE)) {
+                    actions.remove(new YangFenAction());
+                } else if (has_permission.equals(BizConstant.ALREADY_FAVORITE)) {
+                    actions.add(new YangFenAction());
+                }
+                sessionCustomization.actions = actions;
+                NimUIKit.startChatting(getApplicationContext(), lists.get(groupPosition).get(childPosition).getId(), SessionTypeEnum.Team, sessionCustomization, null);
                 SessionHelper.startTeamSession(TeamListActivity.this, lists.get(groupPosition).get(childPosition).getId());
                 return true;
             }
@@ -315,7 +337,7 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
             return convertView;
         }
 
-        /*TODO 填充二级列表*/
+        /*#TODO 填充二级列表*/
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
             ChildViewHolder childViewHolder;
@@ -344,7 +366,7 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
 
 
     }
-    //绑定数据
+
     static class ChildViewHolder {
         ImageViewPlus team_head;
         TextView team_name;

@@ -70,12 +70,12 @@ public class AddBankActivity extends BaseActivity<IAddBankActivity, AddBankPrese
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
             case R.id.commit:
-                if (!StringUtil.isEmpty(addCard) && addCard.equals("1")){
+                if (!StringUtil.isEmpty(addCard) && addCard.equals("1")) {
                     addBankCard();
                     startActivity(new Intent(AddBankActivity.this, BalanceWithdrawActivity.class));
                     finish();
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                }else {
+                } else {
                     addBankCard();
 //                    startActivity(new Intent(AddBankActivity.this, BankActivity.class));
                     finish();
@@ -88,8 +88,8 @@ public class AddBankActivity extends BaseActivity<IAddBankActivity, AddBankPrese
 
     @Override
     public void isSuccess(AddBankBean addBankBean) {
-        if (addBankBean.status==1) {
-            ToastUtils.showToast(this,getString(R.string.add_suc_tip));
+        if (addBankBean.status == 1) {
+            ToastUtils.showToast(this, getString(R.string.add_suc_tip));
 //            if (!StringUtil.isEmpty(addCard) && addCard.equals("1")){
 //                startActivity(new Intent(AddBankActivity.this, BalanceWithdrawActivity.class));
 //                finish();
@@ -137,5 +137,4 @@ public class AddBankActivity extends BaseActivity<IAddBankActivity, AddBankPrese
             Toast.makeText(this, R.string.bank_customer_name, Toast.LENGTH_SHORT).show();
         }
     }
-
 }

@@ -87,7 +87,7 @@ public class YangShiActivity extends BaseActivity {
         if (StringUtil.isNotEmpty(content)) {
             url = getIntent().getStringExtra("jump_url") + "&platform=app" + "&token=" + token + "&k=" + content;
         } else {
-            url = getIntent().getStringExtra("jump_url") + "&platform=app" + "&token="+token;
+            url = getIntent().getStringExtra("jump_url") + "&platform=app" + "&token=" + token;
         }
         yangShiWeb = (WebView) findViewById(R.id.yangshi_web);
         progressBar = (ProgressBar) findViewById(R.id.progress_Bar);

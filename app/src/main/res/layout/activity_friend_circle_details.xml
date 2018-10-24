@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".activity.DynamicDetailsActivity">
 
@@ -227,124 +228,149 @@
                                 android:layout_height="wrap_content" />
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
+
                             <ImageView
                                 android:id="@+id/reward_image"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@mipmap/reward_btn"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="28dp"/>
+                                android:layout_marginTop="28dp"
+                                android:src="@mipmap/reward_btn" />
+
                             <TextView
                                 android:layout_width="182dp"
                                 android:layout_height="18dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="21dp"
                                 android:text="打赏作者，和会赚钱的人在一起"
                                 android:textColor="#ffa8a8a8"
-                                android:textSize="13sp"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="21dp"/>
+                                android:textSize="13sp" />
+
                             <LinearLayout
-                                android:layout_marginTop="21dp"
-                                android:paddingLeft="43dp"
-                                android:paddingRight="43dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="60dp"
-                                android:gravity="center"
                                 android:layout_gravity="center"
+                                android:layout_marginTop="21dp"
+                                android:gravity="center"
                                 android:orientation="horizontal">
+
                                 <LinearLayout
-                                    android:layout_weight="1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center"
                                     android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
                                     android:orientation="vertical">
+
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:src="@mipmap/reward_gift1"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/reward_gift1" />
                                     >
+
                                     <TextView
+                                        android:id="@+id/flower_num"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="43"
                                         android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:text="43"
                                         android:textColor="#ffa8a8a8"
-                                        android:textSize="13sp"/>
+                                        android:textSize="13sp" />
 
                                 </LinearLayout>
+
                                 <LinearLayout
-                                    android:layout_weight="1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:orientation="vertical">
+
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:src="@mipmap/reward_gift2"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/reward_gift2" />
                                     >
+
                                     <TextView
+                                        android:id="@+id/flowers_num"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="43"
                                         android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:text="43"
                                         android:textColor="#ffa8a8a8"
-                                        android:textSize="13sp"/>
+                                        android:textSize="13sp" />
 
                                 </LinearLayout>
+
                                 <LinearLayout
-                                    android:layout_weight="1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:orientation="vertical">
+
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:src="@mipmap/reward_gift3"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/reward_gift3" />
                                     >
+
                                     <TextView
+                                        android:id="@+id/handclap_num"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="43"
                                         android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:text="43"
                                         android:textColor="#ffa8a8a8"
-                                        android:textSize="13sp"/>
+                                        android:textSize="13sp" />
 
                                 </LinearLayout>
+
                                 <LinearLayout
-                                    android:layout_weight="1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:orientation="vertical">
+
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:src="@mipmap/reward_gift4"
-                                        android:layout_gravity="center"/>
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/reward_gift4" />
                                     >
+
                                     <TextView
+                                        android:id="@+id/kiss_num"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="43"
                                         android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:text="43"
                                         android:textColor="#ffa8a8a8"
-                                        android:textSize="13sp"/>
+                                        android:textSize="13sp" />
 
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:layout_marginTop="@dimen/ui_20_dip"
+                            android:background="#fff3f3f3" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:background="#fff3f3f3" />
+
                 </android.support.design.widget.CollapsingToolbarLayout>
                 <!--悬浮效果-->
                 <RelativeLayout
@@ -382,9 +408,8 @@
                         android:id="@+id/like_acount_linear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/comment_acount_linear"
                         android:orientation="vertical">
 
                         <TextView
@@ -404,6 +429,32 @@
                             android:visibility="gone" />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/reward_acount_linear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="@dimen/ui_20_dip"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/reward_acount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="打赏"
+                            android:textColor="#2F2F2F"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/reward_underline"
+                            android:layout_width="40dp"
+                            android:layout_height="3dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/btn_red_shape"
+                            android:visibility="gone" />
+                    </LinearLayout>
 
                 </RelativeLayout>
             </android.support.design.widget.AppBarLayout>
@@ -466,9 +517,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:gravity="center_horizontal"
                     android:text="分享"
-                    android:layout_marginTop="2dp"
                     android:textColor="#1d1d1d"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -497,8 +548,8 @@
                     android:id="@+id/comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="评论"
                     android:layout_marginTop="2dp"
+                    android:text="评论"
                     android:textColor="#1d1d1d"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -529,11 +580,12 @@
                     android:id="@+id/is_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="点赞"
                     android:layout_marginTop="2dp"
+                    android:text="点赞"
                     android:textColor="#1d1d1d"
                     android:textSize="12sp" />
             </LinearLayout>
+
             <View
                 android:layout_width="1dp"
                 android:layout_height="22dp"
@@ -543,24 +595,24 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <CheckBox
                     android:layout_width="14dp"
-                    android:layout_height="16dp"
+                    android:layout_height="14dp"
                     android:background="@mipmap/post_shang"
                     android:button="@null" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="打赏"
+                    android:layout_gravity="center"
                     android:layout_marginTop="2dp"
                     android:gravity="center"
-                    android:layout_gravity="center"
+                    android:text="打赏"
                     android:textColor="#1d1d1d"
                     android:textSize="12sp" />
             </LinearLayout>

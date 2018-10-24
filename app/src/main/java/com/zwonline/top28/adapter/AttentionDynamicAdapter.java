@@ -252,7 +252,7 @@ public class AttentionDynamicAdapter extends RecyclerView.Adapter<RecyclerView.V
                             spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                         } else {
                             spannable1.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                            spannable2.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                            spannable2.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(1).user_id), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
                         }
                         myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
@@ -278,7 +278,7 @@ public class AttentionDynamicAdapter extends RecyclerView.Adapter<RecyclerView.V
                             spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                         } else {
                             spannable1.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                            spannable2.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                            spannable2.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(1).user_id), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
                         }
                         myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());

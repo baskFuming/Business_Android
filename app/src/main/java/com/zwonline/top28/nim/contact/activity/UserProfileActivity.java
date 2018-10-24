@@ -24,7 +24,9 @@ import android.widget.Toast;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.SimpleCallback;
 import com.netease.nim.uikit.api.model.contact.ContactChangedObserver;
+import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
+import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
@@ -47,6 +49,7 @@ import com.netease.nimlib.sdk.friend.constant.FriendFieldEnum;
 import com.netease.nimlib.sdk.friend.constant.VerifyType;
 import com.netease.nimlib.sdk.friend.model.AddFriendData;
 import com.netease.nimlib.sdk.friend.model.MuteListChangedNotify;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.constant.GenderEnum;
 import com.netease.nimlib.sdk.uinfo.constant.UserInfoFieldEnum;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
@@ -59,12 +62,15 @@ import com.zwonline.top28.nim.contact.constant.UserConstant;
 import com.zwonline.top28.nim.contact.helper.UserUpdateHelper;
 import com.zwonline.top28.nim.main.model.Extras;
 import com.zwonline.top28.nim.session.SessionHelper;
+import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.tip.toast.ToastUtil;
+import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +122,8 @@ public class UserProfileActivity extends UI {
     private String data;
     private Map<Integer, UserInfoFieldEnum> fieldMap;
     private EditText remarksEt;
+    private SharedPreferencesUtils sp;
+    private String has_permission;
 
     public static void start(Context context, String account) {
         Intent intent = new Intent();
@@ -150,7 +158,8 @@ public class UserProfileActivity extends UI {
         nickname = intent.getStringExtra("nickname");
         signature = intent.getStringExtra("signature");
         account = intent.getStringExtra(Extras.EXTRA_ACCOUNT);
-
+        sp = SharedPreferencesUtils.getUtil();
+        has_permission = (String) sp.getKey(getApplicationContext(), "has_permission", "");
         initActionbar();
 
         findViews();
@@ -697,8 +706,21 @@ public class UserProfileActivity extends UI {
         }
     }
 
+    /**
+     *聊天
+     */
     private void onChat() {
-        Log.i(TAG, "onChat");
+        //红包权限
+        SessionCustomization sessionCustomization = new SessionCustomization();
+        ArrayList<BaseAction> actions = new ArrayList<>();
+        if (StringUtil.isEmpty(has_permission) || has_permission.equals(BizConstant.ENTERPRISE_tRUE)) {
+            actions.remove(new YangFenAction());
+        } else if (has_permission.equals(BizConstant.ALREADY_FAVORITE)) {
+            actions.add(new YangFenAction());
+        }
+        sessionCustomization.actions = actions;
+        NimUIKit.startChatting(getApplicationContext(), account, SessionTypeEnum.P2P, sessionCustomization, null);
+        //单聊
         SessionHelper.startP2PSession(this, account);
     }
 

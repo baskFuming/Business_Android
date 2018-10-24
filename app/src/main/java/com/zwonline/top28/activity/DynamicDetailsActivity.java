@@ -169,6 +169,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     //打赏功能
     private ImageView reward_Image;
     private RewardPopWindow rewardPopWindow;
+    private LinearLayout rewardAcountLinear;
+    private TextView rewardAcount;
+    private TextView rewardUnderline;
 
     @Subscribe
     @Override
@@ -242,6 +245,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         time = (TextView) findViewById(R.id.time);
         likeAcount = (TextView) findViewById(R.id.like_acount);
         commentAcount = (TextView) findViewById(R.id.comment_acount);
+        rewardAcountLinear = (LinearLayout) findViewById(R.id.reward_acount_linear);//打赏
+        rewardAcount = (TextView) findViewById(R.id.reward_acount);//打赏title
+        rewardUnderline = (TextView) findViewById(R.id.reward_underline);//打赏下划线
         article_linear = (LinearLayout) findViewById(R.id.article_linear);
         article_title = (TextView) findViewById(R.id.article_title);
         article_desc = (TextView) findViewById(R.id.article_desc);
@@ -257,7 +263,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         dynamic_imag_h = (ImageView) findViewById(R.id.dynamic_imag_h);
         dynamic_imag_z = (ImageView) findViewById(R.id.dynamic_imag_z);
         imag_relative = (RelativeLayout) findViewById(R.id.imag_relative);
-        reward_Image = (ImageView)findViewById(R.id.reward_image);
+        reward_Image = (ImageView) findViewById(R.id.reward_image);
     }
 
     /**
@@ -933,7 +939,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      *
      * @param view
      */
-    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear, R.id.appBarLayout,R.id.reward_image})
+    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear, R.id.appBarLayout, R.id.reward_image, R.id.reward_acount_linear})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -989,12 +995,14 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 commentUnderline.setVisibility(View.VISIBLE);
                 dynamicdetailsList.setVisibility(View.VISIBLE);
                 zanRecy.setVisibility(View.GONE);
+                rewardUnderline.setVisibility(View.GONE);
                 break;
             case R.id.like_acount_linear:
                 commentUnderline.setVisibility(View.GONE);
                 likeUnderline.setVisibility(View.VISIBLE);
                 dynamicdetailsList.setVisibility(View.GONE);
                 zanRecy.setVisibility(View.VISIBLE);
+                rewardUnderline.setVisibility(View.GONE);
                 break;
             case R.id.appBarLayout:
                 appbarlayout.setOnTouchListener(new View.OnTouchListener() {
@@ -1006,11 +1014,19 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     }
                 });
                 break;
-                //打赏弹框
+            //打赏弹框
             case R.id.reward_image:
                 rewardPopWindow = new RewardPopWindow(this);
                 rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
                 View contentView = rewardPopWindow.getContentView();
+                //查找 控件
+                break;
+            case R.id.reward_acount_linear:
+                commentUnderline.setVisibility(View.GONE);
+                likeUnderline.setVisibility(View.GONE);
+                dynamicdetailsList.setVisibility(View.GONE);
+                zanRecy.setVisibility(View.VISIBLE);
+                rewardUnderline.setVisibility(View.VISIBLE);
                 //查找 控件
                 break;
             default:

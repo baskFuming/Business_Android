@@ -424,9 +424,9 @@ public class SessionListFragment extends TabFragment {
                 } else if (attachment instanceof SnapChatAttachment) {
                     return "[阅后即焚]";
                 } else if (attachment instanceof RedPacketAttachment) {
-                    return "[鞅分红包]";
+                    return "[红包消息]";
                 } else if (attachment instanceof YangFenAttachment) {
-                    return "[鞅分红包]";
+                    return "[红包消息]";
 
                 } else if (attachment instanceof RedPacketOpenedAttachment) {
                     return ((RedPacketOpenedAttachment) attachment).getDesc(recentContact.getSessionType(), recentContact.getContactId());

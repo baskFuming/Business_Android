@@ -659,7 +659,9 @@
         <activity
             android:name=".activity.FeedBackActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
-        <activity android:name=".activity.DynamicDetailsActivity" />
+        <activity android:name=".activity.DynamicDetailsActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".activity.DynamicCommentDetailsActivity" />
         <activity android:name=".activity.ShieldUserActivity" />
         <activity android:name=".activity.AddGetRelistActivity" />

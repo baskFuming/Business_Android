@@ -62,7 +62,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="23dp"
                 android:layout_marginTop="10dp"
-                android:text="1000算力"
                 android:textColor="#2A394C"
                 android:textSize="14sp" />
         </RelativeLayout>
@@ -99,7 +98,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="23dp"
                 android:layout_marginTop="10dp"
-                android:text="1000算力"
                 android:textColor="#2A394C"
                 android:textSize="14sp" />
         </RelativeLayout>

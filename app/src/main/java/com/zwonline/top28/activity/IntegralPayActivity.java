@@ -63,6 +63,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     private Double balance;
     private int payCheckedId;
     private PaySucPopuWindow paySucPopuWindow;
+
     @Override
     protected void init() {
         initWeight(); //初始化控件
@@ -184,10 +185,10 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                     } else if (payCheckedId == unionpayBtn.getId()) {
 //                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, pointsMonney.getText().toString());
 //                        ToastUtils.showToast(IntegralPayActivity.this, "选着的是银行卡" + orderCode);
-                      Double Monney= Double.valueOf(pointsMonney.getText().toString());
-                        if (Monney>balance){
+                        Double Monney = Double.valueOf(pointsMonney.getText().toString());
+                        if (Monney > balance) {
                             paySureBtn.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-                        }else {
+                        } else {
                             paySureBtn.setBackgroundResource(R.drawable.btn_register_shape);
                             showNormalDialogFollow();
 
@@ -256,22 +257,23 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     //余额
     @Override
     public void showBalance(BalanceBean balanceBean) {
-       balance = Double.valueOf(balanceBean.data);
-        unionpayBtn.setText(getText(R.string.bank_balance_payments)+"("+ balance +"元)");
+        balance = Double.valueOf(balanceBean.data);
+        unionpayBtn.setText(getText(R.string.bank_balance_payments) + "(" + balance + "元)");
 
     }
 
     /**
      * 余额充值
+     *
      * @param balancePayBean
      */
     @Override
     public void showBalancePay(BalancePayBean balancePayBean) {
-        if (balancePayBean.status.equals("1")){
-            paySucPopuWindow = new PaySucPopuWindow(IntegralPayActivity.this, listener,pointsEditText.getText().toString().trim(),pointsMonney.getText().toString().trim(),balancePayBean.data.balance);
+        if (balancePayBean.status.equals("1")) {
+            paySucPopuWindow = new PaySucPopuWindow(IntegralPayActivity.this, listener, pointsEditText.getText().toString().trim(), pointsMonney.getText().toString().trim(), balancePayBean.data.balance);
             paySucPopuWindow.showAtLocation(IntegralPayActivity.this.findViewById(R.id.integral_pay_linear), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
-        }else {
-            ToastUtils.showToast(this,balancePayBean.msg);
+        } else {
+            ToastUtils.showToast(this, balancePayBean.msg);
         }
     }
 
@@ -374,7 +376,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                     pointsMonney.setText(pointsEditT);
                 }
             }
-            if (payCheckedId == unionpayBtn.getId()){
+            if (payCheckedId == unionpayBtn.getId()) {
 //                Double Monney= Double.valueOf(pointsMonney.getText().toString());
 //                if (Monney>balance){
 //                    paySureBtn.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
@@ -405,7 +407,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                     pointsMonney.setText(cp + "");
                 }
             }
-            if (payCheckedId == unionpayBtn.getId()){
+            if (payCheckedId == unionpayBtn.getId()) {
 //                Double Monney= Double.valueOf(pointsMonney.getText().toString());
 //                if (Monney>balance){
 //                    paySureBtn.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
@@ -444,7 +446,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                 }
             }
 
-            if (payCheckedId == unionpayBtn.getId()){
+            if (payCheckedId == unionpayBtn.getId()) {
 //                Double Monney= Double.valueOf(pointsMonney.getText().toString());
 //                if (Monney>balance){
 //                    paySureBtn.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
@@ -509,14 +511,14 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
          */
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(this);
-        normalDialog.setTitle("您确认消费"+pointsMonney.getText().toString().trim()+"元充值"+pointsEditText.getText().toString().trim()+"算力");
+        normalDialog.setTitle("您确认消费" + pointsMonney.getText().toString().trim() + "元充值" + pointsEditText.getText().toString().trim() + "算力");
 //        normalDialog.setMessage(R.string.is_willing_answer_calls);pointsEditText.getText().toString().trim(),pointsMonney.getText().toString().trim()
         normalDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        presenter.mBalancesPay(IntegralPayActivity.this,pointsMonney.getText().toString());
+                        presenter.mBalancesPay(IntegralPayActivity.this, pointsMonney.getText().toString());
                     }
                 });
         normalDialog.setNegativeButton("取消",
@@ -538,7 +540,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         public void onClick(View v) {
             switch (v.getId()) {//返回
                 case R.id.back_hashrate:
-                    startActivity(new Intent(IntegralPayActivity.this,IntegralActivity.class));
+                    startActivity(new Intent(IntegralPayActivity.this, IntegralActivity.class));
                     finish();
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     paySucPopuWindow.dismiss();
@@ -553,16 +555,15 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     };
 
 
-
     /**
      * 判断余额是否够充值
      */
-    public void isBalance(){
-        Double Monney= Double.valueOf(pointsMonney.getText().toString());
-        if (Monney>balance){
+    public void isBalance() {
+        Double Monney = Double.valueOf(pointsMonney.getText().toString());
+        if (Monney > balance) {
             paySureBtn.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
             paySureBtn.setEnabled(false);
-        }else {
+        } else {
             paySureBtn.setEnabled(true);
             paySureBtn.setBackgroundResource(R.drawable.btn_register_shape);
 //                    presenter.mBalancesPay(IntegralPayActivity.this,pointsMonney.getText().toString());

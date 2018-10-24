@@ -183,7 +183,10 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             presenter.mUserInfo(getActivity());
             presenter.PersonCenterMenu(getActivity());
         } else {
-            Toast.makeText(getActivity(), R.string.user_not_login, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), R.string.user_not_login, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), WithoutCodeLoginActivity.class));
+            getActivity().finish();
+            getActivity().overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
         }
         userName.setText((String) sp.getKey(getActivity(), "nickname", ""));
         titleUserName.setText((String) sp.getKey(getActivity(), "nickname", ""));
@@ -490,6 +493,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     @Override
     public void onResume() {
         super.onResume();
+       boolean islogin= (boolean) sp.getKey(getActivity(), "islogin", false);
         if (StringUtil.isNotEmpty(nicknames)) {
             titleUserName.setText(nicknames);
             userName.setText(nicknames);
@@ -500,11 +504,13 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
 
             Glide.with(getActivity()).load(avatars).apply(options).into(userTou);
         }
-        if (islogins) {
+        if (islogin) {
             presenter.mNoticeNotReadCount(getActivity());
             presenter.mUserInfo(getActivity());
         } else {
-            Toast.makeText(getActivity(), R.string.user_not_login, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), WithoutCodeLoginActivity.class));
+            getActivity().finish();
+            getActivity().overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
         }
     }
 
@@ -544,7 +550,6 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
         }
 
     }
-
     /**
      * 菜单一级列表
      *
