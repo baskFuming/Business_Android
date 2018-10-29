@@ -55,10 +55,9 @@
             android:paddingRight="20dp"
             android:singleLine="true"
             android:textColor="#2E2E2E"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:visibility="gone" />
     </RelativeLayout>
-
 
     <LinearLayout
         android:id="@+id/liv"
@@ -66,31 +65,23 @@
         android:layout_height="match_parent"
         android:layout_below="@id/linearhead"
         android:layout_marginBottom="50dp"
+        android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
-
-        <com.liaoinstan.springview.widget.SpringView
-            android:id="@+id/comment_spring"
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/reshLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.zwonline.top28.utils.LazyScrollView
+            android:layout_height="match_parent">
+            <ListView
+                android:id="@+id/comment_listview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.zwonline.top28.utils.MyListView
-                    android:id="@+id/comment_listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:descendantFocusability="blocksDescendants"
-                    android:divider="@null"
-                    android:scrollbars="vertical"></com.zwonline.top28.utils.MyListView>
-            </com.zwonline.top28.utils.LazyScrollView>
-
-        </com.liaoinstan.springview.widget.SpringView>
-
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:scrollbarThumbVertical="@drawable/bf_slidel_arrows2"
+                ></ListView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </LinearLayout>
-
-
 
     <View
         android:layout_width="match_parent"
@@ -147,38 +138,38 @@
             android:visibility="visible">
 
             <RelativeLayout
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_gravity="bottom">
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="5dp">
 
-            <ImageView
-            android:id="@+id/comment"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentBottom="true"
-            android:src="@mipmap/ic_comment_gray" />
-            <TextView
-            android:id="@+id/badgeview_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/circle_shape"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="8dp"
-            android:padding="1dp"
-            android:visibility="gone"
-            />
+                <ImageView
+                    android:id="@+id/comment"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentBottom="true"
+                    android:src="@mipmap/ic_comment_gray" />
+
+                <TextView
+                    android:id="@+id/badgeview_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/circle_shape"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textColor="@color/white"
+                    android:textSize="8dp"
+                    android:visibility="gone" />
             </RelativeLayout>
             <!--<ImageView-->
-                <!--android:id="@+id/comment"-->
-                <!--android:layout_width="25dp"-->
-                <!--android:layout_height="25dp"-->
-                <!--android:layout_gravity="bottom"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:src="@mipmap/ic_comment_gray" />-->
+            <!--android:id="@+id/comment"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:layout_marginLeft="15dp"-->
+            <!--android:src="@mipmap/ic_comment_gray" />-->
 
             <CheckBox
                 android:id="@+id/collect"
@@ -211,12 +202,13 @@
             android:textColor="@color/gray"
             android:visibility="gone" />
     </LinearLayout>
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/details_gif"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
         android:layout_below="@id/linearhead"
+        android:scaleType="fitXY"
         android:src="@mipmap/loading"
         android:visibility="visible" />
 

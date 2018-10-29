@@ -60,7 +60,6 @@ public class BankAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemCount() {
         return list != null ? list.size() : 0;
     }
-
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView card_bank, card_number;
 
