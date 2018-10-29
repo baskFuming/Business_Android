@@ -290,7 +290,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 } else {
-                    Intent infoIntent = new Intent(this, WithoutCodeLoginActivity.class);
+                    Intent infoIntent = new  Intent(this, WithoutCodeLoginActivity.class);
 //                    infoIntent.putExtra("login_type", BizConstant.BUSINESS_LOGIN);
                     startActivity(infoIntent);
                     //activity切换动画效果

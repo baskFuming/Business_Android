@@ -7,6 +7,7 @@ import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.service.ApiService;
 import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.AmountPointsBean;
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BalanceBean;
 import com.zwonline.top28.bean.BalancePayBean;
 import com.zwonline.top28.bean.IntegralPayBean;
@@ -134,6 +135,7 @@ public class IntegralPayModel {
 
     /**
      * 获取订单详情
+     *
      * @param context
      * @param orderId
      * @return
@@ -150,26 +152,53 @@ public class IntegralPayModel {
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         return ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
-                .iGetOrderInfo(String.valueOf(timestamp),token,orderId, sign);
+                .iGetOrderInfo(String.valueOf(timestamp), token, orderId, sign);
     }
 
-    //余额
+    //金票余额查询
     public Flowable<BalanceBean> Balance(Context context) throws IOException {
         SharedPreferencesUtils sp = SharedPreferencesUtils.getUtil();
-        String token= (String) sp.getKey(context,"dialog","");
-        final long timestamp=new Date().getTime()/1000;//时间戳
-        Map<String,String>map=new HashMap<>();
-        map.put("token",token);
-        map.put("timestamp",String.valueOf(timestamp));
-        final String sign= SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        Flowable<BalanceBean> flowable= ApiRetrofit.getInstance()
+        String token = (String) sp.getKey(context, "dialog", "");
+        final long timestamp = new Date().getTime() / 1000;//时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("timestamp", String.valueOf(timestamp));
+        final String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<BalanceBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .iBalance(String.valueOf(timestamp),token,sign);
+                .igetGoldTicketBalance(String.valueOf(timestamp), token, sign);
+        return flowable;
+    }
+
+
+    /**
+     * 充商机币赠送算力
+     *
+     * @param context
+     * @param businessOpportunityCoin
+     * @return
+     * @throws IOException
+     */
+    public Flowable<AttentionBean> mGetPresentComputePower(Context context, String businessOpportunityCoin, int sortNum) throws IOException {
+        SharedPreferencesUtils sp = SharedPreferencesUtils.getUtil();
+        String token = (String) sp.getKey(context, "dialog", "");
+        final long timestamp = new Date().getTime() / 1000;//时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("businessOpportunityCoin", businessOpportunityCoin);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("sortNum", String.valueOf(sortNum));
+        SignUtils.removeNullValue(map);
+        final String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(ApiService.class, Api.url)
+                .getPresentComputePower(String.valueOf(timestamp), token, businessOpportunityCoin,sortNum, sign);
         return flowable;
     }
 
     /**
      * 获取订单详情
+     *
      * @param context
      * @param amount
      * @return
@@ -187,6 +216,6 @@ public class IntegralPayModel {
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         return ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
-                .iBalancePay(String.valueOf(timestamp),token,amount, sign);
+                .iBalancePay(String.valueOf(timestamp), token, amount, sign);
     }
 }

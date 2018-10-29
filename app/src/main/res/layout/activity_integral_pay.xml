@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/integral_pay_linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:id="@+id/integral_pay_linear"
     tools:context="com.zwonline.top28.activity.IntegralPayActivity">
 
     <RelativeLayout
@@ -32,285 +33,339 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/integtal_pay"
+            android:text="购买商机币"
             android:textColor="#2B2B2B"
             android:textSize="18sp" />
     </RelativeLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/rectangle_shape_gay"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/integtal_pay"
-            android:textSize="14sp" />
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-
-            <EditText
-                android:id="@+id/points_edittext"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/bill"
-                android:background="@null"
-                android:drawableLeft="@mipmap/recharge_suanli"
-                android:drawablePadding="15dp"
-                android:hint="0"
-                android:inputType="number"
-                android:maxLength="9"
-                android:textSize="26dp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/points_monney"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/red"
-                    android:textSize="22dp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/rectangle_shape_gay"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="@string/amount_unit"
+                    android:layout_marginLeft="20dp"
+                    android:text="支付金额"
                     android:textColor="@color/black"
-                    android:textSize="22dp" />
+                    android:textSize="16sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp">
+
+
+                    <EditText
+                        android:id="@+id/points_edittext"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/bill"
+                        android:background="@null"
+                        android:drawableLeft="@mipmap/buy_coin"
+                        android:drawablePadding="15dp"
+                        android:inputType="number"
+                        android:maxLength="9"
+                        android:textSize="26dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/points_monney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:textColor="@color/red"
+                            android:textSize="22dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/amount_unit"
+                            android:textColor="@color/black"
+                            android:textSize="22dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <!--<EditText-->
+                <!--android:id="@+id/points_edittext"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:background="@null"-->
+                <!--android:drawableLeft="@mipmap/ic_my_business"-->
+                <!--android:drawablePadding="15dp"-->
+                <!--android:inputType="number"-->
+                <!--android:textSize="42dp" />-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/fenge"
+                    android:visibility="gone"></View>
+
+                <LinearLayout
+                    android:id="@+id/points_radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp">
+
+                    <TextView
+                        android:id="@+id/one_points"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rectangle_shape_red"
+                        android:gravity="center"
+                        android:text="100"
+                        android:textColor="@color/reded"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/two_points"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/quxiaoguanzhu_shpae"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="500"
+                        android:textColor="#3D3D3D"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp">
+
+                    <TextView
+                        android:id="@+id/three_points"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/quxiaoguanzhu_shpae"
+                        android:gravity="center"
+                        android:text="1000"
+                        android:textColor="#3D3D3D"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="21dp"
+                    android:layout_marginRight="21dp"
+                    android:layout_marginTop="19dp"
+                    android:background="#F2F2F2" />
+
+                <TextView
+                    android:id="@+id/give_hashrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:drawableLeft="@mipmap/buy_gift"
+                    android:drawablePadding="10dp"
+                    android:text="赠送 200算力"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
-        </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="19dp"
+                android:background="#F2F2F2" />
 
-        <!--<EditText-->
-        <!--android:id="@+id/points_edittext"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:background="@null"-->
-        <!--android:drawableLeft="@mipmap/ic_my_business"-->
-        <!--android:drawablePadding="15dp"-->
-        <!--android:inputType="number"-->
-        <!--android:textSize="42dp" />-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="23dp"
+                android:text="@string/pre_paid"
+                android:textColor="#1A1A1A"
+                android:textSize="18sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@color/fenge"></View>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:background="@drawable/rectangle_shape_gay"
+                android:orientation="vertical">
 
-        <RadioGroup
-            android:id="@+id/points_radioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+                <RadioGroup
+                    android:id="@+id/pay_radiogroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <RadioButton
-                android:id="@+id/one_points"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle_shape_pink"
-                android:button="@null"
-                android:gravity="center"
-                android:text="100"
+                    <RadioButton
+                        android:id="@+id/pos_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:background="@android:color/transparent"
+                        android:button="@null"
+                        android:drawableLeft="@mipmap/ic_pos"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@drawable/pay_selector"
+                        android:text="@string/pos_pay"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/fenge"
+                        android:visibility="gone"></View>
+
+                    <RadioButton
+                        android:id="@+id/alipay_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@android:color/transparent"
+                        android:button="@null"
+                        android:checked="true"
+                        android:drawableLeft="@mipmap/ic_alipay"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@drawable/pay_selector"
+                        android:text="@string/alipay"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/fenge"
+                        android:visibility="gone"></View>
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:layout_marginLeft="20dp"-->
+                    <!--android:layout_marginRight="20dp"-->
+                    <!--android:layout_marginTop="20dp"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<ImageView-->
+                    <!--android:layout_width="24dp"-->
+                    <!--android:layout_height="24dp"-->
+                    <!--android:src="@mipmap/card" />-->
+
+                    <RadioButton
+                        android:id="@+id/unionpay_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@android:color/transparent"
+                        android:button="@null"
+                        android:drawableLeft="@mipmap/balance"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@drawable/pay_selector"
+                        android:text="@string/bank_balance_payments"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </RadioGroup>
+                <!--<RadioButton-->
+                <!--android:id="@+id/alipay"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/alipay"-->
+                <!--android:textSize="14sp"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:layout_marginLeft="15dp"/>-->
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="@color/fenge"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_marginTop="10dp"></View>-->
+                <!--<RadioButton-->
+                <!--android:id="@+id/unionpay"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/unionpay"-->
+                <!--android:textSize="14sp"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:layout_marginLeft="15dp"/>-->
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/pay_sure_btn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_red_shape"
+                android:text="确定"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <RadioButton
-                android:id="@+id/two_points"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle_shape_red"
-                android:button="@null"
-                android:gravity="center"
-                android:text="500"
-                android:textColor="@color/red"
-                android:textSize="14sp" />
-
-            <RadioButton
-                android:id="@+id/three_points"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle_shape_red"
-                android:button="@null"
-                android:gravity="center"
-                android:text="1000"
-                android:textColor="@color/red"
-                android:textSize="14sp" />
-
-        </RadioGroup>
-
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/pre_paid"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="165dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rectangle_shape_gay"
-        android:orientation="vertical">
-
-        <RadioGroup
-            android:id="@+id/pay_radiogroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-            <RadioButton
-                android:id="@+id/pos_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:button="@null"
-                android:drawableLeft="@mipmap/ic_pos"
-                android:drawablePadding="10dp"
-                android:drawableRight="@drawable/pay_selector"
-                android:text="@string/pos_pay"
-                android:background="@android:color/transparent"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/fenge"></View>
-
-            <RadioButton
-                android:id="@+id/alipay_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:button="@null"
-                android:drawableLeft="@mipmap/ic_alipay"
-                android:drawablePadding="10dp"
-                android:drawableRight="@drawable/pay_selector"
-                android:text="@string/alipay"
-                android:textColor="@color/black"
-                android:background="@android:color/transparent"
-                android:textSize="16sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/fenge"></View>
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginBottom="10dp"-->
-            <!--android:layout_marginLeft="20dp"-->
-            <!--android:layout_marginRight="20dp"-->
-            <!--android:layout_marginTop="20dp"-->
-            <!--android:orientation="horizontal">-->
-
-            <!--<ImageView-->
-            <!--android:layout_width="24dp"-->
-            <!--android:layout_height="24dp"-->
-            <!--android:src="@mipmap/card" />-->
-
-            <RadioButton
-                android:id="@+id/unionpay_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="20dp"
-                android:button="@null"
-                android:drawablePadding="10dp"
-                android:drawableLeft="@mipmap/balance"
-                android:drawableRight="@drawable/pay_selector"
-                android:text="@string/bank_balance_payments"
-                android:background="@android:color/transparent"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </RadioGroup>
-        <!--<RadioButton-->
-        <!--android:id="@+id/alipay"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/alipay"-->
-        <!--android:textSize="14sp"-->
-        <!--android:layout_marginTop="15dp"-->
-        <!--android:layout_marginLeft="15dp"/>-->
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:background="@color/fenge"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:layout_marginRight="10dp"-->
-        <!--android:layout_marginTop="10dp"></View>-->
-        <!--<RadioButton-->
-        <!--android:id="@+id/unionpay"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/unionpay"-->
-        <!--android:textSize="14sp"-->
-        <!--android:layout_marginTop="15dp"-->
-        <!--android:layout_marginLeft="15dp"/>-->
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/pay_sure_btn"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_register_shape"
-        android:text="@string/pay"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

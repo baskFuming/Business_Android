@@ -1,6 +1,7 @@
 package com.zwonline.top28.view;
 
 import com.zwonline.top28.bean.AmountPointsBean;
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BalanceBean;
 import com.zwonline.top28.bean.BalancePayBean;
 import com.zwonline.top28.bean.IntegralPayBean;
@@ -67,13 +68,22 @@ public interface IIntegralPayActivity {
 
     /**
      * 余额
+     *
      * @param balanceBean
      */
     void showBalance(BalanceBean balanceBean);
 
     /**
      * 余额
+     *
      * @param balancePayBean
      */
     void showBalancePay(BalancePayBean balancePayBean);
+
+    /**
+     * 充值打赏币赠送算力
+     *
+     * @param balanceBean
+     */
+    void showGetPresentComputePower(AttentionBean balanceBean);
 }

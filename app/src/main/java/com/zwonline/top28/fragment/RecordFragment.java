@@ -12,6 +12,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.RecordAdapter;
 import com.zwonline.top28.base.BaseFragment;
+import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.IntegralBean;
 import com.zwonline.top28.bean.IntegralRecordBean;
 import com.zwonline.top28.constants.BizConstant;
@@ -26,7 +27,7 @@ import java.util.List;
  * @desc积分纪录
  * @date ${Date}
  */
-public class RecordFragment extends BaseFragment<IIntegralActivity, IntergralPresenter> implements IIntegralActivity {
+public class RecordFragment extends BasesFragment<IIntegralActivity, IntergralPresenter> implements IIntegralActivity {
     private int cate_ids;
     private String cate_name;
     private XRecyclerView recordRecy;
@@ -44,14 +45,21 @@ public class RecordFragment extends BaseFragment<IIntegralActivity, IntergralPre
             cate_ids = getArguments().getInt("cate_id");
 
             cate_name = getArguments().getString("cate_name");
+            if (cate_ids == 200) {
+                presenter.showAllIntergralList(getActivity(), String.valueOf(BizConstant.PAGE));
+            } else if (cate_ids == 300) {
+                presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(BizConstant.PAGE));
+            } else if (cate_ids == 400) {
+                presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(BizConstant.PAGE));
+            } else if (cate_ids == 500) {
+                presenter.BalanceRecord(getActivity(), "",page);
+            } else if (cate_ids == 600) {
+                presenter.BalanceRecord(getActivity(),String.valueOf(BizConstant.PAGE),page);
+            } else {
+                presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO,page);
+            }
         }
-        if (cate_ids == 200) {
-            presenter.showAllIntergralList(getActivity(), String.valueOf(BizConstant.PAGE));
-        } else if (cate_ids == 300) {
-            presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(BizConstant.PAGE));
-        } else if (cate_ids == 400) {
-            presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(BizConstant.PAGE));
-        }
+
 //        presenter.showAllIntergralList(getActivity(), "1");
         recordRecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         recordRecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -94,6 +102,12 @@ public class RecordFragment extends BaseFragment<IIntegralActivity, IntergralPre
             presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(BizConstant.PAGE));
         } else if (cate_ids == 400) {
             presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(BizConstant.PAGE));
+        } else if (cate_ids == 500) {
+            presenter.BalanceRecord(getActivity(), "",page);
+        } else if (cate_ids == 600) {
+            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE,page);
+        } else {
+            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO,page);
         }
     }
 
@@ -120,6 +134,12 @@ public class RecordFragment extends BaseFragment<IIntegralActivity, IntergralPre
                             presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(BizConstant.PAGE));
                         } else if (cate_ids == 400) {
                             presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(BizConstant.PAGE));
+                        } else if (cate_ids == 500) {
+                            presenter.BalanceRecord(getActivity(), "",page);
+                        } else if (cate_ids == 600) {
+                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE,page);
+                        } else {
+                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO,page);
                         }
                         if (recordRecy != null)
                             recordRecy.refreshComplete();
@@ -130,17 +150,22 @@ public class RecordFragment extends BaseFragment<IIntegralActivity, IntergralPre
 
             @Override
             public void onLoadMore() {
-                Log.e("aaaaa", "call onLoadMore");
 
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         page++;
                         if (cate_ids == 200) {
-                            presenter.showAllIntergralList(getActivity(), String.valueOf(page));
+                            presenter.showAllIntergralList(getActivity(), String.valueOf(BizConstant.PAGE));
                         } else if (cate_ids == 300) {
-                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(page));
+                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(BizConstant.PAGE));
                         } else if (cate_ids == 400) {
-                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(page));
+                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(BizConstant.PAGE));
+                        } else if (cate_ids == 500) {
+                            presenter.BalanceRecord(getActivity(), "",page);
+                        } else if (cate_ids == 600) {
+                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE,page);
+                        } else {
+                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO,page);
                         }
                         if (recordRecy != null) {
                             recordRecy.loadMoreComplete();

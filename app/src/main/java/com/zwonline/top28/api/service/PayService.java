@@ -53,6 +53,25 @@ public interface PayService {
             @Field("type") String type,
             @Field("sign") String sign);
 
+    /**
+     * 商机币详情
+     *
+     * @param timestamp
+     * @param token
+     * @param page
+     * @param type
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("App/BusinessOpportunityCoin/balanceLog")
+    Flowable<IntegralBean> iBalanceLog(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("page") int page,
+            @Field("type") String type,
+            @Field("sign") String sign);
+
     //获取积分记录
     @FormUrlEncoded
     @POST("/App/Member/my_integral")
@@ -131,7 +150,7 @@ public interface PayService {
 
     //付款方式 2支付宝 3银行卡充值
     @FormUrlEncoded
-    @POST("/App/Member/rechargePoint")
+    @POST("App/BusinessOpportunityCoin/recharge")
     Flowable<IntegralPayBean> iPointRecharge(
             @Field("timestamp") String timestamp,
             @Field("token") String token,
@@ -151,7 +170,7 @@ public interface PayService {
 
     //返回积分单价接口
     @FormUrlEncoded
-    @POST("/App/Member/getPointsPrice")
+    @POST("App/BusinessOpportunityCoin/getPrice")
     Flowable<AmountPointsBean> iUnitPrice(
             @Field("timestamp") String timestamp,
             @Field("token") String token,

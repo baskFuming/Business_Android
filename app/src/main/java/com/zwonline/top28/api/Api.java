@@ -15,6 +15,6 @@ public class Api {
     public static String url=baseUrl();
     public static String YINGYONGBAO_URL="https://toutiao.28.com/app/shangjitoutiao.apk";
     public static String baseUrl(){
-        return isDebug==true?lineUrl:testUrl;
+        return isDebug==false?lineUrl:testUrl;
     }
 }

@@ -39,6 +39,7 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.ToastUtils;
@@ -114,9 +115,18 @@ public class HashrateActivity extends BaseActivity {
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, String url) {
 //                ToastUtil.showToast(getApplicationContext(),url);
-                //跳转到个人主页
+                //算力详情
                 if (url.contains("http://top28app/computePower/")) {
                     Intent intent1 = new Intent(HashrateActivity.this, IntegralActivity.class);
+                    intent1.putExtra("type", BizConstant.NEW);
+                    startActivity(intent1);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    return true;
+                }
+                //商机币
+                if (url.contains("http://top28app/pushBoc/")) {
+                    Intent intent1 = new Intent(HashrateActivity.this, IntegralActivity.class);
+                    intent1.putExtra("type", BizConstant.RECOMMEND);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
@@ -136,6 +146,7 @@ public class HashrateActivity extends BaseActivity {
                     return true;
                 }
 
+
                 if (url.contains("open28app")) {
                     Uri uri = Uri.parse(url);
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -145,7 +156,7 @@ public class HashrateActivity extends BaseActivity {
 
                 //联系客服
                 if (url.contains("http://top28app//pushToIM/")) {
-                    String urls=url;
+                    String urls = url;
 //                    service.setVisibility(View.VISIBLE);
                     String path = "http://top28app//pushToIM/";
                     String uids = url.substring(path.length(), url.length());
@@ -214,7 +225,6 @@ public class HashrateActivity extends BaseActivity {
                     String commandStr = url.replace("http://top28app//", "");
                     String[] str = commandStr.split("/");
 
-                    Log.i("webview", str[0]);
 
                     if (str[0].equals("showNavBar")) {
                         ((AppCompatActivity) HashrateActivity.this).getSupportActionBar().show();

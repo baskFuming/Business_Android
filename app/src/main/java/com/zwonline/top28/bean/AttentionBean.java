@@ -23,6 +23,8 @@ public class AttentionBean {
         public String newest_like_count;
         public String tag_id;
         public String unread_count;
+        public int sortNum;
+        public String computePower;//充值商机币赠送算力数量
 
     }
 }

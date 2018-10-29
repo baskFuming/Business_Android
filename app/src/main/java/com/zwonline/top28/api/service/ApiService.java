@@ -628,6 +628,42 @@ public interface ApiService {
             @Field("sign") String sign
     );
 
+    /**
+     * 金票余额查询
+     *
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("App/BusinessOpportunityCoin/getGoldTicketBalance")
+    Flowable<BalanceBean> igetGoldTicketBalance(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
+
+    /**
+     * 商机币充值奖励算力接口
+     *
+     * @param timestamp
+     * @param token
+     * @param businessOpportunityCoin
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("App/BusinessOpportunityCoin/getPresentComputePower")
+    Flowable<AttentionBean> getPresentComputePower(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("businessOpportunityCoin") String businessOpportunityCoin,
+            @Field("sortNum") int sortNum,
+            @Field("sign") String sign
+    );
+
+
     //生成二维码
     @FormUrlEncoded
     @POST("/App/Member/make_collection_qrcode")

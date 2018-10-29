@@ -358,11 +358,13 @@
             android:configChanges="locale|layoutDirection" />
         <activity
             android:name=".activity.IntegralActivity"
-            android:configChanges="locale|layoutDirection" />
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activity.EarnIntegralActivity"
             android:configChanges="locale|layoutDirection" />
-        <activity android:name=".activity.IntegralPayActivity" />
+        <activity android:name=".activity.IntegralPayActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activity.ForRecordActivity"
             android:configChanges="locale|layoutDirection" />

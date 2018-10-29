@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.zwonline.top28.activity.IntegralActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#FF2B2B">
+        android:background="@color/white">
 
         <RelativeLayout
             android:id="@+id/integral_back"
@@ -19,49 +19,85 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="11dp"
+                android:layout_width="15dp"
                 android:layout_height="21dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:src="@mipmap/back" />
+                android:src="@mipmap/return_black" />
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/coin_bole_coin"
-            android:textColor="@color/white"
+            android:textColor="#121311"
             android:textSize="18sp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/integral_ch"
         android:layout_width="match_parent"
-        android:layout_height="115dp"
-        android:visibility="visible"
-        android:background="@mipmap/integral_background">
+        android:layout_height="150dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:background="@mipmap/reward_bunner"
 
-        <ImageView
+        android:visibility="visible">
+
+        <TextView
             android:id="@+id/money_zh"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@id/integral_tv_zh"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ui_20_dip"
+            android:layout_marginTop="12dp"
+            android:alpha="0.7"
+            android:text="我的算力"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14" />
 
         <TextView
             android:id="@+id/integral_tv_zh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="@string/coin_bole_coin"
+            android:layout_below="@id/money_zh"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
             android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="44sp" />
+
+        <TextView
+            android:id="@+id/earn_state"
+            android:layout_width="109dp"
+            android:layout_height="33dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="@dimen/ui_20_dip"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/reword__shape"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+
+            />
+
+
+        <TextView
+            android:id="@+id/freeze"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="@dimen/ui_20_dip"
+            android:layout_marginTop="12dp"
+            android:alpha="0.7"
+            android:text="冻结商机币:100"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +107,7 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/rectangle_shape_gay"
             android:orientation="horizontal"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -108,14 +144,14 @@
                     android:id="@+id/integtal_pay_ch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_weight="1"
                     android:drawableLeft="@mipmap/chongzhi"
                     android:drawablePadding="5dp"
                     android:gravity="center"
                     android:text="@string/integtal_pay"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:layout_centerInParent="true"/>
+                    android:textSize="16sp" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -127,8 +163,8 @@
         android:id="@+id/integral_tw"
         android:layout_width="match_parent"
         android:layout_height="130dp"
-        android:visibility="gone"
-        android:background="@mipmap/integral_background">
+        android:background="@mipmap/integral_background"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/money_tw"
@@ -149,15 +185,16 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:padding="10dp"
             android:background="@drawable/rectangle_shape_gay"
             android:orientation="horizontal"
+            android:padding="10dp"
             android:visibility="visible">
 
             <TextView
@@ -165,8 +202,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:drawableTop="@mipmap/earn_integral"
+                android:gravity="center"
                 android:text="@string/earn_integral"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -182,8 +219,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:drawableTop="@mipmap/duihuan"
+                android:gravity="center"
                 android:text="@string/convert_BOC"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -199,9 +236,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:drawableTop="@mipmap/chongzhi"
                 android:drawablePadding="5dp"
+                android:drawableTop="@mipmap/chongzhi"
+                android:gravity="center"
                 android:text="@string/integtal_pay"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -210,15 +247,14 @@
     </RelativeLayout>
 
 
-
     <android.support.design.widget.TabLayout
         android:id="@+id/integral_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         app:tabIndicatorColor="@color/red"
         app:tabSelectedTextColor="@color/red"
-        android:layout_marginTop="15dp"
         app:tabTextAppearance="@style/MyTabLayoutText"
         app:tabTextColor="@color/black"></android.support.design.widget.TabLayout>
 

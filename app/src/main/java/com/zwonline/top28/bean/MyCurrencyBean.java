@@ -4,10 +4,11 @@ package com.zwonline.top28.bean;
 import java.util.List;
 
 /**
-     * 描述：我的创业币
-     * @author YSG
-     * @date 2017/12/25
-     */
+ * 描述：我的创业币
+ *
+ * @author YSG
+ * @date 2017/12/25
+ */
 public class MyCurrencyBean {
 
     /**
@@ -31,6 +32,9 @@ public class MyCurrencyBean {
 
         public String point;
         public String cost_day;
+        public String balance;
+        public String freeze_amount;
+
         public List<ListBean> list;
 
         public static class ListBean {

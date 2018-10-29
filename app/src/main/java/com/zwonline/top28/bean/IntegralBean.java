@@ -29,6 +29,8 @@ public class IntegralBean {
 
         public String point;
         public String cost_day;
+        public String balance;
+        public String freeze_amount;
         public List<ListBean> list;
 
         public static class ListBean {

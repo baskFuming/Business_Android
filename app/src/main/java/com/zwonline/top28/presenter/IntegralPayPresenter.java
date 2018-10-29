@@ -5,6 +5,7 @@ import android.content.Context;
 import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.bean.AmountPointsBean;
+import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BalanceBean;
 import com.zwonline.top28.bean.BalancePayBean;
 import com.zwonline.top28.bean.IntegralPayBean;
@@ -64,7 +65,6 @@ public class IntegralPayPresenter extends BasePresenter<IIntegralPayActivity> {
                         protected void onBaseComplete() {
 
                         }
-
 
 
 //                        @Override
@@ -226,9 +226,9 @@ public class IntegralPayPresenter extends BasePresenter<IIntegralPayActivity> {
     }
 
     //余额
-    public  void mBalances(Context context){
+    public void mBalances(Context context) {
         try {
-            Flowable<BalanceBean> flowable=interalPayModel.Balance(context);
+            Flowable<BalanceBean> flowable = interalPayModel.Balance(context);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<BalanceBean>() {
@@ -251,10 +251,11 @@ public class IntegralPayPresenter extends BasePresenter<IIntegralPayActivity> {
             e.printStackTrace();
         }
     }
+
     //余额
-    public  void mBalancesPay(Context context,String amount){
+    public void mBalancesPay(Context context, String amount) {
         try {
-            Flowable<BalancePayBean> flowable=interalPayModel.getBalancePay(context,amount);
+            Flowable<BalancePayBean> flowable = interalPayModel.getBalancePay(context, amount);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new BaseDisposableSubscriber<BalancePayBean>(context) {
@@ -272,6 +273,45 @@ public class IntegralPayPresenter extends BasePresenter<IIntegralPayActivity> {
                         @Override
                         protected boolean isNeedProgressDialog() {
                             return true;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 充值商机币赠送算力
+     *
+     * @param context
+     * @param businessOpportunityCoin
+     * @param sortNum
+     */
+    public void GetPresentComputePower(Context context, String businessOpportunityCoin, int sortNum) {
+        try {
+            Flowable<AttentionBean> flowable = interalPayModel.mGetPresentComputePower(context, businessOpportunityCoin, sortNum);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new BaseDisposableSubscriber<AttentionBean>(context) {
+
+                        @Override
+                        protected void onBaseNext(AttentionBean balancePayBean) {
+                            iIntegralPayActivity.showGetPresentComputePower(balancePayBean);
+                        }
+
+                        @Override
+                        protected String getTitleMsg() {
+                            return null;
+                        }
+
+                        @Override
+                        protected boolean isNeedProgressDialog() {
+                            return false;
                         }
 
                         @Override

@@ -35,9 +35,9 @@ public class PaySucPopuWindow extends PopupWindow {
         payAmount = (TextView) window.findViewById(R.id.pay_amount);
         backHashrate = (Button) window.findViewById(R.id.back_hashrate);
         continuePay = (Button) window.findViewById(R.id.continue_pay);
-        remainBalance.setText(remainBalances+"元");
-        payHashrate.setText(payHashrates+"算力");
-        payAmount.setText(payAmounts+"元");
+        remainBalance.setText(remainBalances+"金票");
+        payHashrate.setText(payHashrates+"商机币");
+        payAmount.setText(payAmounts+"金票");
         backHashrate.setOnClickListener(listener);
         continuePay.setOnClickListener(listener);
 //        sure.setOnClickListener(new View.OnClickListener() {
