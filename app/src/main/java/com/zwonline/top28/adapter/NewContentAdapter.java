@@ -66,7 +66,8 @@ public class NewContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private FunctionInterface functionInterface;
     private LikeMomentInterface likeMomentInterface;
     private boolean islogins;
-    public String yuMing="thumb";
+    public String yuMing = "thumb";
+
     public NewContentAdapter(List<NewContentBean.DataBean> list, Context context) {
         this.list = list;
         this.context = context;
@@ -131,9 +132,9 @@ public class NewContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             int width = Integer.parseInt(list.get(position).images_arr.get(0).original_size.width);
             int height = Integer.parseInt(list.get(position).images_arr.get(0).original_size.height);
             String thumb = list.get(position).images_arr.get(0).thumb;
-            if (StringUtil.isNotEmpty(thumb)&&thumb.contains(yuMing)){
-                thumb=list.get(position).images_arr.get(0).original;
-            }else {
+            if (StringUtil.isNotEmpty(thumb) && thumb.contains(yuMing)) {
+                thumb = list.get(position).images_arr.get(0).original;
+            } else {
                 thumb = list.get(position).images_arr.get(0).thumb;
             }
             RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
@@ -301,6 +302,7 @@ public class NewContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             Glide.with(context).load(list.get(position).extend_content.target_image).apply(requestOption).into(myViewHolder.article_img);
         }
         myViewHolder.comment_num.setText(list.get(position).comment_count);
+        myViewHolder.rewardNum.setText(list.get(position).gift_count);
         myViewHolder.like_num.setText(list.get(position).like_count);
         //点击分享
         myViewHolder.linear_share.setOnClickListener(new View.OnClickListener() {
@@ -380,7 +382,7 @@ public class NewContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageViewPlus userhead;
-        TextView username, times, comment_user1, comment_user2, look_more_comment, comment_num, like_num, delete, article_title, article_desc;
+        TextView username, times, comment_user1, comment_user2, look_more_comment, comment_num, like_num, delete, article_title, article_desc, rewardNum;
         ImageView dynamic_imag_h, dynamic_imag_w, dynamic_imag_z, daV;
         TextView attention;
         LinearLayout imag_linear, linear_share, linear_comment, linear_like, attention_linear, article_linear;
@@ -421,6 +423,7 @@ public class NewContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             more_setting = itemView.findViewById(R.id.more_setting);
             choose_like = itemView.findViewById(R.id.choose_like);
             daV = itemView.findViewById(R.id.da_v);
+            rewardNum = itemView.findViewById(R.id.reward_num);
 
         }
     }

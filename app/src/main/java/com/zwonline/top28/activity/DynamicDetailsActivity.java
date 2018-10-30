@@ -40,6 +40,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.DynamicDetailsComentAdapter;
 import com.zwonline.top28.adapter.LikeListAdapter;
+import com.zwonline.top28.adapter.RewardListAdapter;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
@@ -191,6 +192,10 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private TextView flowersNum;//花束数量
     private TextView proportion;
     private List<GiftBean.DataBean> giftList;
+    private List<RewardListBean.DataBean.ListBean> rewardList;
+    private RewardListAdapter rewardistAdapter;
+    private LinearLayout rewardLinear;
+    private String giftCount;
 
     @Subscribe
     @Override
@@ -212,6 +217,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         dynamicList = new ArrayList<>();
         commentList = new ArrayList<>();
         likeLists = new ArrayList<>();
+        rewardList = new ArrayList<>();
         Intent intent = getIntent();
         moment_id = intent.getStringExtra("moment_id");
         isComment = intent.getStringExtra("isComment");
@@ -221,6 +227,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         presenter.mDynamicComment(this, page, moment_id, "", "", "");
         presenter.mDynamicShare(this, moment_id);
         presenter.GetLikeList(this, moment_id, page);
+
         presenter.Gift(getApplicationContext());
 //        }
 
@@ -264,8 +271,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         rewardXrecy.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
         LinearLayoutManager rewardLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rewardXrecy.setLayoutManager(rewardLinearLayoutManager);
-        likeListAdapter = new LikeListAdapter(likeLists, this);
-        rewardXrecy.setAdapter(likeListAdapter);
+        rewardistAdapter = new RewardListAdapter(rewardList, this);
+        rewardXrecy.setAdapter(rewardistAdapter);
     }
 
     /**
@@ -301,7 +308,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         flowersNum = (TextView) findViewById(R.id.flowers_num);
         handclapNum = (TextView) findViewById(R.id.handclap_num);
         kissNum = (TextView) findViewById(R.id.kiss_num);
-
+        rewardLinear = (LinearLayout) findViewById(R.id.reward_linear);
 
     }
 
@@ -322,6 +329,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             type = mommentList.data.type;
             //礼物数量
             presenter.GiftSummary(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id);
+            presenter.GiftList(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id, page);
             comment_count = mommentList.data.comment_count;
             like_count = mommentList.data.like_count;
             articleDesc = mommentList.data.extend_content.target_description;
@@ -528,6 +536,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             flowersNum.setText(giftSumBean.data.list.get(1).count);
             handclapNum.setText(giftSumBean.data.list.get(2).count);
             kissNum.setText(giftSumBean.data.list.get(3).count);
+            giftCount = giftSumBean.data.gift_count;
             rewardAcount.setText("打赏 " + giftSumBean.data.gift_count);
         } else {
             ToastUtils.showToast(getApplicationContext(), giftSumBean.msg);
@@ -567,8 +576,13 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists) {
-
+        if (page == 1) {
+            rewardList.clear();
+        }
+        rewardList.addAll(rewardLists);
+        rewardistAdapter.notifyDataSetChanged();
     }
+
     @Override
     protected SendFriendCirclePresenter getPresenter() {
         return new SendFriendCirclePresenter(this);
@@ -764,6 +778,44 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         });
 
     }
+
+    /**
+     * 打赏加载更多
+     */
+    public void rewardLoadMore() {
+        zanRecy.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                refreshTime++;
+                times = 0;
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page = 1;
+                        presenter.GiftList(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id, page);
+                        if (zanRecy != null)
+                            zanRecy.refreshComplete();
+                    }
+
+                }, 1000);            //refresh data here
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page++;
+                        presenter.GiftList(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id, page);
+                        if (zanRecy != null) {
+                            zanRecy.loadMoreComplete();
+                        }
+                    }
+                }, 1000);
+                times++;
+            }
+        });
+
+    }
+
 
     /**
      * 动态分享
@@ -1034,7 +1086,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      * @param view
      */
     @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear
-            , R.id.like_acount_linear, R.id.appBarLayout, R.id.reward_image, R.id.reward_acount_linear
+            , R.id.like_acount_linear, R.id.appBarLayout, R.id.reward_image, R.id.reward_acount_linear, R.id.reward_linear
     })
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
@@ -1045,6 +1097,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 Intent intent = new Intent();
                 intent.putExtra("like_count", like_count);
                 intent.putExtra("comment_count", comment_count);
+                intent.putExtra("moment_id", moment_id);
+                intent.putExtra("gift_count", giftCount);
                 intent.putExtra("did_i_follow", did_i_follow);
                 intent.putExtra("did_i_like", did_i_like);
                 if (commentList.size() > 0) {
@@ -1091,6 +1145,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 commentUnderline.setVisibility(View.VISIBLE);
                 dynamicdetailsList.setVisibility(View.VISIBLE);
                 zanRecy.setVisibility(View.GONE);
+                rewardXrecy.setVisibility(View.GONE);
                 rewardUnderline.setVisibility(View.GONE);
                 break;
             case R.id.like_acount_linear:
@@ -1098,6 +1153,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 likeUnderline.setVisibility(View.VISIBLE);
                 dynamicdetailsList.setVisibility(View.GONE);
                 zanRecy.setVisibility(View.VISIBLE);
+                rewardXrecy.setVisibility(View.GONE);
                 rewardUnderline.setVisibility(View.GONE);
                 break;
             case R.id.appBarLayout:
@@ -1136,13 +1192,40 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 }
 
 
-                //查找 控件
+                break;
+            //打赏弹框
+            case R.id.reward_linear:
+                if (islogins) {
+                    rewardPopWindow = new RewardPopWindow(this, listeners);
+                    rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    View contentView = rewardPopWindow.getContentView();
+                    flower = (LinearLayout) contentView.findViewById(R.id.flower);//花朵
+                    flowers = (LinearLayout) contentView.findViewById(R.id.flowers);//花束
+                    applause = (LinearLayout) contentView.findViewById(R.id.applause);//鼓掌
+                    kiss = (LinearLayout) contentView.findViewById(R.id.kiss);//亲吻
+                    rewardNumberEt = (EditText) contentView.findViewById(R.id.reward_number);
+                    ImageViewPlus user_icon = contentView.findViewById(R.id.user_icon);
+                    TextView author = contentView.findViewById(R.id.author);
+                    proportion = contentView.findViewById(R.id.proportion);
+                    if (StringUtil.isNotEmpty(nickname)) {
+                        author.setText("给" + nickname + "打赏");
+                    }
+                    if (StringUtil.isNotEmpty(avatars)) {
+                        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+                        Glide.with(this).load(avatars).apply(requestOptions).into(user_icon);
+                    }
+                } else {
+                    ToastUtils.showToast(getApplicationContext(), "请先登录！");
+                }
+
+
                 break;
             case R.id.reward_acount_linear:
                 commentUnderline.setVisibility(View.GONE);
                 likeUnderline.setVisibility(View.GONE);
                 dynamicdetailsList.setVisibility(View.GONE);
-                zanRecy.setVisibility(View.VISIBLE);
+                zanRecy.setVisibility(View.GONE);
+                rewardXrecy.setVisibility(View.VISIBLE);
                 rewardUnderline.setVisibility(View.VISIBLE);
                 //查找 控件
                 break;
@@ -1166,7 +1249,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     flowers.setBackgroundColor(Color.WHITE);
                     applause.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftList.get(0).name)||StringUtil.isNotEmpty(giftList.get(0).value)){
+                    if (StringUtil.isNotEmpty(giftList.get(0).name) || StringUtil.isNotEmpty(giftList.get(0).value)) {
                         proportion.setText("1" + giftList.get(0).name + "=" + giftList.get(0).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
@@ -1176,7 +1259,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     flower.setBackgroundColor(Color.WHITE);
                     applause.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftList.get(1).name)||StringUtil.isNotEmpty(giftList.get(1).value)){
+                    if (StringUtil.isNotEmpty(giftList.get(1).name) || StringUtil.isNotEmpty(giftList.get(1).value)) {
                         proportion.setText("1" + giftList.get(1).name + "=" + giftList.get(1).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
@@ -1186,7 +1269,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     flower.setBackgroundColor(Color.WHITE);
                     flowers.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftList.get(2).name)||StringUtil.isNotEmpty(giftList.get(2).value)){
+                    if (StringUtil.isNotEmpty(giftList.get(2).name) || StringUtil.isNotEmpty(giftList.get(2).value)) {
                         proportion.setText("1" + giftList.get(2).name + "=" + giftList.get(2).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
@@ -1196,7 +1279,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     applause.setBackgroundColor(Color.WHITE);
                     flowers.setBackgroundColor(Color.WHITE);
                     flower.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftList.get(3).name)||StringUtil.isNotEmpty(giftList.get(3).value)){
+                    if (StringUtil.isNotEmpty(giftList.get(3).name) || StringUtil.isNotEmpty(giftList.get(3).value)) {
                         proportion.setText("1" + giftList.get(3).name + "=" + giftList.get(3).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;

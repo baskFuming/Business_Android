@@ -100,7 +100,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
     @Override
     protected void init(View view) {
 //        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
-        attentionList=new ArrayList<>();
+        attentionList = new ArrayList<>();
         sp = SharedPreferencesUtils.getUtil();
         EventBus.getDefault().register(this);
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
@@ -650,7 +650,10 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
                 String comment_counts = data.getStringExtra("comment_count");
                 String did_i_follows = data.getStringExtra("did_i_follow");
                 String did_i_likes = data.getStringExtra("did_i_like");//comment_lists
-
+                String gift_counts = data.getStringExtra("gift_count");
+                if (StringUtil.isNotEmpty(gift_counts)) {
+                    newContentList.get(intentPositions).gift_count = gift_counts;
+                }
 //                comment_list = data.getStringArrayListExtra("comment_list");
                 if (StringUtil.isNotEmpty(like_counts)) {
                     newContentList.get(intentPositions).like_count = like_counts;

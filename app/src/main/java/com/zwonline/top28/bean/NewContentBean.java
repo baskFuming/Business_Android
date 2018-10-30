@@ -62,7 +62,7 @@ public class NewContentBean implements Serializable {
         public String is_ad;
         public String moment_id;
         public AuthorBean author;
-
+        public String gift_count ;
         public String getDid_i_follow() {
             return did_i_follow;
         }

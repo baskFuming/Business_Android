@@ -79,7 +79,7 @@ public class OthersHomePageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         islogins = (boolean) sp.getKey(context, "islogin", false);
         final MyViewHolder myViewHolder = (MyViewHolder) holder;
         myViewHolder.username.setText(list.get(position).author.nickname);
-
+        myViewHolder.rewardNum.setText(list.get(position).gift_count);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
         Date date = null;
         try {
@@ -366,7 +366,7 @@ public class OthersHomePageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageViewPlus userhead;
-        TextView username, times, comment_user1, comment_user2, look_more_comment, comment_num, like_num, delete, article_title, article_desc;
+        TextView username, times, comment_user1, comment_user2, look_more_comment, comment_num, like_num, delete, article_title, article_desc, rewardNum;
         ImageView dynamic_imag_h, dynamic_imag_w, dynamic_imag_z, daV;
         TextView attention;
         LinearLayout imag_linear, linear_share, linear_comment, linear_like, attention_linear, article_linear;
@@ -407,7 +407,7 @@ public class OthersHomePageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             more_setting = itemView.findViewById(R.id.more_setting);
             choose_like = itemView.findViewById(R.id.choose_like);
             daV = itemView.findViewById(R.id.da_v);
-
+            rewardNum = itemView.findViewById(R.id.reward_num);
         }
     }
 

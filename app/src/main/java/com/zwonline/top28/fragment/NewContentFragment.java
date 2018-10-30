@@ -652,7 +652,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
                 String comment_counts = data.getStringExtra("comment_count");
                 String did_i_follows = data.getStringExtra("did_i_follow");
                 String did_i_likes = data.getStringExtra("did_i_like");//comment_lists
-
+                String gift_counts = data.getStringExtra("gift_count");
 //                comment_list = data.getStringArrayListExtra("comment_list");
                 if (StringUtil.isNotEmpty(like_counts)) {
                     newContentList.get(intentPositions).like_count = like_counts;
@@ -667,6 +667,9 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
                 }
                 if (StringUtil.isNotEmpty(did_i_likes)) {
                     newContentList.get(intentPositions).did_i_like = did_i_likes;
+                }
+                if (StringUtil.isNotEmpty(gift_counts)){
+                    newContentList.get(intentPositions).gift_count = gift_counts;
                 }
 //                if (comment_list != null && comment_list.size() > 0) {
 //                    NewContentBean.DataBean.CommentsExcerptBean bean = new NewContentBean.DataBean.CommentsExcerptBean();

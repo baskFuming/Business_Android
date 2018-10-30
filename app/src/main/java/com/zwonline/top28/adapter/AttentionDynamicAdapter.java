@@ -106,282 +106,283 @@ public class AttentionDynamicAdapter extends RecyclerView.Adapter<RecyclerView.V
         String uid = (String) sp.getKey(context, "uid", "");
         islogins = (boolean) sp.getKey(context, "islogin", false);
         if (getItemViewType(position) == TYPE_HEADER) return;
-         final int pos = position-1;
+        final int pos = position - 1;
 //        final int pos = getRealPosition(holder);
 //        if (holder instanceof MyViewHolder) {
-            final MyViewHolder myViewHolder = (MyViewHolder) holder;
-            myViewHolder.username.setText(list.get(pos).author.nickname);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
-            Date date = null;
-            try {
-                date = formatter.parse(list.get(pos).add_time);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            myViewHolder.times.setText(TimeUtil.getTimeFormatText(date));
+        final MyViewHolder myViewHolder = (MyViewHolder) holder;
+        myViewHolder.username.setText(list.get(pos).author.nickname);
+        myViewHolder.rewardNum.setText(list.get(pos).gift_count);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
+        Date date = null;
+        try {
+            date = formatter.parse(list.get(pos).add_time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        myViewHolder.times.setText(TimeUtil.getTimeFormatText(date));
 
-            if (StringUtil.isNotEmpty(uid) && uid.equals(list.get(pos).user_id)) {
-                myViewHolder.delete.setVisibility(View.VISIBLE);
-                myViewHolder.attention_linear.setVisibility(View.GONE);
+        if (StringUtil.isNotEmpty(uid) && uid.equals(list.get(pos).user_id)) {
+            myViewHolder.delete.setVisibility(View.VISIBLE);
+            myViewHolder.attention_linear.setVisibility(View.GONE);
+        } else {
+            myViewHolder.attention_linear.setVisibility(View.VISIBLE);
+            myViewHolder.delete.setVisibility(View.GONE);
+        }
+
+        //用户头像
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+        Glide.with(context).load(list.get(pos).author.avatars).apply(requestOptions).into(myViewHolder.userhead);
+        //判断大V显隐
+        if (list.get(pos).author.identity_type.equals(BizConstant.IS_FAIL)) {
+            myViewHolder.daV.setVisibility(View.GONE);
+        } else {
+            myViewHolder.daV.setVisibility(View.VISIBLE);
+        }
+        //判断是否有图片
+        if (list.get(pos).images_arr == null) {
+            myViewHolder.imag_linear.setVisibility(View.GONE);
+        }
+        //判断是一张图片的时候展示
+        if (list.get(pos).images_arr != null && list.get(pos).images_arr.size() == 1) {
+            myViewHolder.imag_linear.setVisibility(View.VISIBLE);
+            myViewHolder.imag_relative.setVisibility(View.VISIBLE);
+            myViewHolder.multiImageView.setVisibility(View.GONE);
+            int width = Integer.parseInt(list.get(pos).images_arr.get(0).original_size.width);
+            int height = Integer.parseInt(list.get(pos).images_arr.get(0).original_size.height);
+            RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
+            if (width < height) {
+                myViewHolder.dynamic_imag_h.setVisibility(View.VISIBLE);
+                myViewHolder.dynamic_imag_z.setVisibility(View.GONE);
+                myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
+                myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
+                Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_h);
+            } else if (width > height) {
+                myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
+                myViewHolder.dynamic_imag_z.setVisibility(View.GONE);
+                myViewHolder.dynamic_imag_w.setVisibility(View.VISIBLE);
+                myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
+                Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_w);
             } else {
-                myViewHolder.attention_linear.setVisibility(View.VISIBLE);
-                myViewHolder.delete.setVisibility(View.GONE);
+                myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
+                myViewHolder.dynamic_imag_z.setVisibility(View.VISIBLE);
+                myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
+                myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
+                Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_z);
             }
-
-            //用户头像
-            RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
-            Glide.with(context).load(list.get(pos).author.avatars).apply(requestOptions).into(myViewHolder.userhead);
-            //判断大V显隐
-            if (list.get(pos).author.identity_type.equals(BizConstant.IS_FAIL)) {
-                myViewHolder.daV.setVisibility(View.GONE);
-            } else {
-                myViewHolder.daV.setVisibility(View.VISIBLE);
-            }
-            //判断是否有图片
-            if (list.get(pos).images_arr == null) {
-                myViewHolder.imag_linear.setVisibility(View.GONE);
-            }
-            //判断是一张图片的时候展示
-            if (list.get(pos).images_arr != null && list.get(pos).images_arr.size() == 1) {
-                myViewHolder.imag_linear.setVisibility(View.VISIBLE);
-                myViewHolder.imag_relative.setVisibility(View.VISIBLE);
-                myViewHolder.multiImageView.setVisibility(View.GONE);
-                int width = Integer.parseInt(list.get(pos).images_arr.get(0).original_size.width);
-                int height = Integer.parseInt(list.get(pos).images_arr.get(0).original_size.height);
-                RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);
-                if (width < height) {
-                    myViewHolder.dynamic_imag_h.setVisibility(View.VISIBLE);
-                    myViewHolder.dynamic_imag_z.setVisibility(View.GONE);
-                    myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
-                    myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                    Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_h);
-                } else if (width > height) {
-                    myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
-                    myViewHolder.dynamic_imag_z.setVisibility(View.GONE);
-                    myViewHolder.dynamic_imag_w.setVisibility(View.VISIBLE);
-                    myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                    Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_w);
-                } else {
-                    myViewHolder.dynamic_imag_h.setVisibility(View.GONE);
-                    myViewHolder.dynamic_imag_z.setVisibility(View.VISIBLE);
-                    myViewHolder.dynamic_imag_w.setVisibility(View.GONE);
-                    myViewHolder.dynamic_imag_h.setScaleType(ImageView.ScaleType.MATRIX);
-                    Glide.with(context).load(list.get(pos).images_arr.get(0).thumb).apply(requestOption).into(myViewHolder.dynamic_imag_z);
-                }
-                //单张图片点击放大
-                myViewHolder.imag_relative.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String image[] = new String[list.get(pos).images_arr.size()];
-                        if (list.get(pos).images_arr != null) {
-                            image[0] = list.get(pos).images_arr.get(0).original;
-                            Intent intent = new Intent(context, PhotoBrowserActivity.class);
-                            intent.putExtra("imageUrls", image);
-                            intent.putExtra("curImg", list.get(pos).images_arr.get(0).original);
-                            context.startActivity(intent);
-                        } else {
-
-                        }
-                    }
-                });
-
-            }
-            //判断多张图片的时候展示
-            if (list.get(pos).images_arr != null && list.get(pos).images_arr.size() >= 2) {
-                myViewHolder.imag_linear.setVisibility(View.VISIBLE);
-                myViewHolder.imag_relative.setVisibility(View.GONE);
-                myViewHolder.multiImageView.setVisibility(View.VISIBLE);
-                List<PhotoInfos> images = new ArrayList<>();
-                for (int i = 0; i < list.get(pos).images_arr.size(); i++) {
-                    PhotoInfos bean = new PhotoInfos();
-                    bean.url = list.get(pos).images_arr.get(i).thumb;
-                    images.add(bean);
-                }
-                myViewHolder.multiImageView.setList(images);
-            }
-            //多张图片展示的时候点击图片
-            myViewHolder.multiImageView.setOnItemClickListener(new MultiImageView.OnItemClickListener() {
+            //单张图片点击放大
+            myViewHolder.imag_relative.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onItemClick(View view, int positions) {
-                    // To do something or 查看大图.
+                public void onClick(View v) {
                     String image[] = new String[list.get(pos).images_arr.size()];
                     if (list.get(pos).images_arr != null) {
-                        for (int i = 0; i < list.get(pos).images_arr.size(); i++) {
-                            image[i] = list.get(pos).images_arr.get(i).original;
-                        }
+                        image[0] = list.get(pos).images_arr.get(0).original;
                         Intent intent = new Intent(context, PhotoBrowserActivity.class);
                         intent.putExtra("imageUrls", image);
-                        intent.putExtra("curImg", list.get(pos).images_arr.get(positions).original);
+                        intent.putExtra("curImg", list.get(pos).images_arr.get(0).original);
                         context.startActivity(intent);
                     } else {
 
                     }
-
                 }
             });
-            //判断有没有评论    展示评论通过评论数量来判断评论显示隐藏
-            if (list.get(pos).comments_excerpt == null) {
-                myViewHolder.linear_child_comments.setVisibility(View.GONE);
-            } else {
-                if (list.get(pos).comments_excerpt.size() > 0) {
-                    myViewHolder.linear_child_comments.setVisibility(View.VISIBLE);
-                    if (list.get(pos).comments_excerpt.size() == 1) {
-                        myViewHolder.comment_user1.setText(list.get(pos).comments_excerpt.get(0).nickname + ":" + list.get(pos).comments_excerpt.get(0).content);
-                        myViewHolder.comment_user2.setVisibility(View.GONE);
-                        myViewHolder.look_more_comment.setVisibility(View.GONE);
-                        SpannableStringBuilder spannable = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(0).nickname);
-                        spannable.append(":");
-                        spannable.append(stringFilter(list.get(pos).comments_excerpt.get(0).content));
 
-                        if (list.get(pos).user_id.equals(uid)) {
-                            spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                        } else {
-                            spannable.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                        }
-                        myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
-                        myViewHolder.comment_user1.setText(spannable);
-                    } else if (list.get(pos).comments_excerpt.size() == 2) {
-                        SpannableStringBuilder spannable1 = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(0).nickname);
-                        SpannableStringBuilder spannable2 = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(1).nickname);
-                        spannable1.append(":");
-                        spannable1.append(stringFilter(list.get(pos).comments_excerpt.get(0).content));
-                        spannable2.append(":");
-                        spannable2.append(stringFilter(list.get(pos).comments_excerpt.get(1).content));
-                        if (list.get(pos).user_id.equals(uid)) {
-                            spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                            spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                        } else {
-                            spannable1.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                            spannable2.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(1).user_id), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-
-                        }
-                        myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
-                        myViewHolder.comment_user2.setMovementMethod(LinkMovementMethod.getInstance());
-                        myViewHolder.comment_user1.setText(spannable1);
-                        myViewHolder.comment_user2.setText(spannable2);
-                        myViewHolder.comment_user2.setVisibility(View.VISIBLE);
-                        myViewHolder.look_more_comment.setVisibility(View.GONE);
-//                    myViewHolder.comment_user1.setText(list.get(position).comments_excerpt.get(0).nickname + ":" + list.get(position).comments_excerpt.get(0).content);
-//                    myViewHolder.comment_user2.setText(list.get(position).comments_excerpt.get(1).nickname + ":" + list.get(position).comments_excerpt.get(1).content);
-                        myViewHolder.look_more_comment.setVisibility(View.GONE);
+        }
+        //判断多张图片的时候展示
+        if (list.get(pos).images_arr != null && list.get(pos).images_arr.size() >= 2) {
+            myViewHolder.imag_linear.setVisibility(View.VISIBLE);
+            myViewHolder.imag_relative.setVisibility(View.GONE);
+            myViewHolder.multiImageView.setVisibility(View.VISIBLE);
+            List<PhotoInfos> images = new ArrayList<>();
+            for (int i = 0; i < list.get(pos).images_arr.size(); i++) {
+                PhotoInfos bean = new PhotoInfos();
+                bean.url = list.get(pos).images_arr.get(i).thumb;
+                images.add(bean);
+            }
+            myViewHolder.multiImageView.setList(images);
+        }
+        //多张图片展示的时候点击图片
+        myViewHolder.multiImageView.setOnItemClickListener(new MultiImageView.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int positions) {
+                // To do something or 查看大图.
+                String image[] = new String[list.get(pos).images_arr.size()];
+                if (list.get(pos).images_arr != null) {
+                    for (int i = 0; i < list.get(pos).images_arr.size(); i++) {
+                        image[i] = list.get(pos).images_arr.get(i).original;
                     }
-                    int commentCount = Integer.parseInt(list.get(pos).comment_count);
-                    if (commentCount > 2) {
-                        SpannableStringBuilder spannable1 = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(0).nickname);
-                        SpannableStringBuilder spannable2 = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(1).nickname);
-                        spannable1.append(":");
-                        spannable1.append(stringFilter(list.get(pos).comments_excerpt.get(0).content));
-                        spannable2.append(":");
-                        spannable2.append(stringFilter(list.get(pos).comments_excerpt.get(1).content));
-                        if (list.get(pos).user_id.equals(uid)) {
-                            spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                            spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                        } else {
-                            spannable1.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                            spannable2.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(1).user_id), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-
-                        }
-                        myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
-                        myViewHolder.comment_user2.setMovementMethod(LinkMovementMethod.getInstance());
-                        myViewHolder.comment_user1.setText(spannable1);
-                        myViewHolder.comment_user2.setText(spannable2);
-                        myViewHolder.comment_user2.setVisibility(View.VISIBLE);
-                        myViewHolder.look_more_comment.setVisibility(View.VISIBLE);
-//                    myViewHolder.comment_user1.setText(list.get(position).comments_excerpt.get(0).nickname + ":" + list.get(position).comments_excerpt.get(0).content);
-//                    myViewHolder.comment_user2.setText(list.get(position).comments_excerpt.get(1).nickname + ":" + list.get(position).comments_excerpt.get(1).content);
-                        myViewHolder.look_more_comment.setText("查看全部" + list.get(pos).comment_count + "条评论");
-                    }
-                }
-            }
-            if (StringUtil.isNotEmpty(list.get(pos).type) && list.get(pos).type.equals(BizConstant.ALREADY_FAVORITE)) {
-                myViewHolder.article_linear.setVisibility(View.GONE);
-                //判断是否有内容
-                if (StringUtil.isNotEmpty(list.get(pos).content)) {
-                    myViewHolder.dynamic_conment.setVisibility(View.VISIBLE);
-                    myViewHolder.dynamic_conment.setMaxLines(3);
-                    myViewHolder.dynamic_conment.setText(list.get(pos).content);
-                } else {
-                    myViewHolder.dynamic_conment.setVisibility(View.GONE);
-                }
-            } else if (StringUtil.isNotEmpty(list.get(pos).type) && list.get(pos).type.equals(BizConstant.ALIPAY_METHOD)) {
-                myViewHolder.dynamic_conment.setVisibility(View.GONE);
-                myViewHolder.article_linear.setVisibility(View.VISIBLE);
-                myViewHolder.article_title.setText(list.get(pos).extend_content.target_title);
-                myViewHolder.article_desc.setText(list.get(pos).extend_content.target_description);
-                RequestOptions requestOption = new RequestOptions().placeholder(R.mipmap.gray_logo).error(R.mipmap.gray_logo);
-                Glide.with(context).load(list.get(pos).extend_content.target_image).apply(requestOption).into(myViewHolder.article_img);
-            }
-            myViewHolder.comment_num.setText(list.get(pos).comment_count);
-            myViewHolder.like_num.setText(list.get(pos).like_count);
-            //点击分享
-            myViewHolder.linear_share.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    shareInterface.onclick(v, pos);
-                }
-            });
-            myViewHolder.delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteInterface.onclick(v, pos);
-                }
-            });
-            myViewHolder.article_linear.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    articleInterface.onclick(v, pos);
-                }
-            });
-            if (list.get(pos).did_i_follow.equals(BizConstant.ENTERPRISE_tRUE)) {
-                myViewHolder.attention.setVisibility(View.VISIBLE);
-            } else {
-                myViewHolder.attention.setVisibility(View.GONE);
-            }
-            //关注
-            myViewHolder.attention.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    attentionInterface.onclick(v, pos, myViewHolder.attention);
-                }
-            });
-            myViewHolder.userhead.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, HomePageActivity.class);
-                    intent.putExtra("uid", list.get(pos).user_id);
+                    Intent intent = new Intent(context, PhotoBrowserActivity.class);
+                    intent.putExtra("imageUrls", image);
+                    intent.putExtra("curImg", list.get(pos).images_arr.get(positions).original);
                     context.startActivity(intent);
-                }
-            });
-            //更多功能
-            myViewHolder.more_setting.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    functionInterface.onclick(v, pos, myViewHolder.attention);
-                }
-            });
-            myViewHolder.linear_like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    likeMomentInterface.onclick(v, pos, myViewHolder.choose_like, myViewHolder.like_num);
-                }
-            });
-            myViewHolder.choose_like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    likeMomentInterface.onclick(v, pos, myViewHolder.choose_like, myViewHolder.like_num);
-                }
-            });
-            String did_i_like = list.get(pos).did_i_like;
-            if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
+                } else {
 
-                myViewHolder.choose_like.setChecked(false);
-                myViewHolder.choose_like.setEnabled(true);
-                myViewHolder.like_num.setTextColor(Color.parseColor("#1d1d1d"));
-            } else {
-                myViewHolder.choose_like.setChecked(true);
-                myViewHolder.choose_like.setEnabled(false);
-                myViewHolder.like_num.setTextColor(Color.parseColor("#ff2b2b"));
+                }
+
             }
+        });
+        //判断有没有评论    展示评论通过评论数量来判断评论显示隐藏
+        if (list.get(pos).comments_excerpt == null) {
+            myViewHolder.linear_child_comments.setVisibility(View.GONE);
+        } else {
+            if (list.get(pos).comments_excerpt.size() > 0) {
+                myViewHolder.linear_child_comments.setVisibility(View.VISIBLE);
+                if (list.get(pos).comments_excerpt.size() == 1) {
+                    myViewHolder.comment_user1.setText(list.get(pos).comments_excerpt.get(0).nickname + ":" + list.get(pos).comments_excerpt.get(0).content);
+                    myViewHolder.comment_user2.setVisibility(View.GONE);
+                    myViewHolder.look_more_comment.setVisibility(View.GONE);
+                    SpannableStringBuilder spannable = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(0).nickname);
+                    spannable.append(":");
+                    spannable.append(stringFilter(list.get(pos).comments_excerpt.get(0).content));
+
+                    if (list.get(pos).user_id.equals(uid)) {
+                        spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    } else {
+                        spannable.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    }
+                    myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
+                    myViewHolder.comment_user1.setText(spannable);
+                } else if (list.get(pos).comments_excerpt.size() == 2) {
+                    SpannableStringBuilder spannable1 = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(0).nickname);
+                    SpannableStringBuilder spannable2 = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(1).nickname);
+                    spannable1.append(":");
+                    spannable1.append(stringFilter(list.get(pos).comments_excerpt.get(0).content));
+                    spannable2.append(":");
+                    spannable2.append(stringFilter(list.get(pos).comments_excerpt.get(1).content));
+                    if (list.get(pos).user_id.equals(uid)) {
+                        spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                        spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    } else {
+                        spannable1.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                        spannable2.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(1).user_id), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+                    }
+                    myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
+                    myViewHolder.comment_user2.setMovementMethod(LinkMovementMethod.getInstance());
+                    myViewHolder.comment_user1.setText(spannable1);
+                    myViewHolder.comment_user2.setText(spannable2);
+                    myViewHolder.comment_user2.setVisibility(View.VISIBLE);
+                    myViewHolder.look_more_comment.setVisibility(View.GONE);
+//                    myViewHolder.comment_user1.setText(list.get(position).comments_excerpt.get(0).nickname + ":" + list.get(position).comments_excerpt.get(0).content);
+//                    myViewHolder.comment_user2.setText(list.get(position).comments_excerpt.get(1).nickname + ":" + list.get(position).comments_excerpt.get(1).content);
+                    myViewHolder.look_more_comment.setVisibility(View.GONE);
+                }
+                int commentCount = Integer.parseInt(list.get(pos).comment_count);
+                if (commentCount > 2) {
+                    SpannableStringBuilder spannable1 = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(0).nickname);
+                    SpannableStringBuilder spannable2 = new SpannableStringBuilder(list.get(pos).comments_excerpt.get(1).nickname);
+                    spannable1.append(":");
+                    spannable1.append(stringFilter(list.get(pos).comments_excerpt.get(0).content));
+                    spannable2.append(":");
+                    spannable2.append(stringFilter(list.get(pos).comments_excerpt.get(1).content));
+                    if (list.get(pos).user_id.equals(uid)) {
+                        spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                        spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    } else {
+                        spannable1.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(0).user_id), 0, list.get(pos).comments_excerpt.get(0).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                        spannable2.setSpan(new TextClick(context, list.get(pos).comments_excerpt.get(1).user_id), 0, list.get(pos).comments_excerpt.get(1).nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+                    }
+                    myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
+                    myViewHolder.comment_user2.setMovementMethod(LinkMovementMethod.getInstance());
+                    myViewHolder.comment_user1.setText(spannable1);
+                    myViewHolder.comment_user2.setText(spannable2);
+                    myViewHolder.comment_user2.setVisibility(View.VISIBLE);
+                    myViewHolder.look_more_comment.setVisibility(View.VISIBLE);
+//                    myViewHolder.comment_user1.setText(list.get(position).comments_excerpt.get(0).nickname + ":" + list.get(position).comments_excerpt.get(0).content);
+//                    myViewHolder.comment_user2.setText(list.get(position).comments_excerpt.get(1).nickname + ":" + list.get(position).comments_excerpt.get(1).content);
+                    myViewHolder.look_more_comment.setText("查看全部" + list.get(pos).comment_count + "条评论");
+                }
+            }
+        }
+        if (StringUtil.isNotEmpty(list.get(pos).type) && list.get(pos).type.equals(BizConstant.ALREADY_FAVORITE)) {
+            myViewHolder.article_linear.setVisibility(View.GONE);
+            //判断是否有内容
+            if (StringUtil.isNotEmpty(list.get(pos).content)) {
+                myViewHolder.dynamic_conment.setVisibility(View.VISIBLE);
+                myViewHolder.dynamic_conment.setMaxLines(3);
+                myViewHolder.dynamic_conment.setText(list.get(pos).content);
+            } else {
+                myViewHolder.dynamic_conment.setVisibility(View.GONE);
+            }
+        } else if (StringUtil.isNotEmpty(list.get(pos).type) && list.get(pos).type.equals(BizConstant.ALIPAY_METHOD)) {
+            myViewHolder.dynamic_conment.setVisibility(View.GONE);
+            myViewHolder.article_linear.setVisibility(View.VISIBLE);
+            myViewHolder.article_title.setText(list.get(pos).extend_content.target_title);
+            myViewHolder.article_desc.setText(list.get(pos).extend_content.target_description);
+            RequestOptions requestOption = new RequestOptions().placeholder(R.mipmap.gray_logo).error(R.mipmap.gray_logo);
+            Glide.with(context).load(list.get(pos).extend_content.target_image).apply(requestOption).into(myViewHolder.article_img);
+        }
+        myViewHolder.comment_num.setText(list.get(pos).comment_count);
+        myViewHolder.like_num.setText(list.get(pos).like_count);
+        //点击分享
+        myViewHolder.linear_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareInterface.onclick(v, pos);
+            }
+        });
+        myViewHolder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteInterface.onclick(v, pos);
+            }
+        });
+        myViewHolder.article_linear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                articleInterface.onclick(v, pos);
+            }
+        });
+        if (list.get(pos).did_i_follow.equals(BizConstant.ENTERPRISE_tRUE)) {
+            myViewHolder.attention.setVisibility(View.VISIBLE);
+        } else {
+            myViewHolder.attention.setVisibility(View.GONE);
+        }
+        //关注
+        myViewHolder.attention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attentionInterface.onclick(v, pos, myViewHolder.attention);
+            }
+        });
+        myViewHolder.userhead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, HomePageActivity.class);
+                intent.putExtra("uid", list.get(pos).user_id);
+                context.startActivity(intent);
+            }
+        });
+        //更多功能
+        myViewHolder.more_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                functionInterface.onclick(v, pos, myViewHolder.attention);
+            }
+        });
+        myViewHolder.linear_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeMomentInterface.onclick(v, pos, myViewHolder.choose_like, myViewHolder.like_num);
+            }
+        });
+        myViewHolder.choose_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeMomentInterface.onclick(v, pos, myViewHolder.choose_like, myViewHolder.like_num);
+            }
+        });
+        String did_i_like = list.get(pos).did_i_like;
+        if (StringUtil.isNotEmpty(did_i_like) && did_i_like.equals(BizConstant.IS_FAIL)) {
+
+            myViewHolder.choose_like.setChecked(false);
+            myViewHolder.choose_like.setEnabled(true);
+            myViewHolder.like_num.setTextColor(Color.parseColor("#1d1d1d"));
+        } else {
+            myViewHolder.choose_like.setChecked(true);
+            myViewHolder.choose_like.setEnabled(false);
+            myViewHolder.like_num.setTextColor(Color.parseColor("#ff2b2b"));
+        }
 //        }
 
     }
@@ -398,7 +399,7 @@ public class AttentionDynamicAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageViewPlus userhead;
-        TextView username, times, comment_user1, comment_user2, look_more_comment, comment_num, like_num, delete, article_title, article_desc;
+        TextView username, times, comment_user1, comment_user2, look_more_comment, comment_num, like_num, delete, article_title, article_desc,rewardNum;
         ImageView dynamic_imag_h, dynamic_imag_w, dynamic_imag_z, daV;
         TextView attention;
         LinearLayout imag_linear, linear_share, linear_comment, linear_like, attention_linear, article_linear;
@@ -439,7 +440,7 @@ public class AttentionDynamicAdapter extends RecyclerView.Adapter<RecyclerView.V
             more_setting = itemView.findViewById(R.id.more_setting);
             choose_like = itemView.findViewById(R.id.choose_like);
             daV = itemView.findViewById(R.id.da_v);
-
+            rewardNum = itemView.findViewById(R.id.reward_num);
         }
     }
 
