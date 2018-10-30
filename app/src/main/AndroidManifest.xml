@@ -153,8 +153,7 @@
         <activity
             android:name=".activity.HomeDetailsActivity"
             android:configChanges="locale|layoutDirection"
-            android:hardwareAccelerated="false"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".activity.SettingActivity"
             android:configChanges="locale|layoutDirection" />

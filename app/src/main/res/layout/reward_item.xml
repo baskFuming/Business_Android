@@ -42,8 +42,8 @@
                 android:paddingRight="15dp">
 
                 <LinearLayout
+                    android:id="@+id/flower"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"                     android:id="@+id/flower"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
                     android:layout_weight="1"
@@ -64,7 +64,6 @@
 
                 <LinearLayout
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:id="@+id/flowers"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
@@ -97,7 +96,6 @@
 
                 <LinearLayout
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:id="@+id/applause"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
@@ -119,7 +117,6 @@
 
                 <LinearLayout
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:id="@+id/kiss"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
@@ -232,7 +229,7 @@
                 android:layout_width="71dp"
                 android:layout_height="71dp"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_launcher" />
+                 />
         </RelativeLayout>
 
     </RelativeLayout>
