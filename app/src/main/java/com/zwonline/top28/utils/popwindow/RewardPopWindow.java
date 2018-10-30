@@ -2,13 +2,14 @@ package com.zwonline.top28.utils.popwindow;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -22,10 +23,10 @@ import com.zwonline.top28.R;
 public class RewardPopWindow extends PopupWindow {
     private ImageView imageView;
     private View window;
-    private final LinearLayout flower;
-    private final LinearLayout flowers;
-    private final LinearLayout applause;
-    private final LinearLayout kiss;
+    private LinearLayout flower;
+    private LinearLayout flowers;
+    private LinearLayout applause;
+    private LinearLayout kiss;
 
     public RewardPopWindow(final Activity context, View.OnClickListener itemsOnClick) {
         super(context);
@@ -64,7 +65,7 @@ public class RewardPopWindow extends PopupWindow {
 //        this.setAnimationStyle(R.style.AnimBottom);
         //实例化一个ColorDrawable颜色为半透明
         ColorDrawable dw = new ColorDrawable(00000000);
-        //设置SelectPicPopupWindow弹出窗体的背景
+//        设置SelectPicPopupWindow弹出窗体的背景
         this.setBackgroundDrawable(dw);
         backgroundAlpha(context, 0.5f);//0.0-1.0
         // 重写onKeyListener
@@ -87,10 +88,16 @@ public class RewardPopWindow extends PopupWindow {
      * @param bgAlpha
      */
     public void backgroundAlpha(Activity context, float bgAlpha) {
-        WindowManager.LayoutParams lp = context.getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        context.getWindow().setAttributes(lp);
+        if (Build.VERSION.SDK_INT >= 24){
+            WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+            lp.alpha = bgAlpha;
+            if (bgAlpha == 1) {
+                context.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);//不移除该Flag的话,在有视频的页面上的视频会出现黑屏的bug
+            } else {
+                context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);//此行代码主要是解决在华为手机上半透明效果无效的bug
+            }
+            context.getWindow().setAttributes(lp);
+        }
     }
 
     public interface OnClickItemListener {
@@ -100,5 +107,15 @@ public class RewardPopWindow extends PopupWindow {
     public String clauseContentData() {
         return "";
     }
-
+    public  void showAsDropDown(PopupWindow pw, View anchor, int xoff, int yoff) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            Rect visibleFrame = new Rect();
+            anchor.getGlobalVisibleRect(visibleFrame);
+            int height = anchor.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;
+            pw.setHeight(height);
+            pw.showAsDropDown(anchor, xoff, yoff);
+        } else {
+            pw.showAsDropDown(anchor, xoff, yoff);
+        }
+    }
 }

@@ -53,8 +53,12 @@ import com.zwonline.top28.adapter.ArticleCommentAdapter;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.ArticleCommentBean;
+import com.zwonline.top28.bean.AttentionBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.ShareDataBean;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
@@ -68,6 +72,7 @@ import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
+import com.zwonline.top28.utils.popwindow.RewardPopWindow;
 import com.zwonline.top28.view.IHomeDetails;
 import com.zwonline.top28.web.MJavascriptInterface;
 import com.zwonline.top28.wxapi.RewritePopwindow;
@@ -159,10 +164,36 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     private String[] imageUrls = StringUtil.returnImageUrlsFromHtml();
     private int status;
     private TextView badgeviewTv;
-
-
-    //添加新的下拉刷新控件
+    /**
+     * TODO 新功能
+     * 添加新的下拉刷新控件
+     * 添加弹框，添加打赏
+     */
     private SmartRefreshLayout smartRefreshLayout;
+    private ImageView reward_image;
+    private RewardPopWindow rewardPopWindow;
+    private TextView rewardUnderline;
+    private LinearLayout flower;
+    private LinearLayout flowers;
+    private LinearLayout applause;
+    private LinearLayout kiss;
+    private String rewardType = BizConstant.TYPE_ONE;
+    private EditText rewardNumberEt;
+    private String userName;
+    private String iconImage;
+    private List<GiftSumBean.DataBean> beanList;
+    private List<GiftBean.DataBean> giftbeanList;
+    private String giftSumCount;
+    private String giftSumId;
+    private String rewardSumName;
+    private String giftSumImage;
+    private String giftSumCountNumber;
+    private String giftId;
+    private String rewardName;
+    private String giftImg;
+    private String giftValue;
+    private GiftSumBean giftSumBeans;
+    private TextView flowerCount, bouquetCount, applauseCount, kissCount, proportion;
 
     public void initActivityWindow() {
         ButterKnife.bind(this);
@@ -187,8 +218,6 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             linearImage.setVisibility(View.VISIBLE);
             pid = "";
         }
-
-
     }
 
     @Override
@@ -198,6 +227,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         activityRootView.addOnLayoutChangeListener(this);
         if (StringUtil.isNotEmpty(sID)) {
             presenter.mArticleComment(this, sID, "", "", "", page);
+            presenter.Gift(this);
             adapter.notifyDataSetChanged();
         }
     }
@@ -206,6 +236,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     protected void init() {
         try {
             list = new ArrayList<>();
+            beanList = new ArrayList<>();
+            giftbeanList = new ArrayList<>();
             context = HomeDetailsActivity.this;
             initActivityWindow();
             initData();//查找控件
@@ -235,6 +267,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             webSettingInit();
             StringUtil.textBold(title);
             StringUtil.textBold(mtitle);//中文字体加粗
+            presenter.Gift(this);
+            presenter.GiftSummary(HomeDetailsActivity.this, BizConstant.ALIPAY_METHOD,sID);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -277,7 +311,6 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         });
     }
 
-
     private void initListView() {
         mtitle = (TextView) headerView.findViewById(R.id.mtitle);
         username = (TextView) headerView.findViewById(R.id.username);
@@ -289,6 +322,37 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         attention = (Button) headerView.findViewById(R.id.attention);
         contentWeb = (WebView) headerView.findViewById(R.id.content_web);
         relativeHome = (RelativeLayout) headerView.findViewById(R.id.relative_home);
+        reward_image = (ImageView) headerView.findViewById(R.id.reward_image);
+        flowerCount = (TextView) headerView.findViewById(R.id.text_flowersCount);
+        bouquetCount = (TextView) headerView.findViewById(R.id.text_bouquetCount);
+        applauseCount = (TextView) headerView.findViewById(R.id.text_applauseCount);
+        kissCount = (TextView) headerView.findViewById(R.id.text_kissCount);
+        /**
+         * TODO 打赏弹框
+         */
+        reward_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rewardPopWindow = new RewardPopWindow(HomeDetailsActivity.this, listeners);
+                rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                View contentView = rewardPopWindow.getContentView();
+                flower = (LinearLayout) contentView.findViewById(R.id.flower);//花朵
+                flowers = (LinearLayout) contentView.findViewById(R.id.flowers);//花束
+                applause = (LinearLayout) contentView.findViewById(R.id.applause);//鼓掌
+                kiss = (LinearLayout) contentView.findViewById(R.id.kiss);//亲吻
+                rewardNumberEt = (EditText) contentView.findViewById(R.id.reward_number);
+                ImageViewPlus user_icon = contentView.findViewById(R.id.user_icon);
+                TextView author = contentView.findViewById(R.id.author);
+                proportion = contentView.findViewById(R.id.proportion);
+                if (StringUtil.isNotEmpty(userName)) {
+                    author.setText("给" + userName + "作者打赏");
+                }
+                if (StringUtil.isNotEmpty(iconImage)) {
+                    RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+                    Glide.with(HomeDetailsActivity.this).load(iconImage).apply(requestOptions).into(user_icon);
+                }
+            }
+        });
 
     }
 
@@ -312,7 +376,6 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
 //        commentSpring = (SpringView) findViewById(R.id.comment_spring);
         //添加
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.reshLayout);
-
     }
 
     /**
@@ -424,6 +487,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         }
     }
 
+
     //收藏 取消 选中关注文章
     CompoundButton.OnCheckedChangeListener collectOnCheckedClickListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
@@ -477,6 +541,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         String showtime = homeDetails.data.vo.showtime;
         time.setText(getDateToString(Long.parseLong(showtime) * 1000, "yyyy-MM-dd"));
         uid = homeDetails.data.members.uid;
+        userName = homeDetails.data.members_info.nickname;
+        iconImage = homeDetails.data.members.avatars;
         username.setText(homeDetails.data.members_info.nickname);
         mtitle.setText(homeDetails.data.vo.title);
 
@@ -572,7 +638,6 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             return;
         }
         switch (view.getId()) {
-
             case R.id.back:
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
@@ -932,5 +997,114 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         return -top + firstVisiblePosition * c.getHeight();
     }
 
+    /**
+     * 礼物数量
+     *
+     * @param giftSumBean
+     */
+    @Override
+    public void showGiftSummary(GiftSumBean giftSumBean) {
+        if (giftSumBean.status == 1) {
+            flowerCount.setText(giftSumBean.data.list.get(0).count);
+            bouquetCount.setText(giftSumBean.data.list.get(1).count);
+            applauseCount.setText(giftSumBean.data.list.get(2).count);
+            kissCount.setText(giftSumBean.data.list.get(3).count);
+        } else {
+            ToastUtils.showToast(this, "请先登录");
+        }
+
+    }
+
+    /**
+     * 礼物
+     *
+     * @param giftBean
+     */
+    @Override
+    public void showGift(GiftBean giftBean) {
+        giftbeanList.addAll(giftBean.data);
+    }
+
+    @Override
+    public void showSendGifts(AttentionBean attentionBean) {
+        if (attentionBean.status == 1) {
+            ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
+            presenter.GiftSummary(HomeDetailsActivity.this, BizConstant.TYPE_TWO, sID);
+        } else {
+            ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
+        }
+    }
+
+    @Override
+    public void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists) {
+
+    }
+
+    /**
+     * TODO 打赏弹窗,礼物逻辑
+     */
+    private View.OnClickListener listeners = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.close_pop:
+                    rewardPopWindow.dismiss();
+                    rewardPopWindow.backgroundAlpha(HomeDetailsActivity.this, 1f);
+                    break;
+                case R.id.flower:
+                    rewardType = BizConstant.TYPE_ONE;
+                    flower.setBackgroundResource(R.drawable.reward_backline);
+                    flowers.setBackgroundColor(Color.WHITE);
+                    applause.setBackgroundColor(Color.WHITE);
+                    kiss.setBackgroundColor(Color.WHITE);
+                    if (StringUtil.isNotEmpty(giftbeanList.get(0).name) && StringUtil.isNotEmpty(giftbeanList.get(0).value)) {
+                        proportion.setText("1" + giftbeanList.get(0).name + "=" + giftbeanList.get(0).value + "商机币" + " (1商机币=0.1元)");
+                    }
+                    break;
+                case R.id.flowers:
+                    rewardType = BizConstant.TYPE_TWO;
+                    flowers.setBackgroundResource(R.drawable.reward_backline);
+                    flower.setBackgroundColor(Color.WHITE);
+                    applause.setBackgroundColor(Color.WHITE);
+                    kiss.setBackgroundColor(Color.WHITE);
+                    if (StringUtil.isNotEmpty(giftbeanList.get(1).name) && StringUtil.isNotEmpty(giftbeanList.get(1).value)) {
+                        proportion.setText("1" + giftbeanList.get(1).name + "=" + giftbeanList.get(1).value + "商机币" + " (1商机币=0.1元)");
+                    }
+                    break;
+                case R.id.applause:
+                    rewardType = BizConstant.ALIPAY_RECHARGE_METHOD;
+                    applause.setBackgroundResource(R.drawable.reward_backline);
+                    flower.setBackgroundColor(Color.WHITE);
+                    flowers.setBackgroundColor(Color.WHITE);
+                    kiss.setBackgroundColor(Color.WHITE);
+                    if (StringUtil.isNotEmpty(giftbeanList.get(2).name) && StringUtil.isNotEmpty(giftbeanList.get(2).value)) {
+                        proportion.setText("1" + giftbeanList.get(2).name + "=" + giftbeanList.get(2).value + "商机币" + " (1商机币=0.1元)");
+                    }
+                    break;
+                case R.id.kiss:
+                    rewardType = BizConstant.UNIONPAY_RECHARGE_METHOD;
+                    kiss.setBackgroundResource(R.drawable.reward_backline);
+                    applause.setBackgroundColor(Color.WHITE);
+                    flowers.setBackgroundColor(Color.WHITE);
+                    flower.setBackgroundColor(Color.WHITE);
+                    if (StringUtil.isNotEmpty(giftbeanList.get(3).name) && StringUtil.isNotEmpty(giftbeanList.get(3).value)) {
+                        proportion.setText("1" + giftbeanList.get(3).name + "=" + giftbeanList.get(3).value + "商机币" + " (1商机币=0.1元)");
+                    }
+                    break;
+                case R.id.sure:
+                    String rewardCount = rewardNumberEt.getText().toString().trim();
+                    if (StringUtil.isNotEmpty(rewardCount)) {
+                        presenter.SendGifts(HomeDetailsActivity.this, BizConstant.TYPE_TWO, sID, rewardType, rewardCount);
+                        rewardPopWindow.dismiss();
+                        rewardPopWindow.backgroundAlpha(HomeDetailsActivity.this, 1f);
+                    } else {
+                        ToastUtils.showToast(getApplicationContext(), "礼物数量不能为空！");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 }

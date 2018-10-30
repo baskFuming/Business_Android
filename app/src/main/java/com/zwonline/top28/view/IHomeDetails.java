@@ -2,10 +2,13 @@ package com.zwonline.top28.view;
 
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.ArticleCommentBean;
+import com.zwonline.top28.bean.AttentionBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.ShareDataBean;
-import com.zwonline.top28.bean.UserBean;
 
 import java.util.List;
 
@@ -43,4 +46,30 @@ public interface IHomeDetails {
      * @param articleCommentBean
      */
     void onError(AddCommentBean articleCommentBean);
+    /**
+     * 礼物数量
+     *
+     * @param giftSumBean
+     */
+    void showGiftSummary(GiftSumBean giftSumBean);
+
+    /**
+     * 礼物
+     *
+     * @param giftBean
+     */
+    void showGift(GiftBean giftBean);
+    /**
+     * 打赏接口
+     *
+     * @param attentionBean
+     */
+    void showSendGifts(AttentionBean attentionBean);
+
+    /**
+     * 打赏列表
+     *
+     * @param rewardLists
+     */
+    void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists);
 }
