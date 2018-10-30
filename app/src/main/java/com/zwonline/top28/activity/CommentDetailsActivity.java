@@ -35,8 +35,12 @@ import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.ArticleCommentBean;
+import com.zwonline.top28.bean.AttentionBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.ShareDataBean;
 import com.zwonline.top28.bean.ZanBean;
 import com.zwonline.top28.constants.BizConstant;
@@ -372,6 +376,26 @@ public class CommentDetailsActivity extends BaseActivity<IHomeDetails, HomeDetai
 
     @Override
     public void onError(AddCommentBean articleCommentBean) {
+
+    }
+
+    @Override
+    public void showGiftSummary(GiftSumBean giftSumBean) {
+
+    }
+
+    @Override
+    public void showGift(GiftBean giftBean) {
+
+    }
+
+    @Override
+    public void showSendGifts(AttentionBean attentionBean) {
+
+    }
+
+    @Override
+    public void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists) {
 
     }
 

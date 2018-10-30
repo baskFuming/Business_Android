@@ -14,10 +14,11 @@
 
 
         <LinearLayout
+            android:id="@+id/background"
             android:layout_width="345dp"
             android:layout_height="514dp"
             android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/dp_60"
+            android:layout_marginTop="60dp"
             android:background="@drawable/rectangle_shape_gay"
             android:orientation="vertical">
 
@@ -41,7 +42,8 @@
                 android:paddingRight="15dp">
 
                 <LinearLayout
-                    android:id="@+id/flower"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"                     android:id="@+id/flower"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
                     android:layout_weight="1"
@@ -61,6 +63,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:id="@+id/flowers"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
@@ -92,6 +96,8 @@
                 android:paddingRight="15dp">
 
                 <LinearLayout
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:id="@+id/applause"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
@@ -112,6 +118,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:id="@+id/kiss"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
@@ -163,7 +171,10 @@
                     android:paddingLeft="@dimen/dp_10"
                     android:textColor="#3D3D3D"
                     android:textColorHint="#D5D5D5"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"

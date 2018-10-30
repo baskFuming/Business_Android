@@ -4,16 +4,16 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.zwonline.top28.R;
-import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.ArticleCommentBean;
 import com.zwonline.top28.bean.AttentionBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.ShareDataBean;
-import com.zwonline.top28.bean.UserBean;
 import com.zwonline.top28.model.HomeDetailsModel;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IHomeDetails;
@@ -337,4 +337,146 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 礼物数量
+     *
+     * @param context
+     * @param target_type
+     * @param target_id
+     */
+    public void GiftSummary(Context context, String target_type, String target_id) {
+        try {
+            Flowable<GiftSumBean> flowable = homeDetailsModel.mGiftSummary(context, target_type, target_id);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<GiftSumBean>() {
+                        @Override
+                        public void onNext(GiftSumBean attentionBean) {
+                            if (attentionBean.status == 1) {
+                                iHomeDetails.showGiftSummary(attentionBean);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 礼物
+     *
+     * @param context
+     */
+    public void Gift(Context context) {
+        try {
+            Flowable<GiftBean> flowable = homeDetailsModel.mGift(context);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<GiftBean>() {
+                        @Override
+                        public void onNext(GiftBean attentionBean) {
+                            if (attentionBean.status == 1) {
+                                iHomeDetails.showGift(attentionBean);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /***
+     * 打赏接口
+     * @param context
+     * @param target_type
+     * @param target_id
+     * @param gift_id
+     * @param gift_count
+     */
+    public void SendGifts(Context context, String target_type, String target_id, String gift_id, String gift_count) {
+        try {
+            Flowable<AttentionBean> flowable = homeDetailsModel.mSendGifts(context, target_type, target_id, gift_id, gift_count);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<AttentionBean>() {
+                        @Override
+                        public void onNext(AttentionBean attentionBean) {
+                            if (attentionBean.status == 1) {
+                                iHomeDetails.showSendGifts(attentionBean);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 打赏列表
+     *
+     * @param context
+     * @param target_type
+     * @param target_id
+     * @param page
+     */
+    public void GiftList(final Context context, String target_type, String target_id, int page) {
+        try {
+            Flowable<RewardListBean> flowable = homeDetailsModel.mGiftList(context, target_type, target_id, page);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<RewardListBean>() {
+                        @Override
+                        public void onNext(RewardListBean rewardListBean) {
+                            if (rewardListBean.status == 1) {
+                                iHomeDetails.showGiftList(rewardListBean.data.list);
+                            } else {
+                                ToastUtils.showToast(context, rewardListBean.msg);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
