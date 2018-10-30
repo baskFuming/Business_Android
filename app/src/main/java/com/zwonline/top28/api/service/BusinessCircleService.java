@@ -17,6 +17,7 @@ import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RealBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
@@ -591,10 +592,56 @@ public interface BusinessCircleService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/App/Article/gif")
+    @POST("/App/Article/gift")
     Flowable<GiftBean> gift(
             @Field("timestamp") String timestamp,
             @Field("token") String token,
+            @Field("sign") String sign
+    );
+
+    /**
+     * 打赏 接口
+     *
+     * @param timestamp
+     * @param token
+     * @param target_type
+     * @param target_id
+     * @param gift_id
+     * @param gift_count
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Article/sendGifts")
+    Flowable<AttentionBean> sendGifts(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("target_type") String target_type,
+            @Field("target_id") String target_id,
+            @Field("gift_id") String gift_id,
+            @Field("gift_count") String gift_count,
+            @Field("sign") String sign
+    );
+
+    /**
+     * 打赏列表
+     *
+     * @param timestamp
+     * @param token
+     * @param target_type
+     * @param target_id
+     * @param page
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Article/giftList")
+    Flowable<RewardListBean> giftList(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("target_type") String target_type,
+            @Field("target_id") String target_id,
+            @Field("page") int page,
             @Field("sign") String sign
     );
 

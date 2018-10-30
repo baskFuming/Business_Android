@@ -21,6 +21,7 @@ import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
@@ -733,6 +734,64 @@ public class SendFriendCircleModel {
         Flowable<GiftBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .gift(String.valueOf(timestamp), token, sign);
+        return flowable;
+    }
+
+    /**
+     * 打赏的 接口
+     *
+     * @param context
+     * @param target_type
+     * @param target_id
+     * @param gift_id
+     * @param gift_count
+     * @return
+     * @throws IOException
+     */
+    public Flowable<AttentionBean> mSendGifts(Context context, String target_type, String target_id, String gift_id, String gift_count) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("target_type", target_type);
+        map.put("target_id", target_id);
+        map.put("gift_id", gift_id);
+        map.put("gift_count", gift_count);
+        map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .sendGifts(String.valueOf(timestamp), token, target_type, target_id, gift_id, gift_count, sign);
+        return flowable;
+    }
+
+    /**
+     * 打赏列表
+     *
+     * @param context
+     * @param target_type
+     * @param target_id
+     * @param page
+     * @return
+     * @throws IOException
+     */
+    public Flowable<RewardListBean> mGiftList(Context context, String target_type, String target_id, int page) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("target_type", target_type);
+        map.put("target_id", target_id);
+        map.put("page", String.valueOf(page));
+        map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<RewardListBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .giftList(String.valueOf(timestamp), token, target_type, target_id, page, sign);
         return flowable;
     }
 

@@ -126,7 +126,7 @@
                         android:drawableTop="@mipmap/reward_gift4copy"
                         android:gravity="center"
                         android:padding="18dp"
-                        android:text="亲吻"
+                        android:text="香吻"
                         android:textColor="#ff3d3d3d"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -178,6 +178,7 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/proportion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

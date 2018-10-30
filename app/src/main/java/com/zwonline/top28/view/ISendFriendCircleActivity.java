@@ -14,6 +14,7 @@ import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
@@ -201,7 +202,21 @@ public interface ISendFriendCircleActivity {
     /**
      * 礼物
      *
-     * @param giftBean
+     * @param giftList
      */
-    void showGift(GiftBean giftBean);
+    void showGift(List<GiftBean.DataBean> giftList);
+
+    /**
+     * 打赏接口
+     *
+     * @param attentionBean
+     */
+    void showSendGifts(AttentionBean attentionBean);
+
+    /**
+     * 打赏列表
+     *
+     * @param rewardLists
+     */
+    void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists);
 }

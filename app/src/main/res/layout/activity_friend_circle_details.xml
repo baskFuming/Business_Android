@@ -284,11 +284,11 @@
                                     >
 
                                     <TextView
-                                        android:id="@+id/reward_number"
+                                        android:id="@+id/flower_num"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:text="43"
+                                        android:text="0"
                                         android:textColor="#ffa8a8a8"
                                         android:textSize="13sp" />
 
@@ -308,11 +308,11 @@
                                     >
 
                                     <TextView
-                                        android:id="@+id/reward_numbers"
+                                        android:id="@+id/flowers_num"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:text="43"
+                                        android:text="0"
                                         android:textColor="#ffa8a8a8"
                                         android:textSize="13sp" />
 
@@ -332,11 +332,11 @@
                                     >
 
                                     <TextView
-                                        android:id="@+id/handclap_number"
+                                        android:id="@+id/handclap_num"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:text="43"
+                                        android:text="0"
                                         android:textColor="#ffa8a8a8"
                                         android:textSize="13sp" />
 
@@ -356,11 +356,11 @@
                                     >
 
                                     <TextView
-                                        android:id="@+id/kiss_number"
+                                        android:id="@+id/kiss_num"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:text="43"
+                                        android:text="0"
                                         android:textColor="#ffa8a8a8"
                                         android:textSize="13sp" />
 
@@ -448,7 +448,6 @@
                             android:id="@+id/reward_acount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="打赏"
                             android:textColor="#2F2F2F"
                             android:textSize="16sp" />
 

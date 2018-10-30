@@ -20,6 +20,7 @@ import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PicturBean;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
@@ -1013,7 +1014,7 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
      *
      * @param context
      */
-    public void Gift(Context context) {
+    public void Gift(final Context context) {
         try {
             Flowable<GiftBean> flowable = sendFriendCircleModel.mGift(context);
             flowable.subscribeOn(Schedulers.io())
@@ -1022,7 +1023,83 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                         @Override
                         public void onNext(GiftBean attentionBean) {
                             if (attentionBean.status == 1) {
-                                iSendFriendCircleActivity.showGift(attentionBean);
+                                iSendFriendCircleActivity.showGift(attentionBean.data);
+                            } else {
+                                ToastUtils.showToast(context, attentionBean.msg);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /***
+     * 打赏接口
+     * @param context
+     * @param target_type
+     * @param target_id
+     * @param gift_id
+     * @param gift_count
+     */
+    public void SendGifts(Context context, String target_type, String target_id, String gift_id, String gift_count) {
+        try {
+            Flowable<AttentionBean> flowable = sendFriendCircleModel.mSendGifts(context, target_type, target_id, gift_id, gift_count);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<AttentionBean>() {
+                        @Override
+                        public void onNext(AttentionBean attentionBean) {
+                            if (attentionBean.status == 1) {
+                                iSendFriendCircleActivity.showSendGifts(attentionBean);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 打赏列表
+     *
+     * @param context
+     * @param target_type
+     * @param target_id
+     * @param page
+     */
+    public void GiftList(final Context context, String target_type, String target_id, int page) {
+        try {
+            Flowable<RewardListBean> flowable = sendFriendCircleModel.mGiftList(context, target_type, target_id, page);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<RewardListBean>() {
+                        @Override
+                        public void onNext(RewardListBean rewardListBean) {
+                            if (rewardListBean.status == 1) {
+                                iSendFriendCircleActivity.showGiftList(rewardListBean.data.list);
+                            } else {
+                                ToastUtils.showToast(context, rewardListBean.msg);
                             }
                         }
 

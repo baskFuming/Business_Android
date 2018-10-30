@@ -48,6 +48,7 @@ import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
@@ -608,10 +609,29 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
      * @param giftBean
      */
     @Override
-    public void showGift(GiftBean giftBean) {
+    public void showGift(List<GiftBean.DataBean> giftBean) {
 
     }
 
+    /**
+     * 打赏接口
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showSendGifts(AttentionBean attentionBean) {
+
+    }
+
+    /**
+     * 打赏列表
+     *
+     * @param rewardLists
+     */
+    @Override
+    public void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists) {
+
+    }
 
     @Override
     public void showFeedBack(SettingBean settingBean) {

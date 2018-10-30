@@ -55,11 +55,13 @@ import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PhotoInfos;
 import com.zwonline.top28.bean.PictursBean;
 import com.zwonline.top28.bean.RefotPasswordBean;
+import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.fragment.InformationFragment;
 import com.zwonline.top28.presenter.SendFriendCirclePresenter;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.ImageViewPlu;
@@ -183,6 +185,12 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private XRecyclerView rewardXrecy;
     private TextView sure;
     private EditText rewardNumberEt;
+    private TextView kissNum;//亲吻数量
+    private TextView handclapNum;//鼓掌数量
+    private TextView flowerNum;//花数量
+    private TextView flowersNum;//花束数量
+    private TextView proportion;
+    private List<GiftBean.DataBean> giftList;
 
     @Subscribe
     @Override
@@ -197,7 +205,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void init() {
-
+        giftList = new ArrayList<>();
         sp = SharedPreferencesUtils.getUtil();
         islogins = (boolean) sp.getKey(getApplicationContext(), "islogin", false);
         uid = (String) sp.getKey(getApplicationContext(), "uid", "");
@@ -213,6 +221,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         presenter.mDynamicComment(this, page, moment_id, "", "", "");
         presenter.mDynamicShare(this, moment_id);
         presenter.GetLikeList(this, moment_id, page);
+        presenter.Gift(getApplicationContext());
 //        }
 
 //        headView = getLayoutInflater().inflate(R.layout.dynamicdetails_head, null);
@@ -288,6 +297,12 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         dynamic_imag_z = (ImageView) findViewById(R.id.dynamic_imag_z);
         imag_relative = (RelativeLayout) findViewById(R.id.imag_relative);
         reward_Image = (ImageView) findViewById(R.id.reward_image);
+        flowerNum = (TextView) findViewById(R.id.flower_num);
+        flowersNum = (TextView) findViewById(R.id.flowers_num);
+        handclapNum = (TextView) findViewById(R.id.handclap_num);
+        kissNum = (TextView) findViewById(R.id.kiss_num);
+
+
     }
 
     /**
@@ -305,6 +320,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             add_date = mommentList.data.add_time;
             content = mommentList.data.content;
             type = mommentList.data.type;
+            //礼物数量
+            presenter.GiftSummary(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id);
             comment_count = mommentList.data.comment_count;
             like_count = mommentList.data.like_count;
             articleDesc = mommentList.data.extend_content.target_description;
@@ -506,7 +523,15 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showGiftSummary(GiftSumBean giftSumBean) {
-
+        if (giftSumBean.status == 1) {
+            flowerNum.setText(giftSumBean.data.list.get(0).count);
+            flowersNum.setText(giftSumBean.data.list.get(1).count);
+            handclapNum.setText(giftSumBean.data.list.get(2).count);
+            kissNum.setText(giftSumBean.data.list.get(3).count);
+            rewardAcount.setText("打赏 " + giftSumBean.data.gift_count);
+        } else {
+            ToastUtils.showToast(getApplicationContext(), giftSumBean.msg);
+        }
     }
 
     /**
@@ -515,10 +540,35 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      * @param giftBean
      */
     @Override
-    public void showGift(GiftBean giftBean) {
-
+    public void showGift(List<GiftBean.DataBean> giftBean) {
+        giftList.clear();
+        giftList.addAll(giftBean);
     }
 
+    /**
+     * 打赏接口
+     *
+     * @param attentionBean
+     */
+    @Override
+    public void showSendGifts(AttentionBean attentionBean) {
+        if (attentionBean.status == 1) {
+            ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
+            presenter.GiftSummary(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id);
+        } else {
+            ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
+        }
+    }
+
+    /**
+     * 打赏列表
+     *
+     * @param rewardLists
+     */
+    @Override
+    public void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists) {
+
+    }
     @Override
     protected SendFriendCirclePresenter getPresenter() {
         return new SendFriendCirclePresenter(this);
@@ -1062,22 +1112,27 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 break;
             //打赏弹框
             case R.id.reward_image:
-                rewardPopWindow = new RewardPopWindow(this, listeners);
-                rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
-                View contentView = rewardPopWindow.getContentView();
-                flower = (LinearLayout) contentView.findViewById(R.id.flower);//花朵
-                flowers = (LinearLayout) contentView.findViewById(R.id.flowers);//花束
-                applause = (LinearLayout) contentView.findViewById(R.id.applause);//鼓掌
-                kiss = (LinearLayout) contentView.findViewById(R.id.kiss);//亲吻
-                rewardNumberEt = (EditText) contentView.findViewById(R.id.reward_number);
-                ImageViewPlus user_icon = contentView.findViewById(R.id.user_icon);
-                TextView author = contentView.findViewById(R.id.author);
-                if (StringUtil.isNotEmpty(nickname)) {
-                    author.setText("给" + nickname + "打赏");
-                }
-                if (StringUtil.isNotEmpty(avatars)) {
-                    RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
-                    Glide.with(this).load(avatars).apply(requestOptions).into(user_icon);
+                if (islogins) {
+                    rewardPopWindow = new RewardPopWindow(this, listeners);
+                    rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    View contentView = rewardPopWindow.getContentView();
+                    flower = (LinearLayout) contentView.findViewById(R.id.flower);//花朵
+                    flowers = (LinearLayout) contentView.findViewById(R.id.flowers);//花束
+                    applause = (LinearLayout) contentView.findViewById(R.id.applause);//鼓掌
+                    kiss = (LinearLayout) contentView.findViewById(R.id.kiss);//亲吻
+                    rewardNumberEt = (EditText) contentView.findViewById(R.id.reward_number);
+                    ImageViewPlus user_icon = contentView.findViewById(R.id.user_icon);
+                    TextView author = contentView.findViewById(R.id.author);
+                    proportion = contentView.findViewById(R.id.proportion);
+                    if (StringUtil.isNotEmpty(nickname)) {
+                        author.setText("给" + nickname + "打赏");
+                    }
+                    if (StringUtil.isNotEmpty(avatars)) {
+                        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+                        Glide.with(this).load(avatars).apply(requestOptions).into(user_icon);
+                    }
+                } else {
+                    ToastUtils.showToast(getApplicationContext(), "请先登录！");
                 }
 
 
@@ -1111,7 +1166,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     flowers.setBackgroundColor(Color.WHITE);
                     applause.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    ToastUtils.showToast(getApplicationContext(), rewardType);
+                    if (StringUtil.isNotEmpty(giftList.get(0).name)||StringUtil.isNotEmpty(giftList.get(0).value)){
+                        proportion.setText("1" + giftList.get(0).name + "=" + giftList.get(0).value + "商机币" + " (1商机币=0.1元)");
+                    }
                     break;
                 case R.id.flowers:
                     rewardType = BizConstant.TYPE_TWO;
@@ -1119,7 +1176,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     flower.setBackgroundColor(Color.WHITE);
                     applause.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    ToastUtils.showToast(getApplicationContext(), rewardType);
+                    if (StringUtil.isNotEmpty(giftList.get(1).name)||StringUtil.isNotEmpty(giftList.get(1).value)){
+                        proportion.setText("1" + giftList.get(1).name + "=" + giftList.get(1).value + "商机币" + " (1商机币=0.1元)");
+                    }
                     break;
                 case R.id.applause:
                     rewardType = BizConstant.ALIPAY_RECHARGE_METHOD;
@@ -1127,7 +1186,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     flower.setBackgroundColor(Color.WHITE);
                     flowers.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    ToastUtils.showToast(getApplicationContext(), rewardType);
+                    if (StringUtil.isNotEmpty(giftList.get(2).name)||StringUtil.isNotEmpty(giftList.get(2).value)){
+                        proportion.setText("1" + giftList.get(2).name + "=" + giftList.get(2).value + "商机币" + " (1商机币=0.1元)");
+                    }
                     break;
                 case R.id.kiss:
                     rewardType = BizConstant.UNIONPAY_RECHARGE_METHOD;
@@ -1135,10 +1196,23 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     applause.setBackgroundColor(Color.WHITE);
                     flowers.setBackgroundColor(Color.WHITE);
                     flower.setBackgroundColor(Color.WHITE);
-                    ToastUtils.showToast(getApplicationContext(), rewardType);
+                    if (StringUtil.isNotEmpty(giftList.get(3).name)||StringUtil.isNotEmpty(giftList.get(3).value)){
+                        proportion.setText("1" + giftList.get(3).name + "=" + giftList.get(3).value + "商机币" + " (1商机币=0.1元)");
+                    }
                     break;
                 case R.id.sure:
-                    ToastUtils.showToast(getApplicationContext(), rewardType + "确定");
+                    String rewardNumber = rewardNumberEt.getText().toString().trim();
+                    if (StringUtil.isNotEmpty(rewardNumber)) {
+                        if (type.equals(BizConstant.IS_SUC)) {
+                            presenter.SendGifts(DynamicDetailsActivity.this, type, moment_id, rewardType, rewardNumber);
+                        } else {
+                            presenter.SendGifts(DynamicDetailsActivity.this, type, articleID, rewardType, rewardNumber);
+                        }
+                        rewardPopWindow.dismiss();
+                        rewardPopWindow.backgroundAlpha(DynamicDetailsActivity.this, 1f);
+                    } else {
+                        ToastUtils.showToast(getApplicationContext(), "礼物数量不能为空！");
+                    }
                     break;
                 default:
                     break;
