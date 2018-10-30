@@ -74,6 +74,7 @@ import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.TimeUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
+import com.zwonline.top28.utils.popwindow.CompletePopwindow;
 import com.zwonline.top28.utils.popwindow.DynamicCommentPopuWindow;
 import com.zwonline.top28.utils.popwindow.RewardPopWindow;
 import com.zwonline.top28.view.ISendFriendCircleActivity;
@@ -552,6 +553,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     public void showGift(List<GiftBean.DataBean> giftBean) {
         giftList.clear();
         giftList.addAll(giftBean);
+
     }
 
     /**
@@ -562,8 +564,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     @Override
     public void showSendGifts(AttentionBean attentionBean) {
         if (attentionBean.status == 1) {
-            ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
             presenter.GiftSummary(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id);
+            CompletePopwindow completePopwindow = new CompletePopwindow(this);
+            completePopwindow.showAtLocation(DynamicDetailsActivity.this.findViewById(R.id.dynamic_layout), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         } else {
             ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
         }
@@ -1098,7 +1101,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 intent.putExtra("like_count", like_count);
                 intent.putExtra("comment_count", comment_count);
                 intent.putExtra("moment_id", moment_id);
-                intent.putExtra("gift_count", giftCount);
+//                intent.putExtra("gift_count", giftCount);
                 intent.putExtra("did_i_follow", did_i_follow);
                 intent.putExtra("did_i_like", did_i_like);
                 if (commentList.size() > 0) {
@@ -1249,8 +1252,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     flowers.setBackgroundColor(Color.WHITE);
                     applause.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftList.get(0).name) || StringUtil.isNotEmpty(giftList.get(0).value)) {
-                        proportion.setText("1" + giftList.get(0).name + "=" + giftList.get(0).value + "商机币" + " (1商机币=0.1元)");
+                    if (StringUtil.isNotEmpty(giftList.get(2).name) || StringUtil.isNotEmpty(giftList.get(2).value)) {
+                        proportion.setText("1" + giftList.get(2).name + "=" + giftList.get(2).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
                 case R.id.flowers:
@@ -1259,8 +1262,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     flower.setBackgroundColor(Color.WHITE);
                     applause.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftList.get(1).name) || StringUtil.isNotEmpty(giftList.get(1).value)) {
-                        proportion.setText("1" + giftList.get(1).name + "=" + giftList.get(1).value + "商机币" + " (1商机币=0.1元)");
+                    if (StringUtil.isNotEmpty(giftList.get(3).name) || StringUtil.isNotEmpty(giftList.get(3).value)) {
+                        proportion.setText("1" + giftList.get(3).name + "=" + giftList.get(3).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
                 case R.id.applause:
@@ -1269,8 +1272,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     flower.setBackgroundColor(Color.WHITE);
                     flowers.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftList.get(2).name) || StringUtil.isNotEmpty(giftList.get(2).value)) {
-                        proportion.setText("1" + giftList.get(2).name + "=" + giftList.get(2).value + "商机币" + " (1商机币=0.1元)");
+                    if (StringUtil.isNotEmpty(giftList.get(1).name) || StringUtil.isNotEmpty(giftList.get(1).value)) {
+                        proportion.setText("1" + giftList.get(1).name + "=" + giftList.get(1).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
                 case R.id.kiss:
@@ -1279,8 +1282,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     applause.setBackgroundColor(Color.WHITE);
                     flowers.setBackgroundColor(Color.WHITE);
                     flower.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftList.get(3).name) || StringUtil.isNotEmpty(giftList.get(3).value)) {
-                        proportion.setText("1" + giftList.get(3).name + "=" + giftList.get(3).value + "商机币" + " (1商机币=0.1元)");
+                    if (StringUtil.isNotEmpty(giftList.get(0).name) || StringUtil.isNotEmpty(giftList.get(0).value)) {
+                        proportion.setText("1" + giftList.get(0).name + "=" + giftList.get(0).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
                 case R.id.sure:
@@ -1296,6 +1299,13 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     } else {
                         ToastUtils.showToast(getApplicationContext(), "礼物数量不能为空！");
                     }
+                    break;
+                case R.id.buy_golden:
+                    Intent goldenIntent = new Intent(DynamicDetailsActivity.this, IntegralPayActivity.class);
+                    startActivity(goldenIntent);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    rewardPopWindow.dismiss();
+                    rewardPopWindow.backgroundAlpha(DynamicDetailsActivity.this, 1f);
                     break;
                 default:
                     break;

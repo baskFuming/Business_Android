@@ -176,12 +176,12 @@ public class AitManager implements TextWatcher {
             if (s == null) {
                 return;
             }
-//            if (s.toString().equals("@")) {
-//                // 启动@联系人界面
-//                if (!TextUtils.isEmpty(tid) || robot) {
-//                    AitContactSelectorActivity.start(context, tid, robot);
-//                }
-//            }
+            if (s.toString().equals("@")) {
+                // 启动@联系人界面
+                if (!TextUtils.isEmpty(tid) || robot) {
+                    AitContactSelectorActivity.start(context, tid, robot);
+                }
+            }
             aitContactsModel.onInsertText(start, s.toString());
         }
     }

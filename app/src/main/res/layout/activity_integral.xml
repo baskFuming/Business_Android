@@ -58,6 +58,39 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_14" />
 
+        <LinearLayout
+            android:id="@+id/business_coin_linear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:id="@+id/buy_hashrate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/ui_20_dip"
+                android:alpha="1"
+                android:text="购买算力"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/buy_golden"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/ui_20_dip"
+                android:alpha="1"
+                android:text="兑换金票"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14" />
+        </LinearLayout>
+
+
         <TextView
             android:id="@+id/integral_tv_zh"
             android:layout_width="wrap_content"

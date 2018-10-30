@@ -280,7 +280,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     @Override
     public void showBalance(BalanceBean balanceBean) {
         balance = Double.valueOf(balanceBean.data);
-        unionpayBtn.setText(getString(R.string.golden_payment) + "(" + balance +getString(R.string.golden)+")");
+        unionpayBtn.setText(getString(R.string.golden_payment) + "(" + balance + getString(R.string.golden) + ")");
 
     }
 
@@ -308,7 +308,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     public void showGetPresentComputePower(AttentionBean balanceBean) {
         if (balanceBean.status == 1) {
             if (sortNums > 0 && sortNums == sortNums) {
-                giveHashrate.setText("赠送 " + balanceBean.data.computePower +getString(R.string.coin_bole_coin));
+                giveHashrate.setText(balanceBean.data.computePower);
             }
         } else {
             String pointsEditT = pointsEditText.getText().toString();
@@ -564,7 +564,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
          */
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(this);
-        normalDialog.setTitle("您确认消费" + pointsMonney.getText().toString().trim() + getString(R.string.golden) +"充值"+ pointsEditText.getText().toString().trim() + getString(R.string.opportunities_currency));
+        normalDialog.setTitle("您确认消费" + pointsMonney.getText().toString().trim() + getString(R.string.golden) + "充值" + pointsEditText.getText().toString().trim() + getString(R.string.opportunities_currency));
 //        normalDialog.setMessage(R.string.is_willing_answer_calls);pointsEditText.getText().toString().trim(),pointsMonney.getText().toString().trim()
         normalDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
@@ -595,9 +595,9 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         public void onClick(View v) {
             switch (v.getId()) {//返回
                 case R.id.back_hashrate:
-                    startActivity(new Intent(IntegralPayActivity.this, IntegralActivity.class));
+//                    startActivity(new Intent(IntegralPayActivity.this, IntegralActivity.class));
                     finish();
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    overridePendingTransition(R.anim.activity_left_out, R.anim.activity_right_out);
                     paySucPopuWindow.dismiss();
                     paySucPopuWindow.backgroundAlpha(IntegralPayActivity.this, 1f);
                     break;

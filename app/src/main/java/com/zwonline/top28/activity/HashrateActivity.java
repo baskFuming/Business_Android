@@ -42,6 +42,7 @@ import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtils;
@@ -67,7 +68,7 @@ public class HashrateActivity extends BaseActivity {
     private ProgressBar progressBar;
     private WebView hashrateWeb;
     private String token;
-    private String url = Api.baseUrl() + "/Integral/createIntegral";
+    private String url = Api.baseUrl() + "/Integral/createIntegral?version=";
     private ImageView service;
     private RewritePopwindow mPopwindow;
 
@@ -79,7 +80,7 @@ public class HashrateActivity extends BaseActivity {
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
-        synCookies(url, cookieString);
+        synCookies(url+LanguageUitils.getVerName(this), cookieString);
         webSettingInit();
         //客服聊天
         service.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +110,7 @@ public class HashrateActivity extends BaseActivity {
         //请求头
         Map<String, String> headMap = new HashMap<>();
         headMap.put("Accept-Language", LanguageUitils.getCurCountryLan());
-        hashrateWeb.loadUrl(url, headMap);
+        hashrateWeb.loadUrl(url+LanguageUitils.getVerName(this), headMap);
         hashrateWeb.setWebViewClient(new WebViewClient() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override

@@ -27,6 +27,7 @@ public class RewardPopWindow extends PopupWindow {
     private LinearLayout flowers;
     private LinearLayout applause;
     private LinearLayout kiss;
+    private final TextView buy_golden;
 
     public RewardPopWindow(final Activity context, View.OnClickListener itemsOnClick) {
         super(context);
@@ -37,6 +38,7 @@ public class RewardPopWindow extends PopupWindow {
         TextView sure = (TextView) window.findViewById(R.id.sure);
         flower = window.findViewById(R.id.flower);
         flowers = window.findViewById(R.id.flowers);
+        buy_golden = window.findViewById(R.id.buy_golden);
         applause = window.findViewById(R.id.applause);
         kiss = window.findViewById(R.id.kiss);
         flower.setOnClickListener(itemsOnClick);
@@ -44,6 +46,7 @@ public class RewardPopWindow extends PopupWindow {
         flowers.setOnClickListener(itemsOnClick);
         applause.setOnClickListener(itemsOnClick);
         kiss.setOnClickListener(itemsOnClick);
+        buy_golden.setOnClickListener(itemsOnClick);
 //        close.setOnClickListener(listener);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +91,7 @@ public class RewardPopWindow extends PopupWindow {
      * @param bgAlpha
      */
     public void backgroundAlpha(Activity context, float bgAlpha) {
-        if (Build.VERSION.SDK_INT >= 24){
+        if (Build.VERSION.SDK_INT >= 24) {
             WindowManager.LayoutParams lp = context.getWindow().getAttributes();
             lp.alpha = bgAlpha;
             if (bgAlpha == 1) {
@@ -107,7 +110,8 @@ public class RewardPopWindow extends PopupWindow {
     public String clauseContentData() {
         return "";
     }
-    public  void showAsDropDown(PopupWindow pw, View anchor, int xoff, int yoff) {
+
+    public void showAsDropDown(PopupWindow pw, View anchor, int xoff, int yoff) {
         if (Build.VERSION.SDK_INT >= 24) {
             Rect visibleFrame = new Rect();
             anchor.getGlobalVisibleRect(visibleFrame);

@@ -8,6 +8,7 @@
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    android:id="@+id/dynamic_layout"
     tools:context=".activity.DynamicDetailsActivity">
 
     <RelativeLayout
@@ -352,7 +353,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:src="@mipmap/reward_gift4" />
+                                        android:src="@mipmap/reward_gift5" />
                                     >
 
                                     <TextView

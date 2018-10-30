@@ -31,23 +31,76 @@
                 android:textColor="#3D3D3D"
                 android:textSize="14sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="31dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <LinearLayout
+                    android:id="@+id/kiss"
+                    android:layout_width="0dp"
+                    android:layout_height="108dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/reward_backline"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableTop="@mipmap/reward_giftda"
+                        android:gravity="center"
+                        android:padding="18dp"
+                        android:text="加油"
+                        android:textColor="#ff3d3d3d"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/applause"
+                    android:layout_width="0dp"
+                    android:layout_height="108dp"
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawableTop="@mipmap/reward_gift3copy"
+                        android:gravity="center"
+                        android:padding="18dp"
+                        android:text="掌声"
+                        android:textColor="#ff3d3d3d"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
             <!--背景 reward_backline-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="31dp"
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
+                android:layout_marginTop="5dp"
                 android:paddingRight="15dp">
 
                 <LinearLayout
                     android:id="@+id/flower"
-                    android:focusable="true"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
                     android:layout_weight="1"
-                    android:background="@drawable/reward_backline"
+                    android:focusable="true"
                     android:orientation="vertical">
 
                     <TextView
@@ -63,12 +116,12 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:focusable="true"
                     android:id="@+id/flowers"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
+                    android:focusable="true"
                     android:orientation="vertical">
 
                     <TextView
@@ -85,57 +138,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
-
-                <LinearLayout
-                    android:focusable="true"
-                    android:id="@+id/applause"
-                    android:layout_width="0dp"
-                    android:layout_height="108dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:drawableTop="@mipmap/reward_gift3copy"
-                        android:gravity="center"
-                        android:padding="18dp"
-                        android:text="掌声"
-                        android:textColor="#ff3d3d3d"
-                        android:textSize="13sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:focusable="true"
-                    android:id="@+id/kiss"
-                    android:layout_width="0dp"
-                    android:layout_height="108dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:drawableTop="@mipmap/reward_gift4copy"
-                        android:gravity="center"
-                        android:padding="18dp"
-                        android:text="香吻"
-                        android:textColor="#ff3d3d3d"
-                        android:textSize="13sp" />
-                </LinearLayout>
-            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -164,14 +166,13 @@
                     android:layout_width="259dp"
                     android:layout_height="46dp"
                     android:background="#f5f5f5"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:hint="请选择数量"
                     android:paddingLeft="@dimen/dp_10"
                     android:textColor="#3D3D3D"
                     android:textColorHint="#D5D5D5"
-                    android:textSize="16sp"
-                    android:focusableInTouchMode="true"
-                    android:focusable="true"
-                    />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -192,22 +193,44 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="1花朵=2商机币（1商机币=0.1元）"
+                android:text="1加油=1商机币（1商机币=0.1元）"
                 android:textColor="#ff3d3d3d"
                 android:textSize="13sp" />
 
-            <TextView
-                android:id="@+id/sure"
-                android:layout_width="297dp"
-                android:layout_height="46dp"
-                android:layout_gravity="center"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="26dp"
                 android:layout_marginTop="13dp"
-                android:background="@drawable/reward_back"
-                android:gravity="center"
-                android:text="确定"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/buy_golden"
+                    android:layout_width="110dp"
+                    android:layout_height="46dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/btn_white_shape"
+                    android:gravity="center"
+                    android:text="购买商机币"
+                    android:textColor="@color/reded"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/sure"
+                    android:layout_width="100dp"
+                    android:layout_height="46dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="50dp"
+                    android:background="@drawable/reward_back"
+                    android:gravity="center"
+                    android:text="确定"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <ImageView
@@ -229,7 +252,7 @@
                 android:layout_width="71dp"
                 android:layout_height="71dp"
                 android:layout_centerInParent="true"
-                 />
+                android:src="@mipmap/no_photo_male" />
         </RelativeLayout>
 
     </RelativeLayout>

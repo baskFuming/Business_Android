@@ -62,7 +62,7 @@ public class RewardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }else if (StringUtil.isNotEmpty(gift_id)&&gift_id.equals(BizConstant.ATTENTION)){
             myViewHolder.reward_image.setImageResource(R.mipmap.reward_gift3);
         }else if (StringUtil.isNotEmpty(gift_id)&&gift_id.equals(BizConstant.MY)){
-            myViewHolder.reward_image.setImageResource(R.mipmap.reward_gift4);
+            myViewHolder.reward_image.setImageResource(R.mipmap.reward_gift5);
         }
 
     }
