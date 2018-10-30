@@ -212,12 +212,12 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight)) {
             send.setVisibility(View.VISIBLE);
             linearImage.setVisibility(View.GONE);
-            ToastUtils.showToast(getApplicationContext(),"显示");
+//            ToastUtils.showToast(getApplicationContext(),"显示");
 
         } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
             //隐藏软键盘
             send.setVisibility(View.GONE);
-            ToastUtils.showToast(getApplicationContext(),"隐藏");
+//            ToastUtils.showToast(getApplicationContext(),"隐藏");
             linearImage.setVisibility(View.VISIBLE);
             pid = "";
         }
