@@ -36,6 +36,9 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.EarnIntegralActivity;
+import com.zwonline.top28.activity.HashrateActivity;
+import com.zwonline.top28.activity.IntegralPayActivity;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.web.BaseWebViewActivity;
 import com.zwonline.top28.activity.HomeDetailsActivity;
 import com.zwonline.top28.activity.IntegralActivity;
@@ -153,7 +156,21 @@ public class BaseWebViewActivity extends BaseActivity {
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
                 }
-
+                //购买商机币
+                if (url.contains("http://top28app/rechargeBusinessOpportunityCoin/")) {
+                    Intent intent1 = new Intent(BaseWebViewActivity.this, IntegralPayActivity.class);
+                    startActivity(intent1);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    return true;
+                }
+                //商机币
+                if (url.contains("http://top28app/pushBoc/")) {
+                    Intent intent1 = new Intent(BaseWebViewActivity.this, IntegralActivity.class);
+                    intent1.putExtra("type", BizConstant.RECOMMEND);
+                    startActivity(intent1);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    return true;
+                }
                 if (url.contains("open28app")) {
                     Uri uri = Uri.parse(url);
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);

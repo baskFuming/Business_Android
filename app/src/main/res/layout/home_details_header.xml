@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:descendantFocusability="blocksDescendants"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,12 +22,12 @@
                 android:id="@+id/mtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:padding="10dp"
                 android:textColor="#000000"
-                android:textSize="18sp"
-                android:layout_marginTop="10dp"/>
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -65,11 +65,10 @@
                                 android:id="@+id/username"
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
-                                android:textColor="#2A292E"
-                                android:textSize="14sp"
-                                android:lines="1"
                                 android:ellipsize="end"
-                                />
+                                android:lines="1"
+                                android:textColor="#2A292E"
+                                android:textSize="14sp" />
 
                             <!--<ImageView-->
                             <!--android:layout_width="26dp"-->
@@ -82,8 +81,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_toRightOf="@id/username"
                                 android:textColor="#A0A0A2"
-                                android:textSize="14sp"
-                                />
+                                android:textSize="14sp" />
                         </LinearLayout>
 
 
@@ -117,8 +115,7 @@
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/rectangle_shape_gay"
                         android:textColor="#FF2B2B"
-                        android:textSize="16sp"
-                        />
+                        android:textSize="16sp" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
@@ -131,127 +128,143 @@
         <WebView
             android:id="@+id/content_web"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ></WebView>
+            android:layout_height="wrap_content"></WebView>
 
         <View
             android:layout_width="match_parent"
+            android:layout_height="2dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_height="2dp"
             android:background="#F5F5F9"></View>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/reward_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/reward_btn"
                 android:layout_gravity="center"
-                android:layout_marginTop="28dp"/>
+                android:layout_marginTop="28dp"
+                android:src="@mipmap/reward_btn" />
+
             <TextView
                 android:layout_width="182dp"
                 android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:text="打赏作者，和会赚钱的人在一起"
                 android:textColor="#ffa8a8a8"
-                android:textSize="13sp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                android:textSize="13sp" />
+
             <LinearLayout
-                android:layout_marginTop="21dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:gravity="center"
                 android:layout_gravity="center"
+                android:layout_marginTop="21dp"
+                android:gravity="center"
                 android:orientation="horizontal">
+
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/reward_gift5" />
+                    >
+
+                    <TextView
+                        android:id="@+id/text_kissCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="---"
+                        android:textColor="#ffa8a8a8"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_gravity="center"
                     android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/reward_gift1"
-                        android:layout_gravity="center"/>
-                    <TextView
-                        android:id="@+id/text_flowersCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="---"
-                        android:layout_gravity="center"
-                        android:textColor="#ffa8a8a8"
-                        android:textSize="13sp"/>
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/reward_gift2"
-                        android:layout_gravity="center"/>
+                        android:src="@mipmap/reward_gift3" />
                     >
-                    <TextView
-                        android:id="@+id/text_bouquetCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="---"
-                        android:layout_gravity="center"
-                        android:textColor="#ffa8a8a8"
-                        android:textSize="13sp"/>
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:gravity="center">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/reward_gift3"
-                        />
-                    >
                     <TextView
                         android:id="@+id/text_applauseCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="---"
                         android:textColor="#ffa8a8a8"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp" />
 
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/reward_gift5"
-                        android:layout_gravity="center"/>
-                    >
+                        android:layout_gravity="center"
+                        android:src="@mipmap/reward_gift1" />
+
                     <TextView
-                        android:id="@+id/text_kissCount"
+                        android:id="@+id/text_flowersCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="---"
                         android:layout_gravity="center"
+                        android:text="---"
                         android:textColor="#ffa8a8a8"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/reward_gift2" />
+                    >
+
+                    <TextView
+                        android:id="@+id/text_bouquetCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="---"
+                        android:textColor="#ffa8a8a8"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
         </LinearLayout>
 
@@ -264,6 +277,7 @@
             android:textColor="#2F2F2F"
             android:textSize="18sp"
             android:textStyle="bold" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="31dp"

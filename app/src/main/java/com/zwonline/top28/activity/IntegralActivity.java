@@ -61,8 +61,12 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
     private TextView title;
     private TextView freeze;
     private LinearLayout businessCoinLinear;
-    private String buyHashrateUrl= Api.baseUrl()+"/Members/boc_list_pay.html";
-    private String buyGoldenUrl= Api.baseUrl()+"/Integral/exchangeMoney.html";
+    private String buyHashrateUrl = Api.baseUrl() + "/Members/boc_list_pay.html";
+    private String buyGoldenUrl = Api.baseUrl() + "/Integral/exchangeMoney.html";
+    private String yangfenConvert = Api.baseUrl() + "/Integral/exchange.html?version=";//兑换鞅分
+    private TextView buyGolden;
+    private TextView buyHashrate;
+
     @Override
     protected void init() {
         type = getIntent().getStringExtra("type");
@@ -120,7 +124,9 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
         integralTw = (RelativeLayout) findViewById(R.id.integral_tw);
         integralTab = (TabLayout) findViewById(R.id.integral_tab);
         integralView = (ViewPager) findViewById(R.id.integral_view);
-        businessCoinLinear = (LinearLayout) findViewById(R.id.business_coin_linear);
+        integralView = (ViewPager) findViewById(R.id.integral_view);
+        buyHashrate = (TextView) findViewById(R.id.buy_hashrate);
+        buyGolden = (TextView) findViewById(R.id.buy_golden);
         //冻结商机币
         freeze = (TextView) findViewById(R.id.freeze);
         if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
@@ -128,7 +134,10 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
             moneyZh.setText(getString(R.string.my_coin_bole_coin));
             earnState.setText(getString(R.string.earn_integral_explain));
             freeze.setVisibility(View.GONE);
-            businessCoinLinear.setVisibility(View.GONE);
+//            businessCoinLinear.setVisibility(View.GONE);
+            buyGolden.setVisibility(View.GONE);
+            buyHashrate.setVisibility(View.VISIBLE);
+            buyHashrate.setText("购买算力");
             integralCh.setBackgroundResource(R.mipmap.suanli_bg);
         } else {
             title.setText(getString(R.string.opportunities_currency));
@@ -136,7 +145,10 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
             earnState.setText(getString(R.string.buy_opportunities_currency));
             integralCh.setBackgroundResource(R.mipmap.reward_bunner);
             freeze.setVisibility(View.VISIBLE);
-            businessCoinLinear.setVisibility(View.VISIBLE);
+//            businessCoinLinear.setVisibility(View.VISIBLE);
+            buyGolden.setVisibility(View.VISIBLE);
+            buyHashrate.setVisibility(View.VISIBLE);
+            buyHashrate.setText("兑换鞅分");
         }
         recordList = new ArrayList<>();
         IntegralRecordBean integralRecordBean = new IntegralRecordBean();
@@ -188,7 +200,7 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
     }
 
 
-    @OnClick({R.id.integral_back, R.id.earn_integral_tw, R.id.convert_tw, R.id.integtal_pay_tw, R.id.integral_tab, R.id.earn_integral_ch, R.id.integtal_pay_ch, R.id.earn_state, R.id.buy_hashrate,R.id.buy_golden})
+    @OnClick({R.id.integral_back, R.id.earn_integral_tw, R.id.convert_tw, R.id.integtal_pay_tw, R.id.integral_tab, R.id.earn_integral_ch, R.id.integtal_pay_ch, R.id.earn_state, R.id.buy_hashrate, R.id.buy_golden})
     public void onViewClicked(View v) {
         if (AntiShake.check(v.getId())) {    //判断是否多次点击
             return;
@@ -239,14 +251,19 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
                 }
                 break;
             case R.id.buy_hashrate:
-                Intent hashrateIntent=new Intent(IntegralActivity.this, BaseWebViewActivity.class);
-                hashrateIntent.putExtra("weburl",buyHashrateUrl);
+                Intent hashrateIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
+                if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
+                    hashrateIntent.putExtra("weburl", buyHashrateUrl);
+                } else {
+                    hashrateIntent.putExtra("weburl", yangfenConvert + LanguageUitils.getVerName(IntegralActivity.this));
+                }
+
                 startActivity(hashrateIntent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.buy_golden:
-                Intent goldenIntent=new Intent(IntegralActivity.this, BaseWebViewActivity.class);
-                goldenIntent.putExtra("weburl",buyGoldenUrl);
+                Intent goldenIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
+                goldenIntent.putExtra("weburl", buyGoldenUrl);
                 startActivity(goldenIntent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;

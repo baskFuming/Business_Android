@@ -1052,7 +1052,7 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
      * @param gift_id
      * @param gift_count
      */
-    public void SendGifts(Context context, String target_type, String target_id, String gift_id, String gift_count) {
+    public void SendGifts(final Context context, String target_type, String target_id, String gift_id, String gift_count) {
         try {
             Flowable<AttentionBean> flowable = sendFriendCircleModel.mSendGifts(context, target_type, target_id, gift_id, gift_count);
             flowable.subscribeOn(Schedulers.io())
@@ -1062,6 +1062,8 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                         public void onNext(AttentionBean attentionBean) {
                             if (attentionBean.status == 1) {
                                 iSendFriendCircleActivity.showSendGifts(attentionBean);
+                            }else {
+                                ToastUtils.showToast(context, attentionBean.msg);
                             }
                         }
 

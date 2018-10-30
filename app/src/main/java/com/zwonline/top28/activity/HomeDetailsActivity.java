@@ -178,7 +178,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     private LinearLayout flowers;
     private LinearLayout applause;
     private LinearLayout kiss;
-    private String rewardType = BizConstant.TYPE_ONE;
+    private String rewardType = BizConstant.MY;
     private EditText rewardNumberEt;
     private String userName;
     private String iconImage;
@@ -213,12 +213,10 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight)) {
             send.setVisibility(View.VISIBLE);
             linearImage.setVisibility(View.GONE);
-            ToastUtils.showToast(getApplicationContext(),"显示");
 
         } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
             //隐藏软键盘
             send.setVisibility(View.GONE);
-            ToastUtils.showToast(getApplicationContext(),"隐藏");
             linearImage.setVisibility(View.VISIBLE);
             pid = "";
         }
@@ -1011,10 +1009,10 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     @Override
     public void showGiftSummary(GiftSumBean giftSumBean) {
         if (giftSumBean.status == 1) {
-            flowerCount.setText(giftSumBean.data.list.get(0).count);
-            bouquetCount.setText(giftSumBean.data.list.get(1).count);
-            applauseCount.setText(giftSumBean.data.list.get(2).count);
-            kissCount.setText(giftSumBean.data.list.get(3).count);
+            flowerCount.setText(giftSumBean.data.list.get(2).count);
+            bouquetCount.setText(giftSumBean.data.list.get(3).count);
+            applauseCount.setText(giftSumBean.data.list.get(1).count);
+            kissCount.setText(giftSumBean.data.list.get(0).count);
         } else {
             ToastUtils.showToast(this, "请先登录");
         }
@@ -1034,7 +1032,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     @Override
     public void showSendGifts(AttentionBean attentionBean) {
         if (attentionBean.status == 1) {
-            ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
+            CompletePopwindow completePopwindow = new CompletePopwindow(this);
+            completePopwindow.showAtLocation(HomeDetailsActivity.this.findViewById(R.id.root_layout), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
             presenter.GiftSummary(HomeDetailsActivity.this, BizConstant.TYPE_TWO, sID);
         } else {
             ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
@@ -1063,8 +1062,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                     flowers.setBackgroundColor(Color.WHITE);
                     applause.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftbeanList.get(0).name) && StringUtil.isNotEmpty(giftbeanList.get(0).value)) {
-                        proportion.setText("1" + giftbeanList.get(0).name + "=" + giftbeanList.get(0).value + "商机币" + " (1商机币=0.1元)");
+                    if (StringUtil.isNotEmpty(giftbeanList.get(2).name) && StringUtil.isNotEmpty(giftbeanList.get(2).value)) {
+                        proportion.setText("1" + giftbeanList.get(2).name + "=" + giftbeanList.get(2).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
                 case R.id.flowers:
@@ -1073,8 +1072,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                     flower.setBackgroundColor(Color.WHITE);
                     applause.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftbeanList.get(1).name) && StringUtil.isNotEmpty(giftbeanList.get(1).value)) {
-                        proportion.setText("1" + giftbeanList.get(1).name + "=" + giftbeanList.get(1).value + "商机币" + " (1商机币=0.1元)");
+                    if (StringUtil.isNotEmpty(giftbeanList.get(3).name) && StringUtil.isNotEmpty(giftbeanList.get(3).value)) {
+                        proportion.setText("1" + giftbeanList.get(3).name + "=" + giftbeanList.get(3).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
                 case R.id.applause:
@@ -1083,8 +1082,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                     flower.setBackgroundColor(Color.WHITE);
                     flowers.setBackgroundColor(Color.WHITE);
                     kiss.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftbeanList.get(2).name) && StringUtil.isNotEmpty(giftbeanList.get(2).value)) {
-                        proportion.setText("1" + giftbeanList.get(2).name + "=" + giftbeanList.get(2).value + "商机币" + " (1商机币=0.1元)");
+                    if (StringUtil.isNotEmpty(giftbeanList.get(1).name) && StringUtil.isNotEmpty(giftbeanList.get(1).value)) {
+                        proportion.setText("1" + giftbeanList.get(1).name + "=" + giftbeanList.get(1).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
                 case R.id.kiss:
@@ -1093,8 +1092,8 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                     applause.setBackgroundColor(Color.WHITE);
                     flowers.setBackgroundColor(Color.WHITE);
                     flower.setBackgroundColor(Color.WHITE);
-                    if (StringUtil.isNotEmpty(giftbeanList.get(3).name) && StringUtil.isNotEmpty(giftbeanList.get(3).value)) {
-                        proportion.setText("1" + giftbeanList.get(3).name + "=" + giftbeanList.get(3).value + "商机币" + " (1商机币=0.1元)");
+                    if (StringUtil.isNotEmpty(giftbeanList.get(0).name) && StringUtil.isNotEmpty(giftbeanList.get(0).value)) {
+                        proportion.setText("1" + giftbeanList.get(0).name + "=" + giftbeanList.get(0).value + "商机币" + " (1商机币=0.1元)");
                     }
                     break;
                 case R.id.sure:
@@ -1106,6 +1105,13 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                     } else {
                         ToastUtils.showToast(getApplicationContext(), "礼物数量不能为空！");
                     }
+                    break;
+                case R.id.buy_golden:
+                    Intent goldenIntent = new Intent(HomeDetailsActivity.this, IntegralPayActivity.class);
+                    startActivity(goldenIntent);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    rewardPopWindow.dismiss();
+                    rewardPopWindow.backgroundAlpha(HomeDetailsActivity.this, 1f);
                     break;
                 default:
                     break;

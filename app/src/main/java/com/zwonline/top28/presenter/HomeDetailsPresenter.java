@@ -345,7 +345,7 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
      * @param target_type
      * @param target_id
      */
-    public void GiftSummary(Context context, String target_type, String target_id) {
+    public void GiftSummary(final Context context, String target_type, String target_id) {
         try {
             Flowable<GiftSumBean> flowable = homeDetailsModel.mGiftSummary(context, target_type, target_id);
             flowable.subscribeOn(Schedulers.io())
@@ -355,6 +355,8 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
                         public void onNext(GiftSumBean attentionBean) {
                             if (attentionBean.status == 1) {
                                 iHomeDetails.showGiftSummary(attentionBean);
+                            }else {
+                                ToastUtils.showToast(context,attentionBean.msg);
                             }
                         }
 
@@ -378,7 +380,7 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
      *
      * @param context
      */
-    public void Gift(Context context) {
+    public void Gift(final Context context) {
         try {
             Flowable<GiftBean> flowable = homeDetailsModel.mGift(context);
             flowable.subscribeOn(Schedulers.io())
@@ -388,6 +390,8 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
                         public void onNext(GiftBean attentionBean) {
                             if (attentionBean.status == 1) {
                                 iHomeDetails.showGift(attentionBean);
+                            }else {
+                                ToastUtils.showToast(context,attentionBean.msg);
                             }
                         }
 
@@ -413,7 +417,7 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
      * @param gift_id
      * @param gift_count
      */
-    public void SendGifts(Context context, String target_type, String target_id, String gift_id, String gift_count) {
+    public void SendGifts(final Context context, String target_type, String target_id, String gift_id, String gift_count) {
         try {
             Flowable<AttentionBean> flowable = homeDetailsModel.mSendGifts(context, target_type, target_id, gift_id, gift_count);
             flowable.subscribeOn(Schedulers.io())
@@ -423,6 +427,8 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
                         public void onNext(AttentionBean attentionBean) {
                             if (attentionBean.status == 1) {
                                 iHomeDetails.showSendGifts(attentionBean);
+                            }else {
+                                ToastUtils.showToast(context,attentionBean.msg);
                             }
                         }
 

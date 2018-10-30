@@ -87,7 +87,8 @@
                 android:alpha="1"
                 android:text="兑换金票"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_14"
+                />
         </LinearLayout>
 
 

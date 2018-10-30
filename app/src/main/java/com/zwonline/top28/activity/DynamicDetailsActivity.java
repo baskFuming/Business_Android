@@ -181,7 +181,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private LinearLayout flowers;
     private LinearLayout applause;
     private LinearLayout kiss;
-    private String rewardType = BizConstant.TYPE_ONE;
+    private String rewardType = BizConstant.POS_METHOD;
     private XRecyclerView rewardXrecy;
     private TextView sure;
     private EditText rewardNumberEt;
@@ -531,10 +531,10 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     @Override
     public void showGiftSummary(GiftSumBean giftSumBean) {
         if (giftSumBean.status == 1) {
-            flowerNum.setText(giftSumBean.data.list.get(0).count);
-            flowersNum.setText(giftSumBean.data.list.get(1).count);
-            handclapNum.setText(giftSumBean.data.list.get(2).count);
-            kissNum.setText(giftSumBean.data.list.get(3).count);
+            flowerNum.setText(giftSumBean.data.list.get(2).count);
+            flowersNum.setText(giftSumBean.data.list.get(3).count);
+            handclapNum.setText(giftSumBean.data.list.get(1).count);
+            kissNum.setText(giftSumBean.data.list.get(0).count);
             giftCount = giftSumBean.data.gift_count;
             rewardAcount.setText("打赏 " + giftSumBean.data.gift_count);
         } else {
@@ -795,8 +795,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     public void run() {
                         page = 1;
                         presenter.GiftList(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id, page);
-                        if (zanRecy != null)
-                            zanRecy.refreshComplete();
+                        if (rewardXrecy != null)
+                            rewardXrecy.refreshComplete();
                     }
 
                 }, 1000);            //refresh data here
@@ -808,8 +808,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     public void run() {
                         page++;
                         presenter.GiftList(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id, page);
-                        if (zanRecy != null) {
-                            zanRecy.loadMoreComplete();
+                        if (rewardXrecy != null) {
+                            rewardXrecy.loadMoreComplete();
                         }
                     }
                 }, 1000);
