@@ -276,6 +276,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         //软键盘修改发送按钮点击
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -339,6 +340,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                 rewardPopWindow = new RewardPopWindow(HomeDetailsActivity.this, listeners);
                 rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
                 View contentView = rewardPopWindow.getContentView();
+                rewardPopWindow.setFocusable(true);
                 flower = (LinearLayout) contentView.findViewById(R.id.flower);//花朵
                 flowers = (LinearLayout) contentView.findViewById(R.id.flowers);//花束
                 applause = (LinearLayout) contentView.findViewById(R.id.applause);//鼓掌
@@ -380,6 +382,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         //添加
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.reshLayout);
     }
+
 
     /**
      * 初始化收藏
@@ -881,7 +884,6 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             }
 
         });
-
 
         attention.setOnClickListener(new View.OnClickListener() {
             @Override
