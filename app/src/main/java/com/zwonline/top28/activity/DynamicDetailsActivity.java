@@ -62,12 +62,10 @@ import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
-import com.zwonline.top28.fragment.InformationFragment;
 import com.zwonline.top28.presenter.SendFriendCirclePresenter;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.ImageViewPlu;
 import com.zwonline.top28.utils.ImageViewPlus;
-import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.MultiImageView;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
@@ -584,6 +582,8 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         }
         rewardList.addAll(rewardLists);
         rewardistAdapter.notifyDataSetChanged();
+        rewardLoadMore();
+
     }
 
     @Override
@@ -786,7 +786,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      * 打赏加载更多
      */
     public void rewardLoadMore() {
-        zanRecy.setLoadingListener(new XRecyclerView.LoadingListener() {
+        rewardXrecy.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 refreshTime++;
@@ -1165,6 +1165,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                     public boolean onTouch(View v, MotionEvent event) {
                         dynamicdetailsList.dispatchTouchEvent(event);
                         zanRecy.dispatchTouchEvent(event);
+                        rewardXrecy.dispatchTouchEvent(event);
                         return false;
                     }
                 });
