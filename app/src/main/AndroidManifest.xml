@@ -153,6 +153,7 @@
         <activity
             android:name=".activity.HomeDetailsActivity"
             android:configChanges="locale|layoutDirection"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".activity.SettingActivity"
