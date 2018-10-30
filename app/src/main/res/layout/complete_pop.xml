@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="345dp"
+        android:layout_height="309dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rectangle_shape_gay"
+        android:focusable="false"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="79dp"
+            android:layout_height="79dp"
+            android:src="@mipmap/binding_icon2"
+            android:layout_gravity="center"
+            android:layout_marginTop="21dp"/>
+        <TextView
+            android:layout_width="96dp"
+            android:layout_height="33dp"
+            android:text="打赏成功"
+            android:textColor="#ff3d3d3d"
+            android:textSize="24sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="21dp"
+            />
+        <TextView
+            android:layout_width="162dp"
+            android:layout_height="25dp"
+            android:text="和会赚钱的人在一起"
+            android:textColor="#ff3d3d3d"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            />
+        <TextView
+            android:id="@+id/sure"
+            android:layout_width="297dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="26dp"
+            android:layout_marginTop="43dp"
+            android:background="@drawable/reward_back"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>
