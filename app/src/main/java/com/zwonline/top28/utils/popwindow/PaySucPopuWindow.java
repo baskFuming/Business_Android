@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import com.zwonline.top28.R;
 
+/**
+ * 商机币充值成功
+ */
 public class PaySucPopuWindow extends PopupWindow {
 
     private View window;
@@ -25,7 +28,7 @@ public class PaySucPopuWindow extends PopupWindow {
     private Button backHashrate;
     private Button continuePay;
 
-    public PaySucPopuWindow( Activity context, View.OnClickListener listener, String payHashrates, String payAmounts, String remainBalances) {
+    public PaySucPopuWindow(Activity context, View.OnClickListener listener, String payHashrates, String payAmounts, String remainBalances) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         window = inflater.inflate(R.layout.paysuc_pop, null);
@@ -35,9 +38,9 @@ public class PaySucPopuWindow extends PopupWindow {
         payAmount = (TextView) window.findViewById(R.id.pay_amount);
         backHashrate = (Button) window.findViewById(R.id.back_hashrate);
         continuePay = (Button) window.findViewById(R.id.continue_pay);
-        remainBalance.setText(remainBalances+"金票");
-        payHashrate.setText(payHashrates+"商机币");
-        payAmount.setText(payAmounts+"金票");
+        remainBalance.setText(remainBalances + context.getString(R.string.golden));
+        payHashrate.setText(payHashrates + context.getString(R.string.opportunities_currency));
+        payAmount.setText(payAmounts + context.getString(R.string.golden));
         backHashrate.setOnClickListener(listener);
         continuePay.setOnClickListener(listener);
 //        sure.setOnClickListener(new View.OnClickListener() {

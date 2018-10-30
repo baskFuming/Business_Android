@@ -94,9 +94,9 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         posBtn = (RadioButton) findViewById(R.id.pos_btn);
         paySureBtn = (Button) findViewById(R.id.pay_sure_btn);
         giveHashrate = (TextView) findViewById(R.id.give_hashrate);//赠送算力
-        onePointsBtn.setText("100" + "商机币");
-        twoPointsBtn.setText("500" + "商机币");
-        threePointsBtn.setText("1000" + "商机币");
+        onePointsBtn.setText("100" + getString(R.string.opportunities_currency));
+        twoPointsBtn.setText("500" + getString(R.string.opportunities_currency));
+        threePointsBtn.setText("1000" + getString(R.string.opportunities_currency));
     }
 
 
@@ -130,7 +130,8 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
 
 
     private void sendAmountByPoints(String amount) {
-        pointsEditText.setText(amount);
+        if (StringUtil.isNotEmpty(amount))
+            pointsEditText.setText(amount);
     }
 
     /**
@@ -279,7 +280,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     @Override
     public void showBalance(BalanceBean balanceBean) {
         balance = Double.valueOf(balanceBean.data);
-        unionpayBtn.setText("金票支付" + "(" + balance + "金票)");
+        unionpayBtn.setText(getString(R.string.golden_payment) + "(" + balance +getString(R.string.golden)+")");
 
     }
 
@@ -307,7 +308,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     public void showGetPresentComputePower(AttentionBean balanceBean) {
         if (balanceBean.status == 1) {
             if (sortNums > 0 && sortNums == sortNums) {
-                giveHashrate.setText("赠送 " + balanceBean.data.computePower + "算力");
+                giveHashrate.setText("赠送 " + balanceBean.data.computePower +getString(R.string.coin_bole_coin));
             }
         } else {
             String pointsEditT = pointsEditText.getText().toString();
@@ -563,7 +564,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
          */
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(this);
-        normalDialog.setTitle("您确认消费" + pointsMonney.getText().toString().trim() + "金票充值" + pointsEditText.getText().toString().trim() + "商机币");
+        normalDialog.setTitle("您确认消费" + pointsMonney.getText().toString().trim() + getString(R.string.golden) +"充值"+ pointsEditText.getText().toString().trim() + getString(R.string.opportunities_currency));
 //        normalDialog.setMessage(R.string.is_willing_answer_calls);pointsEditText.getText().toString().trim(),pointsMonney.getText().toString().trim()
         normalDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {

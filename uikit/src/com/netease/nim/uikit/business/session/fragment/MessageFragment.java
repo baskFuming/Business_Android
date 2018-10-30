@@ -381,9 +381,9 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     // 操作面板集合
     protected List<BaseAction> getActionList() {
         List<BaseAction> actions = new ArrayList<>();
-        actions.add(new ImageAction());
-        actions.add(new VideoAction());
-        actions.add(new LocationAction());
+        actions.add(new ImageAction());//图片
+        actions.add(new VideoAction());//视频
+//        actions.add(new LocationAction());//位置
 
         if (customization != null && customization.actions != null) {
             actions.addAll(customization.actions);
@@ -404,6 +404,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     public void receiveReceipt() {
         messageListPanel.receiveReceipt();
     }
+
     /**
      * 基本权限管理
      */
@@ -416,6 +417,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
+
     private void requestBasicPermission() {
         MPermission.printMPermissionResult(true, getActivity(), BASIC_PERMISSIONS);
         MPermission.with(getActivity())
@@ -423,6 +425,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
                 .permissions(BASIC_PERMISSIONS)
                 .request();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         MPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);

@@ -1,6 +1,7 @@
 package com.zwonline.top28.view;
 
 
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.IntegralBean;
 import com.zwonline.top28.bean.MyCurrencyBean;
 
@@ -17,5 +18,5 @@ public interface IMyCurrencyActivity {
 
     void showMyCurrencyData(List<MyCurrencyBean.DataBean.ListBean> currencyList);
 
-    void showBalanceLog(IntegralBean integralBean);
+    void showBalanceLog(BusinessCoinBean integralBean);
 }

@@ -34,7 +34,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="案件大量就解放了打裂缝爱的克拉金克拉的经历卡机"
                 android:textColor="#7B7B7B"
                 android:textSize="16sp" />
 

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BasePresenter;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.IntegralBean;
 import com.zwonline.top28.bean.MyCurrencyBean;
 import com.zwonline.top28.model.MyCurrencyModel;
@@ -104,12 +105,12 @@ public class MyCurrencyPresenter extends BasePresenter<IMyCurrencyActivity> {
      */
     public void BalanceLog(Context context, String type, int page) {
         try {
-            Flowable<IntegralBean> flowable = myCurrencyModel.mBalanceLog(context, type, page);
+            Flowable<BusinessCoinBean> flowable = myCurrencyModel.mBalanceLog(context, type, page);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new BaseDisposableSubscriber<IntegralBean>(context) {
+                    .subscribeWith(new BaseDisposableSubscriber<BusinessCoinBean>(context) {
                         @Override
-                        protected void onBaseNext(IntegralBean myCurrencyBean) {
+                        protected void onBaseNext(BusinessCoinBean myCurrencyBean) {
                             Log.e("myCurrencyBean==", myCurrencyBean.msg);
                             iMyCurrencyActivity.showBalanceLog(myCurrencyBean);
                         }

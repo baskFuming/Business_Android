@@ -62,6 +62,7 @@ import com.zwonline.top28.presenter.SendFriendCirclePresenter;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.ImageViewPlu;
 import com.zwonline.top28.utils.ImageViewPlus;
+import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.MultiImageView;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
@@ -172,9 +173,18 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     private LinearLayout rewardAcountLinear;
     private TextView rewardAcount;
     private TextView rewardUnderline;
+    private LinearLayout flower;
+    private LinearLayout flowers;
+    private LinearLayout applause;
+    private LinearLayout kiss;
+    private String rewardType = BizConstant.TYPE_ONE;
+    private XRecyclerView rewardXrecy;
+    private TextView sure;
+    private EditText rewardNumberEt;
 
     @Subscribe
     @Override
+
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -234,6 +244,17 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         zanRecy.setLayoutManager(linearLayoutManagers);
         likeListAdapter = new LikeListAdapter(likeLists, this);
         zanRecy.setAdapter(likeListAdapter);
+
+        rewardXrecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        rewardXrecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
+        rewardXrecy.setArrowImageView(R.drawable.iconfont_downgrey);
+        rewardXrecy.getDefaultRefreshHeaderView().setRefreshTimeVisible(true);
+        rewardXrecy.getDefaultFootView().setLoadingHint(getString(R.string.loading));
+        rewardXrecy.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
+        LinearLayoutManager rewardLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rewardXrecy.setLayoutManager(rewardLinearLayoutManager);
+        likeListAdapter = new LikeListAdapter(likeLists, this);
+        rewardXrecy.setAdapter(likeListAdapter);
     }
 
     /**
@@ -255,6 +276,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         likeUnderline = (TextView) findViewById(R.id.like_underline);
         article_img = (ImageViewPlu) findViewById(R.id.article_img);
         zanRecy = (XRecyclerView) findViewById(R.id.zan_recy);
+        rewardXrecy = (XRecyclerView) findViewById(R.id.reward_xrecy);
         attention = (TextView) findViewById(R.id.attention);
         dynamicConment = (TextView) findViewById(R.id.dynamic_conment);
         imagLinear = (LinearLayout) findViewById(R.id.imag_linear);
@@ -939,7 +961,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      *
      * @param view
      */
-    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear, R.id.like_acount_linear, R.id.appBarLayout, R.id.reward_image, R.id.reward_acount_linear})
+    @OnClick({R.id.back, R.id.linear_share, R.id.linear_like, R.id.linear_comment, R.id.comment_acount_linear
+            , R.id.like_acount_linear, R.id.appBarLayout, R.id.reward_image, R.id.reward_acount_linear
+    })
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -1016,9 +1040,25 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 break;
             //打赏弹框
             case R.id.reward_image:
-                rewardPopWindow = new RewardPopWindow(this);
+                rewardPopWindow = new RewardPopWindow(this, listeners);
                 rewardPopWindow.showAtLocation(view, Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
                 View contentView = rewardPopWindow.getContentView();
+                flower = (LinearLayout) contentView.findViewById(R.id.flower);//花朵
+                flowers = (LinearLayout) contentView.findViewById(R.id.flowers);//花束
+                applause = (LinearLayout) contentView.findViewById(R.id.applause);//鼓掌
+                kiss = (LinearLayout) contentView.findViewById(R.id.kiss);//亲吻
+                rewardNumberEt = (EditText) contentView.findViewById(R.id.reward_number);
+                ImageViewPlus user_icon = contentView.findViewById(R.id.user_icon);
+                TextView author = contentView.findViewById(R.id.author);
+                if (StringUtil.isNotEmpty(nickname)) {
+                    author.setText("给" + nickname + "作者打赏");
+                }
+                if (StringUtil.isNotEmpty(avatars)) {
+                    RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+                    Glide.with(this).load(avatars).apply(requestOptions).into(user_icon);
+                }
+
+
                 //查找 控件
                 break;
             case R.id.reward_acount_linear:
@@ -1033,6 +1073,56 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 break;
         }
     }
+
+    //打赏弹窗
+    private View.OnClickListener listeners = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.close_pop:
+                    rewardPopWindow.dismiss();
+                    rewardPopWindow.backgroundAlpha(DynamicDetailsActivity.this, 1f);
+                    break;
+                case R.id.flower:
+                    rewardType = BizConstant.TYPE_ONE;
+                    flower.setBackgroundResource(R.drawable.reward_backline);
+                    flowers.setBackgroundColor(Color.WHITE);
+                    applause.setBackgroundColor(Color.WHITE);
+                    kiss.setBackgroundColor(Color.WHITE);
+                    ToastUtils.showToast(getApplicationContext(), rewardType);
+                    break;
+                case R.id.flowers:
+                    rewardType = BizConstant.TYPE_TWO;
+                    flowers.setBackgroundResource(R.drawable.reward_backline);
+                    flower.setBackgroundColor(Color.WHITE);
+                    applause.setBackgroundColor(Color.WHITE);
+                    kiss.setBackgroundColor(Color.WHITE);
+                    ToastUtils.showToast(getApplicationContext(), rewardType);
+                    break;
+                case R.id.applause:
+                    rewardType = BizConstant.ALIPAY_RECHARGE_METHOD;
+                    applause.setBackgroundResource(R.drawable.reward_backline);
+                    flower.setBackgroundColor(Color.WHITE);
+                    flowers.setBackgroundColor(Color.WHITE);
+                    kiss.setBackgroundColor(Color.WHITE);
+                    ToastUtils.showToast(getApplicationContext(), rewardType);
+                    break;
+                case R.id.kiss:
+                    rewardType = BizConstant.UNIONPAY_RECHARGE_METHOD;
+                    kiss.setBackgroundResource(R.drawable.reward_backline);
+                    applause.setBackgroundColor(Color.WHITE);
+                    flowers.setBackgroundColor(Color.WHITE);
+                    flower.setBackgroundColor(Color.WHITE);
+                    ToastUtils.showToast(getApplicationContext(), rewardType);
+                    break;
+                case R.id.sure:
+                    ToastUtils.showToast(getApplicationContext(), rewardType + "确定");
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 
     //为弹出窗口实现监听类
@@ -1283,5 +1373,6 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             EventBus.getDefault().unregister(this);
         }
     }
+
 
 }

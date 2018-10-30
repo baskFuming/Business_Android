@@ -192,6 +192,8 @@
     <string name="integral">鞅分挖矿</string>
     <string name="integrals">鞅分红包</string>
     <string name="coin_bole_coin">算力</string>
+    <string name="coin_bole_coin_record">算力记录</string>
+    <string name="my_coin_bole_coin">我的算力</string>
     <string name="earn_integral">赚取算力</string>
     <string name="earn_integral_explain">赚取算力说明</string>
     <string name="integtal_pay">算力充值</string>
@@ -213,6 +215,7 @@
     <string name="integral_phone_number">手机号码</string>
     <string name="integral_verification_code">验证码</string>
     <string name="integral_get_verfiy_code">获取验证码</string>
+    <string name="opportunities_currency">商机币</string>
     <!--coin info end-->
 
     <!--project info start-->
@@ -230,6 +233,13 @@
     <string name="bank_balance_payments">余额支付</string>
     <string name="pos_pay">POS机支付</string>
     <string name="confirm">确定</string>
+    <string name="golden_payment">金票支付</string>
+    <string name="golden">金票</string>
+    <string name="my_opportunities_currency">我的商机币</string>
+    <string name="buy_opportunities_currency">购买商机币</string>
+    <string name="get_opportunities_currency">获取商机币</string>
+    <string name="deduct_opportunities_currency">扣除商机币</string>
+    <string name="freeze_opportunities_currency">冻结商机币</string>
     <!--coin info end-->
 
     <!--project info start-->

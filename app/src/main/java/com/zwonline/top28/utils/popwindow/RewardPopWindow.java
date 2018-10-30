@@ -8,8 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.zwonline.top28.R;
 
@@ -19,12 +22,27 @@ import com.zwonline.top28.R;
 public class RewardPopWindow extends PopupWindow {
     private ImageView imageView;
     private View window;
-    public RewardPopWindow(final Activity context) {
+    private final LinearLayout flower;
+    private final LinearLayout flowers;
+    private final LinearLayout applause;
+    private final LinearLayout kiss;
+
+    public RewardPopWindow(final Activity context, View.OnClickListener itemsOnClick) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         window = inflater.inflate(R.layout.reward_item, null);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         imageView = (ImageView) window.findViewById(R.id.close_pop);
+        TextView sure = (TextView) window.findViewById(R.id.sure);
+        flower = window.findViewById(R.id.flower);
+        flowers = window.findViewById(R.id.flowers);
+        applause = window.findViewById(R.id.applause);
+        kiss = window.findViewById(R.id.kiss);
+        flower.setOnClickListener(itemsOnClick);
+        sure.setOnClickListener(itemsOnClick);
+        flowers.setOnClickListener(itemsOnClick);
+        applause.setOnClickListener(itemsOnClick);
+        kiss.setOnClickListener(itemsOnClick);
 //        close.setOnClickListener(listener);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

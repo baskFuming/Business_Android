@@ -10,6 +10,7 @@ import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BalanceBean;
 import com.zwonline.top28.bean.BalancePayBean;
 import com.zwonline.top28.bean.BalanceRechargeBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.EarnIntegralBean;
 import com.zwonline.top28.bean.ExamineChatBean;
 import com.zwonline.top28.bean.GetHongBaoBean;
@@ -66,6 +67,16 @@ public interface PayService {
     @FormUrlEncoded
     @POST("App/BusinessOpportunityCoin/balanceLog")
     Flowable<IntegralBean> iBalanceLog(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("page") int page,
+            @Field("type") String type,
+            @Field("sign") String sign);
+
+
+    @FormUrlEncoded
+    @POST("App/BusinessOpportunityCoin/balanceLog")
+    Flowable<BusinessCoinBean> iBalanceLogs(
             @Field("timestamp") String timestamp,
             @Field("token") String token,
             @Field("page") int page,

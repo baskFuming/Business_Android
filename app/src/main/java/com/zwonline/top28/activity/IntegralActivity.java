@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseActivity;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.IntegralBean;
 import com.zwonline.top28.bean.IntegralRecordBean;
 import com.zwonline.top28.bean.MyCurrencyBean;
@@ -117,15 +118,15 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
         //冻结商机币
         freeze = (TextView) findViewById(R.id.freeze);
         if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
-            title.setText("算力记录");
-            moneyZh.setText("我的算力");
-            earnState.setText("赚取算力说明");
+            title.setText(getString(R.string.coin_bole_coin_record));
+            moneyZh.setText(getString(R.string.my_coin_bole_coin));
+            earnState.setText(getString(R.string.earn_integral_explain));
             freeze.setVisibility(View.GONE);
             integralCh.setBackgroundResource(R.mipmap.suanli_bg);
         } else {
-            title.setText("商机币");
-            moneyZh.setText("我的商机币");
-            earnState.setText("购买商机币");
+            title.setText(getString(R.string.opportunities_currency));
+            moneyZh.setText(getString(R.string.my_opportunities_currency));
+            earnState.setText(getString(R.string.buy_opportunities_currency));
             integralCh.setBackgroundResource(R.mipmap.reward_bunner);
             freeze.setVisibility(View.VISIBLE);
         }
@@ -137,8 +138,8 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
             recordList.add(new IntegralRecordBean(getString(R.string.deduct_integtal), 400));
         } else {
             recordList.add(new IntegralRecordBean(getString(R.string.all_record), 500));
-            recordList.add(new IntegralRecordBean("获取商机币", 600));
-            recordList.add(new IntegralRecordBean("扣除商机币", 700));
+            recordList.add(new IntegralRecordBean(getString(R.string.get_opportunities_currency), 600));
+            recordList.add(new IntegralRecordBean(getString(R.string.deduct_opportunities_currency), 700));
         }
 
         for (int i = 0; i < recordList.size(); i++) {
@@ -165,15 +166,15 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
     }
 
     @Override
-    public void showBalanceLog(IntegralBean integralBean) {
+    public void showBalanceLog(BusinessCoinBean integralBean) {
         if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
             if (StringUtil.isNotEmpty(integralBean.data.balance)) {
                 integralTvZh.setText(integralBean.data.balance + "");
             } else {
                 integralTvZh.setText(0);
             }
-
-            freeze.setText("冻结商机币:" + integralBean.data.freeze_amount);
+            if (StringUtil.isNotEmpty(integralBean.data.freeze_amount))
+            freeze.setText(getString(R.string.freeze_opportunities_currency)+":" + integralBean.data.freeze_amount);
         }
 
     }

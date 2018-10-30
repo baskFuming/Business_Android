@@ -373,9 +373,9 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (getScrollY()>(firstVisibleItem+visibleItemCount+totalItemCount)){
+                if (getScrollY() > (firstVisibleItem + visibleItemCount + totalItemCount)) {
                     title.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     title.setVisibility(View.GONE);
                 }
             }
@@ -564,6 +564,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     public void showCompany(PersonageInfoBean companyBean) {
 
     }
+
     //    //点击事件
     @OnClick({R.id.back, R.id.imageViewShare, R.id.send, R.id.collect, R.id.comment, R.id.shared})
     public void onViewClicked(View view) {
@@ -928,7 +929,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
         }
         int firstVisiblePosition = commentListview.getFirstVisiblePosition();
         int top = c.getTop();
-        return -top + firstVisiblePosition * c.getHeight() ;
+        return -top + firstVisiblePosition * c.getHeight();
     }
 
 

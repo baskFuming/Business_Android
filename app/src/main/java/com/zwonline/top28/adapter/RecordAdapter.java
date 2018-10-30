@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.zwonline.top28.R;
 import com.zwonline.top28.bean.IntegralBean;
+import com.zwonline.top28.constants.BizConstant;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         String htype=list.get(position).htype_cn;
         myViewHolder.htype.setText(list.get(position).htype_cn);
         myViewHolder.recordTime.setText(list.get(position).addtime);
-        if (list.get(position).operate.equals("1")){
+        if (list.get(position).operate.equals(BizConstant.IS_SUC)){
             myViewHolder.recordNum.setText("+"+list.get(position).points);
         }else {
             myViewHolder.recordNum.setText("-"+list.get(position).points);
