@@ -8,6 +8,8 @@ import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.InforNoticeBean;
 import com.zwonline.top28.bean.InforNoticeCleanBean;
 import com.zwonline.top28.bean.LikeListBean;
@@ -560,6 +562,40 @@ public interface BusinessCircleService {
             @Field("token") String token,
             @Field("sign") String sign
 
+    );
+
+    /**
+     * 礼物数量接口
+     *
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Article/giftSummary")
+    Flowable<GiftSumBean> giftSummary(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("target_type") String target_type,
+            @Field("target_id") String target_id,
+            @Field("sign") String sign
+
+    );
+
+    /***
+     * 礼物接口
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Article/gif")
+    Flowable<GiftBean> gift(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
     );
 
 

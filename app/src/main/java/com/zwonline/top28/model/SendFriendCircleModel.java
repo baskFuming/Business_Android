@@ -15,6 +15,8 @@ import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
@@ -444,7 +446,7 @@ public class SendFriendCircleModel {
      * @return
      * @throws IOException
      */
-    public Flowable<AttentionBean> likeMomentComment(Context context, String comment_id,String type) throws IOException {
+    public Flowable<AttentionBean> likeMomentComment(Context context, String comment_id, String type) throws IOException {
         String versionName = LanguageUitils.getVersionName(context);
         sp = SharedPreferencesUtils.getUtil();
         long timestamp = new Date().getTime() / 1000;//时间戳
@@ -459,7 +461,7 @@ public class SendFriendCircleModel {
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
-                .iLikeMomentComment(String.valueOf(timestamp), token, sign, versionName,type, comment_id);
+                .iLikeMomentComment(String.valueOf(timestamp), token, sign, versionName, type, comment_id);
         return flowable;
     }
 
@@ -662,7 +664,6 @@ public class SendFriendCircleModel {
     }
 
 
-
     /**
      * 关注动态顶部banner接口
      *
@@ -683,6 +684,55 @@ public class SendFriendCircleModel {
         Flowable<AtentionDynamicHeadBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(BusinessCircleService.class, Api.url)
                 .starRecommendUserList(String.valueOf(timestamp), token, sign);
+        return flowable;
+    }
+
+
+    /**
+     * 文章/动态收到的礼物列表接口
+     *
+     * @param context
+     * @param target_type
+     * @param target_id
+     * @return
+     * @throws IOException
+     */
+    public Flowable<GiftSumBean> mGiftSummary(Context context, String target_type, String target_id) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("target_type", target_type);
+        map.put("target_id", target_id);
+        map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<GiftSumBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .giftSummary(String.valueOf(timestamp), token, target_type, target_id, sign);
+        return flowable;
+    }
+
+    /**
+     * 礼物
+     *
+     * @param context
+     * @return
+     * @throws IOException
+     */
+    public Flowable<GiftBean> mGift(Context context) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<GiftBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(BusinessCircleService.class, Api.url)
+                .gift(String.valueOf(timestamp), token, sign);
         return flowable;
     }
 

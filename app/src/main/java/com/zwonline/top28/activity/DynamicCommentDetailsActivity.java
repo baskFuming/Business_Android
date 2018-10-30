@@ -38,6 +38,8 @@ import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
@@ -387,10 +389,10 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
             case R.id.linear_like:
                 if (islogins) {
                     if (did_i_votes.equals(BizConstant.IS_FAIL)) {
-                        if (StringUtil.isNotEmpty(type)&&type.equals(BizConstant.IS_SUC)){
-                            presenter.LikeMomentComment(getApplicationContext(), commentId,BizConstant.IS_SUC);
-                        }else {
-                            presenter.LikeMomentComment(getApplicationContext(), commentId,BizConstant.ALIPAY_METHOD);
+                        if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
+                            presenter.LikeMomentComment(getApplicationContext(), commentId, BizConstant.IS_SUC);
+                        } else {
+                            presenter.LikeMomentComment(getApplicationContext(), commentId, BizConstant.ALIPAY_METHOD);
                         }
                     } else {
                         ToastUtils.showToast(getApplicationContext(), "已经点过赞了哦");
@@ -569,10 +571,31 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
 
     /**
      * 举报
+     *
      * @param attentionBean
      */
     @Override
     public void showReport(AttentionBean attentionBean) {
+
+    }
+
+    /**
+     * 礼物数量的接口
+     *
+     * @param giftSumBean
+     */
+    @Override
+    public void showGiftSummary(GiftSumBean giftSumBean) {
+
+    }
+
+    /**
+     * 礼物
+     *
+     * @param giftBean
+     */
+    @Override
+    public void showGift(GiftBean giftBean) {
 
     }
 

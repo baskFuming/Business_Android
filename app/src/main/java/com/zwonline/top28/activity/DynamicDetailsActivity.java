@@ -48,6 +48,8 @@ import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PhotoInfos;
@@ -494,6 +496,26 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
      */
     @Override
     public void showReport(AttentionBean attentionBean) {
+
+    }
+
+    /**
+     * 礼物数量的接口
+     *
+     * @param giftSumBean
+     */
+    @Override
+    public void showGiftSummary(GiftSumBean giftSumBean) {
+
+    }
+
+    /**
+     * 礼物
+     *
+     * @param giftBean
+     */
+    @Override
+    public void showGift(GiftBean giftBean) {
 
     }
 
@@ -1051,7 +1073,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 ImageViewPlus user_icon = contentView.findViewById(R.id.user_icon);
                 TextView author = contentView.findViewById(R.id.author);
                 if (StringUtil.isNotEmpty(nickname)) {
-                    author.setText("给" + nickname + "作者打赏");
+                    author.setText("给" + nickname + "打赏");
                 }
                 if (StringUtil.isNotEmpty(avatars)) {
                     RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);

@@ -38,6 +38,8 @@ import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PictursBean;
@@ -631,6 +633,27 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
     public void showReport(AttentionBean attentionBean) {
 
     }
+
+    /**
+     * 礼物数量的接口
+     *
+     * @param giftSumBean
+     */
+    @Override
+    public void showGiftSummary(GiftSumBean giftSumBean) {
+
+    }
+
+    /**
+     * 礼物
+     *
+     * @param giftBean
+     */
+    @Override
+    public void showGift(GiftBean giftBean) {
+
+    }
+
 
     @Override
     public void showFeedBack(SettingBean settingBean) {

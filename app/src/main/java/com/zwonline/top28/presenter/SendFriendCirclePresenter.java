@@ -13,6 +13,8 @@ import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
+import com.zwonline.top28.bean.GiftBean;
+import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.LikeListBean;
 import com.zwonline.top28.bean.NewContentBean;
 import com.zwonline.top28.bean.PicturBean;
@@ -289,10 +291,10 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                         @Override
                         protected void onBaseNext(DynamicDetailsBean dynamicDetailsBean) {
                             Log.e("newContentBean", dynamicDetailsBean.msg);
-                            if (dynamicDetailsBean.status==1){
+                            if (dynamicDetailsBean.status == 1) {
                                 iSendFriendCircleActivity.showDynamicComment(dynamicDetailsBean.data);
-                            }else {
-                                ToastUtils.showToast(context,dynamicDetailsBean.msg);
+                            } else {
+                                ToastUtils.showToast(context, dynamicDetailsBean.msg);
                             }
                         }
 
@@ -677,9 +679,9 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
      * @param context
      * @param comment_id
      */
-    public void LikeMomentComment(Context context, String comment_id,String type) {
+    public void LikeMomentComment(Context context, String comment_id, String type) {
         try {
-            Flowable<AttentionBean> flowable = sendFriendCircleModel.likeMomentComment(context, comment_id,type);
+            Flowable<AttentionBean> flowable = sendFriendCircleModel.likeMomentComment(context, comment_id, type);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<AttentionBean>() {
@@ -843,7 +845,7 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                     .subscribeWith(new DisposableSubscriber<LikeListBean>() {
                         @Override
                         public void onNext(LikeListBean likeListBean) {
-                            if (likeListBean.status==1){
+                            if (likeListBean.status == 1) {
                                 iSendFriendCircleActivity.showGetLikeList(likeListBean.data);
                             }
                         }
@@ -939,6 +941,7 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
             e.printStackTrace();
         }
     }
+
     /**
      * 推荐动态顶部banner接口
      *
@@ -953,6 +956,74 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                         @Override
                         public void onNext(AtentionDynamicHeadBean attentionBean) {
                             iSendFriendCircleActivity.showAttentionDynamic(attentionBean.data.list);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 礼物数量
+     *
+     * @param context
+     * @param target_type
+     * @param target_id
+     */
+    public void GiftSummary(Context context, String target_type, String target_id) {
+        try {
+            Flowable<GiftSumBean> flowable = sendFriendCircleModel.mGiftSummary(context, target_type, target_id);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<GiftSumBean>() {
+                        @Override
+                        public void onNext(GiftSumBean attentionBean) {
+                            if (attentionBean.status == 1) {
+                                iSendFriendCircleActivity.showGiftSummary(attentionBean);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 礼物
+     *
+     * @param context
+     */
+    public void Gift(Context context) {
+        try {
+            Flowable<GiftBean> flowable = sendFriendCircleModel.mGift(context);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<GiftBean>() {
+                        @Override
+                        public void onNext(GiftBean attentionBean) {
+                            if (attentionBean.status == 1) {
+                                iSendFriendCircleActivity.showGift(attentionBean);
+                            }
                         }
 
                         @Override

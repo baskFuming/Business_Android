@@ -23,11 +23,10 @@
 
             <TextView
                 android:id="@+id/author"
-                android:layout_width="130dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="51dp"
-                android:text="给「用户名」作者打赏"
                 android:textColor="#3D3D3D"
                 android:textSize="14sp" />
 
