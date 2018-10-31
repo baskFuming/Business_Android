@@ -24,7 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/title_layout"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:fitsSystemWindows="true">
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appBarLayout"
@@ -378,16 +380,14 @@
                             android:layout_marginTop="@dimen/ui_20_dip"
                             android:background="#fff3f3f3" />
                     </LinearLayout>
-
-
                 </android.support.design.widget.CollapsingToolbarLayout>
                 <!--悬浮效果-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:orientation="horizontal"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/comment_acount_linear"
@@ -468,38 +468,43 @@
                 </RelativeLayout>
             </android.support.design.widget.AppBarLayout>
 
-            <LinearLayout
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fillViewport="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
-                    android:id="@+id/zan_recy"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="50dp"
-                    android:visibility="gone" />
+                    android:orientation="vertical"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
-                    android:id="@+id/comment_xrecy"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="50dp"
-                    android:visibility="visible"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    <com.jcodecraeer.xrecyclerview.XRecyclerView
+                        android:id="@+id/zan_recy"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="50dp"
+                        android:visibility="gone"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
-                    android:id="@+id/reward_xrecy"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="50dp"
-                    android:visibility="gone"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-            </LinearLayout>
+                    <com.jcodecraeer.xrecyclerview.XRecyclerView
+                        android:id="@+id/comment_xrecy"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="50dp"
+                        android:visibility="visible"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                    <com.jcodecraeer.xrecyclerview.XRecyclerView
+                        android:id="@+id/reward_xrecy"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="50dp"
+                        android:visibility="gone"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
         </android.support.design.widget.CoordinatorLayout>
 
         <View
