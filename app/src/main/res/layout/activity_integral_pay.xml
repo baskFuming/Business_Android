@@ -251,7 +251,6 @@
                     android:drawablePadding="10dp"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="赠送 200算力"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>

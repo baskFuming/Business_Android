@@ -29,6 +29,7 @@ import com.zwonline.top28.bean.BalancePayBean;
 import com.zwonline.top28.bean.IntegralPayBean;
 import com.zwonline.top28.bean.OrderInfoBean;
 import com.zwonline.top28.bean.PrepayPayBean;
+import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.IntegralPayPresenter;
 import com.zwonline.top28.utils.NumberOperateUtil;
@@ -37,6 +38,8 @@ import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.popwindow.PaySucPopuWindow;
 import com.zwonline.top28.view.IIntegralPayActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.OnClick;
 
@@ -177,7 +180,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         }
     };
 
-    @OnClick({R.id.points_pay_back, R.id.pay_sure_btn, R.id.one_points, R.id.two_points, R.id.three_points,R.id.four_points,R.id.five_points,R.id.six_points})
+    @OnClick({R.id.points_pay_back, R.id.pay_sure_btn, R.id.one_points, R.id.two_points, R.id.three_points, R.id.four_points, R.id.five_points, R.id.six_points})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -218,7 +221,9 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                 pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                 break;
             case R.id.pay_sure_btn:
-
+                MessageFollow messageFollow = new MessageFollow();
+                messageFollow.notifyCount = BizConstant.ALIPAY_METHOD;
+                EventBus.getDefault().post(messageFollow);
                 int payCheckedId = payMethodRadioGroup.getCheckedRadioButtonId();
                 String payAmount = pointsEditText.getText().toString();
                 if (checkAmount(payAmount)) {
@@ -387,6 +392,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         return R.layout.activity_integral_pay;
     }
 
+
     @Override
     public void pointsRecharge(IntegralPayBean dataBean) {
         orderId = dataBean.data;
@@ -515,7 +521,6 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                         Double cp = NumberOperateUtil.mul(parseDouble, unitPrice);
                         pointsMonney.setText(cp + "");
                     }
-
 //                    presenter.pointRecharge(IntegralPayActivity.this, payMethodType, cp+"");
                 } else {
                     pointsMonney.setText("0.00");
@@ -689,7 +694,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
      */
     public void isBalance() {
 
-        if (StringUtil.isNotEmpty(String.valueOf(balance))){
+        if (StringUtil.isNotEmpty(String.valueOf(balance))) {
             Double Monney = Double.valueOf(pointsMonney.getText().toString());
             if (Monney > balance) {
                 paySureBtn.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
@@ -699,10 +704,18 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                 paySureBtn.setBackgroundResource(R.drawable.btn_register_shape);
 //                    presenter.mBalancesPay(IntegralPayActivity.this,pointsMonney.getText().toString());
             }
-        }else {
+        } else {
             paySureBtn.setEnabled(true);
             paySureBtn.setBackgroundResource(R.drawable.btn_register_shape);
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }

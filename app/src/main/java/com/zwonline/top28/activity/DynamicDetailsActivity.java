@@ -565,6 +565,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             presenter.GiftSummary(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id);
             CompletePopwindow completePopwindow = new CompletePopwindow(this);
             completePopwindow.showAtLocation(DynamicDetailsActivity.this.findViewById(R.id.dynamic_layout), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+            presenter.GiftList(DynamicDetailsActivity.this, BizConstant.IS_SUC, moment_id, page);
         } else {
             ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
         }

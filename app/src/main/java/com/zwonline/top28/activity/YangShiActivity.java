@@ -139,7 +139,6 @@ public class YangShiActivity extends BaseActivity {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, String url) {
-
                 // ------  对alipays:相关的scheme处理 -------
                 if (url.startsWith("alipays:") || url.startsWith("alipay")) {
                     try {
@@ -175,11 +174,21 @@ public class YangShiActivity extends BaseActivity {
                 if (url.contains("http://top28app//logoutAndClose/")) {
                     Intent intent = new Intent(YangShiActivity.this, MainActivity.class);
                     intent.putExtra("login_type", BizConstant.IS_FAIL);
-                    startActivity(new Intent(YangShiActivity.this, MainActivity.class));
+                    startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                     return true;
                 }
+                /**
+                 * 绑定手机号
+                 */
+                if (url.contains("http://top28app/bindMobile/")) {
+                    Intent intent = new Intent(YangShiActivity.this, BindPhoneActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                    return true;
+                }
+
 
                 //从新登陆
 //                if (url.contains("http://top28app//reLogin/")) {

@@ -26,6 +26,7 @@ import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.TimeUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.TextClick;
 
 import java.text.ParseException;
@@ -74,6 +75,7 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
             try {
                 date = formatter.parse(list.get(position).add_time);
                 myViewHolder.commentsTime.setText(TimeUtil.getTimeFormatText(date));
+                ToastUtils.showToast(context,list.get(position).add_time);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

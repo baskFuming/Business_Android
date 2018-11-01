@@ -15,9 +15,16 @@ import com.zwonline.top28.base.BaseFragment;
 import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.IntegralBean;
 import com.zwonline.top28.bean.IntegralRecordBean;
+import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.IntergralPresenter;
+import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IIntegralActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,27 +43,29 @@ public class RecordFragment extends BasesFragment<IIntegralActivity, IntergralPr
     private int refreshTime = 0;
     private int times = 0;
     private List<IntegralBean.DataBean.ListBean> list;
+    private String notifyCount;
 
+    @Subscribe
     @Override
     protected void init(View view) {
         recordRecy = (XRecyclerView) view.findViewById(R.id.record_recy);
         list = new ArrayList<>();
+        EventBus.getDefault().register(this);
         if (getArguments() != null) {
             cate_ids = getArguments().getInt("cate_id");
-
             cate_name = getArguments().getString("cate_name");
             if (cate_ids == 200) {
-                presenter.showAllIntergralList(getActivity(), String.valueOf(BizConstant.PAGE));
+                presenter.showAllIntergralList(getActivity(), BizConstant.ALREADY_FAVORITE);
             } else if (cate_ids == 300) {
-                presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(BizConstant.PAGE));
+                presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, BizConstant.ALREADY_FAVORITE);
             } else if (cate_ids == 400) {
-                presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(BizConstant.PAGE));
+                presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, BizConstant.ALREADY_FAVORITE);
             } else if (cate_ids == 500) {
-                presenter.BalanceRecord(getActivity(), "",page);
+                presenter.BalanceRecord(getActivity(), "", page);
             } else if (cate_ids == 600) {
-                presenter.BalanceRecord(getActivity(),String.valueOf(BizConstant.PAGE),page);
+                presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE, page);
             } else {
-                presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO,page);
+                presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO, page);
             }
         }
 
@@ -96,18 +105,20 @@ public class RecordFragment extends BasesFragment<IIntegralActivity, IntergralPr
     @Override
     public void onResume() {
         super.onResume();
-        if (cate_ids == 200) {
-            presenter.showAllIntergralList(getActivity(), String.valueOf(BizConstant.PAGE));
-        } else if (cate_ids == 300) {
-            presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(BizConstant.PAGE));
-        } else if (cate_ids == 400) {
-            presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(BizConstant.PAGE));
-        } else if (cate_ids == 500) {
-            presenter.BalanceRecord(getActivity(), "",page);
-        } else if (cate_ids == 600) {
-            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE,page);
-        } else {
-            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO,page);
+        if (StringUtil.isNotEmpty(notifyCount)) {
+            if (cate_ids == 200) {
+                presenter.showAllIntergralList(getActivity(), String.valueOf(page));
+            } else if (cate_ids == 300) {
+                presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(page));
+            } else if (cate_ids == 400) {
+                presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(page));
+            } else if (cate_ids == 500) {
+                presenter.BalanceRecord(getActivity(), "", page);
+            } else if (cate_ids == 600) {
+                presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE, page);
+            } else {
+                presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO, page);
+            }
         }
     }
 
@@ -129,17 +140,17 @@ public class RecordFragment extends BasesFragment<IIntegralActivity, IntergralPr
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         if (cate_ids == 200) {
-                            presenter.showAllIntergralList(getActivity(), String.valueOf(BizConstant.PAGE));
+                            presenter.showAllIntergralList(getActivity(), String.valueOf(page));
                         } else if (cate_ids == 300) {
-                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(BizConstant.PAGE));
+                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(page));
                         } else if (cate_ids == 400) {
-                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(BizConstant.PAGE));
+                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(page));
                         } else if (cate_ids == 500) {
-                            presenter.BalanceRecord(getActivity(), "",page);
+                            presenter.BalanceRecord(getActivity(), "", page);
                         } else if (cate_ids == 600) {
-                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE,page);
+                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE, page);
                         } else {
-                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO,page);
+                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO, page);
                         }
                         if (recordRecy != null)
                             recordRecy.refreshComplete();
@@ -155,17 +166,17 @@ public class RecordFragment extends BasesFragment<IIntegralActivity, IntergralPr
                     public void run() {
                         page++;
                         if (cate_ids == 200) {
-                            presenter.showAllIntergralList(getActivity(), String.valueOf(BizConstant.PAGE));
+                            presenter.showAllIntergralList(getActivity(), String.valueOf(page));
                         } else if (cate_ids == 300) {
-                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(BizConstant.PAGE));
+                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, String.valueOf(page));
                         } else if (cate_ids == 400) {
-                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(BizConstant.PAGE));
+                            presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, String.valueOf(page));
                         } else if (cate_ids == 500) {
-                            presenter.BalanceRecord(getActivity(), "",page);
+                            presenter.BalanceRecord(getActivity(), "", page);
                         } else if (cate_ids == 600) {
-                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE,page);
+                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE, page);
                         } else {
-                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO,page);
+                            presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO, page);
                         }
                         if (recordRecy != null) {
                             recordRecy.loadMoreComplete();
@@ -180,4 +191,20 @@ public class RecordFragment extends BasesFragment<IIntegralActivity, IntergralPr
 
 
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageFollow messageFollow) {
+        if (StringUtil.isNotEmpty(messageFollow.notifyCount)) {
+            notifyCount = messageFollow.notifyCount;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
 }

@@ -305,9 +305,9 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
             sp.insertKey(getApplicationContext(), "follow", loginWechatBean.getData().getUser().getFollow());
             sp.insertKey(getApplicationContext(), "fans", loginWechatBean.getData().getUser().getFans());
             sp.insertKey(getApplicationContext(), "favorite", loginWechatBean.getData().getUser().getFavorite());
-            Toast.makeText(getApplicationContext(), "微信授权登录成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getApplicationContext(), "授权登录失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "登录失败", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -605,7 +605,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
         UMShareAPI.get(this).getPlatformInfo(this, weixin, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {
-                ToastUtils.showToast(WithoutCodeLoginActivity.this, "微信授权登录");
+//                ToastUtils.showToast(WithoutCodeLoginActivity.this, "微信授权登录");
             }
 
             /**

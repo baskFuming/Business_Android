@@ -111,7 +111,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 //        if (holder instanceof MyViewHolder) {
         final MyViewHolder myViewHolder = (MyViewHolder) holder;
         myViewHolder.username.setText(list.get(pos).author.nickname);
-        myViewHolder.rewardNum.setText(list.get(position).gift_count);
+        myViewHolder.rewardNum.setText(list.get(pos).gift_count);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
         Date date = null;
         try {

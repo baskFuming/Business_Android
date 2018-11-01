@@ -147,7 +147,7 @@ public class HashrateActivity extends BaseActivity {
                     return true;
                 }
                 //购买商机币
-                if (url.contains("http://top28app/rechargeBusinessOpportunityCoin/")) {
+                if (url.contains("http://top28app/rechargeBusinessOpportunityCoin")) {
                     Intent intent1 = new Intent(HashrateActivity.this, IntegralPayActivity.class);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);

@@ -75,9 +75,9 @@ public class HomeClass extends BasesFragment<IHomeFragment, HomePresenter> imple
                 cate_name = getArguments().getString("cate_name");
                 if (NetUtils.isConnected(getActivity())) {
                     if (!StringUtil.isEmpty(cate_id) && cate_id.equals("300")) {
-                        presenter.mHomeRecommend(getActivity(),String.valueOf(page));
+                        presenter.mHomeRecommend(getActivity(), String.valueOf(page));
                     } else {
-                        presenter.mHomePage(getActivity(),String.valueOf(page), cate_id);
+                        presenter.mHomePage(getActivity(), String.valueOf(page), cate_id);
                     }
                 }
 
@@ -211,7 +211,12 @@ public class HomeClass extends BasesFragment<IHomeFragment, HomePresenter> imple
                 }
             }
         });
+        loadMore();
 
+//        homerecyler.refresh();
+    }
+
+    private void loadMore() {
         homerecyler.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -221,10 +226,10 @@ public class HomeClass extends BasesFragment<IHomeFragment, HomePresenter> imple
                     public void run() {
                         page = 1;
                         if (cate_id != null && cate_id.equals(BizConstant.BIZ_RECOMMEND_ID)) {
-                            presenter.mHomeRecommend(getActivity(),String.valueOf(page));
+                            presenter.mHomeRecommend(getActivity(), String.valueOf(page));
 
                         } else {
-                            presenter.mHomePage(getActivity(),String.valueOf(page), cate_id);
+                            presenter.mHomePage(getActivity(), String.valueOf(page), cate_id);
                         }
                         if (homerecyler != null)
                             homerecyler.refreshComplete();
@@ -235,15 +240,14 @@ public class HomeClass extends BasesFragment<IHomeFragment, HomePresenter> imple
 
             @Override
             public void onLoadMore() {
-                Log.e("aaaaa", "call onLoadMore");
 
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         page++;
                         if (cate_id != null && cate_id.equals(BizConstant.BIZ_RECOMMEND_ID)) {
-                            presenter.mHomeRecommend(getActivity(),String.valueOf(page));
+                            presenter.mHomeRecommend(getActivity(), String.valueOf(page));
                         } else {
-                            presenter.mHomePage(getActivity(),String.valueOf(page), cate_id);
+                            presenter.mHomePage(getActivity(), String.valueOf(page), cate_id);
                         }
                         if (homerecyler != null) {
                             homerecyler.loadMoreComplete();
@@ -254,7 +258,6 @@ public class HomeClass extends BasesFragment<IHomeFragment, HomePresenter> imple
             }
         });
 
-//        homerecyler.refresh();
     }
 
     //动态获取Fragment
@@ -266,4 +269,5 @@ public class HomeClass extends BasesFragment<IHomeFragment, HomePresenter> imple
         home.setArguments(bundle);
         return home;
     }
+
 }

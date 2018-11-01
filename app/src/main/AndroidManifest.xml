@@ -88,7 +88,10 @@
         <meta-data
             android:name="com.netease.nim.appKey"
             android:value="53c08adeb3a5f1c0bb4236970f8cc756" />
-
+        <!-- 高德定位 key -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="b8d7bf645379cd711f22233b3050d733" />
         <!-- 云信后台服务，请使用独立进程。 -->
         <service
             android:name="com.netease.nimlib.service.NimService"
