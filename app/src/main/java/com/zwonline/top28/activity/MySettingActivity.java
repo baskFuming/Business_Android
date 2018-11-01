@@ -19,15 +19,15 @@ import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.RecordUserBehavior;
+import com.zwonline.top28.utils.DataClearUtil;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 
+import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.zwonline.top28.R.color.reded;
 
 /**
  * 描述：设置页面
@@ -53,6 +53,8 @@ public class MySettingActivity extends BaseActivity {
     private TextView bind;
     private RelativeLayout bindPhone;
     private ImageView bindImag;
+    @BindView(R.id.text_cash)
+    TextView tv_Cash;
 
     @Override
     protected void init() {
@@ -74,6 +76,8 @@ public class MySettingActivity extends BaseActivity {
         } else if (StringUtil.isNotEmpty(isDefaultPassword) && isDefaultPassword.equals("0")) {
             settingPassword.setText(this.getString(R.string.user_update_password));
         }
+        //获取缓存
+        tv_Cash.setText(DataClearUtil.getTotalCacheSize(this));
     }
 
     private void initData() {
@@ -109,7 +113,7 @@ public class MySettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.bind_phone, R.id.about_owen})
+    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.bind_phone, R.id.about_owen, R.id.lin_discash})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -176,6 +180,13 @@ public class MySettingActivity extends BaseActivity {
             case R.id.about_owen:
                 startActivity(new Intent(MySettingActivity.this, AboutUsActivity.class));
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            //清除缓存功能
+            case R.id.lin_discash:
+                //清除缓存
+                DataClearUtil.cleanAllCache(this);
+                tv_Cash.setText("0.0MB");
+                ToastUtils.showToast(this,"清除缓存成功");
                 break;
         }
 
