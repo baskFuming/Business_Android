@@ -1,6 +1,9 @@
 package com.zwonline.top28.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.Spannable;
@@ -39,6 +42,7 @@ import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.ILoginActivity;
 
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -180,7 +184,8 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
             //微信授权登录操作
             case R.id.WX_login:
                 if (!APP.mWxApi.isWXAppInstalled()) {
-                    Toast.makeText(this, "您还未安装微信客户端", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "您还未安装微信客户端,请先安装微信客户端", Toast.LENGTH_SHORT).show();
+                    isWeixinAvilible(this);
                 } else {
                     authorization(SHARE_MEDIA.WEIXIN);
                 }
@@ -472,5 +477,22 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+    /**
+     * 判断微信是否安装客户端
+     * @return true安装, false未安装
+     */
+    public static boolean isWeixinAvilible(Context context) {
+        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals("com.tencent.mm")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

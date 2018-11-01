@@ -1,6 +1,9 @@
 package com.zwonline.top28.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.text.Editable;
@@ -55,6 +58,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -95,6 +99,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
     private String str = "注册登录即代表您同意《用户协议》和《隐私政策》";
     private LinearLayout WX_loginl;
     private String msg;
+
     @Override
     protected void init() {
         initView();
@@ -220,7 +225,8 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
             //微信授权登录
             case R.id.WX_login:
                 if (!APP.mWxApi.isWXAppInstalled()) {
-                    Toast.makeText(this, "您还未安装微信客户端", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "您还未安装微信客户端,请先安装微信客户端", Toast.LENGTH_SHORT).show();
+                    isWeixinAvilible(this);//判断当前是否安装微信客户端
                 } else {
                     authorization(SHARE_MEDIA.WEIXIN);
                 }
@@ -244,7 +250,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
             finish();
             overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
         } else if (status == -1) {
-            Toast.makeText(WithoutCodeLoginActivity.this,"授权失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(WithoutCodeLoginActivity.this, "授权失败", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(WithoutCodeLoginActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
@@ -449,6 +455,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                     public boolean gt3SetIsCustom() {
                         return true;
                     }
+
                     /**
                      * 拿到第二个url（API2）需要的数据
                      * 该方法只适用于不使用自定义api2时使用
@@ -482,8 +489,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                             geetest_validates = jobj.getString("geetest_validate");
                             geetest_seccodes = jobj.getString("geetest_seccode");
                             yanZhengApi2(geetest_challenges, geetest_validates, geetest_seccodes);
-                        } catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         if (status) {
@@ -601,6 +607,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
             public void onStart(SHARE_MEDIA platform) {
                 ToastUtils.showToast(WithoutCodeLoginActivity.this, "微信授权登录");
             }
+
             /**
              * @desc 授权成功的回调
              * @param platform 平台名称
@@ -624,11 +631,12 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
                 String city = map.get("city");
                 String province = map.get("province");
                 String country = map.get("country");
-                String language  = map.get("language");
+                String language = map.get("language");
                 String countrycode = map.get("countrycode");
                 //拿到信息去请求登录接口。。。差一个接口
-                presenter.loginWechatListen(WithoutCodeLoginActivity.this,union_id,open_id,gender,name,iconurl,"",city,province,country,language);
+                presenter.loginWechatListen(WithoutCodeLoginActivity.this, union_id, open_id, gender, name, iconurl, "", city, province, country, language);
             }
+
             /**
              * @desc 授权失败的回调
              * @param platform 平台名称
@@ -651,6 +659,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -661,5 +670,23 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
             }
         }
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 判断微信是否安装客户端
+     * @return true安装, false未安装
+     */
+    public static boolean isWeixinAvilible(Context context) {
+        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals("com.tencent.mm")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
