@@ -674,6 +674,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
 
     /**
      * 判断微信是否安装客户端
+     *
      * @return true安装, false未安装
      */
     public static boolean isWeixinAvilible(Context context) {

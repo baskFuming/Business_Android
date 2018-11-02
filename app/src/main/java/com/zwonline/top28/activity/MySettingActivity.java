@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -19,7 +23,7 @@ import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.RecordUserBehavior;
-import com.zwonline.top28.utils.DataClearUtil;
+import com.zwonline.top28.utils.CacheDataManager;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
@@ -28,6 +32,8 @@ import com.zwonline.top28.utils.click.AntiShake;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static io.reactivex.schedulers.Schedulers.newThread;
 
 /**
  * 描述：设置页面
@@ -55,6 +61,35 @@ public class MySettingActivity extends BaseActivity {
     private ImageView bindImag;
     @BindView(R.id.text_cash)
     TextView tv_Cash;
+    private Handler handler = new Handler() {
+
+        public void handleMessage(android.os.Message msg) {
+
+            switch (msg.what) {
+
+                case 0:
+                    clearDialog.setVisibility(View.GONE);
+                    Toast.makeText(MySettingActivity.this, "清理完成", Toast.LENGTH_SHORT).show();
+
+                    try {
+
+                        tv_Cash.setText(CacheDataManager.getTotalCacheSize(MySettingActivity.this));
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+
+                    }
+
+            }
+
+        }
+
+        ;
+
+    };
+    private ProgressBar clearProgress;
+    private LinearLayout clearDialog;
 
     @Override
     protected void init() {
@@ -76,8 +111,17 @@ public class MySettingActivity extends BaseActivity {
         } else if (StringUtil.isNotEmpty(isDefaultPassword) && isDefaultPassword.equals("0")) {
             settingPassword.setText(this.getString(R.string.user_update_password));
         }
+        try {
+
+            tv_Cash.setText(CacheDataManager.getTotalCacheSize(this));
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
         //获取缓存
-        tv_Cash.setText(DataClearUtil.getTotalCacheSize(this));
+//        tv_Cash.setText(DataClearUtil.getTotalCacheSize(this));
     }
 
     private void initData() {
@@ -89,7 +133,11 @@ public class MySettingActivity extends BaseActivity {
         bindPhone = (RelativeLayout) findViewById(R.id.bind_phone);
         amentpossword = (RelativeLayout) findViewById(R.id.amentpossword);
         bindImag = (ImageView) findViewById(R.id.bind_imag);
+        clearProgress = (ProgressBar) findViewById(R.id.clear_progress);
         bind = (TextView) findViewById(R.id.bind);
+        clearDialog = (LinearLayout) findViewById(R.id.clear_dialog);
+        TextView clearTv= (TextView) findViewById(R.id.clear_tv);
+        clearTv.setSelected(true);
         if (StringUtil.isNotEmpty(mobile)) {
             bind.setText("已绑定");
             bindPhone.setClickable(false);
@@ -184,13 +232,17 @@ public class MySettingActivity extends BaseActivity {
             //清除缓存功能
             case R.id.lin_discash:
                 //清除缓存
-                DataClearUtil.cleanAllCache(this);
-                tv_Cash.setText("0.0MB");
-                ToastUtils.showToast(this,"清除缓存成功");
+//                DataClearUtil.cleanAllCache(this);
+//                tv_Cash.setText("0.0MB");
+//                ToastUtils.showToast(this,"清除缓存成功");
+                clearCache clearCache = new clearCache();
+                new Thread(clearCache).start();
+                clearDialog.setVisibility(View.VISIBLE);
                 break;
         }
 
     }
+
 
     //系统返回键
     @Override
@@ -221,7 +273,36 @@ public class MySettingActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
 
+    class clearCache implements Runnable {
+
+        @Override
+
+        public void run() {
+
+            try {
+
+                CacheDataManager.clearAllCache(MySettingActivity.this);
+
+                Thread.sleep(3000);
+
+                if (CacheDataManager.getTotalCacheSize(MySettingActivity.this).startsWith("0")) {
+
+                    handler.sendEmptyMessage(0);
+
+
+                }
+
+            } catch (Exception e) {
+
+                return;
+
+            }
+
+        }
 
     }
+
+
 }

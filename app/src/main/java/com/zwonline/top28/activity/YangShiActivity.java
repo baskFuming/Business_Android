@@ -185,7 +185,7 @@ public class YangShiActivity extends BaseActivity {
                 if (url.contains("http://top28app/bindMobile/")) {
                     Intent intent = new Intent(YangShiActivity.this, BindPhoneActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
                 }
 

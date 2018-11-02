@@ -270,7 +270,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             StringUtil.textBold(title);
             StringUtil.textBold(mtitle);//中文字体加粗
             presenter.Gift(this);
-            presenter.GiftSummary(HomeDetailsActivity.this, BizConstant.ALIPAY_METHOD,sID);
+            presenter.GiftSummary(HomeDetailsActivity.this, BizConstant.ALIPAY_METHOD, sID);
 
         } catch (Exception e) {
             e.printStackTrace();
