@@ -2,36 +2,29 @@ package com.zwonline.top28.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.ClipboardManager;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.DynamicDetailsActivity;
 import com.zwonline.top28.activity.HomeDetailsActivity;
-import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.adapter.NewContentAdapter;
 import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.AddBankBean;
@@ -41,7 +34,6 @@ import com.zwonline.top28.bean.BusinessCircleBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
-import com.zwonline.top28.bean.ExamineChatBean;
 import com.zwonline.top28.bean.GiftBean;
 import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.LikeListBean;
@@ -54,16 +46,11 @@ import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
-import com.zwonline.top28.nim.main.NotifyDetailsActivity;
-import com.zwonline.top28.nim.main.fragment.SessionListFragment;
 import com.zwonline.top28.presenter.SendFriendCirclePresenter;
-import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
-import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
-import com.zwonline.top28.utils.popwindow.AttentionPopwindow;
 import com.zwonline.top28.utils.popwindow.DynamicFunctionPopwindow;
 import com.zwonline.top28.view.ISendFriendCircleActivity;
 import com.zwonline.top28.wxapi.RewritePopwindow;
@@ -73,11 +60,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import butterknife.BindView;
 
 
 /**
@@ -110,7 +96,9 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
     private String newContnets;
     private String newComment;
     //    private List<String> comment_list = new ArrayList<>();
-
+    //添加置顶功能
+    @BindView(R.id.fab)
+    FloatingActionButton floatingActionButton;
     @Override
     protected void init(View view) {
 //        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
@@ -139,6 +127,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
     /**
      * xRecyclerview配置
      */
+    @SuppressLint("NewApi")
     private void recyclerViewData() {
         newcontentRecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         newcontentRecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -146,11 +135,28 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
         newcontentRecy.getDefaultRefreshHeaderView().setRefreshTimeVisible(true);
         newcontentRecy.getDefaultFootView().setLoadingHint(getString(R.string.loading));
         newcontentRecy.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         newcontentRecy.setLayoutManager(linearLayoutManager);
         adapter = new NewContentAdapter(newContentList, getActivity());
         newcontentRecy.setAdapter(adapter);
+        newcontentRecy.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (getScrollY()>(scrollY+oldScrollY)){
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }else {
+                    floatingActionButton.setVisibility(View.GONE);
+                }
+            }
+        });
+        //添加置顶
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newcontentRecy.setFocusable(true);
+                newcontentRecy.smoothScrollToPosition(0);
+            }
+        });
 
     }
 
@@ -923,6 +929,18 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+    /*
+          getScrollY 该方法用于测算ListView滑动的距离
+        */
+    public int getScrollY() {
+        View c = newcontentRecy.getChildAt(0);
+        if (c == null) {
+            return 0;
+        }
+        int firstVisiblePosition = newcontentRecy.getVerticalScrollbarPosition();
+        int top = c.getTop();
+        return -top + firstVisiblePosition * c.getHeight();
     }
 
 

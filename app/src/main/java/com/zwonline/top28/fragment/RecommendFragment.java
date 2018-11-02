@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +29,6 @@ import com.zwonline.top28.activity.DynamicDetailsActivity;
 import com.zwonline.top28.activity.HomeDetailsActivity;
 import com.zwonline.top28.adapter.AttentionDynamicAdapter;
 import com.zwonline.top28.adapter.RecommendDynamicHeadAdapter;
-import com.zwonline.top28.adapter.BusinessProductAdapter;
 import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
@@ -66,6 +66,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 商机圈推荐
  */
@@ -96,6 +98,10 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
     private RecommendDynamicHeadAdapter attentionDynamicHeadAdapter;
     private List<AtentionDynamicHeadBean.DataBean.ListBean> attentionList;
 //    private List<String> comment_list = new ArrayList<>();
+
+    //置顶功能
+    @BindView(R.id.fab)
+    FloatingActionButton floatingActionButton;
 
     @Override
     protected void init(View view) {
@@ -141,6 +147,24 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
         adapter = new AttentionDynamicAdapter(newContentList, getActivity());
         setHeader(newcontentRecy);
         newcontentRecy.setAdapter(adapter);
+        newcontentRecy.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (getScrollY()>(scrollY+oldScrollY)){
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }else {
+                    floatingActionButton.setVisibility(View.GONE);
+                }
+            }
+        });
+        //置顶
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newcontentRecy.setFocusable(true);
+                newcontentRecy.smoothScrollToPosition(0);
+            }
+        });
 
     }
 
@@ -915,6 +939,18 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+    /*
+              getScrollY 该方法用于测算ListView滑动的距离
+            */
+    public int getScrollY() {
+        View c = newcontentRecy.getChildAt(0);
+        if (c == null) {
+            return 0;
+        }
+        int firstVisiblePosition = newcontentRecy.getVerticalScrollbarPosition();
+        int top = c.getTop();
+        return -top + firstVisiblePosition * c.getHeight();
     }
 
 

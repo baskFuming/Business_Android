@@ -2,58 +2,73 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/newcontent_recy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"></com.jcodecraeer.xrecyclerview.XRecyclerView>
-
-    <com.zwonline.top28.utils.RecyclerScrollView
-        android:id="@+id/recommend"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/lr"
+        <com.zwonline.top28.utils.RecyclerScrollView
+            android:id="@+id/recommend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.jcodecraeer.xrecyclerview.XRecyclerView
-                android:id="@+id/business_cicler"
-                android:layout_width="match_parent"
-                android:layout_height="660dp"
-                android:layout_marginTop="5dp" />
+            android:scrollbars="none"
+            android:visibility="gone">
 
             <LinearLayout
+                android:id="@+id/lr"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="18dp"
-                android:layout_marginTop="18dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/complete"
-                    android:layout_width="120dp"
-                    android:layout_height="36dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:background="#ffff2b2b"
-                    android:focusable="false"
-                    android:gravity="center"
-                    android:text="完成"
-                    android:textColor="#ffffffff"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </com.zwonline.top28.utils.RecyclerScrollView>
+                <com.jcodecraeer.xrecyclerview.XRecyclerView
+                    android:id="@+id/business_cicler"
+                    android:layout_width="match_parent"
+                    android:layout_height="660dp"
+                    android:layout_marginTop="5dp" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="18dp"
+                    android:layout_marginTop="18dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/complete"
+                        android:layout_width="120dp"
+                        android:layout_height="36dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:background="#ffff2b2b"
+                        android:focusable="false"
+                        android:gravity="center"
+                        android:text="完成"
+                        android:textColor="#ffffffff"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.zwonline.top28.utils.RecyclerScrollView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@color/white"
+            android:scaleType="center"
+            android:src="@mipmap/sjq_top"
+            android:visibility="gone"
+            app:layout_behavior="com.jaydenxiao.androidfire.widget.ScrollAwareFABBehavior"
+            />
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/no_dynamic"
         android:layout_width="match_parent"
