@@ -55,7 +55,7 @@ public class RewardPopWindow extends PopupWindow {
             public void onClick(View v) {
                 //销毁弹出框
                 dismiss();
-                backgroundAlpha(context, 1f);
+                backgroundAlpha(context, 0.5f);
             }
         });
         //设置SelectPicPopupWindow的View
@@ -93,35 +93,34 @@ public class RewardPopWindow extends PopupWindow {
      * @param bgAlpha
      */
     public void backgroundAlpha(Activity context, float bgAlpha) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            WindowManager.LayoutParams lp = context.getWindow().getAttributes();
-            lp.alpha = bgAlpha;
-            if (bgAlpha == 1) {
-                context.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);//不移除该Flag的话,在有视频的页面上的视频会出现黑屏的bug
-            } else {
-                context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);//此行代码主要是解决在华为手机上半透明效果无效的bug
-            }
-            context.getWindow().setAttributes(lp);
-        }
-    }
-
-    public interface OnClickItemListener {
-        void setOnItemClick(String clauseNames, String clauseRatio, String clauseContent);
-    }
-
-    public String clauseContentData() {
-        return "";
-    }
-
-    public void showAsDropDown(PopupWindow pw, View anchor, int xoff, int yoff) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            Rect visibleFrame = new Rect();
-            anchor.getGlobalVisibleRect(visibleFrame);
-            int height = anchor.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;
-            pw.setHeight(height);
-            pw.showAsDropDown(anchor, xoff, yoff);
+        if (bgAlpha < 0 || bgAlpha > 1) return;
+        WindowManager.LayoutParams windowLP = context.getWindow().getAttributes();
+        windowLP.alpha = bgAlpha;
+        if (bgAlpha == 1) {
+            context.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);//不移除该Flag的话,在有视频的页面上的视频会出现黑屏的bug
         } else {
-            pw.showAsDropDown(anchor, xoff, yoff);
+            context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);//此行代码主要是解决在华为手机上半透明效果无效的bug } getWindow().setAttributes(windowLP);
+        }
+        context.getWindow().setAttributes(windowLP);
+    }
+
+        public interface OnClickItemListener {
+            void setOnItemClick(String clauseNames, String clauseRatio, String clauseContent);
+        }
+
+        public String clauseContentData () {
+            return "";
+        }
+
+        public void showAsDropDown (PopupWindow pw, View anchor,int xoff, int yoff){
+            if (Build.VERSION.SDK_INT >= 24) {
+                Rect visibleFrame = new Rect();
+                anchor.getGlobalVisibleRect(visibleFrame);
+                int height = anchor.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;
+                pw.setHeight(height);
+                pw.showAsDropDown(anchor, xoff, yoff);
+            } else {
+                pw.showAsDropDown(anchor, xoff, yoff);
+            }
         }
     }
-}

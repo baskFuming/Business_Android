@@ -2,6 +2,7 @@ package com.zwonline.top28.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.ClipboardManager;
 import android.view.Gravity;
 import android.view.View;
@@ -129,7 +131,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
     /**
      * xRecyclerview配置
      */
-    @SuppressLint("NewApi")
+    @TargetApi(Build.VERSION_CODES.M)
     private void recyclerViewData() {
         newcontentRecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         newcontentRecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -141,16 +143,24 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
         newcontentRecy.setLayoutManager(linearLayoutManager);
         adapter = new NewContentAdapter(newContentList, getActivity());
         newcontentRecy.setAdapter(adapter);
-        newcontentRecy.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (getScrollY() > (scrollY + oldScrollY)) {
-                    floatingActionButton.setVisibility(View.VISIBLE);
-                } else {
-                    floatingActionButton.setVisibility(View.GONE);
+        //一键置顶
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            newcontentRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    if (getScrollY() > newState){
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                    } else {
+                        floatingActionButton.setVisibility(View.GONE);
+                    }
                 }
-            }
-        });
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                }
+            });
+
         //添加置顶
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -641,11 +651,6 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
 
     }
 
-    /**
-     * 商机币余额
-     *
-     * @param businessCoinBean
-     */
     @Override
     public void showBalanceLog(BusinessCoinBean businessCoinBean) {
 

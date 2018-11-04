@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -182,7 +181,6 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
     /**
      * xRecyclerview配置
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void recyclerViewData() {
         newcontentRecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         newcontentRecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -196,14 +194,20 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
         adapter = new AttentionDynamicAdapter(newContentList, getActivity());
         setHeader(newcontentRecy);
         newcontentRecy.setAdapter(adapter);
-        newcontentRecy.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+      //一键返回顶部
+        newcontentRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (getScrollY() > (scrollY + oldScrollY)) {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (getScrollY() > newState){
                     floatingActionButton.setVisibility(View.VISIBLE);
                 } else {
                     floatingActionButton.setVisibility(View.GONE);
                 }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
             }
         });
         //置顶
@@ -334,11 +338,6 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
 
     }
 
-    /**
-     * 商机币余额
-     *
-     * @param businessCoinBean
-     */
     @Override
     public void showBalanceLog(BusinessCoinBean businessCoinBean) {
 

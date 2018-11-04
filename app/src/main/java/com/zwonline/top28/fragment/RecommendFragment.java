@@ -148,14 +148,20 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
         adapter = new AttentionDynamicAdapter(newContentList, getActivity());
         setHeader(newcontentRecy);
         newcontentRecy.setAdapter(adapter);
-        newcontentRecy.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+        //一键返回顶部
+        newcontentRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (getScrollY()>(scrollY+oldScrollY)){
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (getScrollY() > newState){
                     floatingActionButton.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     floatingActionButton.setVisibility(View.GONE);
                 }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
             }
         });
         //置顶
@@ -951,6 +957,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             EventBus.getDefault().unregister(this);
         }
     }
+
     /*
               getScrollY 该方法用于测算ListView滑动的距离
             */
