@@ -28,6 +28,7 @@ public class RewardPopWindow extends PopupWindow {
     private LinearLayout applause;
     private LinearLayout kiss;
     private final TextView buy_golden;
+    private final TextView currency_balance;
 
     public RewardPopWindow(final Activity context, View.OnClickListener itemsOnClick) {
         super(context);
@@ -36,6 +37,7 @@ public class RewardPopWindow extends PopupWindow {
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         imageView = (ImageView) window.findViewById(R.id.close_pop);
         TextView sure = (TextView) window.findViewById(R.id.sure);
+        currency_balance = (TextView) window.findViewById(R.id.currency_balance);
         flower = window.findViewById(R.id.flower);
         flowers = window.findViewById(R.id.flowers);
         buy_golden = window.findViewById(R.id.buy_golden);

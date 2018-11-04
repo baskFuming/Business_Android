@@ -483,6 +483,30 @@ public interface PayService {
     );
 
     /**
+     * 发商机币红包
+     *
+     * @param timestamp
+     * @param token
+     * @param postscript
+     * @param total_amount
+     * @param total_package
+     * @param random_flag
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Im/sendBocHongbao")
+    Flowable<SendYFBean> sendBocHongbao(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("postscript") String postscript,
+            @Field("total_amount") String total_amount,
+            @Field("total_package") String total_package,
+            @Field("random_flag") int random_flag,
+            @Field("sign") String sign
+    );
+
+    /**
      * 查看红包剩余量接口
      *
      * @param timestamp

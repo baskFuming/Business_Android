@@ -130,10 +130,10 @@ public class ArticleCommentAdapter extends BaseAdapter {
                 SpannableStringBuilder spannable = new SpannableStringBuilder(list.get(position).commentsExcerpt.get(0).member.nickname);
                 spannable.append(":");
                 spannable.append(stringFilter(list.get(position).commentsExcerpt.get(0).content));
-                if (list.get(position).uid.equals(uid)) {
-                    spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                if (list.get(position).commentsExcerpt.get(0).member.user_id.equals(uid)) {
+                    spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 } else {
-                    spannable.setSpan(new TextClick(context, list.get(position).uid), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(0).member.user_id), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
                 holder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
                 holder.linear_child_comments.setVisibility(View.VISIBLE);
@@ -151,12 +151,12 @@ public class ArticleCommentAdapter extends BaseAdapter {
                 spannable1.append(stringFilter(list.get(position).commentsExcerpt.get(0).content));
                 spannable2.append(":");
                 spannable2.append(stringFilter(list.get(position).commentsExcerpt.get(1).content));
-                if (list.get(position).uid.equals(uid)) {
+                if (list.get(position).commentsExcerpt.get(0).member.user_id.equals(uid)) {
                     spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 } else {
-                    spannable1.setSpan(new TextClick(context, list.get(position).uid), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                    spannable2.setSpan(new TextClick(context, list.get(position).uid), 0, list.get(position).commentsExcerpt.get(1).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable1.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(0).member.user_id), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable2.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(1).member.user_id), 0, list.get(position).commentsExcerpt.get(1).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
                 holder.linear_child_comments.setVisibility(View.VISIBLE);
                 holder.look_more_comment.setVisibility(View.GONE);
@@ -177,12 +177,12 @@ public class ArticleCommentAdapter extends BaseAdapter {
                 spannable1.append(stringFilter(list.get(position).commentsExcerpt.get(0).content));
                 spannable2.append(":");
                 spannable2.append(stringFilter(list.get(position).commentsExcerpt.get(1).content));
-                if (list.get(position).uid.equals(uid)) {
+                if (list.get(position).commentsExcerpt.get(0).member.user_id.equals(uid)) {
                     spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                     spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 } else {
-                    spannable1.setSpan(new TextClick(context, list.get(position).uid), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                    spannable2.setSpan(new TextClick(context, list.get(position).uid), 0, list.get(position).commentsExcerpt.get(1).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable1.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(0).member.user_id), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable2.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(1).member.user_id), 0, list.get(position).commentsExcerpt.get(1).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
                 holder.look_more_comment.setVisibility(View.VISIBLE);
                 holder.look_more_comment.setText("查看" + list.get(position).comment_count + "条评论");

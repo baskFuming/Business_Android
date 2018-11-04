@@ -21,6 +21,7 @@ import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
@@ -478,6 +479,7 @@ public class SendFriendActivity extends BaseActivity<ISendFriendCircleActivity, 
 
     /**
      * 打赏列表
+     *
      * @param rewardLists
      */
     @Override
@@ -485,6 +487,15 @@ public class SendFriendActivity extends BaseActivity<ISendFriendCircleActivity, 
 
     }
 
+    /**
+     * 商机币余额
+     *
+     * @param businessCoinBean
+     */
+    @Override
+    public void showBalanceLog(BusinessCoinBean businessCoinBean) {
+
+    }
 
     //点击事件
     @OnClick({R.id.back, R.id.publish})

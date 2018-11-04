@@ -23,7 +23,7 @@ public class SendYfModel {
     private SharedPreferencesUtils sp;
 
     /**
-     * 发红包
+     * 发鞅分红包
      *
      * @param context
      * @param postscript
@@ -34,6 +34,36 @@ public class SendYfModel {
      * @throws IOException
      */
     public Flowable<SendYFBean> sendYf(Context context, String postscript, String total_amount, String total_package, int random_flag) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("postscript", postscript);
+        map.put("total_amount", total_amount);
+        map.put("total_package", total_package);
+        map.put("random_flag", String.valueOf(random_flag));
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        SignUtils.removeNullValue(map);
+        Flowable<SendYFBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(PayService.class, Api.url)
+                .sendHongbao(String.valueOf(timestamp), token, postscript, total_amount, total_package, random_flag, sign);
+        return flowable;
+    }
+
+    /**
+     * 发送商机币 红包
+     *
+     * @param context
+     * @param postscript
+     * @param total_amount
+     * @param total_package
+     * @param random_flag
+     * @return
+     * @throws IOException
+     */
+    public Flowable<SendYFBean> sendBocHongBao(Context context, String postscript, String total_amount, String total_package, int random_flag) throws IOException {
         sp = SharedPreferencesUtils.getUtil();
         long timestamp = new Date().getTime() / 1000;//时间戳
         String token = (String) sp.getKey(context, "dialog", "");

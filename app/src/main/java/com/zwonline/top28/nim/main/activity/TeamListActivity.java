@@ -43,6 +43,7 @@ import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.zwonline.top28.R;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.nim.session.SessionHelper;
+import com.zwonline.top28.nim.shangjibi.SJBAction;
 import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.LogUtils;
@@ -134,6 +135,7 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
                 } else if (has_permission.equals(BizConstant.ALREADY_FAVORITE)) {
                     actions.add(new YangFenAction());
                 }
+                actions.add(new SJBAction());
                 sessionCustomization.actions = actions;
                 NimUIKit.startChatting(getApplicationContext(), lists.get(groupPosition).get(childPosition).getId(), SessionTypeEnum.Team, sessionCustomization, null);
                 SessionHelper.startTeamSession(TeamListActivity.this, lists.get(groupPosition).get(childPosition).getId());

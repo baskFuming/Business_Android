@@ -42,6 +42,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 
 /**
  * 抢红包页面
+ * 1是商机币红包2鞅分红包
  */
 public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPresenter> implements ISendYFActivity {
 
@@ -61,6 +62,9 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
     private String redpackType;
     private int page = 1;
     private SpringView snatchSpring;
+    private String packageType;//区别商机币还是鞅分
+    private TextView title;
+    private TextView pointTypes; //判断是鞅分红包还是商机币红包
 
     @Override
     protected void init() {
@@ -71,11 +75,21 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
         hongbaoId = getIntent().getStringExtra("hongbao_id");
         //红包类型
         redpackType = getIntent().getStringExtra("redpackType");
+        //判断是鞅分红包还是商机币红包
+        packageType = getIntent().getStringExtra("packge_type");
         headerView = getLayoutInflater().inflate(R.layout.snatch_head, null);
+        initListView();
         snatchSpring.setType(SpringView.Type.FOLLOW);
         snatchSpring.setFooter(new DefaultFooter(getApplicationContext()));
         snatchSpring.setHeader(new DefaultHeader(getApplicationContext()));
-        initListView();
+        title = (TextView) findViewById(R.id.title);
+        if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
+            title.setText("商机币红包");
+            pointTypes.setText("商机币");
+        } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.MOBAN)) {
+            title.setText("鞅分红包");
+            pointTypes.setText("鞅分");
+        }
         if (StringUtil.isNotEmpty(hongbaoId)) {
             presenter.mHongBaoLeftCount(getApplicationContext(), hongbaoId);//查询红包的请求
             presenter.mSnatchYangFen(getApplicationContext(), hongbaoId, page);
@@ -93,6 +107,7 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
         describe = (TextView) headerView.findViewById(R.id.describe);
         yangfenCount = (TextView) headerView.findViewById(R.id.yangfen_count);
         getYf = (TextView) headerView.findViewById(R.id.get_yf);
+        pointTypes = (TextView) headerView.findViewById(R.id.point_types);
         sendUserName.setText(getIntent().getStringExtra("send_name"));
         describe.setText(getIntent().getStringExtra("title"));
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
@@ -135,6 +150,7 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
             case R.id.red_packet_record://红包记录
                 Intent intent = new Intent(SnatchYangFenActivity.this, YangFenRecordActivity.class);
                 intent.putExtra("hongbao_id", hongbaoId);
+                intent.putExtra("packge_type", packageType);
                 startActivity(intent);
                 break;
         }
@@ -191,7 +207,11 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
      */
     @Override
     public void showHongBaoLeftCount(HongBaoLeftCountBean hongBaoLeftCountBean) {
-        getYf.setText("已领取" + hongBaoLeftCountBean.data.hasGetPackageCount + "/" + hongBaoLeftCountBean.data.totalPackageCount + ", 共" + hongBaoLeftCountBean.data.hasGetAmount + "/" + hongBaoLeftCountBean.data.totalAmount + "鞅分");
+        if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
+            getYf.setText("已领取" + hongBaoLeftCountBean.data.hasGetPackageCount + "/" + hongBaoLeftCountBean.data.totalPackageCount + ", 共" + hongBaoLeftCountBean.data.hasGetAmount + "/" + hongBaoLeftCountBean.data.totalAmount + "商机币");
+        } else {
+            getYf.setText("已领取" + hongBaoLeftCountBean.data.hasGetPackageCount + "/" + hongBaoLeftCountBean.data.totalPackageCount + ", 共" + hongBaoLeftCountBean.data.hasGetAmount + "/" + hongBaoLeftCountBean.data.totalAmount + "鞅分");
+        }
         if (StringUtil.isEmpty(hongBaoLeftCountBean.data.getAmount) || hongBaoLeftCountBean.data.getAmount.equals(BizConstant.ENTERPRISE_tRUE)) {
             yangfenCount.setText("未抢到");
             yangfenCount.setTextSize(20);
@@ -201,7 +221,7 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
     }
 
     @Override
-    public void showYFRecord(List<YfRecordBean.DataBean.ListBean> yfRecordBean,String ReceiveHong) {
+    public void showYFRecord(List<YfRecordBean.DataBean.ListBean> yfRecordBean, String ReceiveHong) {
 
     }
 

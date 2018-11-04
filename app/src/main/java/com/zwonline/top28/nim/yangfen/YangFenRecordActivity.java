@@ -23,6 +23,7 @@ import com.zwonline.top28.bean.HongBaoLeftCountBean;
 import com.zwonline.top28.bean.HongBaoLogBean;
 import com.zwonline.top28.bean.SendYFBean;
 import com.zwonline.top28.bean.YfRecordBean;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.SendYFPresenter;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
@@ -35,6 +36,10 @@ import java.util.List;
 
 import butterknife.OnClick;
 
+/**
+ * 红包记录
+ * 1是商机币红包2鞅分红包
+ */
 public class YangFenRecordActivity extends BaseActivity<ISendYFActivity, SendYFPresenter> implements ISendYFActivity {
 
     private ListView redRecordList;
@@ -51,12 +56,15 @@ public class YangFenRecordActivity extends BaseActivity<ISendYFActivity, SendYFP
     private TextView yfCount;
     private ImageViewPlus userHead;
     private SpringView hbRecordSpring;
+    private String packgeType; //判断是鞅分红包还是商机币红包
 
     @Override
     protected void init() {
         StatusBarUtil.setColor(this, getResources().getColor(R.color.red_title), 0);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
         list = new ArrayList<>();
+        //判断是鞅分红包还是商机币红包
+        packgeType = getIntent().getStringExtra("packge_type");
         sp = SharedPreferencesUtils.getUtil();
         nickname = (String) sp.getKey(getApplicationContext(), "nickname", "");
         avatar = (String) sp.getKey(getApplicationContext(), "avatar", "");
@@ -79,7 +87,11 @@ public class YangFenRecordActivity extends BaseActivity<ISendYFActivity, SendYFP
         yfCount = (TextView) headerView.findViewById(R.id.yf_count);
         userName = (TextView) headerView.findViewById(R.id.user_name);
         if (StringUtil.isNotEmpty(nickname)) {
-            userName.setText(nickname + "共收到鞅分");
+            if (StringUtil.isNotEmpty(packgeType) && packgeType.equals(BizConstant.IS_SUC)) {
+                userName.setText(nickname + "共收到商机币");
+            } else {
+                userName.setText(nickname + "共收到鞅分");
+            }
         }
         if (StringUtil.isNotEmpty(avatar)) {
             RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);

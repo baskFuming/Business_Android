@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -38,6 +39,7 @@ import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
@@ -180,6 +182,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
     /**
      * xRecyclerview配置
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void recyclerViewData() {
         newcontentRecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         newcontentRecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -196,9 +199,9 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
         newcontentRecy.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (getScrollY()>(scrollY+oldScrollY)){
+                if (getScrollY() > (scrollY + oldScrollY)) {
                     floatingActionButton.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     floatingActionButton.setVisibility(View.GONE);
                 }
             }
@@ -328,6 +331,16 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
      */
     @Override
     public void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists) {
+
+    }
+
+    /**
+     * 商机币余额
+     *
+     * @param businessCoinBean
+     */
+    @Override
+    public void showBalanceLog(BusinessCoinBean businessCoinBean) {
 
     }
 
@@ -1100,6 +1113,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
             EventBus.getDefault().unregister(this);
         }
     }
+
     /*
           getScrollY 该方法用于测算ListView滑动的距离
         */

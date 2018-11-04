@@ -216,6 +216,7 @@
     <string name="integral_verification_code">验证码</string>
     <string name="integral_get_verfiy_code">获取验证码</string>
     <string name="opportunities_currency">商机币</string>
+    <string name="opportunities_currency_red_packet">商机币红包</string>
     <!--coin info end-->
 
     <!--project info start-->

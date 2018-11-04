@@ -62,6 +62,7 @@ import com.zwonline.top28.nim.contact.constant.UserConstant;
 import com.zwonline.top28.nim.contact.helper.UserUpdateHelper;
 import com.zwonline.top28.nim.main.model.Extras;
 import com.zwonline.top28.nim.session.SessionHelper;
+import com.zwonline.top28.nim.shangjibi.SJBAction;
 import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.tip.toast.ToastUtil;
@@ -718,6 +719,7 @@ public class UserProfileActivity extends UI {
         } else if (has_permission.equals(BizConstant.ALREADY_FAVORITE)) {
             actions.add(new YangFenAction());
         }
+        actions.add(new SJBAction());
         sessionCustomization.actions = actions;
         NimUIKit.startChatting(getApplicationContext(), account, SessionTypeEnum.P2P, sessionCustomization, null);
         //单聊

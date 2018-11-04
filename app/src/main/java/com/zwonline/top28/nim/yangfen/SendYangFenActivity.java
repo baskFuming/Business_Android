@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -68,6 +69,10 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
     private long group_num;
     private SharedPreferencesUtils sp;
     private String token;
+    private RelativeLayout red_num;
+    private LinearLayout pin_linear;
+    private String packageType;//红包类型
+    private TextView pointType;
 
     @Override
     protected void init() {
@@ -76,6 +81,7 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(getApplicationContext(), "dialog", "");
         group_num = Long.parseLong(getIntent().getStringExtra("group_num"));
+        packageType = getIntent().getStringExtra("package_type");
         initView();
         yangfenCount.addTextChangedListener(textWatcher);
         pointsEdittext.addTextChangedListener(textWatcher);
@@ -114,6 +120,39 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
         redContent = (EditText) findViewById(R.id.red_content);
         showYfNum = (TextView) findViewById(R.id.show_yf_num);
         sendYF = (Button) findViewById(R.id.send_yf);
+        red_num = (RelativeLayout) findViewById(R.id.red_num);
+        pin_linear = (LinearLayout) findViewById(R.id.pin_linear);
+        pointType = (TextView) findViewById(R.id.point_type);
+        //判断是鞅分红包还是商机币红包
+        if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
+            //商机币红包
+            title.setText("商机币红包");
+            yfAll.setText("总商机币");
+            yangfenCount.setHint("商机币数量");
+            yangfenTv.setText("币");
+            pointType.setText("商机币:");
+        } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.RECOMMEND)) {
+            //鞅分红包
+            title.setText("鞅分红包");
+            yfAll.setText("总鞅分：");
+            yangfenCount.setHint("鞅分数量");
+            yangfenTv.setText("分");
+            pointType.setText("鞅分:");
+        }
+        //判断是单人还是群组
+        if (StringUtil.isNotEmpty(String.valueOf(group_num)) && group_num == 1) {
+
+            red_num.setVisibility(View.GONE);
+            yfAll.setText("单个红包");
+            pin.setVisibility(View.GONE);
+            pin_linear.setVisibility(View.GONE);
+            groupCount.setVisibility(View.GONE);
+        } else {
+            red_num.setVisibility(View.VISIBLE);
+            pin_linear.setVisibility(View.VISIBLE);
+            groupCount.setVisibility(View.VISIBLE);
+            pin.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -133,7 +172,13 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                 if (randomFlag) {
                     pinTv.setText("当前为拼手气红包 ");
                     ordinaryPin.setText("改为普通红包");
-                    yfAll.setText("总鞅分");
+                    if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
+                        //商机币红包
+                        yfAll.setText("总商机币");
+                    } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.RECOMMEND)) {
+                        //鞅分红包
+                        yfAll.setText("总鞅分");
+                    }
                     pin.setVisibility(View.VISIBLE);
                     yangfenCount.setText("");
                     pointsEdittext.setText("");
@@ -163,7 +208,7 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
 //                            ToastUtil.showToast(getApplicationContext(),showYfNum.getText().toString());
                         }
                     } else {
-                        ToastUtil.showToast(getApplicationContext(), "鞅分数量不能为空");
+                        ToastUtil.showToast(getApplicationContext(), "数量不能为空");
                     }
                 } else {
                     ToastUtil.showToast(getApplicationContext(), "红包个数不能为空");
@@ -206,7 +251,7 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
     }
 
     @Override
-    public void showYFRecord(List<YfRecordBean.DataBean.ListBean> yfRecordBean,String ReceiveHong) {
+    public void showYFRecord(List<YfRecordBean.DataBean.ListBean> yfRecordBean, String ReceiveHong) {
 
     }
 
@@ -249,22 +294,22 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                                       int after) {
             String yangfenCounts = yangfenCount.getText().toString().trim();
             String pointsEdittexts = pointsEdittext.getText().toString().trim();
-            if (StringUtil.isNotEmpty(yangfenCounts)){
+            if (StringUtil.isNotEmpty(yangfenCounts)) {
                 if (randomFlag) {
                     //随机红包
                     showYfNum.setText(yangfenCount.getText().toString().toString());
-                }else {
-                    if (StringUtil.isNotEmpty(pointsEdittexts)){
+                } else {
+                    if (StringUtil.isNotEmpty(pointsEdittexts)) {
                         Double parseDouble = Double.parseDouble(yangfenCounts);
                         Double parseDoubles = Double.parseDouble(pointsEdittexts);
                         Double cp = NumberOperateUtil.mul(parseDouble, parseDoubles);
                         //普通红包
                         showYfNum.setText(cp + "");
-                    }else {
+                    } else {
                         showYfNum.setText("0");
                     }
                 }
-            }else {
+            } else {
                 showYfNum.setText("0");
             }
         }
@@ -273,22 +318,22 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
         public void afterTextChanged(Editable s) {
             String yangfenCounts = yangfenCount.getText().toString().trim();
             String pointsEdittexts = pointsEdittext.getText().toString().trim();
-            if (StringUtil.isNotEmpty(yangfenCounts)){
+            if (StringUtil.isNotEmpty(yangfenCounts)) {
                 if (randomFlag) {
                     //随机红包
                     showYfNum.setText(yangfenCount.getText().toString().toString());
-                }else {
-                    if (StringUtil.isNotEmpty(pointsEdittexts)){
+                } else {
+                    if (StringUtil.isNotEmpty(pointsEdittexts)) {
                         Double parseDouble = Double.parseDouble(yangfenCounts);
                         Double parseDoubles = Double.parseDouble(pointsEdittexts);
                         Double cp = NumberOperateUtil.mul(parseDouble, parseDoubles);
                         //普通红包
                         showYfNum.setText(cp + "");
-                    }else {
+                    } else {
                         showYfNum.setText("0");
                     }
                 }
-            }else {
+            } else {
                 showYfNum.setText("0");
             }
 //            if (randomFlag) {
@@ -333,17 +378,17 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                 //随机红包
 //                showYfNum.setText(yangfenCount.getText().toString().toString());
             } else {
-                if (StringUtil.isNotEmpty(yangfenCounts)){
-                    if (StringUtil.isNotEmpty(pointsEdittexts)){
+                if (StringUtil.isNotEmpty(yangfenCounts)) {
+                    if (StringUtil.isNotEmpty(pointsEdittexts)) {
                         Double parseDouble = Double.parseDouble(yangfenCounts);
                         Double parseDoubles = Double.parseDouble(pointsEdittexts);
                         Double cp = NumberOperateUtil.mul(parseDouble, parseDoubles);
                         //普通红包
                         showYfNum.setText(cp + "");
-                    }else {
+                    } else {
                         showYfNum.setText(0);
                     }
-                }else {
+                } else {
                     showYfNum.setText(0);
                 }
 
@@ -360,17 +405,17 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                 //随机红包
 //                showYfNum.setText(yangfenCount.getText().toString().toString());
             } else {
-                if (StringUtil.isNotEmpty(yangfenCounts)){
-                    if (StringUtil.isNotEmpty(pointsEdittexts)){
+                if (StringUtil.isNotEmpty(yangfenCounts)) {
+                    if (StringUtil.isNotEmpty(pointsEdittexts)) {
                         Double parseDouble = Double.parseDouble(yangfenCounts);
                         Double parseDoubles = Double.parseDouble(pointsEdittexts);
                         Double cp = NumberOperateUtil.mul(parseDouble, parseDoubles);
                         //普通红包
                         showYfNum.setText(cp + "");
-                    }else {
+                    } else {
                         showYfNum.setText(0);
                     }
-                }else {
+                } else {
                     showYfNum.setText(0);
                 }
 

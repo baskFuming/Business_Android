@@ -13,7 +13,7 @@ public class TextClick extends ClickableSpan {
     public Context context;
     public String uid;
     public TextClick(Context context,String uid) {
-//        super();
+        super();
         this.context=context;
         this.uid=uid;
     }

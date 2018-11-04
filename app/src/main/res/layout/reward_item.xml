@@ -15,8 +15,8 @@
 
         <LinearLayout
             android:id="@+id/background"
-            android:layout_width="345dp"
-            android:layout_height="514dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="60dp"
             android:background="@drawable/rectangle_shape_gay"
@@ -31,12 +31,13 @@
                 android:textColor="#3D3D3D"
                 android:textSize="14sp" />
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="50dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="31dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
@@ -90,15 +91,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
-                android:layout_marginTop="5dp"
                 android:paddingRight="15dp">
 
                 <LinearLayout
                     android:id="@+id/flower"
                     android:layout_width="0dp"
                     android:layout_height="108dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:focusable="true"
                     android:orientation="vertical">
@@ -168,8 +170,11 @@
                     android:background="#f5f5f5"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:hint="请选择数量"
+                    android:hint="0"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="10"
                     android:paddingLeft="@dimen/dp_10"
+                    android:text="1"
                     android:textColor="#3D3D3D"
                     android:textColorHint="#D5D5D5"
                     android:textSize="16sp" />
@@ -193,7 +198,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="1加油=1商机币（1商机币=0.1元）"
+                android:text="价格：1商机币"
                 android:textColor="#ff3d3d3d"
                 android:textSize="13sp" />
 
@@ -255,5 +260,13 @@
                 android:src="@mipmap/no_photo_male" />
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/currency_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="110dp"
+            android:textColor="#3D3D3D"
+            android:textSize="14sp" />
     </RelativeLayout>
 </ScrollView>

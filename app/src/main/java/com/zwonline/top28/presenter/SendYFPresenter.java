@@ -72,6 +72,44 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
         }
     }
 
+    /**
+     * 发送商机币红包
+     *
+     * @param context
+     * @param postscript
+     * @param total_amount
+     * @param total_package
+     * @param random_flag
+     */
+    public void mBocHongBao(Context context, String postscript, String total_amount, String total_package, int random_flag) {
+        try {
+
+            Flowable<SendYFBean> flowable = sendYfModel.sendBocHongBao(context, postscript, total_amount, total_package, random_flag);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<SendYFBean>() {
+                        @Override
+                        public void onNext(SendYFBean sendYFBean) {
+                            Log.i("sendYFBean==", sendYFBean.msg);
+                            iSendYFActivity.showYfdata(sendYFBean);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void mSendYFs(Context context, String postscript, String total_amount, String total_package, int random_flag) {
         try {
@@ -103,7 +141,6 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
             e.printStackTrace();
         }
     }
-
 
 
     /**
@@ -175,14 +212,14 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
     public void mYfRecord(Context context, int page) {
         try {
 
-            Flowable<YfRecordBean> flowable = sendYfModel.yfHongBaoRecord(context,page);
+            Flowable<YfRecordBean> flowable = sendYfModel.yfHongBaoRecord(context, page);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<YfRecordBean>() {
                         @Override
                         public void onNext(YfRecordBean yfRecordBean) {
                             Log.i("sendYFBean==", yfRecordBean.msg);
-                            iSendYFActivity.showYFRecord(yfRecordBean.data.list,yfRecordBean.data.totalReceiveHongbaoAmount);
+                            iSendYFActivity.showYFRecord(yfRecordBean.data.list, yfRecordBean.data.totalReceiveHongbaoAmount);
                         }
 
                         @Override

@@ -31,6 +31,7 @@ public class BusinessCoinBean {
         public String cost_day;
         public String balance;
         public String freeze_amount;
+
 //        public List<ListBean> list;
 
 //        public static class ListBean {

@@ -136,7 +136,7 @@ public class MySettingActivity extends BaseActivity {
         clearProgress = (ProgressBar) findViewById(R.id.clear_progress);
         bind = (TextView) findViewById(R.id.bind);
         clearDialog = (LinearLayout) findViewById(R.id.clear_dialog);
-        TextView clearTv= (TextView) findViewById(R.id.clear_tv);
+        TextView clearTv = (TextView) findViewById(R.id.clear_tv);
         clearTv.setSelected(true);
         if (StringUtil.isNotEmpty(mobile)) {
             bind.setText("已绑定");
@@ -161,7 +161,7 @@ public class MySettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.bind_phone, R.id.about_owen, R.id.lin_discash})
+    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.bind_phone, R.id.about_owen, R.id.lin_discash, R.id.look_playing})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -239,6 +239,14 @@ public class MySettingActivity extends BaseActivity {
                 new Thread(clearCache).start();
                 clearDialog.setVisibility(View.VISIBLE);
                 break;
+            case R.id.look_playing://查看玩法
+                Intent lookIntent=new Intent(MySettingActivity.this,GuideActivity.class);
+                lookIntent.putExtra("type",BizConstant.RECOMMEND);
+                startActivity(lookIntent);
+                overridePendingTransition(R.anim.activity_right_in,R.anim.activity_left_out);
+                break;
+            default:
+                break;
         }
 
     }
@@ -285,7 +293,7 @@ public class MySettingActivity extends BaseActivity {
 
                 CacheDataManager.clearAllCache(MySettingActivity.this);
 
-                Thread.sleep(3000);
+                Thread.sleep(2000);
 
                 if (CacheDataManager.getTotalCacheSize(MySettingActivity.this).startsWith("0")) {
 

@@ -54,6 +54,7 @@ import com.zwonline.top28.nim.DemoCache;
 import com.zwonline.top28.nim.contact.activity.RobotProfileActivity;
 import com.zwonline.top28.nim.contact.activity.UserProfileActivity;
 import com.zwonline.top28.nim.main.fragment.SessionListFragment;
+import com.zwonline.top28.nim.session.action.GuessAction;
 import com.zwonline.top28.nim.session.action.TeamAVChatAction;
 import com.zwonline.top28.nim.session.activity.AckMsgInfoActivity;
 import com.zwonline.top28.nim.session.activity.MessageHistoryActivity;
@@ -71,7 +72,11 @@ import com.zwonline.top28.nim.session.viewholder.MsgViewHolderGuess;
 import com.zwonline.top28.nim.session.viewholder.MsgViewHolderRTS;
 import com.zwonline.top28.nim.session.viewholder.MsgViewHolderSticker;
 import com.zwonline.top28.nim.session.viewholder.MsgViewHolderTip;
+import com.zwonline.top28.nim.shangjibi.SJBAction;
+import com.zwonline.top28.nim.shangjibi.SJBAttachment;
+import com.zwonline.top28.nim.shangjibi.SJBViewHolderLink;
 import com.zwonline.top28.nim.team.activity.AdvancedTeamJoinActivity;
+import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.nim.yangfen.YangFenAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenViewHolderLink;
 
@@ -103,7 +108,7 @@ public class SessionHelper {
 
         // 注册各种扩展消息类型的显示ViewHolder
         registerViewHolders();
-        SessionListFragment  sessionListFragment=new SessionListFragment();
+        SessionListFragment sessionListFragment = new SessionListFragment();
         // 设置会话中点击事件响应处理
         setSessionListener();
 
@@ -180,13 +185,14 @@ public class SessionHelper {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 //                actions.add(new AVChatAction(AVChatType.AUDIO));
 //                actions.add(new AVChatAction(AVChatType.VIDEO));
-//            }
+////            }
 //            actions.add(new RTSAction());
 //            actions.add(new SnapChatAction());
 //            actions.add(new GuessAction());
-//            actions.add(new YangFenAction());
+            actions.add(new YangFenAction());
 //            actions.add(new FileAction());
-//            actions.add(new TipAction());
+//            actions.add(new TipAction());\
+            actions.add(new SJBAction());
 //            if (NIMRedPacketClient.isEnable()) {
 //                actions.add(new RedPacketAction());
 //            }
@@ -262,6 +268,7 @@ public class SessionHelper {
 //            actions.add(new SnapChatAction());
 //            actions.add(new GuessAction());
 //            actions.add(new FileAction());
+            actions.add(new SJBAction());
             myP2pCustomization.actions = actions;
             myP2pCustomization.withSticker = true;
             // 定制ActionBar右边的按钮，可以加多个
@@ -384,6 +391,7 @@ public class SessionHelper {
 //            actions.add(new FileAction());
 //            if (NIMRedPacketClient.isEnable()) {
 //            actions.add(new YangFenAction());
+            actions.add(new SJBAction());
 //            actions.add(new RedPacketAction());
 //            }
 //            actions.add(new TipAction());
@@ -422,6 +430,7 @@ public class SessionHelper {
 //                actions.add(new RedPacketAction());
 //            }
 //            actions.add(new YangFenAction());
+            actions.add(new SJBAction());
 //            if (NIMRedPacketClient.isEnable()) {
 //            }
 //            actions.add(new TipAction());
@@ -433,12 +442,12 @@ public class SessionHelper {
 
                 @Override
                 public void onSelectedAccountsResult(ArrayList<String> selectedAccounts) {
-//                    avChatAction.onSelectedAccountsResult(selectedAccounts);
+                    avChatAction.onSelectedAccountsResult(selectedAccounts);
                 }
 
                 @Override
                 public void onSelectedAccountFail() {
-//                    avChatAction.onSelectedAccountFail();
+                    avChatAction.onSelectedAccountFail();
                 }
             });
 
@@ -470,7 +479,8 @@ public class SessionHelper {
 
     private static void registerRedPacketViewHolder() {
 //        if (NIMRedPacketClient.isEnable()) {
-            NimUIKit.registerMsgItemViewHolder(YangFenAttachment.class, YangFenViewHolderLink.class);
+        NimUIKit.registerMsgItemViewHolder(YangFenAttachment.class, YangFenViewHolderLink.class);
+        NimUIKit.registerMsgItemViewHolder(SJBAttachment.class, SJBViewHolderLink.class);
 //            NimUIKit.registerMsgItemViewHolder(YangFenAttachment.class, YangFenViewHolderLink.class);
 //        } else {
 //            NimUIKit.registerMsgItemViewHolder(YangFenAttachment.class, YangFenViewHolderLink.class);

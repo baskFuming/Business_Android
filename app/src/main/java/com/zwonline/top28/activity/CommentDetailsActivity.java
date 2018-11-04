@@ -36,6 +36,7 @@ import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.ArticleCommentBean;
 import com.zwonline.top28.bean.AttentionBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.GiftBean;
 import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
@@ -396,6 +397,16 @@ public class CommentDetailsActivity extends BaseActivity<IHomeDetails, HomeDetai
 
     @Override
     public void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists) {
+
+    }
+
+    /**
+     * 商机币余额
+     *
+     * @param rewardListBean
+     */
+    @Override
+    public void showBocBanlance(BusinessCoinBean rewardListBean) {
 
     }
 

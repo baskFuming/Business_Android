@@ -21,6 +21,7 @@ public class SendYFBean implements Serializable {
     public int status;
     public String msg;
     public DataBean data;
+
     public static class DataBean {
         /**
          * hongbao_id : 1

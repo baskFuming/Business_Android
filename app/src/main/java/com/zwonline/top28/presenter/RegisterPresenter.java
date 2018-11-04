@@ -166,20 +166,28 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
             Flowable<AttentionBean> flowable = model.mVerifySmsCode(context, mobile, code, token);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSubscriber<AttentionBean>() {
+                    .subscribeWith(new BaseDisposableSubscriber<AttentionBean>(context) {
+
                         @Override
-                        public void onNext(AttentionBean registerBean) {
+                        protected void onBaseNext(AttentionBean registerBean) {
                             iRegisterActivity.showVerifySmsCode(registerBean);
                         }
 
                         @Override
-                        public void onError(Throwable t) {
+                        protected String getTitleMsg() {
+                            return null;
                         }
 
                         @Override
-                        public void onComplete() {
+                        protected boolean isNeedProgressDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
 
                         }
+
                     });
         } catch (IOException e) {
             e.printStackTrace();
@@ -199,20 +207,28 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
             Flowable<AttentionBean> flowable = model.mBindMobile(context, mobile, union_id, token);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSubscriber<AttentionBean>() {
+                    .subscribeWith(new BaseDisposableSubscriber<AttentionBean>(context) {
+
                         @Override
-                        public void onNext(AttentionBean registerBean) {
+                        protected void onBaseNext(AttentionBean registerBean) {
                             iRegisterActivity.showBindMobile(registerBean);
                         }
 
                         @Override
-                        public void onError(Throwable t) {
+                        protected String getTitleMsg() {
+                            return null;
                         }
 
                         @Override
-                        public void onComplete() {
+                        protected boolean isNeedProgressDialog() {
+                            return false;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
 
                         }
+
                     });
         } catch (IOException e) {
             e.printStackTrace();

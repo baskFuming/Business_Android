@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachmentParser;
+import com.zwonline.top28.nim.shangjibi.SJBAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenAttachment;
 
 /**
  * Created by zhoujianghua on 2015/4/9.
+ * 解析器
  */
 public class CustomAttachParser implements MsgAttachmentParser {
 
@@ -41,6 +43,9 @@ public class CustomAttachParser implements MsgAttachmentParser {
                     break;
                 case CustomAttachmentType.YangFen:
                     attachment = new YangFenAttachment();
+                    break;
+                case CustomAttachmentType.SHANGJIBI:
+                    attachment = new SJBAttachment();
                     break;
                 default:
                     attachment = new DefaultCustomAttachment();

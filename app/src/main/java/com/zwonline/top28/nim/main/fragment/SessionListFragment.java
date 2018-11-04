@@ -73,6 +73,8 @@ import com.zwonline.top28.nim.session.extension.RedPacketAttachment;
 import com.zwonline.top28.nim.session.extension.RedPacketOpenedAttachment;
 import com.zwonline.top28.nim.session.extension.SnapChatAttachment;
 import com.zwonline.top28.nim.session.extension.StickerAttachment;
+import com.zwonline.top28.nim.shangjibi.SJBAction;
+import com.zwonline.top28.nim.shangjibi.SJBAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.nim.yangfen.YangFenAttachment;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
@@ -165,9 +167,9 @@ public class SessionListFragment extends TabFragment {
 //        private ImageViewPluls advertisings;
 //        private RelativeLayout adLayout;
 //        private TextView adTv;
-        adLayout=new RelativeLayout(getActivity());
-        advertisings=new ImageViewPluls(getActivity());
-        adTv=new TextView(getActivity());
+        adLayout = new RelativeLayout(getActivity());
+        advertisings = new ImageViewPluls(getActivity());
+        adTv = new TextView(getActivity());
         notice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -342,11 +344,11 @@ public class SessionListFragment extends TabFragment {
             }
 
             @Override
-            public void yunYingGun(RelativeLayout linearLayout, ImageViewPluls imageView,TextView textView) {
+            public void yunYingGun(RelativeLayout linearLayout, ImageViewPluls imageView, TextView textView) {
 //
                 advertisings = imageView;
                 adLayout = linearLayout;
-                adTv=textView;
+                adTv = textView;
             }
 
             /**
@@ -386,6 +388,7 @@ public class SessionListFragment extends TabFragment {
                 } else if (has_permission.equals(BizConstant.ALREADY_FAVORITE)) {
                     actions.add(new YangFenAction());
                 }
+                actions.add(new SJBAction());
                 sessionCustomization.actions = actions;
 
                 // 回调函数，以供打开会话窗口时传入定制化参数，或者做其他动作
@@ -427,6 +430,8 @@ public class SessionListFragment extends TabFragment {
                     return "[红包消息]";
                 } else if (attachment instanceof YangFenAttachment) {
                     return "[红包消息]";
+                } else if (attachment instanceof SJBAttachment) {
+                    return "[商机币红包消息]";
 
                 } else if (attachment instanceof RedPacketOpenedAttachment) {
                     return ((RedPacketOpenedAttachment) attachment).getDesc(recentContact.getSessionType(), recentContact.getContactId());
@@ -534,9 +539,9 @@ public class SessionListFragment extends TabFragment {
                     public void onNext(BannerAdBean attentionBean) {
                         if (attentionBean.status == 1) {
                             String is_show = attentionBean.data.is_show;
-                            if (StringUtil.isNotEmpty(is_show)&&is_show.equals(BizConstant.IS_FAIL)){
+                            if (StringUtil.isNotEmpty(is_show) && is_show.equals(BizConstant.IS_FAIL)) {
                                 adLayout.setVisibility(View.GONE);
-                            }else if (StringUtil.isNotEmpty(is_show)&&is_show.equals(BizConstant.IS_SUC)){
+                            } else if (StringUtil.isNotEmpty(is_show) && is_show.equals(BizConstant.IS_SUC)) {
                                 adLayout.setVisibility(View.VISIBLE);
                             }
                             RequestOptions requestOption = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.color.backgroud_zanwei);

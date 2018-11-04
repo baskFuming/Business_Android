@@ -3,6 +3,7 @@ package com.zwonline.top28.view;
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.ArticleCommentBean;
 import com.zwonline.top28.bean.AttentionBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.GiftBean;
 import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
@@ -46,6 +47,7 @@ public interface IHomeDetails {
      * @param articleCommentBean
      */
     void onError(AddCommentBean articleCommentBean);
+
     /**
      * 礼物数量
      *
@@ -59,6 +61,7 @@ public interface IHomeDetails {
      * @param giftBean
      */
     void showGift(GiftBean giftBean);
+
     /**
      * 打赏接口
      *
@@ -72,4 +75,11 @@ public interface IHomeDetails {
      * @param rewardLists
      */
     void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists);
+
+    /**
+     * 商机币余额
+     *
+     * @param rewardListBean
+     */
+    void showBocBanlance(BusinessCoinBean rewardListBean);
 }

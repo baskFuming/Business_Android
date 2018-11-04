@@ -40,7 +40,6 @@
                     android:ellipsize="end"
                     android:gravity="center_horizontal"
                     android:lines="1"
-                    android:text="阿发阿发股放啊发嘎嘎复古发发发发发啊发发打打工的国家机关大发发"
                     android:textColor="#121213"
                     android:layout_marginLeft="20dp"
                     android:textSize="16sp" />
@@ -85,6 +84,7 @@
                     android:textSize="38sp" />
 
                 <TextView
+                    android:id="@+id/point_types"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"

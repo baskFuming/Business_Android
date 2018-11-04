@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -35,6 +36,7 @@ import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
@@ -163,6 +165,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
     /**
      * xRecyclerview配置
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void recyclerViewData() {
         newcontentRecy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         newcontentRecy.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -699,6 +702,15 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
 
     }
 
+    /**
+     * 商机币余额
+     *
+     * @param businessCoinBean
+     */
+    @Override
+    public void showBalanceLog(BusinessCoinBean businessCoinBean) {
+
+    }
 
     @Override
     public void showFeedBack(SettingBean settingBean) {

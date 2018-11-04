@@ -5,6 +5,7 @@ import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
@@ -219,4 +220,11 @@ public interface ISendFriendCircleActivity {
      * @param rewardLists
      */
     void showGiftList(List<RewardListBean.DataBean.ListBean> rewardLists);
+
+    /**
+     * 商机币余额
+     *
+     * @param businessCoinBean
+     */
+    void showBalanceLog(BusinessCoinBean businessCoinBean);
 }

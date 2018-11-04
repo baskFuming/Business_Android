@@ -62,6 +62,8 @@ import com.zwonline.top28.nim.event.DemoOnlineStateContentProvider;
 import com.zwonline.top28.nim.mixpush.DemoPushContentProvider;
 import com.zwonline.top28.nim.session.SessionHelper;
 import com.zwonline.top28.nim.session.extension.CustomAttachParser;
+import com.zwonline.top28.nim.shangjibi.SJBAttachment;
+import com.zwonline.top28.nim.shangjibi.SJBViewHolderLink;
 import com.zwonline.top28.nim.yangfen.YangFenAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenViewHolderLink;
 import com.zwonline.top28.utils.GlideImageLoader;
@@ -237,6 +239,7 @@ public class APP extends Application {
         NimUIKit.setCustomPushContentProvider(new DemoPushContentProvider());
         NIMClient.getService(MsgService.class).registerCustomAttachmentParser(new CustomAttachParser());
         NimUIKit.registerMsgItemViewHolder(YangFenAttachment.class, YangFenViewHolderLink.class);
+        NimUIKit.registerMsgItemViewHolder(SJBAttachment.class, SJBViewHolderLink.class);
         NimUIKit.setOnlineStateContentProvider(new DemoOnlineStateContentProvider());
 
         NimUIKit.login(loginInfo(), new RequestCallback<LoginInfo>() {

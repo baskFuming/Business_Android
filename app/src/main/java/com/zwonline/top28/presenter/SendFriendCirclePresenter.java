@@ -10,6 +10,7 @@ import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
@@ -25,6 +26,7 @@ import com.zwonline.top28.bean.SendNewMomentBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShieldUserBean;
 import com.zwonline.top28.model.SendFriendCircleModel;
+import com.zwonline.top28.utils.LogUtils;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.ISendFriendCircleActivity;
 
@@ -1057,25 +1059,32 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
             Flowable<AttentionBean> flowable = sendFriendCircleModel.mSendGifts(context, target_type, target_id, gift_id, gift_count);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSubscriber<AttentionBean>() {
+                    .subscribeWith(new BaseDisposableSubscriber<AttentionBean>(context) {
+
                         @Override
-                        public void onNext(AttentionBean attentionBean) {
+                        protected void onBaseNext(AttentionBean attentionBean) {
                             if (attentionBean.status == 1) {
                                 iSendFriendCircleActivity.showSendGifts(attentionBean);
-                            }else {
+                            } else {
                                 ToastUtils.showToast(context, attentionBean.msg);
                             }
                         }
 
                         @Override
-                        public void onError(Throwable t) {
-
+                        protected String getTitleMsg() {
+                            return null;
                         }
 
                         @Override
-                        public void onComplete() {
+                        protected boolean isNeedProgressDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
 
                         }
+
                     });
         } catch (IOException e) {
             e.printStackTrace();
@@ -1112,6 +1121,46 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
 
                         @Override
                         public void onComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 商机币
+     *
+     * @param context
+     * @param type
+     * @param page
+     */
+    public void BalanceLog(Context context, String type, int page) {
+        try {
+            Flowable<BusinessCoinBean> flowable = sendFriendCircleModel.mBalanceLog(context, type, page);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new BaseDisposableSubscriber<BusinessCoinBean>(context) {
+                        @Override
+                        protected void onBaseNext(BusinessCoinBean myCurrencyBean) {
+                            LogUtils.e("myCurrencyBean==", myCurrencyBean.msg);
+                            iSendFriendCircleActivity.showBalanceLog(myCurrencyBean);
+                        }
+
+                        @Override
+                        protected String getTitleMsg() {
+                            return null;
+                        }
+
+                        @Override
+                        protected boolean isNeedProgressDialog() {
+                            return false;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
 
                         }
                     });

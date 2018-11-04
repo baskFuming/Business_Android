@@ -272,9 +272,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:text="分享"
-                android:layout_gravity="center_horizontal"
                 android:textColor="#1d1d1d"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -303,8 +303,8 @@
                 android:id="@+id/comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#1d1d1d"
                 android:layout_gravity="center_horizontal"
+                android:textColor="#1d1d1d"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -327,9 +327,9 @@
                 android:id="@+id/choose_like"
                 android:layout_width="14dp"
                 android:layout_height="16dp"
+                android:layout_gravity="center_horizontal"
                 android:background="@drawable/selector_comment_likes"
                 android:button="@null"
-                android:layout_gravity="center_horizontal"
                 android:enabled="true" />
 
 
@@ -337,8 +337,8 @@
                 android:id="@+id/like_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#1d1d1d"
                 android:layout_gravity="center_horizontal"
+                android:textColor="#1d1d1d"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -366,8 +366,8 @@
                 android:id="@+id/reward_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
                 android:textColor="#1d1d1d"
                 android:textSize="12sp" />
         </LinearLayout>

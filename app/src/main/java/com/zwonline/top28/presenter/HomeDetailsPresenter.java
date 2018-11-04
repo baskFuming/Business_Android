@@ -4,10 +4,12 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.bean.AddCommentBean;
 import com.zwonline.top28.bean.ArticleCommentBean;
 import com.zwonline.top28.bean.AttentionBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.GiftBean;
 import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
@@ -15,6 +17,7 @@ import com.zwonline.top28.bean.PersonageInfoBean;
 import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.ShareDataBean;
 import com.zwonline.top28.model.HomeDetailsModel;
+import com.zwonline.top28.utils.LogUtils;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IHomeDetails;
 
@@ -355,8 +358,8 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
                         public void onNext(GiftSumBean attentionBean) {
                             if (attentionBean.status == 1) {
                                 iHomeDetails.showGiftSummary(attentionBean);
-                            }else {
-                                ToastUtils.showToast(context,attentionBean.msg);
+                            } else {
+                                ToastUtils.showToast(context, attentionBean.msg);
                             }
                         }
 
@@ -390,8 +393,8 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
                         public void onNext(GiftBean attentionBean) {
                             if (attentionBean.status == 1) {
                                 iHomeDetails.showGift(attentionBean);
-                            }else {
-                                ToastUtils.showToast(context,attentionBean.msg);
+                            } else {
+                                ToastUtils.showToast(context, attentionBean.msg);
                             }
                         }
 
@@ -409,6 +412,7 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
             e.printStackTrace();
         }
     }
+
     /***
      * 打赏接口
      * @param context
@@ -427,8 +431,8 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
                         public void onNext(AttentionBean attentionBean) {
                             if (attentionBean.status == 1) {
                                 iHomeDetails.showSendGifts(attentionBean);
-                            }else {
-                                ToastUtils.showToast(context,attentionBean.msg);
+                            } else {
+                                ToastUtils.showToast(context, attentionBean.msg);
                             }
                         }
 
@@ -485,4 +489,46 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
         }
     }
 
+    /**
+     * 商机币
+     *
+     * @param context
+     * @param type
+     * @param page
+     */
+    public void BocBalanceLog(final Context context, String type, int page) {
+        try {
+            Flowable<BusinessCoinBean> flowable = homeDetailsModel.mBocBalanceLog(context, type, page);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new BaseDisposableSubscriber<BusinessCoinBean>(context) {
+                        @Override
+                        protected void onBaseNext(BusinessCoinBean myCurrencyBean) {
+                            LogUtils.e("myCurrencyBean==", myCurrencyBean.msg);
+                            if (myCurrencyBean.status == 1) {
+                                iHomeDetails.showBocBanlance(myCurrencyBean);
+                            } else {
+                                ToastUtils.showToast(context, myCurrencyBean.msg);
+                            }
+                        }
+
+                        @Override
+                        protected String getTitleMsg() {
+                            return null;
+                        }
+
+                        @Override
+                        protected boolean isNeedProgressDialog() {
+                            return false;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
+
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package com.zwonline.top28.nim.yangfen;
+package com.zwonline.top28.nim.shangjibi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,6 +24,9 @@ import com.zwonline.top28.api.subscriber.BaseDisposableSubscribers;
 import com.zwonline.top28.bean.GetHongBaoBean;
 import com.zwonline.top28.bean.HongBaoLeftCountBean;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.nim.yangfen.MsgViewHolder;
+import com.zwonline.top28.nim.yangfen.SnatchYangFenActivity;
+import com.zwonline.top28.nim.yangfen.YangFenPopuWindow;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.MyYAnimation;
@@ -40,13 +43,13 @@ import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class YangFenViewHolderLink extends MsgViewHolder {
+public class SJBViewHolderLink extends MsgViewHolder {
 
     private String redpackUserToken;
     private TextView send_title;
     private ImageView openRedPack;
 
-    public YangFenViewHolderLink(BaseMultiItemFetchLoadAdapter adapter) {
+    public SJBViewHolderLink(BaseMultiItemFetchLoadAdapter adapter) {
         super(adapter);
     }
 
@@ -57,6 +60,7 @@ public class YangFenViewHolderLink extends MsgViewHolder {
     private int totalPackageCount;
     private int hasGetPackageCount;
     private MyYAnimation myYAnimation;
+
     @Override
     protected int getContentResId() {
         return R.layout.red_packet_item;
@@ -74,19 +78,18 @@ public class YangFenViewHolderLink extends MsgViewHolder {
 
     @Override
     protected void bindContentView() {
-        YangFenAttachment attachment = (YangFenAttachment) message.getAttachment();
+        SJBAttachment attachment = (SJBAttachment) message.getAttachment();
 
         if (!isReceivedMessage()) {// 消息方向，自己发送的
             sendView.setVisibility(View.VISIBLE);
             revView.setVisibility(View.GONE);
             sendContentText.setText(attachment.getTitle());
-//            sendTitleText.setText(attachment.getContent());
-
+            sendTitleText.setText("商机币红包");
         } else {
             sendView.setVisibility(View.GONE);
             revView.setVisibility(View.VISIBLE);
             revContentText.setText(attachment.getTitle());
-//            revTitleText.setText(attachment.getContent());
+            revTitleText.setText("商机币红包");
         }
     }
 
@@ -102,7 +105,7 @@ public class YangFenViewHolderLink extends MsgViewHolder {
 
     @Override
     protected void onItemClick() {
-        YangFenAttachment attachment = (YangFenAttachment) message.getAttachment();
+        SJBAttachment attachment = (SJBAttachment) message.getAttachment();
         redpackUserToken = attachment.getRedpackUserToken();
         BaseMultiItemFetchLoadAdapter adapter = getAdapter();
         ModuleProxy proxy = null;
@@ -118,7 +121,6 @@ public class YangFenViewHolderLink extends MsgViewHolder {
     private View.OnClickListener listener = new View.OnClickListener() {
 
 
-
         @Override
         public void onClick(View v) {
             if (AntiShake.check(v.getId())) {    //判断是否多次点击
@@ -129,18 +131,18 @@ public class YangFenViewHolderLink extends MsgViewHolder {
                     myYAnimation = new MyYAnimation();
                     myYAnimation.setRepeatCount(Animation.INFINITE); //旋转的次数（无数次）
                     openRedPack.startAnimation(myYAnimation);
-                    YangFenAttachment attachment = (YangFenAttachment) message.getAttachment();
+                    SJBAttachment attachment = (SJBAttachment) message.getAttachment();
                     getHongBao(attachment.getRedPacketId());
                     break;
                 case R.id.look_details:
-                    YangFenAttachment attachments = (YangFenAttachment) message.getAttachment();
+                    SJBAttachment attachments = (SJBAttachment) message.getAttachment();
                     Intent intent = new Intent(context.getApplicationContext(), SnatchYangFenActivity.class);
                     intent.putExtra("hongbao_id", attachments.getRedPacketId() + "");
                     intent.putExtra("send_name", attachments.getRedpackUserName());
                     intent.putExtra("title", attachments.getTitle());
                     intent.putExtra("send_avatars", attachments.getRedpackUserHeader());
                     intent.putExtra("redpackType", attachments.getRedpackType() + "");
-                    intent.putExtra("packge_type", BizConstant.RECOMMEND);
+                    intent.putExtra("packge_type", BizConstant.NEW);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     yangFenPopuWindow.dismiss();
@@ -176,9 +178,11 @@ public class YangFenViewHolderLink extends MsgViewHolder {
 
                         @Override
                         protected void onBaseNext(HongBaoLeftCountBean hongBaoLeftCountBean) {
-                            YangFenAttachment attachment = (YangFenAttachment) message.getAttachment();
+                            SJBAttachment attachment = (SJBAttachment) message.getAttachment();
                             // 拆红包
                             if (hongBaoLeftCountBean.status == 1) {
+//                                sendView.setBackgroundResource(R.mipmap.message_gift2_bg);
+//                                revView.setBackgroundResource(R.mipmap.message_gift2_bg);
                                 hasGetPackageCount = hongBaoLeftCountBean.data.hasGetPackageCount;
                                 totalPackageCount = hongBaoLeftCountBean.data.totalPackageCount;
                                 String getAmount = hongBaoLeftCountBean.data.getAmount;
@@ -189,6 +193,8 @@ public class YangFenViewHolderLink extends MsgViewHolder {
                                     View yangFenView = yangFenPopuWindow.getContentView();//send_head
                                     openRedPack = (ImageView) yangFenView.findViewById(R.id.open_redpack);
                                     ImageViewPlus send_head = (ImageViewPlus) yangFenView.findViewById(R.id.send_head);
+                                    TextView slow_no_more = (TextView) yangFenView.findViewById(R.id.slow_no_more);
+                                    slow_no_more.setText("发了一个商机币红包");
                                     TextView look_details = (TextView) yangFenView.findViewById(R.id.look_details);
                                     send_title = (TextView) yangFenView.findViewById(R.id.send_title);
                                     TextView userName = (TextView) yangFenView.findViewById(R.id.user_name);
@@ -198,13 +204,14 @@ public class YangFenViewHolderLink extends MsgViewHolder {
                                             openRedPack.setVisibility(View.VISIBLE);
                                         } else {
                                             openRedPack.setVisibility(View.GONE);
+//                                            revView.setBackgroundResource(R.mipmap.message_gift2_bg);
                                             send_title.setText("手慢了，红包抢完了");
+
                                         }
                                     } else if (hongBaoLeftCountBean.data.expireFlag == 1) {
                                         openRedPack.setVisibility(View.GONE);
                                         send_title.setText("红包已过期");
                                     }
-
 
 
                                     userName.setText(attachment.getRedpackUserName());
@@ -217,7 +224,7 @@ public class YangFenViewHolderLink extends MsgViewHolder {
                                     intent.putExtra("title", attachment.getTitle());
                                     intent.putExtra("send_avatars", attachment.getRedpackUserHeader());
                                     intent.putExtra("redpackType", attachment.getRedpackType() + "");
-                                    intent.putExtra("packge_type", BizConstant.RECOMMEND);
+                                    intent.putExtra("packge_type", BizConstant.NEW);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(intent);
                                 }
@@ -279,7 +286,7 @@ public class YangFenViewHolderLink extends MsgViewHolder {
                             // 拆红包
                             if (getHongBaoBean.status == 1) {
 
-                                YangFenAttachment attachment = (YangFenAttachment) message.getAttachment();
+                                SJBAttachment attachment = (SJBAttachment) message.getAttachment();
                                 Intent intent = new Intent(context.getApplicationContext(), SnatchYangFenActivity.class);
                                 intent.putExtra("get_amount", getHongBaoBean.data.get_amount + "");
                                 intent.putExtra("hongbao_id", attachment.getRedPacketId() + "");
@@ -287,7 +294,7 @@ public class YangFenViewHolderLink extends MsgViewHolder {
                                 intent.putExtra("title", attachment.getTitle());
                                 intent.putExtra("send_avatars", attachment.getRedpackUserHeader());
                                 intent.putExtra("redpackType", attachment.getRedpackType() + "");
-                                intent.putExtra("packge_type", BizConstant.RECOMMEND);
+                                intent.putExtra("packge_type", BizConstant.NEW);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(intent);
                                 openRedPack.clearAnimation();

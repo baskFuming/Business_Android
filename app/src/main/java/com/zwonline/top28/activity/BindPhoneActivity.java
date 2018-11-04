@@ -138,7 +138,7 @@ public class BindPhoneActivity extends BaseActivity<IRegisterActivity, RegisterP
                 String code = etYanzheng.getText().toString().trim();
                 if (StringUtil.isNotEmpty(phone)) {
                     if (StringUtil.isNotEmpty(code)) {
-                        presenter.VerifySmsCode(getApplicationContext(), phone, code, seesionid);
+                        presenter.VerifySmsCode(BindPhoneActivity.this, phone, code, seesionid);
                     } else {
                         ToastUtils.showToast(getApplicationContext(), "验证码不能为空！");
                     }
@@ -195,7 +195,7 @@ public class BindPhoneActivity extends BaseActivity<IRegisterActivity, RegisterP
     @Override
     public void showVerifySmsCode(AttentionBean attentionBean) {
         if (attentionBean.status == 1) {
-            presenter.BindMobile(getApplicationContext(), iphone.getText().toString().trim(), unionId, seesionid);
+            presenter.BindMobile(this, iphone.getText().toString().trim(), unionId, seesionid);
         } else {
             ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
         }

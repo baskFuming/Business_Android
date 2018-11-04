@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.GuidePageAdapter;
+import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * 引导页
  */
-public class GuideActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+public class GuideActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     private ViewPager vp;
     private int[] imageIdArray;//图片资源的数组
     private List<View> viewList;//图片资源的集合
@@ -32,18 +34,26 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
 
     //最后一页的按钮
     private Button ib_start;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
-
+        type = getIntent().getStringExtra("type");
         ib_start = (Button) findViewById(R.id.guide_ib_start);
         ib_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GuideActivity.this, MainActivity.class));
-                finish();
+                if (StringUtil.isNotEmpty(type)&&type.equals(BizConstant.RECOMMEND)){
+                    finish();
+                }else {
+                    startActivity(new Intent(GuideActivity.this, MainActivity.class));
+                    finish();
+                    overridePendingTransition(R.anim.activity_right_in,R.anim.activity_left_out);
+
+                }
+
             }
         });
 

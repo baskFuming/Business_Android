@@ -31,6 +31,7 @@ import com.zwonline.top28.bean.AddBankBean;
 import com.zwonline.top28.bean.AtentionDynamicHeadBean;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BusinessCircleBean;
+import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.DynamicDetailsBean;
 import com.zwonline.top28.bean.DynamicDetailsesBean;
 import com.zwonline.top28.bean.DynamicShareBean;
@@ -99,6 +100,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
     //添加置顶功能
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
+
     @Override
     protected void init(View view) {
 //        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
@@ -142,9 +144,9 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
         newcontentRecy.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (getScrollY()>(scrollY+oldScrollY)){
+                if (getScrollY() > (scrollY + oldScrollY)) {
                     floatingActionButton.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     floatingActionButton.setVisibility(View.GONE);
                 }
             }
@@ -639,6 +641,16 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
 
     }
 
+    /**
+     * 商机币余额
+     *
+     * @param businessCoinBean
+     */
+    @Override
+    public void showBalanceLog(BusinessCoinBean businessCoinBean) {
+
+    }
+
     @Override
     public void showFeedBack(SettingBean settingBean) {
 
@@ -674,7 +686,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
                 if (StringUtil.isNotEmpty(did_i_likes)) {
                     newContentList.get(intentPositions).did_i_like = did_i_likes;
                 }
-                if (StringUtil.isNotEmpty(gift_counts)){
+                if (StringUtil.isNotEmpty(gift_counts)) {
                     newContentList.get(intentPositions).gift_count = gift_counts;
                 }
 //                if (comment_list != null && comment_list.size() > 0) {
@@ -930,6 +942,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
             EventBus.getDefault().unregister(this);
         }
     }
+
     /*
           getScrollY 该方法用于测算ListView滑动的距离
         */
