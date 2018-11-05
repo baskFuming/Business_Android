@@ -25,7 +25,6 @@ import com.zwonline.top28.activity.ArticleActivity;
 import com.zwonline.top28.activity.EnsurePoolActivity;
 import com.zwonline.top28.activity.HashrateActivity;
 import com.zwonline.top28.activity.HomePageActivity;
-import com.zwonline.top28.activity.InformationNoticeActivity;
 import com.zwonline.top28.activity.InsuranceActivity;
 import com.zwonline.top28.activity.MyAttentionsActivity;
 import com.zwonline.top28.activity.MyCollectActivity;
@@ -457,7 +456,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 break;
             case R.id.notice_img://公告
 
-                startActivity(new Intent(getActivity(), InformationNoticeActivity.class));
+                startActivity(new Intent(getActivity(), AnnouncementActivity.class));
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
         }
