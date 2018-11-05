@@ -64,7 +64,6 @@
                 <LinearLayout
                     android:layout_width="168dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="13dp"
                     android:layout_marginTop="11dp"
                     android:orientation="horizontal">
 
@@ -86,19 +85,21 @@
                         android:text="首发式发生"
                         android:textColor="#ff2a394c"
                         android:textSize="13sp" />
+
                     <ImageView
                         android:id="@+id/reward_image"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
+
                     <TextView
                         android:id="@+id/notice_words"
-                        android:layout_width="168dp"
-                        android:layout_height="36dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:textColor="#ff2a394c"
+                        android:textColor="@color/reded"
                         android:textSize="13sp"
                         android:visibility="gone" />
 
@@ -110,11 +111,10 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_white_shape"
                     android:padding="2dp"
-                    android:gravity="center"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="价值500商机币"
-                    android:visibility="gone"/>
+                    android:textColor="@color/reded"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/notice_time"
@@ -123,6 +123,7 @@
                     android:gravity="center_vertical"
                     android:text="时间"
                     android:textColor="#ff94979c"
+                    android:layout_marginTop="5dp"
                     android:textSize="13sp" />
             </LinearLayout>
 
@@ -134,7 +135,7 @@
                 <ImageView
                     android:id="@+id/notice_Image"
                     android:layout_width="match_parent"
-                    android:layout_height="84dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:scaleType="fitXY" />
 

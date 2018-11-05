@@ -14,6 +14,7 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.bean.InforNoticeBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.ImageViewPlus;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.TimeUtil;
 
 import java.text.ParseException;
@@ -59,48 +60,82 @@ public class InforNoticeAdpater extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        final MyViewHolder myViewHolder = (MyViewHolder) holder;
         final InforNoticeBean.DataBean dlistbean = dlist.get(position);
         RequestOptions requestOption = new RequestOptions().placeholder(R.mipmap.gray_logo).error(R.mipmap.gray_logo);
         //用户名称
-        ((MyViewHolder) holder).textView_notice_myself.setText(dlistbean.from_user.nickname);
+        myViewHolder.textView_notice_myself.setText(dlistbean.from_user.nickname);
         RequestOptions requestOptions = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.mipmap.no_photo_male).centerCrop();
         //用户头像
-        Glide.with(context).load(dlistbean.from_user.avatars).apply(requestOptions).into(((MyViewHolder) holder).notice_tou);
+        Glide.with(context).load(dlistbean.from_user.avatars).apply(requestOptions).into(myViewHolder.notice_tou);
         if (dlistbean.type == 1) {
             //动态被赞通知
-            ((MyViewHolder) holder).image_post_Thumb.setVisibility(View.VISIBLE);
-            Glide.with(context).load(R.drawable.post_thumb2).apply(requestOptions).into(((MyViewHolder) holder).image_post_Thumb);
+            myViewHolder.image_post_Thumb.setVisibility(View.VISIBLE);
+            myViewHolder.reward_image.setVisibility(View.GONE);
+            myViewHolder.notice_world.setVisibility(View.GONE);
+            myViewHolder.boc_reward.setVisibility(View.GONE);
+            Glide.with(context).load(R.drawable.post_thumb2).apply(requestOptions).into(myViewHolder.image_post_Thumb);
         } else if (dlistbean.type == 2) {
             //动态评论被赞通知
-            ((MyViewHolder) holder).image_post_Thumb.setVisibility(View.VISIBLE);
-            Glide.with(context).load(R.drawable.post_thumb2).apply(requestOptions).into(((MyViewHolder) holder).image_post_Thumb);
+            myViewHolder.image_post_Thumb.setVisibility(View.VISIBLE);
+            myViewHolder.reward_image.setVisibility(View.GONE);
+            myViewHolder.notice_world.setVisibility(View.GONE);
+            myViewHolder.boc_reward.setVisibility(View.GONE);
+            Glide.with(context).load(R.drawable.post_thumb2).apply(requestOptions).into(myViewHolder.image_post_Thumb);
         } else if (dlistbean.type == 3) {
             //动态被分享通知
-            ((MyViewHolder) holder).image_post_Thumb.setVisibility(View.VISIBLE);
-            Glide.with(context).load(R.mipmap.share_gray).apply(requestOptions).into(((MyViewHolder) holder).image_post_Thumb);
+            myViewHolder.image_post_Thumb.setVisibility(View.VISIBLE);
+            myViewHolder.reward_image.setVisibility(View.GONE);
+            myViewHolder.notice_world.setVisibility(View.GONE);
+            myViewHolder.boc_reward.setVisibility(View.GONE);
+            Glide.with(context).load(R.mipmap.share_gray).apply(requestOptions).into(myViewHolder.image_post_Thumb);
         } else if (dlistbean.type == 4) {
             // 动态被评论通知
-            ((MyViewHolder) holder).textView_notice_title.setText(dlistbean.content);
+            myViewHolder.textView_notice_title.setText(dlistbean.content);
+            myViewHolder.reward_image.setVisibility(View.GONE);
+            myViewHolder.notice_world.setVisibility(View.GONE);
+            myViewHolder.boc_reward.setVisibility(View.GONE);
         } else if (dlistbean.type == 5) {
             //评论被评论通知
-            ((MyViewHolder) holder).textView_notice_title.setText(dlistbean.content);
+            myViewHolder.textView_notice_title.setText(dlistbean.content);
+            myViewHolder.reward_image.setVisibility(View.GONE);
+            myViewHolder.notice_world.setVisibility(View.GONE);
+            myViewHolder.boc_reward.setVisibility(View.GONE);
+        } else if (dlistbean.type == 6) {
+            myViewHolder.image_post_Thumb.setVisibility(View.GONE);
+            myViewHolder.reward_image.setVisibility(View.VISIBLE);
+            myViewHolder.notice_world.setVisibility(View.VISIBLE);
+            myViewHolder.boc_reward.setVisibility(View.VISIBLE);
+            myViewHolder.notice_world.setText("x" + dlistbean.gift_count);
+            myViewHolder.boc_reward.setText("价值" + dlistbean.gift_boc_value + "商机币");
+            String gift_id = dlistbean.gift_id;
+            if (StringUtil.isNotEmpty(gift_id) && gift_id.equals(BizConstant.IS_SUC)) {
+                myViewHolder.reward_image.setBackgroundResource(R.mipmap.reward_gift1copy);
+            } else if (StringUtil.isNotEmpty(gift_id) && gift_id.equals(BizConstant.MOBAN)) {
+                myViewHolder.reward_image.setBackgroundResource(R.mipmap.reward_gift2copy);
+            } else if (StringUtil.isNotEmpty(gift_id) && gift_id.equals(BizConstant.ATTENTION)) {
+                myViewHolder.reward_image.setBackgroundResource(R.mipmap.reward_gift3copy);
+            } else if (StringUtil.isNotEmpty(gift_id) && gift_id.equals(BizConstant.MY)) {
+                myViewHolder.reward_image.setBackgroundResource(R.mipmap.reward_giftda);
+            }
+            myViewHolder.textView_notice_title.setText("给你打赏");
         }
-        ((MyViewHolder) holder).textView_notice_title.setText(dlistbean.content);
+
         //判断文字 图片
         if (dlistbean.subject_type == 1) {
-            ((MyViewHolder) holder).textView_notice_intro.setVisibility(View.VISIBLE);
-            ((MyViewHolder) holder).imageView_notice_Image.setVisibility(View.GONE);
-            ((MyViewHolder) holder).textView_notice_intro.setText(dlistbean.subject);
+            myViewHolder.textView_notice_intro.setVisibility(View.VISIBLE);
+            myViewHolder.imageView_notice_Image.setVisibility(View.GONE);
+            myViewHolder.textView_notice_intro.setText(dlistbean.subject);
         } else if (dlistbean.subject_type == 2) {
-            ((MyViewHolder) holder).textView_notice_intro.setVisibility(View.GONE);
-            ((MyViewHolder) holder).imageView_notice_Image.setVisibility(View.VISIBLE);
-            Glide.with(context).load(dlistbean.subject).apply(requestOption).into(((MyViewHolder) holder).imageView_notice_Image);
+            myViewHolder.textView_notice_intro.setVisibility(View.GONE);
+            myViewHolder.imageView_notice_Image.setVisibility(View.VISIBLE);
+            Glide.with(context).load(dlistbean.subject).apply(requestOption).into(myViewHolder.imageView_notice_Image);
         }
         //判断大V
         if (dlistbean.from_user.identity_type == 1) {
-            ((MyViewHolder) holder).notice_user_V.setVisibility(View.VISIBLE);
+            myViewHolder.notice_user_V.setVisibility(View.VISIBLE);
         } else if (dlistbean.from_user.identity_type == 2) {
-            ((MyViewHolder) holder).notice_user_V.setVisibility(View.GONE);
+            myViewHolder.notice_user_V.setVisibility(View.GONE);
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
         Date date = null;
@@ -109,19 +144,19 @@ public class InforNoticeAdpater extends RecyclerView.Adapter<RecyclerView.ViewHo
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        ((MyViewHolder) holder).textView_notice_time.setText(TimeUtil.getTimeFormatText(date));
+        myViewHolder.textView_notice_time.setText(TimeUtil.getTimeFormatText(date));
         //判断消息是否读取
         if (dlistbean.is_read.equals(BizConstant.ENTERPRISE_tRUE)) {
-            ((MyViewHolder) holder).image_notice_tip.setVisibility(View.VISIBLE);
+            myViewHolder.image_notice_tip.setVisibility(View.VISIBLE);
         } else {
-            ((MyViewHolder) holder).image_notice_tip.setVisibility(View.GONE);
+            myViewHolder.image_notice_tip.setVisibility(View.GONE);
         }
         //点击处理这里可以随机修改
-        ((MyViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onClickItemListener != null) {
-                    ((MyViewHolder) holder).image_notice_tip.setVisibility(View.GONE);
+                    myViewHolder.image_notice_tip.setVisibility(View.GONE);
                     onClickItemListener.setOnItemClick(v, position);
                 }
             }
@@ -147,7 +182,7 @@ public class InforNoticeAdpater extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.notice_title)
         TextView textView_notice_title;
         @BindView(R.id.notice_words)
-        TextView textView_notice_world;
+        TextView notice_world;
         @BindView(R.id.notice_time)
         TextView textView_notice_time;
         @BindView(R.id.notice_Image)

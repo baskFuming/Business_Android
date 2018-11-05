@@ -380,6 +380,7 @@
         android:background="@color/black"
         android:orientation="vertical"
         android:padding="10dp"
+        android:alpha="0.5"
         android:visibility="gone">
 
         <ProgressBar
@@ -388,6 +389,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
+            android:indeterminateTint="@color/white"
             android:visibility="visible" />
 
         <TextView

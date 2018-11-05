@@ -15,6 +15,7 @@ public class InforNoticeBean {
     public String msg;
     public String dialog;
     public List<DataBean> data;
+
     public static class DataBean {
         /**
          * notification_id : 7
@@ -35,7 +36,13 @@ public class InforNoticeBean {
         public String content;
         public String is_read;
         public String add_time;
+        public String gift_count;
+        public String gift_id;
+        public String gift_boc_value;
+        public String gift_name;
+        public String gift_img;
         public FromUserBean from_user;
+
         public static class FromUserBean {
             /**
              * uid : 227
