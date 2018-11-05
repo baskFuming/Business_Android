@@ -6,6 +6,9 @@ import android.os.Environment;
 import java.io.File;
 import java.math.BigDecimal;
 
+/**
+ * 清除缓存的
+ */
 public class CacheDataManager {
 
     public static String getTotalCacheSize(Context context) throws Exception {
@@ -114,7 +117,7 @@ public class CacheDataManager {
 
         if (kiloByte < 1) {
 
-            return size + "kb";
+            return size + "KB";
 
         }
 

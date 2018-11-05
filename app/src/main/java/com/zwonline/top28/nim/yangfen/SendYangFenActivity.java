@@ -199,14 +199,28 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                 String content = redContent.getText().toString().trim();
                 if (StringUtil.isNotEmpty(hongBaoCount)) {
                     if (StringUtil.isNotEmpty(yangFenNum)) {
-                        if (randomFlag) {
-                            //随机红包
-                            presenter.mSendYFs(SendYangFenActivity.this, content, yangFenNum, hongBaoCount, BizConstant.PAGE);
-                        } else {
-                            //普通红包
-                            presenter.mSendYFs(SendYangFenActivity.this, content, hongBaoCount, showYfNum.getText().toString(), Integer.parseInt(BizConstant.IS_FAIL));
+                        if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
+                            //商机币红包
+                            if (randomFlag) {
+                                //随机红包
+                                presenter.mBocHongBao(SendYangFenActivity.this, content, yangFenNum, hongBaoCount, BizConstant.PAGE);
+                            } else {
+                                //普通红包
+                                presenter.mBocHongBao(SendYangFenActivity.this, content, hongBaoCount, showYfNum.getText().toString(), Integer.parseInt(BizConstant.IS_FAIL));
 //                            ToastUtil.showToast(getApplicationContext(),showYfNum.getText().toString());
+                            }
+                        } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.RECOMMEND)) {
+                            //鞅分红包
+                            if (randomFlag) {
+                                //随机红包
+                                presenter.mSendYF(SendYangFenActivity.this, content, yangFenNum, hongBaoCount, BizConstant.PAGE);
+                            } else {
+                                //普通红包
+                                presenter.mSendYF(SendYangFenActivity.this, content, hongBaoCount, showYfNum.getText().toString(), Integer.parseInt(BizConstant.IS_FAIL));
+//                            ToastUtil.showToast(getApplicationContext(),showYfNum.getText().toString());
+                            }
                         }
+
                     } else {
                         ToastUtil.showToast(getApplicationContext(), "数量不能为空");
                     }

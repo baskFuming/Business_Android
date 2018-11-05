@@ -75,9 +75,14 @@ public class YangFenRecordActivity extends BaseActivity<ISendYFActivity, SendYFP
         hbRecordSpring.setType(SpringView.Type.FOLLOW);
         hbRecordSpring.setFooter(new DefaultFooter(getApplicationContext()));
         hbRecordSpring.setHeader(new DefaultHeader(getApplicationContext()));
-        presenter.mYfRecord(getApplicationContext(), page);
+        if (StringUtil.isNotEmpty(packgeType) && packgeType.equals(BizConstant.IS_SUC)) {
+            presenter.BocRecord(getApplicationContext(), page);
+        } else {
+            presenter.mYfRecord(getApplicationContext(), page);
+        }
+
         redRecordList.addHeaderView(headerView, null, false);
-        yfhbRecordAdpter = new YFHBRecordAdpter(list, getApplicationContext());
+        yfhbRecordAdpter = new YFHBRecordAdpter(list, getApplicationContext(),packgeType);
         redRecordList.setAdapter(yfhbRecordAdpter);
     }
 
@@ -137,7 +142,11 @@ public class YangFenRecordActivity extends BaseActivity<ISendYFActivity, SendYFP
                     @Override
                     public void run() {
                         page = 1;
-                        presenter.mYfRecord(getApplicationContext(), page);
+                        if (StringUtil.isNotEmpty(packgeType) && packgeType.equals(BizConstant.IS_SUC)) {
+                            presenter.BocRecord(getApplicationContext(), page);
+                        } else {
+                            presenter.mYfRecord(getApplicationContext(), page);
+                        }
                         hbRecordSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -149,7 +158,11 @@ public class YangFenRecordActivity extends BaseActivity<ISendYFActivity, SendYFP
                     @Override
                     public void run() {
                         page++;
-                        presenter.mYfRecord(getApplicationContext(), page);
+                        if (StringUtil.isNotEmpty(packgeType) && packgeType.equals(BizConstant.IS_SUC)) {
+                            presenter.BocRecord(getApplicationContext(), page);
+                        } else {
+                            presenter.mYfRecord(getApplicationContext(), page);
+                        }
                         hbRecordSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);

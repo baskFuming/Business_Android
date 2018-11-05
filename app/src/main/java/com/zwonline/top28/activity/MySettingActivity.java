@@ -235,15 +235,21 @@ public class MySettingActivity extends BaseActivity {
 //                DataClearUtil.cleanAllCache(this);
 //                tv_Cash.setText("0.0MB");
 //                ToastUtils.showToast(this,"清除缓存成功");
-                clearCache clearCache = new clearCache();
-                new Thread(clearCache).start();
-                clearDialog.setVisibility(View.VISIBLE);
+                String cash = tv_Cash.getText().toString();
+                if (StringUtil.isNotEmpty(cash) && cash.equals("0.0KB")) {
+                    ToastUtils.showToast(getApplicationContext(), "清理完成");
+                } else {
+                    clearCache clearCache = new clearCache();
+                    new Thread(clearCache).start();
+                    clearDialog.setVisibility(View.VISIBLE);
+                }
+
                 break;
             case R.id.look_playing://查看玩法
-                Intent lookIntent=new Intent(MySettingActivity.this,GuideActivity.class);
-                lookIntent.putExtra("type",BizConstant.RECOMMEND);
+                Intent lookIntent = new Intent(MySettingActivity.this, GuideActivity.class);
+                lookIntent.putExtra("type", BizConstant.RECOMMEND);
                 startActivity(lookIntent);
-                overridePendingTransition(R.anim.activity_right_in,R.anim.activity_left_out);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             default:
                 break;

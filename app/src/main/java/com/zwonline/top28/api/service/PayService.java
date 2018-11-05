@@ -482,29 +482,6 @@ public interface PayService {
             @Field("sign") String sign
     );
 
-    /**
-     * 发商机币红包
-     *
-     * @param timestamp
-     * @param token
-     * @param postscript
-     * @param total_amount
-     * @param total_package
-     * @param random_flag
-     * @param sign
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("/App/Im/sendBocHongbao")
-    Flowable<SendYFBean> sendBocHongbao(
-            @Field("timestamp") String timestamp,
-            @Field("token") String token,
-            @Field("postscript") String postscript,
-            @Field("total_amount") String total_amount,
-            @Field("total_package") String total_package,
-            @Field("random_flag") int random_flag,
-            @Field("sign") String sign
-    );
 
     /**
      * 查看红包剩余量接口
@@ -580,6 +557,7 @@ public interface PayService {
             @Field("sign") String sign
     );
 
+
     /**
      * 获取是否有发红包权限接口
      *
@@ -596,6 +574,109 @@ public interface PayService {
             @Field("app_version") String app_version,
             @Field("sign") String sign
     );
+
+
+    /**
+     * 发商机币红包
+     *
+     * @param timestamp
+     * @param token
+     * @param postscript
+     * @param total_amount
+     * @param total_package
+     * @param random_flag
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Im/sendBocHongbao")
+    Flowable<SendYFBean> sendBocHongbao(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("postscript") String postscript,
+            @Field("total_amount") String total_amount,
+            @Field("total_package") String total_package,
+            @Field("random_flag") int random_flag,
+            @Field("sign") String sign
+    );
+
+
+    /**
+     * 商机币查看红包剩余量接口
+     *
+     * @param timestamp
+     * @param token
+     * @param hongbao_id
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Im/getBocHongbaoLeftCount")
+    Flowable<HongBaoLeftCountBean> getBocHongbaoLeftCount(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("hongbao_id") String hongbao_id,
+            @Field("sign") String sign
+    );
+
+
+    /**
+     * 抢商机币红包接口
+     *
+     * @param timestamp
+     * @param token
+     * @param hongbao_id
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Im/getBocHongbao")
+    Flowable<GetHongBaoBean> getBocHongbao(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("hongbao_id") String hongbao_id,
+            @Field("sign") String sign
+    );
+
+
+    /**
+     * 商机币抢红包记录
+     *
+     * @param timestamp
+     * @param token
+     * @param hongbao_id
+     * @param page
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Im/bocHongbaoLog")
+    Flowable<HongBaoLogBean> bocHongbaoLog(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("hongbao_id") String hongbao_id,
+            @Field("page") int page,
+            @Field("sign") String sign
+    );
+
+    /**
+     * 总共商机币记录
+     *
+     * @param timestamp
+     * @param token
+     * @param page
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Im/bocHongbaoLog")
+    Flowable<YfRecordBean> bocRecord(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("page") int page,
+            @Field("sign") String sign
+    );
+
 
     /**
      * 群推荐接口

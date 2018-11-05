@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.zwonline.top28.R;
 import com.zwonline.top28.bean.HongBaoLogBean;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.StringUtil;
 
@@ -18,10 +19,12 @@ import java.util.List;
 public class HongBaoRecordAdpter extends BaseAdapter {
     private List<HongBaoLogBean.DataBean> list;
     private Context context;
+    private String type;
 
-    public HongBaoRecordAdpter(List<HongBaoLogBean.DataBean> list, Context context) {
+    public HongBaoRecordAdpter(List<HongBaoLogBean.DataBean> list, Context context, String type) {
         this.context = context;
         this.list = list;
+        this.type = type;
     }
 
     @Override
@@ -54,15 +57,19 @@ public class HongBaoRecordAdpter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
 
         }
-            viewHolder.snatch_user_name.setText(list.get(position).nickname);
+        viewHolder.snatch_user_name.setText(list.get(position).nickname);
 
 
-            viewHolder.snatch_yangfen_time.setText(list.get(position).add_time);
-
+        viewHolder.snatch_yangfen_time.setText(list.get(position).add_time);
+        if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
+            viewHolder.snatch_yangfen_num.setText(list.get(position).amount + "商机币");
+        } else {
             viewHolder.snatch_yangfen_num.setText(list.get(position).amount + "鞅分");
+        }
 
-            RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
-            Glide.with(context).load(list.get(position).avatars).apply(options).into(viewHolder.snatch_user_head);
+
+        RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+        Glide.with(context).load(list.get(position).avatars).apply(options).into(viewHolder.snatch_user_head);
         return convertView;
     }
 

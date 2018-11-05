@@ -63,7 +63,7 @@ public class SendYfModel {
      * @return
      * @throws IOException
      */
-    public Flowable<SendYFBean> sendBocHongBao(Context context, String postscript, String total_amount, String total_package, int random_flag) throws IOException {
+    public Flowable<SendYFBean> mSendBocHongBao(Context context, String postscript, String total_amount, String total_package, int random_flag) throws IOException {
         sp = SharedPreferencesUtils.getUtil();
         long timestamp = new Date().getTime() / 1000;//时间戳
         String token = (String) sp.getKey(context, "dialog", "");
@@ -78,7 +78,7 @@ public class SendYfModel {
         SignUtils.removeNullValue(map);
         Flowable<SendYFBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
-                .sendHongbao(String.valueOf(timestamp), token, postscript, total_amount, total_package, random_flag, sign);
+                .sendBocHongbao(String.valueOf(timestamp), token, postscript, total_amount, total_package, random_flag, sign);
         return flowable;
     }
 
@@ -110,6 +110,32 @@ public class SendYfModel {
     }
 
     /**
+     * 商机币红包记录
+     *
+     * @param context
+     * @param hongbao_id
+     * @param page
+     * @return
+     * @throws IOException
+     */
+    public Flowable<HongBaoLogBean> mBocHongbaoLog(Context context, String hongbao_id, int page) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("hongbao_id", hongbao_id);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("page", String.valueOf(page));
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        SignUtils.removeNullValue(map);
+        Flowable<HongBaoLogBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(PayService.class, Api.url)
+                .bocHongbaoLog(String.valueOf(timestamp), token, hongbao_id, page, sign);
+        return flowable;
+    }
+
+    /**
      * 红包剩余量
      *
      * @param context
@@ -134,6 +160,30 @@ public class SendYfModel {
     }
 
     /**
+     * 商机币红包剩余量
+     *
+     * @param context
+     * @param hongbao_id
+     * @return
+     * @throws IOException
+     */
+    public Flowable<HongBaoLeftCountBean> mGetBocHongbaoLeftCount(Context context, String hongbao_id) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("hongbao_id", hongbao_id);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        SignUtils.removeNullValue(map);
+        Flowable<HongBaoLeftCountBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(PayService.class, Api.url)
+                .getBocHongbaoLeftCount(String.valueOf(timestamp), token, hongbao_id, sign);
+        return flowable;
+    }
+
+    /**
      * 总共抢到的红包记录
      *
      * @param context
@@ -153,6 +203,30 @@ public class SendYfModel {
         Flowable<YfRecordBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
                 .yFRecord(String.valueOf(timestamp), token, page, sign);
+        return flowable;
+    }
+
+    /**
+     * 商机币总共抢到的红包记录
+     *
+     * @param context
+     * @param page
+     * @return
+     * @throws IOException
+     */
+    public Flowable<YfRecordBean> mBocRecord(Context context, int page) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("page", String.valueOf(page));
+        map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<YfRecordBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(PayService.class, Api.url)
+                .bocRecord(String.valueOf(timestamp), token, page, sign);
         return flowable;
     }
 

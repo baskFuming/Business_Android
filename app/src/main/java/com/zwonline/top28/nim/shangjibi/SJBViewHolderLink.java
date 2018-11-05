@@ -170,7 +170,7 @@ public class SJBViewHolderLink extends MsgViewHolder {
             String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
             Flowable<HongBaoLeftCountBean> flowable = ApiRetrofit.getInstance()
                     .getClientApi(PayService.class, Api.url)
-                    .hongbaoLeftCount(String.valueOf(timestamp), token, hongbao_id, sign);
+                    .getBocHongbaoLeftCount(String.valueOf(timestamp), token, hongbao_id, sign);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new BaseDisposableSubscriber<HongBaoLeftCountBean>(context) {
@@ -276,7 +276,7 @@ public class SJBViewHolderLink extends MsgViewHolder {
             String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
             Flowable<GetHongBaoBean> flowable = ApiRetrofit.getInstance()
                     .getClientApi(PayService.class, Api.url)
-                    .getHongbao(String.valueOf(timestamp), token, hongbao_id, sign);
+                    .getBocHongbao(String.valueOf(timestamp), token, hongbao_id, sign);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new BaseDisposableSubscribers<GetHongBaoBean>(context) {

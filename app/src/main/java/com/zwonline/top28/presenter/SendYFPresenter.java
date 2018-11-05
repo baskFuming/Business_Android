@@ -84,7 +84,7 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
     public void mBocHongBao(Context context, String postscript, String total_amount, String total_package, int random_flag) {
         try {
 
-            Flowable<SendYFBean> flowable = sendYfModel.sendBocHongBao(context, postscript, total_amount, total_package, random_flag);
+            Flowable<SendYFBean> flowable = sendYfModel.mSendBocHongBao(context, postscript, total_amount, total_package, random_flag);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<SendYFBean>() {
@@ -176,7 +176,45 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
         }
     }
 
+    /**
+     * 商机币红包记录
+     *
+     * @param context
+     * @param hongbao_id
+     * @param page
+     */
+    public void BocHongbaoLog(Context context, String hongbao_id, int page) {
+        try {
 
+            Flowable<HongBaoLogBean> flowable = sendYfModel.mBocHongbaoLog(context, hongbao_id, page);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<HongBaoLogBean>() {
+                        @Override
+                        public void onNext(HongBaoLogBean hongBaoLogBean) {
+                            Log.i("hongBaoLogBean==", hongBaoLogBean.msg);
+                            iSendYFActivity.showSnatchYangFe(hongBaoLogBean.data);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 鞅分红包剩余量
+     *
+     * @param context
+     * @param hongbao_id
+     */
     public void mHongBaoLeftCount(Context context, String hongbao_id) {
         try {
 
@@ -203,9 +241,41 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
         }
     }
 
+    /**
+     * 商机币红包剩余量
+     *
+     * @param context
+     * @param hongbao_id
+     */
+    public void GetBocHongbaoLeftCount(Context context, String hongbao_id) {
+        try {
+
+            Flowable<HongBaoLeftCountBean> flowable = sendYfModel.mGetBocHongbaoLeftCount(context, hongbao_id);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<HongBaoLeftCountBean>() {
+                        @Override
+                        public void onNext(HongBaoLeftCountBean hongBaoLeftCountBean) {
+                            Log.i("hongBaoLeftCountBean==", hongBaoLeftCountBean.msg);
+                            iSendYFActivity.showHongBaoLeftCount(hongBaoLeftCountBean);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
-     * 发送鞅分红包
+     * 鞅分红包记录
      *
      * @param context
      */
@@ -213,6 +283,41 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
         try {
 
             Flowable<YfRecordBean> flowable = sendYfModel.yfHongBaoRecord(context, page);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<YfRecordBean>() {
+                        @Override
+                        public void onNext(YfRecordBean yfRecordBean) {
+                            Log.i("sendYFBean==", yfRecordBean.msg);
+                            iSendYFActivity.showYFRecord(yfRecordBean.data.list, yfRecordBean.data.totalReceiveHongbaoAmount);
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 商机币总红包记录
+     *
+     * @param context
+     * @param page
+     */
+    public void BocRecord(Context context, int page) {
+        try {
+
+            Flowable<YfRecordBean> flowable = sendYfModel.mBocRecord(context, page);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<YfRecordBean>() {

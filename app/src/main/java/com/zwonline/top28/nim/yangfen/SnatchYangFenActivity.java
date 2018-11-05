@@ -91,11 +91,17 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
             pointTypes.setText("鞅分");
         }
         if (StringUtil.isNotEmpty(hongbaoId)) {
-            presenter.mHongBaoLeftCount(getApplicationContext(), hongbaoId);//查询红包的请求
-            presenter.mSnatchYangFen(getApplicationContext(), hongbaoId, page);
+            if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
+                presenter.GetBocHongbaoLeftCount(getApplicationContext(), hongbaoId);//查询红包的请求
+                presenter.BocHongbaoLog(getApplicationContext(), hongbaoId, page);
+            } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.MOBAN)) {
+                presenter.mHongBaoLeftCount(getApplicationContext(), hongbaoId);//查询红包的请求
+                presenter.mSnatchYangFen(getApplicationContext(), hongbaoId, page);
+            }
+
         }
         collectList.addHeaderView(headerView, null, false);
-        hongBaoRecordAdpter = new HongBaoRecordAdpter(list, getApplicationContext());
+        hongBaoRecordAdpter = new HongBaoRecordAdpter(list, getApplicationContext(),packageType);
         collectList.setAdapter(hongBaoRecordAdpter);
     }
 
@@ -180,7 +186,13 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
                     @Override
                     public void run() {
                         page = 1;
-                        presenter.mSnatchYangFen(getApplicationContext(), hongbaoId, page);
+                        if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
+                            presenter.GetBocHongbaoLeftCount(getApplicationContext(), hongbaoId);//查询红包的请求
+                            presenter.BocHongbaoLog(getApplicationContext(), hongbaoId, page);
+                        } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.MOBAN)) {
+                            presenter.mHongBaoLeftCount(getApplicationContext(), hongbaoId);//查询红包的请求
+                            presenter.mSnatchYangFen(getApplicationContext(), hongbaoId, page);
+                        }
                         snatchSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);
@@ -192,7 +204,13 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
                     @Override
                     public void run() {
                         page++;
-                        presenter.mSnatchYangFen(getApplicationContext(), hongbaoId, page);
+                        if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
+                            presenter.GetBocHongbaoLeftCount(getApplicationContext(), hongbaoId);//查询红包的请求
+                            presenter.BocHongbaoLog(getApplicationContext(), hongbaoId, page);
+                        } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.MOBAN)) {
+                            presenter.mHongBaoLeftCount(getApplicationContext(), hongbaoId);//查询红包的请求
+                            presenter.mSnatchYangFen(getApplicationContext(), hongbaoId, page);
+                        }
                         snatchSpring.onFinishFreshAndLoad();
                     }
                 }, 1000);

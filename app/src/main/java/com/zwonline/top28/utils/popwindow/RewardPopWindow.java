@@ -49,13 +49,14 @@ public class RewardPopWindow extends PopupWindow {
         applause.setOnClickListener(itemsOnClick);
         kiss.setOnClickListener(itemsOnClick);
         buy_golden.setOnClickListener(itemsOnClick);
+        imageView.setOnClickListener(itemsOnClick);
 //        close.setOnClickListener(listener);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //销毁弹出框
                 dismiss();
-                backgroundAlpha(context, 0.5f);
+                backgroundAlpha(context, 1f);
             }
         });
         //设置SelectPicPopupWindow的View

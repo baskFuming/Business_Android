@@ -116,6 +116,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
      *
      * @param view
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void init(View view) {
 //        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.white), 0);

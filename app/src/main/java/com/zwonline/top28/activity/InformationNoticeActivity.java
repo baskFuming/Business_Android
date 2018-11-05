@@ -103,7 +103,7 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
                 if (AntiShake.check(view.getId())) {    //判断是否多次点击
                     return;
                 }
-                if (dataBeanList.status==1){
+                if (dataBeanList.status == 1) {
                     String url = dList.get(position).url;
                     String[] str = url.split("/");
 //                //跳转到动态详情页面
@@ -111,10 +111,10 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
                     intent.putExtra("moment_id", str[1]);
                     startActivity(intent);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                }else {
-                    ToastUtils.showToast(getApplicationContext(),dataBeanList.msg);
+                } else {
+                    ToastUtils.showToast(getApplicationContext(), dataBeanList.msg);
                 }
-                }
+            }
 
         });
         inForNoticeLoadMore();

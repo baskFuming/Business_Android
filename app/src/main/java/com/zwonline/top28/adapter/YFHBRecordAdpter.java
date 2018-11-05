@@ -11,7 +11,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.zwonline.top28.R;
 import com.zwonline.top28.bean.HongBaoLogBean;
 import com.zwonline.top28.bean.YfRecordBean;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.ImageViewPlus;
+import com.zwonline.top28.utils.StringUtil;
 
 import java.util.List;
 
@@ -21,10 +23,12 @@ import java.util.List;
 public class YFHBRecordAdpter extends BaseAdapter {
     private List<YfRecordBean.DataBean.ListBean> list;
     private Context context;
+    private String type;
 
-    public YFHBRecordAdpter(List<YfRecordBean.DataBean.ListBean> list, Context context) {
+    public YFHBRecordAdpter(List<YfRecordBean.DataBean.ListBean> list, Context context, String type) {
         this.context = context;
         this.list = list;
+        this.type = type;
     }
 
     @Override
@@ -62,8 +66,12 @@ public class YFHBRecordAdpter extends BaseAdapter {
 
 
         viewHolder.snatch_yangfen_time.setText(list.get(position).add_time);
+        if (StringUtil.isNotEmpty(type)&&type.equals(BizConstant.IS_SUC)){
+            viewHolder.snatch_yangfen_num.setText(list.get(position).amount + "商机币");
+        }else {
+            viewHolder.snatch_yangfen_num.setText(list.get(position).amount + "鞅分");
+        }
 
-        viewHolder.snatch_yangfen_num.setText(list.get(position).amount + "鞅分");
         viewHolder.snatch_user_head.setVisibility(View.GONE);
         return convertView;
     }
