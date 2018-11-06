@@ -74,6 +74,7 @@ import butterknife.BindView;
  */
 public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, SendFriendCirclePresenter> implements ISendFriendCircleActivity {
 
+
     private XRecyclerView newcontentRecy;
     private int page = 1;
     private AttentionDynamicAdapter adapter;
