@@ -215,7 +215,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
             @Override
             public void onClick(View v) {
                 newcontentRecy.setFocusable(true);
-                newcontentRecy.smoothScrollToPosition(0);
+                newcontentRecy.scrollToPosition(0);
             }
         });
 

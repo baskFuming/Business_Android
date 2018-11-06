@@ -169,7 +169,7 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
             @Override
             public void onClick(View v) {
                 newcontentRecy.setFocusable(true);
-                newcontentRecy.smoothScrollToPosition(0);
+                newcontentRecy.scrollToPosition(0);
             }
         });
 
