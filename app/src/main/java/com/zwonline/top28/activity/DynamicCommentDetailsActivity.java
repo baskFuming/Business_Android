@@ -371,6 +371,8 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
         if (addBankBean.status == 1) {
             int content_nums = Integer.parseInt(content_num) + 1;
             content_num = content_nums + "";
+        }else {
+            ToastUtils.showToast(getApplicationContext(),addBankBean.msg);
         }
         presenter.mDynamicComment(this, page, article_id, commentId, "", "");
     }

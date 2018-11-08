@@ -25,6 +25,7 @@ import java.util.List;
 public class RewardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<RewardListBean.DataBean.ListBean> list;
     private Context context;
+    private HomePageInterface homePageInterface;
 
     public RewardListAdapter(List<RewardListBean.DataBean.ListBean> list, Context context) {
         this.list = list;
@@ -45,7 +46,7 @@ public class RewardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         myViewHolder.reward_username.setText(list.get(position).reward_user_nickname);
         if (StringUtil.isNotEmpty(list.get(position).gift_name)) {
@@ -55,16 +56,22 @@ public class RewardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         RequestOptions options = new RequestOptions().error(R.mipmap.no_photo_male).placeholder(R.mipmap.no_photo_male);
         Glide.with(context).load(list.get(position).reward_user_avatar).apply(options).into(myViewHolder.reward_userhead);
         String gift_id = list.get(position).gift_id;
-        if (StringUtil.isNotEmpty(gift_id)&&gift_id.equals(BizConstant.IS_SUC)){
+        if (StringUtil.isNotEmpty(gift_id) && gift_id.equals(BizConstant.IS_SUC)) {
             myViewHolder.reward_image.setImageResource(R.mipmap.reward_gift1);
-        }else if (StringUtil.isNotEmpty(gift_id)&&gift_id.equals(BizConstant.RECOMMEND)){
+        } else if (StringUtil.isNotEmpty(gift_id) && gift_id.equals(BizConstant.RECOMMEND)) {
             myViewHolder.reward_image.setImageResource(R.mipmap.reward_gift2);
-        }else if (StringUtil.isNotEmpty(gift_id)&&gift_id.equals(BizConstant.ATTENTION)){
+        } else if (StringUtil.isNotEmpty(gift_id) && gift_id.equals(BizConstant.ATTENTION)) {
             myViewHolder.reward_image.setImageResource(R.mipmap.reward_gift3);
-        }else if (StringUtil.isNotEmpty(gift_id)&&gift_id.equals(BizConstant.MY)){
+        } else if (StringUtil.isNotEmpty(gift_id) && gift_id.equals(BizConstant.MY)) {
             myViewHolder.reward_image.setImageResource(R.mipmap.reward_gift5);
         }
-
+        //点击头像跳个人中心
+        myViewHolder.reward_userhead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homePageInterface.onclick(v, position);
+            }
+        });
     }
 
     @Override
@@ -96,6 +103,22 @@ public class RewardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public interface OnClickItemListener {
         void setOnItemClick(View view, int position);
+    }
+
+
+    /**
+     * `
+     * 按钮点击事件需要的方法
+     */
+    public void homePageSetOnclick(HomePageInterface homePageInterface) {
+        this.homePageInterface = homePageInterface;
+    }
+
+    /**
+     * 按钮点击事件对应的接口
+     */
+    public interface HomePageInterface {
+        public void onclick(View view, int position);
     }
 }
 

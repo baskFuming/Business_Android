@@ -83,6 +83,7 @@ public class CommentsAdapter extends BaseAdapter {
         }
         if (list.get(position).commentsExcerpt == null) {
             holder.comment_linear.setVisibility(View.GONE);
+            list.clear();
             holder.no_comment.setVisibility(View.VISIBLE);
         } else {
             holder.comment_user_name.setText(list.get(position).commentsExcerpt.get(position).member.nickname);

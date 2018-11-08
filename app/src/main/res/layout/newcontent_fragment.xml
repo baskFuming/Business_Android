@@ -6,6 +6,8 @@
     android:background="@color/white"
     android:orientation="vertical">
     <RelativeLayout
+        android:id="@+id/dynamic_relate"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <com.jcodecraeer.xrecyclerview.XRecyclerView

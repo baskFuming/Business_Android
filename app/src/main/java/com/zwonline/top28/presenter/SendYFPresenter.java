@@ -13,6 +13,7 @@ import com.zwonline.top28.bean.RecommendTeamsBean;
 import com.zwonline.top28.bean.SendYFBean;
 import com.zwonline.top28.bean.YfRecordBean;
 import com.zwonline.top28.model.SendYfModel;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.ISendYFActivity;
 
 import java.io.IOException;
@@ -119,7 +120,6 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
                     .subscribeWith(new BaseDisposableSubscriber<SendYFBean>(context) {
                         @Override
                         protected void onBaseNext(SendYFBean sendYFBean) {
-                            Log.i("sendYFBean==", sendYFBean.msg);
                             iSendYFActivity.showYfdata(sendYFBean);
                         }
 
@@ -150,7 +150,7 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
      * @param hongbao_id
      * @param page
      */
-    public void mSnatchYangFen(Context context, String hongbao_id, int page) {
+    public void mSnatchYangFen(final Context context, String hongbao_id, int page) {
         try {
 
             Flowable<HongBaoLogBean> flowable = sendYfModel.snatchYangFen(context, hongbao_id, page);
@@ -160,7 +160,11 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
                         @Override
                         public void onNext(HongBaoLogBean hongBaoLogBean) {
                             Log.i("hongBaoLogBean==", hongBaoLogBean.msg);
-                            iSendYFActivity.showSnatchYangFe(hongBaoLogBean.data);
+                            if (hongBaoLogBean != null && hongBaoLogBean.status == 1) {
+                                iSendYFActivity.showSnatchYangFe(hongBaoLogBean.data);
+                            } else {
+                                ToastUtils.showToast(context, hongBaoLogBean.msg);
+                            }
                         }
 
                         @Override

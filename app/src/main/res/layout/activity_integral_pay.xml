@@ -250,7 +250,6 @@
                     android:drawableLeft="@mipmap/buy_gift"
                     android:drawablePadding="10dp"
                     android:ellipsize="end"
-                    android:lines="1"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>

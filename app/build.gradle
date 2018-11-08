@@ -11,8 +11,8 @@ android {
     defaultConfig {
         applicationId "com.zwonline.top28"
         minSdkVersion 16
-        versionCode 25
-        versionName "3.4.1"
+        versionCode 26
+        versionName "3.5.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             targetSdkVersion 26

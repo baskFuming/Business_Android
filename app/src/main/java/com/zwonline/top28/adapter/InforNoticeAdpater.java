@@ -16,6 +16,7 @@ import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.TimeUtil;
+import com.zwonline.top28.utils.click.AntiShake;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,7 +35,7 @@ public class InforNoticeAdpater extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<InforNoticeBean.DataBean> dlist;
     private Context context;
     private String imagetype = "1";
-
+    private HomePageInterface homePageInterface;
     public InforNoticeAdpater(Context context, List<InforNoticeBean.DataBean> dlist) {
         this.context = context;
         this.dlist = dlist;
@@ -65,6 +66,15 @@ public class InforNoticeAdpater extends RecyclerView.Adapter<RecyclerView.ViewHo
         RequestOptions requestOption = new RequestOptions().placeholder(R.mipmap.gray_logo).error(R.mipmap.gray_logo);
         //用户名称
         myViewHolder.textView_notice_myself.setText(dlistbean.from_user.nickname);
+        myViewHolder.notice_tou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AntiShake.check(v.getId())) {    //判断是否多次点击
+                    return;
+                }
+                homePageInterface.onclick(v, position);
+            }
+        });
         RequestOptions requestOptions = new RequestOptions().placeholder(R.color.backgroud_zanwei).error(R.mipmap.no_photo_male).centerCrop();
         //用户头像
         Glide.with(context).load(dlistbean.from_user.avatars).apply(requestOptions).into(myViewHolder.notice_tou);
@@ -215,4 +225,21 @@ public class InforNoticeAdpater extends RecyclerView.Adapter<RecyclerView.ViewHo
         SimpleDateFormat format = new SimpleDateFormat(pattern);
         return format.format(date);
     }
+
+
+    /**
+     * `
+     * 按钮点击事件需要的方法
+     */
+    public void homePageSetOnclick(HomePageInterface homePageInterface) {
+        this.homePageInterface = homePageInterface;
+    }
+
+    /**
+     * 按钮点击事件对应的接口
+     */
+    public interface HomePageInterface {
+        public void onclick(View view, int position);
+    }
+
 }

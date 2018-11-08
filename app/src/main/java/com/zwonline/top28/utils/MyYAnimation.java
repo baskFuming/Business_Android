@@ -5,6 +5,7 @@ import android.graphics.Matrix;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 
 /**
@@ -30,8 +31,8 @@ public class MyYAnimation extends Animation {
         centerX = width / 2;
         centerY = width / 2;
         //动画执行时间 自行定义
-        setDuration(2000);
-//        setInterpolator(new AccelerateInterpolator());
+        setDuration(200000);
+        setInterpolator(new LinearInterpolator());
     }
 
     /**
@@ -44,7 +45,7 @@ public class MyYAnimation extends Animation {
         final Matrix matrix = t.getMatrix();
         camera.save();
         //中心是Y轴旋转，这里可以自行设置X轴 Y轴 Z轴
-        camera.rotateY(360 * interpolatedTime);
+        camera.rotateY(36000 * interpolatedTime);
         //把我们的摄像头加在变换矩阵上
         camera.getMatrix(matrix);
         //设置翻转中心点

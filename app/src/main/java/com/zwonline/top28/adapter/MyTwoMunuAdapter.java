@@ -12,9 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zwonline.top28.R;
 import com.zwonline.top28.bean.MyPageBean;
 import com.zwonline.top28.utils.ImageViewPlus;
+import com.zwonline.top28.utils.StringUtil;
 
 import java.util.List;
 
@@ -55,10 +57,19 @@ public class MyTwoMunuAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 //        holder.icon.setImageResource();
-        int resID = context.getResources().getIdentifier(list.get(position).image, "mipmap", context.getPackageName());
-        Drawable drawable = context.getResources().getDrawable(resID);
-        holder.icon.setImageDrawable(drawable);
         holder.function_name.setText(list.get(position).title);
+        String image = list.get(position).image;
+        //判断是从网络获取还是本地
+        if (StringUtil.isNotEmpty(image) && image.contains("http")) {
+            Glide.with(context).load(list.get(position).image).into(holder.icon);
+        } else {
+            //调本地图片
+            int resID = context.getResources().getIdentifier(list.get(position).image, "mipmap", context.getPackageName());
+            Drawable drawable = context.getResources().getDrawable(resID);
+            holder.icon.setImageDrawable(drawable);
+        }
+
+
         return convertView;
     }
 

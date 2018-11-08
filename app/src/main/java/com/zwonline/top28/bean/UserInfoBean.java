@@ -80,6 +80,10 @@ public class UserInfoBean {
             public String position;
             public String mobile;
             public String union_id;
+            public String mbp_amount;
+            public String boc_amount;
+            public String cp_amount;
+            public String mbp_url;
             public static class CompanyBean {
                 /**
                  * id : 1

@@ -37,5 +37,6 @@ public class UpdateCodeBean {
         public String force_update;
         public String have_new_version;
         public String package_download_url;
+        public String flush_cache;
     }
 }

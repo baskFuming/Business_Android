@@ -508,6 +508,25 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
 
             }
         });
+        adapter.itemContentSetOnclick(new ArticleCommentAdapter.ItemContentInterface() {
+            @Override
+            public void onclick(View view, int position) {
+                if (reply > 0) {
+                    int positions = position;
+                    Intent intent = new Intent(HomeDetailsActivity.this, CommentDetailsActivity.class);
+                    intent.putExtra("uid", list.get(positions).uid);
+                    intent.putExtra("article_id", sID);
+                    intent.putExtra("comment_id", list.get(positions).comment_id);
+                    intent.putExtra("nicname", list.get(positions).member.nickname);
+                    intent.putExtra("isuue_time", list.get(positions).ctime);
+                    intent.putExtra("content", list.get(positions).content);
+                    intent.putExtra("zan", list.get(positions).zan);
+                    intent.putExtra("avatarss", list.get(positions).member.avatars);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_bottom_in, R.anim.activity_top_out);
+                }
+            }
+        });
         commentListview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -1225,7 +1244,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
          */
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(this);
-        normalDialog.setTitle("您的商机币余额不足，是否充值商机币？");
+        normalDialog.setTitle("商机币余额不足，请点击购买商机币充值!");
 //        normalDialog.setMessage(R.string.is_willing_answer_calls);pointsEditText.getText().toString().trim(),pointsMonney.getText().toString().trim()
         normalDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {

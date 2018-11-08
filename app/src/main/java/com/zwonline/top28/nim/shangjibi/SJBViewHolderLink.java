@@ -43,6 +43,9 @@ import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * 点击打开商机币红包
+ */
 public class SJBViewHolderLink extends MsgViewHolder {
 
     private String redpackUserToken;
@@ -74,6 +77,8 @@ public class SJBViewHolderLink extends MsgViewHolder {
         revContentText = findViewById(R.id.tv_bri_mess_rev);
         revTitleText = findViewById(R.id.tv_bri_name_rev);
         revView = findViewById(R.id.bri_rev);
+        revView.setBackgroundResource(R.mipmap.message_sjb_bg);
+        sendView.setBackgroundResource(R.mipmap.message_sjb_bg);
     }
 
     @Override
@@ -105,6 +110,9 @@ public class SJBViewHolderLink extends MsgViewHolder {
 
     @Override
     protected void onItemClick() {
+        if (AntiShake.check(view.getId())) {    //判断是否多次点击
+            return;
+        }
         SJBAttachment attachment = (SJBAttachment) message.getAttachment();
         redpackUserToken = attachment.getRedpackUserToken();
         BaseMultiItemFetchLoadAdapter adapter = getAdapter();

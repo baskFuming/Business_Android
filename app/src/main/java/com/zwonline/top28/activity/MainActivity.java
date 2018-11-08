@@ -2,6 +2,7 @@ package com.zwonline.top28.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -55,12 +57,14 @@ import com.zwonline.top28.nim.team.TeamCreateHelper;
 import com.zwonline.top28.presenter.MainPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.LanguageUitils;
+import com.zwonline.top28.utils.MyYAnimation;
 import com.zwonline.top28.utils.NetUtils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.badge.MainBadgeView;
 import com.zwonline.top28.utils.popwindow.CustomPopuWindow;
+import com.zwonline.top28.utils.popwindow.RedacketPopWindow;
 import com.zwonline.top28.utils.popwindow.YangFenUnclaimedWindow;
 import com.zwonline.top28.view.IMainActivity;
 
@@ -71,6 +75,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 
@@ -119,6 +125,11 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private ImageView infoGuide;
     private SharedPreferences fristInfo;
     private boolean isFristInfo;
+    private RedacketPopWindow redacketPopWindow;
+    private ImageView receive;
+    private LinearLayout readbackground1;
+    private LinearLayout readbackground2;
+    private TextView recriveCode;
 
     @Override
     protected void init() {
@@ -129,7 +140,6 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         myFragment = new MyFragment();
         yangShiFragment = new YangShiFragment();
         initView();
-
 //        ToastUtils.showToast(this,LanguageUitils.getVersionName(this)+"");
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
@@ -290,7 +300,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 } else {
-                    Intent infoIntent = new  Intent(this, WithoutCodeLoginActivity.class);
+                    Intent infoIntent = new Intent(this, WithoutCodeLoginActivity.class);
 //                    infoIntent.putExtra("login_type", BizConstant.BUSINESS_LOGIN);
                     startActivity(infoIntent);
                     //activity切换动画效果
@@ -397,6 +407,19 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             if (islogine) {
                 //yangFenLingQu();//鞅分领取
                 presenter.UnclaimedMbpCount(getApplicationContext());
+                //新用户随机红包
+                redacketPopWindow = new RedacketPopWindow(MainActivity.this, reaListener);
+                View redacketView = redacketPopWindow.getContentView();
+                receive = redacketView.findViewById(R.id.receive);
+                recriveCode = redacketView.findViewById(R.id.recrive_code);
+                readbackground1 = redacketView.findViewById(R.id.readbackground1);
+                readbackground2 = redacketView.findViewById(R.id.readbackground2);
+                mian.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        redacketPopWindow.showAtLocation(mian, Gravity.CENTER, 0, 0);
+                    }
+                });
             }
 
             //否则吐司，说现在是最新的版本
@@ -419,6 +442,42 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     break;
                 case R.id.coerce_sure:
                     LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
+                    break;
+            }
+        }
+    };
+    /***
+     * 首页新用户随机红包
+     */
+    private View.OnClickListener reaListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.receive://打开红包
+                    MyYAnimation myYAnimation = new MyYAnimation();
+                    myYAnimation.setRepeatCount(Animation.INFINITE); //旋转的次数（无数次）
+                    receive.startAnimation(myYAnimation);
+                    receive.clearAnimation();
+                    readbackground1.setVisibility(View.GONE);
+                    readbackground2.setVisibility(View.VISIBLE);
+//                    redacketPopWindow.dismiss();
+//                    redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
+                    break;
+                case R.id.text_busin://查看商机币
+                    Intent intent = new Intent(MainActivity.this, IntegralActivity.class);
+                    intent.putExtra("type", BizConstant.RECOMMEND);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//                    redacketPopWindow.dismiss();
+//                    redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
+                    break;
+                case R.id.text_cheats://前往秘籍
+                    Intent intent1 = new Intent(MainActivity.this, GuideActivity.class);
+                    intent1.putExtra("type", BizConstant.RECOMMEND);
+                    startActivity(intent1);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//                    redacketPopWindow.dismiss();
+//                    redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
                     break;
             }
         }

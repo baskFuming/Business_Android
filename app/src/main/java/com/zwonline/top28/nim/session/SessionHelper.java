@@ -535,7 +535,8 @@ public class SessionHelper {
                         && (message.getAttachment() instanceof SnapChatAttachment
                         || message.getAttachment() instanceof RTSAttachment
                         || message.getAttachment() instanceof RedPacketAttachment
-                        || message.getAttachment() instanceof YangFenAttachment)) {
+                        || message.getAttachment() instanceof YangFenAttachment
+                        || message.getAttachment() instanceof SJBAttachment)) {
                     // 白板消息和阅后即焚消息，红包消息 不允许转发
                     return true;
                 } else if (message.getMsgType() == MsgTypeEnum.robot && message.getAttachment() != null && ((RobotAttachment) message.getAttachment()).isRobotSend()) {
@@ -557,7 +558,8 @@ public class SessionHelper {
                         && (message.getAttachment() instanceof AVChatAttachment
                         || message.getAttachment() instanceof RTSAttachment
                         || message.getAttachment() instanceof RedPacketAttachment
-                        || message.getAttachment() instanceof YangFenAttachment)) {
+                        || message.getAttachment() instanceof YangFenAttachment
+                        || message.getAttachment() instanceof SJBAttachment)) {
                     // 视频通话消息和白板消息，红包消息 不允许撤回
                     return true;
                 } //else if (DemoCache.getAccount().equals(message.getSessionId())) {

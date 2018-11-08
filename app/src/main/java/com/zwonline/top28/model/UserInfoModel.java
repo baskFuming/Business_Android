@@ -92,7 +92,7 @@ public class UserInfoModel {
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<MyPageBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .personCenterMenu(String.valueOf(timestamp), token,versionName, sign);
+                .personCenterMenu(String.valueOf(timestamp), token, versionName, sign);
         return flowable;
     }
 }

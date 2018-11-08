@@ -69,6 +69,7 @@
                     android:layout_height="108dp"
                     android:layout_weight="1"
                     android:focusable="true"
+                    android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
                     <TextView

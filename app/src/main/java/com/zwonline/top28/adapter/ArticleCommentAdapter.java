@@ -58,6 +58,7 @@ public class ArticleCommentAdapter extends BaseAdapter {
     private SharedPreferencesUtils sp;
     private boolean islogins;
     private PopupWindow mCurPopupWindow;
+    private ItemContentInterface itemContentInterface;
     private int dian=0;
     public ArticleCommentAdapter(List<ArticleCommentBean.DataBean> list, Context context) {
         this.list = list;
@@ -226,6 +227,18 @@ public class ArticleCommentAdapter extends BaseAdapter {
                 holder.comment_like.setChecked(false);
                 holder.praise_like.setEnabled(true);
             }
+            holder.comment_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemContentInterface.onclick(v, position);
+                }
+            });
+            holder.linear_child_comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemContentInterface.onclick(v, position);
+                }
+            });
             holder.comment_content.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -378,6 +391,23 @@ public class ArticleCommentAdapter extends BaseAdapter {
         RelativeLayout.LayoutParams downArrowParams = (RelativeLayout.LayoutParams) downArrow.getLayoutParams();
         downArrowParams.leftMargin = arrowLeftMargin;
     }
+
+    /**
+     * `
+     * 按钮点击事件需要的方法
+     */
+    public void itemContentSetOnclick(ItemContentInterface itemContentInterface) {
+        this.itemContentInterface = itemContentInterface;
+    }
+
+
+    /**
+     * 按钮点击事件对应的接口
+     */
+    public interface ItemContentInterface {
+        public void onclick(View view, int position);
+    }
+
     /**
      * 去除特殊字符或将所有中文标号替换为英文标号
      *

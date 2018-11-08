@@ -231,7 +231,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         wx_page_type = (String) sp.getKey(this, "wx_page_type", "");
         //职位 公司名称
         enterprise = (String) sp.getKey(this, "enterprise", "");
-        position= (String) sp.getKey(this, "position", "");
+        position = (String) sp.getKey(this, "position", "");
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         sex = intent.getStringExtra("sex");
@@ -388,7 +388,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         } else {
             text_singnature.setText("这个人很懒，什么也没有留下!");
         }
-        if (islogins){
+        if (islogins) {
             if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
                 if (companyBean.data.did_i_follow.equals("0")) {
                     add_foll_befor.setText(R.string.common_btn_add_focus);
@@ -410,7 +410,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                     add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
                 }
             }
-        }else {
+        } else {
             add_foll_befor.setText(R.string.common_btn_add_focus);
             add_foll_befor.setBackgroundResource(R.drawable.btn_ganzhu_red);
             add_foll_befor.setTextColor(Color.parseColor("#FDFDFD"));
@@ -548,14 +548,14 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             } else {
                                 checkBoxaddress.setChecked(false);
                             }
-                            if (StringUtil.isNotEmpty(enterprise)){
+                            if (StringUtil.isNotEmpty(enterprise)) {
                                 checkbox_job.setChecked(true);
-                            }else {
+                            } else {
                                 checkbox_job.setChecked(false);
                             }
-                            if (StringUtil.isNotEmpty(position)){
+                            if (StringUtil.isNotEmpty(position)) {
                                 checkbox_adress.setChecked(true);
-                            }else {
+                            } else {
                                 checkbox_adress.setChecked(false);
                             }
                             //这里当前获取的字段
@@ -579,14 +579,14 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                             } else {
                                 editTextaddress.setText("");
                             }
-                            if (StringUtil.isNotEmpty(enterprise)){
+                            if (StringUtil.isNotEmpty(enterprise)) {
                                 share_job.setText(enterprise);
-                            }else {
+                            } else {
                                 share_job.setText("");
                             }
-                            if(StringUtil.isNotEmpty(position)){
+                            if (StringUtil.isNotEmpty(position)) {
                                 job_address.setText(position);
-                            }else {
+                            } else {
                                 job_address.setText("");
                             }
                             //分享小程序
@@ -613,20 +613,20 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                                     } else {
                                         addresss = BizConstant.NO_FAVORITE;
                                     }
-                                    if (checkbox_job.isChecked()){
+                                    if (checkbox_job.isChecked()) {
                                         enterprises = BizConstant.ALREADY_FAVORITE;
-                                    }else {
+                                    } else {
                                         enterprises = BizConstant.NO_FAVORITE;
                                     }
-                                    if (checkbox_adress.isChecked()){
+                                    if (checkbox_adress.isChecked()) {
                                         positions = BizConstant.ALREADY_FAVORITE;
-                                    }else {
+                                    } else {
                                         positions = BizConstant.NO_FAVORITE;
                                     }
                                     enterprise = share_job.getText().toString();
                                     position = job_address.getText().toString();
-                                    sp.insertKey(HomePageActivity.this,"enterprise",job_address.getText().toString());
-                                    sp.insertKey(HomePageActivity.this,"position",share_job.getText().toString());
+                                    sp.insertKey(HomePageActivity.this, "enterprise", job_address.getText().toString());
+                                    sp.insertKey(HomePageActivity.this, "position", share_job.getText().toString());
                                     presenter.cardShareWXin(HomePageActivity.this, realnames, phones, wexinnumbers, addresss, enterprises, positions);
                                     presenter.mSetting(HomePageActivity.this, "", editTextname.getText().toString().trim(), Integer.parseInt(sex_id), "", editTextaddress.getText().toString().trim(),
                                             "", "", editTexewxin.getText().toString().trim(),
@@ -679,7 +679,6 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                 break;
         }
     }
-
 
 
     //调起微信小程序
@@ -758,7 +757,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         add_fr_befor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (islogins){
+                if (islogins) {
                     if (StringUtil.isNotEmpty(uid) && StringUtil.isNotEmpty(userUid) && !uid.equals(userUid)) {
                         if (isFriend) {
                             NimUIKit.startP2PSession(HomePageActivity.this, uid);
@@ -770,8 +769,8 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
                         intent.putExtra("uid", uid);
                         startActivity(intent);
                     }
-                }else {
-                    ToastUtils.showToast(getApplicationContext(),"请先登录！");
+                } else {
+                    ToastUtils.showToast(getApplicationContext(), "请先登录！");
                 }
             }
         });
@@ -872,6 +871,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
         });
 
     }
+
     /**
      * 判别分享文章是否有数据
      *
@@ -887,6 +887,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             shareRecy.setVisibility(View.GONE);
         }
     }
+
     //分享的文章
     @Override
     public void showMyShareDte(List<MyShareBean.DataBean> shareList) {
@@ -1024,7 +1025,7 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
     protected void onDestroy() {
         super.onDestroy();
 
-        if (bmp!=null){
+        if (bmp != null) {
             bmp.recycle();
         }
     }

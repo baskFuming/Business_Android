@@ -37,6 +37,7 @@ import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.NumberOperateUtil;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.ISendYFActivity;
 
 import java.util.List;
@@ -46,6 +47,8 @@ import butterknife.OnClick;
 
 /**
  * 发送鞅分界面
+ * is_group判断是群组还是个人
+ * packageType判断是商机币红包还是鞅分红包
  */
 public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPresenter> implements ISendYFActivity {
 
@@ -73,6 +76,7 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
     private LinearLayout pin_linear;
     private String packageType;//红包类型
     private TextView pointType;
+    private String is_group;
 
     @Override
     protected void init() {
@@ -81,6 +85,7 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(getApplicationContext(), "dialog", "");
         group_num = Long.parseLong(getIntent().getStringExtra("group_num"));
+        is_group = getIntent().getStringExtra("is_group");
         packageType = getIntent().getStringExtra("package_type");
         initView();
         yangfenCount.addTextChangedListener(textWatcher);
@@ -140,10 +145,9 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
             pointType.setText("鞅分:");
         }
         //判断是单人还是群组
-        if (StringUtil.isNotEmpty(String.valueOf(group_num)) && group_num == 1) {
-
+        if (StringUtil.isNotEmpty(is_group) && is_group.equals(BizConstant.MOBAN)) {
             red_num.setVisibility(View.GONE);
-            yfAll.setText("单个红包");
+            yfAll.setText("单个金额");
             pin.setVisibility(View.GONE);
             pin_linear.setVisibility(View.GONE);
             groupCount.setVisibility(View.GONE);
@@ -162,6 +166,9 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
      */
     @OnClick({R.id.back, R.id.ordinary_pin, R.id.send_yf})
     public void onViewClicked(View view) {
+        if (AntiShake.check(view.getId())) {    //判断是否多次点击
+            return;
+        }
         switch (view.getId()) {
             case R.id.back:
                 finish();
@@ -197,36 +204,52 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                 String hongBaoCount = pointsEdittext.getText().toString().trim();
                 String yangFenNum = yangfenCount.getText().toString().trim();
                 String content = redContent.getText().toString().trim();
-                if (StringUtil.isNotEmpty(hongBaoCount)) {
+                if (StringUtil.isNotEmpty(is_group) && is_group.equals(BizConstant.NEW)) {//群组红包
+                    if (StringUtil.isNotEmpty(hongBaoCount)) {
+                        if (StringUtil.isNotEmpty(yangFenNum)) {
+                            if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
+                                //商机币红包
+                                if (randomFlag) {
+                                    //随机红包
+                                    presenter.mBocHongBao(SendYangFenActivity.this, content, yangFenNum, hongBaoCount, BizConstant.PAGE);
+                                } else {
+                                    //普通红包
+                                    presenter.mBocHongBao(SendYangFenActivity.this, content, hongBaoCount, showYfNum.getText().toString(), Integer.parseInt(BizConstant.IS_FAIL));
+//                            ToastUtil.showToast(getApplicationContext(),showYfNum.getText().toString());
+                                }
+                            } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.RECOMMEND)) {
+                                //鞅分红包
+                                if (randomFlag) {
+                                    //随机红包
+                                    presenter.mSendYF(SendYangFenActivity.this, content, yangFenNum, hongBaoCount, BizConstant.PAGE);
+                                } else {
+                                    //普通红包
+                                    presenter.mSendYF(SendYangFenActivity.this, content, hongBaoCount, showYfNum.getText().toString(), Integer.parseInt(BizConstant.IS_FAIL));
+//                            ToastUtil.showToast(getApplicationContext(),showYfNum.getText().toString());
+                                }
+                            }
+
+                        } else {
+                            ToastUtil.showToast(getApplicationContext(), "数量不能为空");
+                        }
+                    } else {
+                        ToastUtil.showToast(getApplicationContext(), "红包个数不能为空");
+                    }
+                } else {//单人红包
                     if (StringUtil.isNotEmpty(yangFenNum)) {
                         if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.IS_SUC)) {
                             //商机币红包
-                            if (randomFlag) {
-                                //随机红包
-                                presenter.mBocHongBao(SendYangFenActivity.this, content, yangFenNum, hongBaoCount, BizConstant.PAGE);
-                            } else {
-                                //普通红包
-                                presenter.mBocHongBao(SendYangFenActivity.this, content, hongBaoCount, showYfNum.getText().toString(), Integer.parseInt(BizConstant.IS_FAIL));
-//                            ToastUtil.showToast(getApplicationContext(),showYfNum.getText().toString());
-                            }
+                            presenter.mBocHongBao(SendYangFenActivity.this, content, yangFenNum, BizConstant.NEW, BizConstant.PAGE);
                         } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.RECOMMEND)) {
                             //鞅分红包
-                            if (randomFlag) {
-                                //随机红包
-                                presenter.mSendYF(SendYangFenActivity.this, content, yangFenNum, hongBaoCount, BizConstant.PAGE);
-                            } else {
-                                //普通红包
-                                presenter.mSendYF(SendYangFenActivity.this, content, hongBaoCount, showYfNum.getText().toString(), Integer.parseInt(BizConstant.IS_FAIL));
-//                            ToastUtil.showToast(getApplicationContext(),showYfNum.getText().toString());
-                            }
+                            presenter.mSendYF(SendYangFenActivity.this, content, yangFenNum, BizConstant.NEW, BizConstant.PAGE);
                         }
 
                     } else {
                         ToastUtil.showToast(getApplicationContext(), "数量不能为空");
                     }
-                } else {
-                    ToastUtil.showToast(getApplicationContext(), "红包个数不能为空");
                 }
+
                 break;
         }
     }
@@ -248,7 +271,6 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
             intent.putExtra("user_token", token);
             setResult(Activity.RESULT_OK, intent);//返回页面1
             finish();
-//            ToastUtil.showToast(getApplicationContext(), "hongbao_id"+sendYFBean.data.hongbao_id);
         } else {
             ToastUtil.showToast(getApplicationContext(), sendYFBean.msg);
         }

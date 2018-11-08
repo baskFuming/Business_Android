@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * 引导页
+ * type值1引导页2查看玩法
  */
 public class GuideActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     private ViewPager vp;
@@ -45,12 +46,12 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
         ib_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (StringUtil.isNotEmpty(type)&&type.equals(BizConstant.RECOMMEND)){
+                if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
                     finish();
-                }else {
+                } else {
                     startActivity(new Intent(GuideActivity.this, MainActivity.class));
                     finish();
-                    overridePendingTransition(R.anim.activity_right_in,R.anim.activity_left_out);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
 
                 }
 

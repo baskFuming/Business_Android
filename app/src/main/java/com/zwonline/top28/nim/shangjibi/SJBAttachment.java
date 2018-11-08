@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.zwonline.top28.nim.session.extension.CustomAttachment;
 import com.zwonline.top28.nim.session.extension.CustomAttachmentType;
 
+/**
+ * 商机币红包解析器
+ */
 public class SJBAttachment extends CustomAttachment {
     private String content;//  消息文本内容
     private String redPacketId;//  红包id
@@ -21,6 +24,7 @@ public class SJBAttachment extends CustomAttachment {
     private static final String KEY_USER_HEADER = "redpackUserHeader";
     private static final String KEY_USER_ID = "redpackUserID";
     private static final String KEY_USER_TOKEN = "redpackUserToken";
+
     public SJBAttachment() {
         super(CustomAttachmentType.SHANGJIBI);
     }
@@ -30,11 +34,11 @@ public class SJBAttachment extends CustomAttachment {
         content = data.getString(KEY_CONTENT);
         redPacketId = data.getString(KEY_ID);
         title = data.getString(KEY_TITLE);
-        redpackType=data.getString(KEY_TYPE);
-        redpackUserName=data.getString(KEY_USER_NAME);
-        redpackUserHeader=data.getString(KEY_USER_HEADER);
-        redpackUserID=data.getString(KEY_USER_ID);
-        redpackUserToken=data.getString(KEY_USER_TOKEN);
+        redpackType = data.getString(KEY_TYPE);
+        redpackUserName = data.getString(KEY_USER_NAME);
+        redpackUserHeader = data.getString(KEY_USER_HEADER);
+        redpackUserID = data.getString(KEY_USER_ID);
+        redpackUserToken = data.getString(KEY_USER_TOKEN);
     }
 
     @Override
@@ -58,6 +62,7 @@ public class SJBAttachment extends CustomAttachment {
     public void setKeyUserToken(String userToken) {
         this.redpackUserToken = userToken;
     }
+
     public String getContent() {
         return content;
     }

@@ -47,8 +47,10 @@ public class YangFenAction extends BaseAction {
         intent.putExtra("package_type", BizConstant.RECOMMEND);
         if (getContainer().sessionType == SessionTypeEnum.Team) {
             intent.putExtra("group_num", t.getMemberCount() + "");
+            intent.putExtra("is_group", BizConstant.NEW);
         } else if (getContainer().sessionType == SessionTypeEnum.P2P) {
             intent.putExtra("group_num", "1");
+            intent.putExtra("is_group", BizConstant.RECOMMEND);
         }
         getActivity().startActivityForResult(intent, requestCode);
         getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);

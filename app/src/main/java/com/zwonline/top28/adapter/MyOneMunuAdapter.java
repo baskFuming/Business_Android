@@ -17,6 +17,7 @@ import com.zwonline.top28.utils.ScrollGridView;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
+import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.web.BaseWebViewActivity;
 
 import java.util.ArrayList;
@@ -61,6 +62,9 @@ public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         myViewHolder.fuction_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int positions, long id) {
+                if (AntiShake.check(view.getId())) {    //判断是否多次点击
+                    return;
+                }
                 String activityName = twoList.get(positions).link;
                 if (StringUtil.isNotEmpty(activityName) && activityName.contains("http")) {
                     Intent intent = new Intent(context, BaseWebViewActivity.class);

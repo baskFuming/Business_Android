@@ -388,14 +388,14 @@
 
         <TextView
             android:id="@+id/comment_user1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#080808"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/comment_user2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/comment_user1"
             android:layout_marginTop="5dp"

@@ -75,7 +75,7 @@ public class BaseWebViewActivity extends BaseActivity {
     @Override
     protected void init() {
         initView();
-        url = getIntent().getStringExtra("weburl");
+        url = getIntent().getStringExtra("weburl")+"?version="+LanguageUitils.getVerName(this);
         String uid= getIntent().getStringExtra("uid");
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");

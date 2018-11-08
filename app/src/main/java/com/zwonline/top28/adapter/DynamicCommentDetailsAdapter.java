@@ -115,11 +115,11 @@ public class DynamicCommentDetailsAdapter extends BaseAdapter {
             } else if (list.get(position).pp_user != null) {
                 String nickname = "//@" + list.get(position).pp_user.nickname;
                 SpannableStringBuilder spannable1 = new SpannableStringBuilder(nickname + ":" + list.get(position).content);
-                if (list.get(position).pp_user.user_id.equals(uid)) {
-                    spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 2, nickname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                } else {
+//                if (list.get(position).pp_user.user_id.equals(uid)) {
+//                    spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 2, nickname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                } else {
                     spannable1.setSpan(new TextClick(context, list.get(position).pp_user.user_id), 2, nickname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
+//                }
 
 //                spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")),2,nickname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 

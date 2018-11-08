@@ -38,6 +38,7 @@ import butterknife.OnClick;
  *
  * @author YSG
  * @date 2018/3/8
+ * type=1算力2商机币
  */
 public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurrencyPresenter> implements IMyCurrencyActivity {
 

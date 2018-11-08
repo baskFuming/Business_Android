@@ -15,6 +15,9 @@ import com.zwonline.top28.nim.yangfen.SendYangFenActivity;
 import com.zwonline.top28.nim.shangjibi.SJBAttachment;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 
+/**
+ * 商机币红包点击到发送页面
+ */
 public class SJBAction extends BaseAction {
 
     private static final int CREATE_GROUP_RED_PACKET = 51;
@@ -41,10 +44,13 @@ public class SJBAction extends BaseAction {
         Team t = NimUIKit.getTeamProvider().getTeamById(getAccount());
         Intent intent = new Intent(getActivity(), SendYangFenActivity.class);
         intent.putExtra("package_type", BizConstant.NEW);
-        if (getContainer().sessionType == SessionTypeEnum.Team) {
+        //判断是群组还是个人is_group字段
+        if (getContainer().sessionType == SessionTypeEnum.Team) {//群组
             intent.putExtra("group_num", t.getMemberCount() + "");
-        } else if (getContainer().sessionType == SessionTypeEnum.P2P) {
+            intent.putExtra("is_group", BizConstant.NEW);
+        } else if (getContainer().sessionType == SessionTypeEnum.P2P) {//个人
             intent.putExtra("group_num", "1");
+            intent.putExtra("is_group", BizConstant.RECOMMEND);
         }
         getActivity().startActivityForResult(intent, requestCode);
         getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);

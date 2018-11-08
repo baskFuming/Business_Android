@@ -602,6 +602,15 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         }
         rewardList.addAll(rewardLists);
         rewardistAdapter.notifyDataSetChanged();
+        rewardistAdapter.homePageSetOnclick(new RewardListAdapter.HomePageInterface() {
+            @Override
+            public void onclick(View view, int position) {
+                Intent intent = new Intent(DynamicDetailsActivity.this, HomePageActivity.class);
+                intent.putExtra("uid", rewardList.get(position).reward_user_id);
+                startActivity(intent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+            }
+        });
         rewardLoadMore();
 
     }
@@ -642,6 +651,23 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
 
     }
 
+    public void itemOnclicks(int position) {
+        Intent intent = new Intent(getApplicationContext(), DynamicCommentDetailsActivity.class);
+        intent.putExtra("uid", dynamicList.get(position).user_id);
+        intent.putExtra("article_id", dynamicList.get(position).moment_id);
+        intent.putExtra("comment_id", dynamicList.get(position).comment_id);
+        intent.putExtra("nicname", dynamicList.get(position).member.nickname);
+        intent.putExtra("isuue_time", dynamicList.get(position).add_time);
+        intent.putExtra("content", dynamicList.get(position).content);
+        intent.putExtra("zan", dynamicList.get(position).like_count);
+        intent.putExtra("content_num", comment_count);
+        intent.putExtra("did_i_vote", dynamicList.get(position).did_i_vote);
+        intent.putExtra("avatarss", dynamicList.get(position).member.avatars);
+        intent.putExtra("type", type);
+        startActivityForResult(intent, 100);
+        overridePendingTransition(R.anim.activity_bottom_in, R.anim.activity_top_out);
+    }
+
     /**
      * 评论列表
      *
@@ -658,21 +684,21 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         adapter.setOnClickItemListener(new DynamicDetailsComentAdapter.OnClickItemListener() {
             @Override
             public void setOnItemClick(View view, int position) {
+                if (AntiShake.check(view.getId())) {    //判断是否多次点击
+                    return;
+                }
                 positions = position - 1;
-                Intent intent = new Intent(getApplicationContext(), DynamicCommentDetailsActivity.class);
-                intent.putExtra("uid", dynamicList.get(positions).user_id);
-                intent.putExtra("article_id", dynamicList.get(positions).moment_id);
-                intent.putExtra("comment_id", dynamicList.get(positions).comment_id);
-                intent.putExtra("nicname", dynamicList.get(positions).member.nickname);
-                intent.putExtra("isuue_time", dynamicList.get(positions).add_time);
-                intent.putExtra("content", dynamicList.get(positions).content);
-                intent.putExtra("zan", dynamicList.get(positions).like_count);
-                intent.putExtra("content_num", comment_count);
-                intent.putExtra("did_i_vote", dynamicList.get(positions).did_i_vote);
-                intent.putExtra("avatarss", dynamicList.get(positions).member.avatars);
-                intent.putExtra("type", type);
-                startActivityForResult(intent, 100);
-                overridePendingTransition(R.anim.activity_bottom_in, R.anim.activity_top_out);
+                itemOnclicks(positions);
+            }
+        });
+        adapter.itemContentSetOnclick(new DynamicDetailsComentAdapter.ItemContentInterface() {
+
+            @Override
+            public void onclick(View view, int position) {
+                if (AntiShake.check(view.getId())) {    //判断是否多次点击
+                    return;
+                }
+                itemOnclicks(position);
             }
         });
         /**
@@ -681,6 +707,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         adapter.commentsContentSetOnclick(new DynamicDetailsComentAdapter.CommentsContentInterface() {
             @Override
             public void onclick(View view, final int position, TextView textView) {
+                if (AntiShake.check(view.getId())) {    //判断是否多次点击
+                    return;
+                }
                 deliteCommentPosition = position;
                 mCurPopupWindow = showTipPopupWindow(textView, new View.OnClickListener() {
                     @Override
@@ -719,6 +748,9 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         adapter.commentLikeSetOnclick(new DynamicDetailsComentAdapter.CommentLikeContentInterface() {
             @Override
             public void onclick(View view, int position, CheckBox checkBox, TextView textView) {
+                if (AntiShake.check(view.getId())) {    //判断是否多次点击
+                    return;
+                }
                 commentLikePosition = position;
                 if (islogins) {
                     if (dynamicList.get(position).did_i_vote.equals(BizConstant.IS_FAIL)) {
@@ -1086,6 +1118,15 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             likeLists.clear();
         }
         likeLists.addAll(likeList);
+        likeListAdapter.homePageSetOnclick(new LikeListAdapter.HomePageInterface() {
+            @Override
+            public void onclick(View view, int position) {
+                Intent intent = new Intent(DynamicDetailsActivity.this, HomePageActivity.class);
+                intent.putExtra("uid", likeLists.get(position).uid);
+                startActivity(intent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+            }
+        });
         likeListAdapter.notifyDataSetChanged();
         likeLoadMore();
     }
@@ -1648,7 +1689,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
          */
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(this);
-        normalDialog.setTitle("您的商机币余额不足，是否充值商机币？");
+        normalDialog.setTitle("商机币余额不足，请点击购买商机币充值!");
 //        normalDialog.setMessage(R.string.is_willing_answer_calls);pointsEditText.getText().toString().trim(),pointsMonney.getText().toString().trim()
         normalDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {

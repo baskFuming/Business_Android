@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants"
     android:layout_marginTop="10dp"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
 
@@ -85,10 +85,11 @@
         android:layout_marginLeft="74dp"
         android:layout_marginRight="28dp"
         android:layout_marginTop="7dp"
+        android:focusable="false"
         android:textColor="#ff424242"
         android:textSize="14sp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linear_child_comments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,21 +102,23 @@
         android:paddingLeft="9dp"
         android:paddingRight="18dp"
         android:paddingTop="9dp"
+        android:descendantFocusability="blocksDescendants"
         android:visibility="gone">
 
         <TextView
             android:id="@+id/comment_user1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#080808"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/comment_user2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:textColor="#080808"
+            android:layout_below="@id/comment_user1"
             android:textSize="14sp" />
 
         <TextView
@@ -124,18 +127,20 @@
             android:layout_height="wrap_content"
             android:text="查看全部评论"
             android:textColor="#228FFE"
+            android:layout_below="@id/comment_user2"
             android:textSize="14sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:visibility="visible" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="#eff0f7"/>
+        android:background="#eff0f7" />
 </LinearLayout>

@@ -26,6 +26,7 @@ import com.zwonline.top28.activity.EnsurePoolActivity;
 import com.zwonline.top28.activity.HashrateActivity;
 import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.activity.InsuranceActivity;
+import com.zwonline.top28.activity.IntegralActivity;
 import com.zwonline.top28.activity.MyAttentionsActivity;
 import com.zwonline.top28.activity.MyCollectActivity;
 import com.zwonline.top28.activity.MyExamineActivity;
@@ -57,6 +58,7 @@ import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IUserInfo;
+import com.zwonline.top28.web.BaseWebViewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -169,6 +171,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     private String avatars;
     private List<MyPageBean.DataBean> menuList;
     private MyOneMunuAdapter myOneMenuAdapter;
+    private String mbp_url;
+
     @Override
     protected void init(View view) {
         menuList = new ArrayList<>();
@@ -193,8 +197,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
         Glide.with(getActivity()).load(sp.getKey(getActivity(), "avatar", "")).apply(options).into(userTou);
 //        UserDatas();
-        myOneMenuAdapter = new MyOneMunuAdapter(menuList,getActivity());
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        myOneMenuAdapter = new MyOneMunuAdapter(menuList, getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         ScrollLinearLayoutManager scrollLinearLayoutManager = new ScrollLinearLayoutManager(getActivity());
         scrollLinearLayoutManager.setScrollEnabled(false);
         menuRecy.setLayoutManager(scrollLinearLayoutManager);
@@ -223,6 +227,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             nickName = userInfoBean.data.user.nickname;
             age = userInfoBean.data.user.age;
             uid = userInfoBean.data.user.uid;
+            mbp_url = userInfoBean.data.user.mbp_url;//鞅分跳转链接
             if (sp != null) {
                 sp.insertKey(getActivity(), "avatar", userInfoBean.data.user.avatar);
                 sp.insertKey(getActivity(), "uid", userInfoBean.data.user.uid);
@@ -235,17 +240,20 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 sp.insertKey(getActivity(), "wx_page_type", userInfoBean.data.user.wx_page_type);
                 sp.insertKey(getActivity(), "enterprise", userInfoBean.data.user.enterprise);
                 sp.insertKey(getActivity(), "position", userInfoBean.data.user.position);
-                sp.insertKey(getActivity(),"mobile",userInfoBean.data.user.mobile);
-                sp.insertKey(getActivity(),"union_id",userInfoBean.data.user.union_id);
+                sp.insertKey(getActivity(), "mobile", userInfoBean.data.user.mobile);
+                sp.insertKey(getActivity(), "union_id", userInfoBean.data.user.union_id);
+                sp.insertKey(getActivity(), "mbp_amount", userInfoBean.data.user.mbp_amount);
+                sp.insertKey(getActivity(), "boc_amount", userInfoBean.data.user.boc_amount);
+                sp.insertKey(getActivity(), "cp_amount", userInfoBean.data.user.cp_amount);
             }
 
             avatar = userInfoBean.data.user.avatar;
 //        sp.insertKey(getActivity(), "avatar", avatar);
             if (sp != null) {
                 sp.insertKey(getActivity(), "sharedUid", uid);
-                tvGuanzhuNum.setText((String) sp.getKey(getActivity(), "follow", ""));
-                tvFensiNum.setText((String) sp.getKey(getActivity(), "fans", ""));
-                tvShoucangNum.setText((String) sp.getKey(getActivity(), "favorite", ""));
+                tvGuanzhuNum.setText((String) sp.getKey(getActivity(), "mbp_amount", ""));
+                tvFensiNum.setText((String) sp.getKey(getActivity(), "cp_amount", ""));
+                tvShoucangNum.setText((String) sp.getKey(getActivity(), "boc_amount", ""));
             }
             if (StringUtil.isNotEmpty(userInfoBean.data.user.nickname)) {
                 username = userInfoBean.data.user.nickname;
@@ -326,15 +334,17 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 break;
             case R.id.tv_guanzhu_linear://我的关注
                 RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.CLICK_PERSONAL_FOLLOW);
-                Intent guan = new Intent(getActivity(), MyAttentionsActivity.class);
+                Intent guan = new Intent(getActivity(), BaseWebViewActivity.class);
                 guan.putExtra("uid", uid);
+                guan.putExtra("weburl", mbp_url);
                 guan.putExtra("attention", R.string.center_my_followed);
                 startActivity(guan);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.tv_fensi_linear://我的fans
                 RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.CLICK_PERSONAL_FANS);
-                Intent intent_fen = new Intent(getActivity(), MyFansesActivity.class);
+                Intent intent_fen = new Intent(getActivity(), IntegralActivity.class);
+                intent_fen.putExtra("type", BizConstant.NEW);
                 intent_fen.putExtra("uid", uid);
                 intent_fen.putExtra("fans", R.string.center_my_fans);
                 startActivity(intent_fen);
@@ -342,7 +352,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 break;
             case R.id.tv_shoucang_linear://我的收藏
                 RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.CLICK_PERSONAL_FAVORITE);
-                Intent shou = new Intent(getActivity(), MyCollectActivity.class);
+                Intent shou = new Intent(getActivity(), IntegralActivity.class);
+                shou.putExtra("type", BizConstant.RECOMMEND);
                 shou.putExtra("uid", uid);
                 shou.putExtra("collect", getString(R.string.center_my_favorite));
                 startActivity(shou);
@@ -493,7 +504,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     @Override
     public void onResume() {
         super.onResume();
-       boolean islogin= (boolean) sp.getKey(getActivity(), "islogin", false);
+        boolean islogin = (boolean) sp.getKey(getActivity(), "islogin", false);
         if (StringUtil.isNotEmpty(nicknames)) {
             titleUserName.setText(nicknames);
             userName.setText(nicknames);
@@ -550,6 +561,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
         }
 
     }
+
     /**
      * 菜单一级列表
      *

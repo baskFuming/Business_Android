@@ -7,13 +7,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/readbackground1"
             android:layout_width="match_parent"
             android:layout_height="530dp"
             android:background="@mipmap/red_bg1"
+            android:visibility="visible"
             android:orientation="vertical">
 
             <TextView
@@ -106,8 +108,8 @@
 
                 <TextView
                     android:id="@+id/recrive_code"
-                    android:layout_width="211dp"
-                    android:layout_height="48dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="获得60商机币"

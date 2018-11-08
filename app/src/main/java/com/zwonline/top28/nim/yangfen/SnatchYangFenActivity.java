@@ -42,7 +42,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 
 /**
  * 抢红包页面
- * 1是商机币红包2鞅分红包
+ * packageType 1是商机币红包2鞅分红包
  */
 public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPresenter> implements ISendYFActivity {
 
@@ -101,7 +101,7 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
 
         }
         collectList.addHeaderView(headerView, null, false);
-        hongBaoRecordAdpter = new HongBaoRecordAdpter(list, getApplicationContext(),packageType);
+        hongBaoRecordAdpter = new HongBaoRecordAdpter(list, getApplicationContext(), packageType);
         collectList.setAdapter(hongBaoRecordAdpter);
     }
 
@@ -149,7 +149,7 @@ public class SnatchYangFenActivity extends BaseActivity<ISendYFActivity, SendYFP
             return;
         }
         switch (view.getId()) {
-            case R.id.back:
+            case R.id.back://返回按钮
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;

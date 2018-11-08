@@ -111,6 +111,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
     //置顶功能
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
+    private RelativeLayout dynamicRelate;
 
     /**
      * 我的动态
@@ -153,6 +154,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
         attention_v.setVisibility(View.GONE);
         daVRecommend = view.findViewById(R.id.da_v_recommend);//大Vtuijian
         daVRecommend.setVisibility(View.GONE);
+        dynamicRelate = view.findViewById(R.id.dynamic_relate);
     }
 
     private static final String PAGE_NAME_KEY = "PAGE_NAME_KEY";
@@ -247,10 +249,10 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
         }
         newContentList.addAll(newList);
         if (page == 1 && newContentList.size() == 0) {
-            newcontentRecy.setVisibility(View.GONE);
+            dynamicRelate.setVisibility(View.GONE);
             noDynamic.setVisibility(View.VISIBLE);
         } else {
-            newcontentRecy.setVisibility(View.VISIBLE);
+            dynamicRelate.setVisibility(View.VISIBLE);
             noDynamic.setVisibility(View.GONE);
         }
 //        if (page!=1&&newContentList.size()==0){
@@ -450,9 +452,11 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
             if (newContentList.size() == 0) {
                 newcontentRecy.setVisibility(View.GONE);
                 noDynamic.setVisibility(View.VISIBLE);
+                dynamicRelate.setVisibility(View.GONE);
             } else {
                 newcontentRecy.setVisibility(View.VISIBLE);
                 noDynamic.setVisibility(View.GONE);
+                dynamicRelate.setVisibility(View.VISIBLE);
             }
         } else {
             ToastUtils.showToast(getActivity(), settingBean.msg);

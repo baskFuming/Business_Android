@@ -96,6 +96,15 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
             dList.clear();
         }
         dList.addAll(dataBeanList.data);
+        adpater.homePageSetOnclick(new InforNoticeAdpater.HomePageInterface() {
+            @Override
+            public void onclick(View view, int position) {
+                Intent intent = new Intent(InformationNoticeActivity.this, HomePageActivity.class);
+                intent.putExtra("uid", dList.get(position).from_user.uid);
+                startActivity(intent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+            }
+        });
         adpater.notifyDataSetChanged();
         adpater.setOnClickItemListener(new InforNoticeAdpater.OnClickItemListener() {
             @Override

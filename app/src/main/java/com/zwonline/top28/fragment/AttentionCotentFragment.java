@@ -120,6 +120,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
     //置顶功能
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
+    private RelativeLayout dynamicRelate;
 
     @Override
     protected void init(View view) {
@@ -165,6 +166,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
         complete = view.findViewById(R.id.complete);
         noDynamic = view.findViewById(R.id.no_dynamic);
         daVRecommend = view.findViewById(R.id.da_v_recommend);//大Vtuijian
+        dynamicRelate = view.findViewById(R.id.dynamic_relate);
         /**
          * 点击完成
          */
@@ -174,6 +176,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
                 newcontentRecy.setVisibility(View.VISIBLE);
                 recommend.setVisibility(View.GONE);
                 noDynamic.setVisibility(View.GONE);
+                dynamicRelate.setVisibility(View.VISIBLE);
                 presenter.MomentLists(getActivity(), page, "", BizConstant.ALREADY_FAVORITE, "");
             }
         });
@@ -381,6 +384,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
                 newcontentRecy.setVisibility(View.GONE);
                 recommend.setVisibility(View.VISIBLE);
                 noDynamic.setVisibility(View.GONE);
+                dynamicRelate.setVisibility(View.VISIBLE);
                 break;
 
         }
@@ -399,14 +403,17 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
                 edit.putBoolean("isFirst", false);//将参数put，改变其状态
                 edit.commit();//保证文件的创建和编辑
                 newcontentRecy.setVisibility(View.GONE);
+                dynamicRelate.setVisibility(View.VISIBLE);
                 recommend.setVisibility(View.VISIBLE);
                 noDynamic.setVisibility(View.GONE);
             } else {
+                dynamicRelate.setVisibility(View.GONE);
                 newcontentRecy.setVisibility(View.GONE);
                 recommend.setVisibility(View.GONE);
                 noDynamic.setVisibility(View.VISIBLE);
             }
         } else {
+            dynamicRelate.setVisibility(View.VISIBLE);
             newcontentRecy.setVisibility(View.VISIBLE);
             recommend.setVisibility(View.GONE);
             noDynamic.setVisibility(View.GONE);
@@ -733,10 +740,12 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
                 recommend.setVisibility(View.GONE);
                 noDynamic.setVisibility(View.VISIBLE);
                 presenter.BusincComment(getActivity());
+                dynamicRelate.setVisibility(View.GONE);
             } else {
                 newcontentRecy.setVisibility(View.VISIBLE);
                 recommend.setVisibility(View.GONE);
                 noDynamic.setVisibility(View.GONE);
+                dynamicRelate.setVisibility(View.VISIBLE);
             }
             adapter.notifyDataSetChanged();
         } else {
@@ -766,10 +775,12 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
                 recommend.setVisibility(View.GONE);
                 noDynamic.setVisibility(View.VISIBLE);
                 presenter.BusincComment(getActivity());
+                dynamicRelate.setVisibility(View.GONE);
             } else {
                 newcontentRecy.setVisibility(View.VISIBLE);
                 recommend.setVisibility(View.GONE);
                 noDynamic.setVisibility(View.GONE);
+                dynamicRelate.setVisibility(View.VISIBLE);
             }
         } else {
             ToastUtils.showToast(getActivity(), settingBean.msg);
