@@ -74,6 +74,8 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     private TextView sixPointsBtn;
     private TextView fourPointsBtn;
     private TextView fivePointsBtn;
+    private TextView sevenPoints;
+    private TextView eightPoints;
 
     @Override
     protected void init() {
@@ -81,7 +83,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         presenter.getUnitPrice(this);//订单单价请求
         presenter.mBalances(this);//金票余额
         presenter.GetPresentComputePower(this, "100", sortNums);
-        sendAmountByPoints("100"); //初化化数据
+        sendAmountByPoints("10"); //初化化数据
         pointsEditText.addTextChangedListener(textWatcher);
         pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
     }
@@ -95,6 +97,8 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         sixPointsBtn = (TextView) findViewById(R.id.six_points);
         fourPointsBtn = (TextView) findViewById(R.id.four_points);
         fivePointsBtn = (TextView) findViewById(R.id.five_points);
+        sevenPoints = (TextView) findViewById(R.id.seven_points);
+        eightPoints = (TextView) findViewById(R.id.eight_points);
         pointsEditText = (EditText) findViewById(R.id.points_edittext);
         payMethodRadioGroup = (RadioGroup) findViewById(R.id.pay_radiogroup);
         payMethodRadioGroup.setOnCheckedChangeListener(payMethodRadioListener);
@@ -120,17 +124,17 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             switch (id) {
                 case R.id.one_points:
                     sendAmountByPoints("100");
-                    pointsMonney.setText((Double) NumberOperateUtil.mul(100, unitPrice) + "");
+                    pointsMonney.setText((Double) NumberOperateUtil.div(100, unitPrice, 2) + "");
                     pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                     break;
                 case R.id.two_points:
                     sendAmountByPoints("500");
-                    pointsMonney.setText((Double) NumberOperateUtil.mul(500, unitPrice) + "");
+                    pointsMonney.setText((Double) NumberOperateUtil.div(500, unitPrice, 2) + "");
                     pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                     break;
                 case R.id.three_points:
                     sendAmountByPoints("1000");
-                    pointsMonney.setText((Double) NumberOperateUtil.mul(1000, unitPrice) + "");
+                    pointsMonney.setText((Double) NumberOperateUtil.div(1000, unitPrice, 2) + "");
                     pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                     break;
             }
@@ -180,7 +184,8 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         }
     };
 
-    @OnClick({R.id.points_pay_back, R.id.pay_sure_btn, R.id.one_points, R.id.two_points, R.id.three_points, R.id.four_points, R.id.five_points, R.id.six_points})
+    @OnClick({R.id.points_pay_back, R.id.pay_sure_btn, R.id.one_points, R.id.two_points, R.id.three_points, R.id.four_points,
+            R.id.five_points, R.id.six_points, R.id.seven_points, R.id.eight_points})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -191,33 +196,43 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
             case R.id.one_points:
-                sendAmountByPoints("100");
-                pointsMonney.setText((Double) NumberOperateUtil.mul(100, unitPrice) + "");
+                sendAmountByPoints("10");
+                pointsMonney.setText((Double) NumberOperateUtil.div(10, unitPrice, 2) + "");
                 pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                 break;
             case R.id.two_points:
-                sendAmountByPoints("500");
-                pointsMonney.setText((Double) NumberOperateUtil.mul(500, unitPrice) + "");
+                sendAmountByPoints("50");
+                pointsMonney.setText((Double) NumberOperateUtil.div(50, unitPrice, 2) + "");
                 pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                 break;
             case R.id.three_points:
-                sendAmountByPoints("2000");
-                pointsMonney.setText((Double) NumberOperateUtil.mul(2000, unitPrice) + "");
+                sendAmountByPoints("100");
+                pointsMonney.setText((Double) NumberOperateUtil.div(100, unitPrice, 2) + "");
                 pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                 break;
             case R.id.four_points:
-                sendAmountByPoints("5000");
-                pointsMonney.setText((Double) NumberOperateUtil.mul(5000, unitPrice) + "");
+                sendAmountByPoints("1000");
+                pointsMonney.setText((Double) NumberOperateUtil.div(1000, unitPrice, 2) + "");
                 pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                 break;
             case R.id.five_points:
-                sendAmountByPoints("10000");
-                pointsMonney.setText((Double) NumberOperateUtil.mul(10000, unitPrice) + "");
+                sendAmountByPoints("2500");
+                pointsMonney.setText((Double) NumberOperateUtil.div(2500, unitPrice, 2) + "");
                 pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                 break;
             case R.id.six_points:
-                sendAmountByPoints("50000");
-                pointsMonney.setText((Double) NumberOperateUtil.mul(50000, unitPrice) + "");
+                sendAmountByPoints("5000");
+                pointsMonney.setText((Double) NumberOperateUtil.div(5000, unitPrice, 2) + "");
+                pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
+                break;
+            case R.id.seven_points:
+                sendAmountByPoints("10000");
+                pointsMonney.setText((Double) NumberOperateUtil.div(10000, unitPrice, 2) + "");
+                pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
+                break;
+            case R.id.eight_points:
+                sendAmountByPoints("20000");
+                pointsMonney.setText((Double) NumberOperateUtil.div(20000, unitPrice, 2) + "");
                 pointsEditText.setSelection(pointsEditText.getText().length());//设置光标在文本末尾
                 break;
             case R.id.pay_sure_btn:
@@ -228,7 +243,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                 String payAmount = pointsEditText.getText().toString();
                 if (checkAmount(payAmount)) {
                     if (payCheckedId == alipayBtn.getId()) {  //支付宝支付
-                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, pointsMonney.getText().toString());
+                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, payAmount);//支付接口
                     } else if (payCheckedId == unionpayBtn.getId()) {
 //                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, pointsMonney.getText().toString());
 //                        ToastUtils.showToast(IntegralPayActivity.this, "选着的是银行卡" + orderCode);
@@ -241,7 +256,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
 
                         }
                     } else if (payCheckedId == posBtn.getId()) {
-                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, pointsMonney.getText().toString());
+                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, payAmount);//支付接口
 //                        ToastUtils.showToast(IntegralPayActivity.this, "选着的pos机");
 
                     } else {
@@ -337,7 +352,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                 giveHashrate.setText(balanceBean.data.computePower);
             }
         } else {
-            String pointsEditT = pointsEditText.getText().toString();
+            String pointsEditT = pointsMonney.getText().toString();
             presenter.GetPresentComputePower(this, pointsEditT, sortNums);
             ToastUtils.showToast(getApplicationContext(), balanceBean.msg);
         }
@@ -348,7 +363,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     public void IUnitPriceId(AmountPointsBean dataBean) {
         unitPrice = Double.parseDouble(dataBean.data);
         Double parseDouble = Double.parseDouble(pointsEditText.getText().toString());
-        Double cp = NumberOperateUtil.mul(parseDouble, unitPrice);
+        Double cp = NumberOperateUtil.div(parseDouble, unitPrice, 2);
         pointsMonney.setText(cp + "");
 //        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, cp+"");
     }
@@ -401,7 +416,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             if (payCheckedId == alipayBtn.getId()) {
                 presenter.getPayOrderInfoByOrderId(IntegralPayActivity.this, orderId);
             } else {
-                paySucPopuWindow = new PaySucPopuWindow(IntegralPayActivity.this, listener, pointsEditText.getText().toString().trim(), pointsMonney.getText().toString().trim(), dataBean.data);
+                paySucPopuWindow = new PaySucPopuWindow(IntegralPayActivity.this, listener, pointsMonney.getText().toString().trim(), pointsEditText.getText().toString().trim(), dataBean.data);
                 paySucPopuWindow.showAtLocation(IntegralPayActivity.this.findViewById(R.id.integral_pay_linear), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
             }
         } else {
@@ -469,13 +484,13 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                 String replacepointsEditT = pointsEditT.replace(getString(R.string.coin_bole_coin), "");
                 if (!StringUtil.isEmpty(replacepointsEditT)) {
                     Double parseDouble = Double.parseDouble(replacepointsEditT);
-                    pointsMonney.setText((Double) NumberOperateUtil.mul(parseDouble, unitPrice) + "");
+                    pointsMonney.setText((Double) NumberOperateUtil.div(parseDouble, unitPrice, 2) + "");
                 }
             } else {
                 if (!StringUtil.isEmpty(pointsEditT)) {
                     if (StringUtil.isNotEmpty(String.valueOf(unitPrice))) {
                         Double parseDouble = Double.parseDouble(pointsEditT);
-                        Double cp = NumberOperateUtil.mul(parseDouble, unitPrice);
+                        Double cp = NumberOperateUtil.div(parseDouble, unitPrice, 2);
                         pointsMonney.setText(cp + "");
                     }
 
@@ -499,14 +514,20 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             showIntegralBackGround();
             sortNums++;
             String pointsEditT = pointsEditText.getText().toString();
-            presenter.GetPresentComputePower(IntegralPayActivity.this, pointsEditT, sortNums)
+            if (StringUtil.isNotEmpty(pointsEditT)) {
+                pointsMonney.setText((Double) NumberOperateUtil.div(Double.parseDouble(pointsEditText.getText().toString()), unitPrice, 2) + "");
+                presenter.GetPresentComputePower(IntegralPayActivity.this, pointsMonney.getText().toString().trim(), sortNums);
+            } else {
+                presenter.GetPresentComputePower(IntegralPayActivity.this, BizConstant.IS_FAIL, sortNums);
+            }
+
             ;//充值打赏币赠送算力
             if (pointsEditT.contains(getString(R.string.coin_bole_coin))) {
                 String replacepointsEditT = pointsEditT.replace(getString(R.string.coin_bole_coin), "");
                 if (!StringUtil.isEmpty(replacepointsEditT)) {
                     if (StringUtil.isNotEmpty(String.valueOf(unitPrice))) {
                         Double parseDouble = Double.parseDouble(replacepointsEditT);
-                        Double cp = NumberOperateUtil.mul(parseDouble, unitPrice);
+                        Double cp = NumberOperateUtil.div(parseDouble, unitPrice, 2);
                         pointsMonney.setText(cp + "");
                     }
 //                    presenter.pointRecharge(IntegralPayActivity.this, payMethodType, cp+"");
@@ -517,8 +538,8 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                 if (!StringUtil.isEmpty(pointsEditT)) {
                     if (StringUtil.isNotEmpty(String.valueOf(unitPrice))) {
                         Double parseDouble = Double.parseDouble(pointsEditT);
-                        pointsMonney.setText((Double) NumberOperateUtil.mul(parseDouble, unitPrice) + "");
-                        Double cp = NumberOperateUtil.mul(parseDouble, unitPrice);
+                        pointsMonney.setText((Double) NumberOperateUtil.div(parseDouble, unitPrice, 2) + "");
+                        Double cp = NumberOperateUtil.div(parseDouble, unitPrice, 2);
                         pointsMonney.setText(cp + "");
                     }
 //                    presenter.pointRecharge(IntegralPayActivity.this, payMethodType, cp+"");
@@ -546,7 +567,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     //积分按钮的背景颜色判断
     public void showIntegralBackGround() {
         String pointsEdit = pointsEditText.getText().toString();
-        if (pointsEdit.equals("100")) {
+        if (pointsEdit.equals("10")) {
             onePointsBtn.setBackgroundResource(R.drawable.rectangle_shape_red);
             onePointsBtn.setTextColor(Color.parseColor("#FF2B2B"));
             twoPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
@@ -559,7 +580,11 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             fivePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
             sixPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
             sixPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
-        } else if (pointsEdit.equals("500")) {
+            sevenPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sevenPoints.setTextColor(Color.parseColor("#3D3D3D"));
+            eightPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            eightPoints.setTextColor(Color.parseColor("#3D3D3D"));
+        } else if (pointsEdit.equals("50")) {
             twoPointsBtn.setBackgroundResource(R.drawable.rectangle_shape_red);
             twoPointsBtn.setTextColor(Color.parseColor("#FF2B2B"));
             onePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
@@ -572,7 +597,11 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             fivePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
             sixPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
             sixPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
-        } else if (pointsEdit.equals("2000")) {
+            sevenPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sevenPoints.setTextColor(Color.parseColor("#3D3D3D"));
+            eightPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            eightPoints.setTextColor(Color.parseColor("#3D3D3D"));
+        } else if (pointsEdit.equals("100")) {
             threePointsBtn.setBackgroundResource(R.drawable.rectangle_shape_red);
             threePointsBtn.setTextColor(Color.parseColor("#FF2B2B"));
             twoPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
@@ -585,7 +614,11 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             fivePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
             sixPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
             sixPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
-        } else if (pointsEdit.equals("5000")) {
+            sevenPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sevenPoints.setTextColor(Color.parseColor("#3D3D3D"));
+            eightPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            eightPoints.setTextColor(Color.parseColor("#3D3D3D"));
+        } else if (pointsEdit.equals("1000")) {
             fourPointsBtn.setBackgroundResource(R.drawable.rectangle_shape_red);
             fourPointsBtn.setTextColor(Color.parseColor("#FF2B2B"));
             twoPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
@@ -598,7 +631,11 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             fivePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
             sixPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
             sixPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
-        } else if (pointsEdit.equals("10000")) {
+            sevenPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sevenPoints.setTextColor(Color.parseColor("#3D3D3D"));
+            eightPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            eightPoints.setTextColor(Color.parseColor("#3D3D3D"));
+        } else if (pointsEdit.equals("2500")) {
             fivePointsBtn.setBackgroundResource(R.drawable.rectangle_shape_red);
             fivePointsBtn.setTextColor(Color.parseColor("#FF2B2B"));
             twoPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
@@ -611,7 +648,11 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             threePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
             sixPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
             sixPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
-        } else if (pointsEdit.equals("50000")) {
+            sevenPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sevenPoints.setTextColor(Color.parseColor("#3D3D3D"));
+            eightPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            eightPoints.setTextColor(Color.parseColor("#3D3D3D"));
+        } else if (pointsEdit.equals("5000")) {
             sixPointsBtn.setBackgroundResource(R.drawable.rectangle_shape_red);
             sixPointsBtn.setTextColor(Color.parseColor("#FF2B2B"));
             twoPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
@@ -624,6 +665,62 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             fivePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
             threePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
             threePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            sevenPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sevenPoints.setTextColor(Color.parseColor("#3D3D3D"));
+            eightPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            eightPoints.setTextColor(Color.parseColor("#3D3D3D"));
+        } else if (pointsEdit.equals("10000")) {
+            sevenPoints.setBackgroundResource(R.drawable.rectangle_shape_red);
+            sevenPoints.setTextColor(Color.parseColor("#FF2B2B"));
+            twoPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            twoPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            onePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            onePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            fourPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            fourPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            fivePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            fivePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            threePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            threePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            sixPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sixPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            eightPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            eightPoints.setTextColor(Color.parseColor("#3D3D3D"));
+        } else if (pointsEdit.equals("20000")) {
+            eightPoints.setBackgroundResource(R.drawable.rectangle_shape_red);
+            eightPoints.setTextColor(Color.parseColor("#FF2B2B"));
+            twoPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            twoPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            onePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            onePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            fourPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            fourPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            fivePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            fivePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            threePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            threePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            sixPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sixPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            sevenPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sevenPoints.setTextColor(Color.parseColor("#3D3D3D"));
+
+        } else {
+            eightPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            eightPoints.setTextColor(Color.parseColor("#3D3D3D"));
+            twoPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            twoPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            onePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            onePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            fourPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            fourPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            fivePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            fivePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            threePointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            threePointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            sixPointsBtn.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sixPointsBtn.setTextColor(Color.parseColor("#3D3D3D"));
+            sevenPoints.setBackgroundResource(R.drawable.quxiaoguanzhu_shpae);
+            sevenPoints.setTextColor(Color.parseColor("#3D3D3D"));
         }
     }
 
@@ -643,7 +740,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
          */
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(this);
-        normalDialog.setTitle("您确认消费" + pointsMonney.getText().toString().trim() + getString(R.string.golden) + "充值" + pointsEditText.getText().toString().trim() + getString(R.string.opportunities_currency));
+        normalDialog.setTitle("您确认消费" + pointsEditText.getText().toString().trim() + getString(R.string.golden) + "充值" + pointsMonney.getText().toString().trim() + getString(R.string.opportunities_currency));
 //        normalDialog.setMessage(R.string.is_willing_answer_calls);pointsEditText.getText().toString().trim(),pointsMonney.getText().toString().trim()
         normalDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
@@ -651,7 +748,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //                        presenter.mBalancesPay(IntegralPayActivity.this, pointsMonney.getText().toString());
-                        presenter.pointRecharge(IntegralPayActivity.this, BizConstant.QITA_LOGIN, pointsMonney.getText().toString());
+                        presenter.pointRecharge(IntegralPayActivity.this, BizConstant.QITA_LOGIN, pointsEditText.getText().toString().trim());
 //                        presenter.pointRecharge(IntegralPayActivity.this, BizConstant.QITA_LOGIN, "0.01");
                     }
                 });

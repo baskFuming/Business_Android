@@ -12,6 +12,7 @@ import com.zwonline.top28.bean.IntegralPayBean;
 import com.zwonline.top28.bean.OrderInfoBean;
 import com.zwonline.top28.bean.PrepayPayBean;
 import com.zwonline.top28.model.IntegralPayModel;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IIntegralPayActivity;
 
 import java.io.IOException;
@@ -292,7 +293,7 @@ public class IntegralPayPresenter extends BasePresenter<IIntegralPayActivity> {
      * @param businessOpportunityCoin
      * @param sortNum
      */
-    public void GetPresentComputePower(Context context, String businessOpportunityCoin, int sortNum) {
+    public void GetPresentComputePower(final Context context, String businessOpportunityCoin, int sortNum) {
         try {
             Flowable<AttentionBean> flowable = interalPayModel.mGetPresentComputePower(context, businessOpportunityCoin, sortNum);
             flowable.subscribeOn(Schedulers.io())
@@ -301,7 +302,11 @@ public class IntegralPayPresenter extends BasePresenter<IIntegralPayActivity> {
 
                         @Override
                         protected void onBaseNext(AttentionBean balancePayBean) {
-                            iIntegralPayActivity.showGetPresentComputePower(balancePayBean);
+                            if (balancePayBean.status == 1) {
+                                iIntegralPayActivity.showGetPresentComputePower(balancePayBean);
+                            } else {
+                                ToastUtils.showToast(context, balancePayBean.msg + "");
+                            }
                         }
 
                         @Override

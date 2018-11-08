@@ -8,7 +8,10 @@ import com.zwonline.top28.bean.NoticeNotReadCountBean;
 import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.model.UserInfoModel;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IUserInfo;
+
+import org.jsoup.select.Evaluator;
 
 import java.io.IOException;
 
@@ -84,7 +87,11 @@ public class UserInfoPresenter extends BasePresenter<IUserInfo> {
                     .subscribeWith(new DisposableSubscriber<NoticeNotReadCountBean>() {
                         @Override
                         public void onNext(NoticeNotReadCountBean noticeNotReadCountBean) {
-                            iUserInfo.showNoticeNoRead(noticeNotReadCountBean);
+                            if (noticeNotReadCountBean.status==1){
+                                iUserInfo.showNoticeNoRead(noticeNotReadCountBean);
+                            }else {
+                                ToastUtils.showToast(context,noticeNotReadCountBean.msg);
+                            }
                         }
 
                         @Override
@@ -115,7 +122,11 @@ public class UserInfoPresenter extends BasePresenter<IUserInfo> {
                     .subscribeWith(new DisposableSubscriber<MyPageBean>() {
                         @Override
                         public void onNext(MyPageBean myPageBean) {
-                            iUserInfo.showPersonCenterMenu(myPageBean.data);
+                            String status = String.valueOf(myPageBean.status);
+                            if (myPageBean.status == 1) {
+                                iUserInfo.showPersonCenterMenu(myPageBean.data);
+                            }
+
                         }
 
                         @Override

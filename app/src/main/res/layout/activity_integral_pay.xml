@@ -80,10 +80,10 @@
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@id/bill"
                         android:background="@null"
-                        android:drawableLeft="@mipmap/buy_coin"
+                        android:drawableLeft="@mipmap/rmb_icon"
                         android:drawablePadding="15dp"
                         android:inputType="number"
-                        android:maxLength="8"
+                        android:maxLength="6"
                         android:textSize="26dp" />
 
                     <LinearLayout
@@ -107,7 +107,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:text="@string/amount_unit"
+                            android:text="币"
                             android:textColor="@color/black"
                             android:textSize="22dp" />
                     </LinearLayout>
@@ -152,7 +152,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/rectangle_shape_red"
                         android:gravity="center"
-                        android:text="100"
+                        android:text="10"
                         android:textColor="@color/reded"
                         android:textSize="18sp" />
 
@@ -165,7 +165,7 @@
                         android:background="@drawable/quxiaoguanzhu_shpae"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="500"
+                        android:text="50"
                         android:textColor="#3D3D3D"
                         android:textSize="18sp" />
 
@@ -178,7 +178,20 @@
                         android:background="@drawable/quxiaoguanzhu_shpae"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="2000"
+                        android:text="100"
+                        android:textColor="#3D3D3D"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/four_points"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/quxiaoguanzhu_shpae"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="1000"
                         android:textColor="#3D3D3D"
                         android:textSize="18sp" />
 
@@ -193,27 +206,16 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp">
 
-                    <TextView
-                        android:id="@+id/four_points"
-                        android:layout_width="0dp"
-                        android:layout_height="70dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/quxiaoguanzhu_shpae"
-                        android:gravity="center"
-                        android:text="5000"
-                        android:textColor="#3D3D3D"
-                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/five_points"
                         android:layout_width="0dp"
                         android:layout_height="70dp"
-                        android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:background="@drawable/quxiaoguanzhu_shpae"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="10000"
+                        android:text="2500"
                         android:textColor="#3D3D3D"
                         android:textSize="18sp" />
 
@@ -226,10 +228,33 @@
                         android:background="@drawable/quxiaoguanzhu_shpae"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="50000"
+                        android:text="5000"
                         android:textColor="#3D3D3D"
                         android:textSize="18sp" />
 
+                    <TextView
+                        android:id="@+id/seven_points"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/quxiaoguanzhu_shpae"
+                        android:gravity="center"
+                        android:text="10000"
+                        android:textColor="#3D3D3D"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/eight_points"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/quxiaoguanzhu_shpae"
+                        android:gravity="center"
+                        android:text="20000"
+                        android:textColor="#3D3D3D"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
