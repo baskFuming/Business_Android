@@ -1,5 +1,6 @@
 package com.zwonline.top28.activity;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +9,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -28,18 +28,24 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zwonline.top28.R;
+import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
-import com.zwonline.top28.base.BasePresenter;
+import com.zwonline.top28.bean.RecommendUserBean;
+import com.zwonline.top28.presenter.ReconmmnedUserPresenter;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.ToastUtils;
+import com.zwonline.top28.utils.popwindow.RecommendPopwindow;
+import com.zwonline.top28.view.IRecommnedActivity;
 import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -51,8 +57,8 @@ import butterknife.OnClick;
  * @author YSG
  * @date 2018/1/9
  */
-public class RecommendUserActivity extends BaseActivity {
-
+public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, ReconmmnedUserPresenter> implements IRecommnedActivity {
+    private String TAG = "RecommendUserActivity";
     @BindView(R.id.back)
     RelativeLayout back;
     @BindView(R.id.back_xx)
@@ -63,15 +69,32 @@ public class RecommendUserActivity extends BaseActivity {
     ProgressBar progressBar;
     @BindView(R.id.recommend_user_web)
     WebView recommendUserWeb;
+    @BindView(R.id.text_content)
+    TextView textmContent;
+
     private SharedPreferencesUtils sp;
     private String uid;
     private String token;
-//    private String url = "http://toutiao.28.com/Members/recommend_list.html";
+    //    private String url = "http://toutiao.28.com/Members/recommend_list.html";
     private String url;
     private RewritePopwindow mPopwindow;
 
+    private RecommendPopwindow recommendPopwindow;
+    private List<RecommendUserBean.DataBean> list;
+    private List<RecommendUserBean.DataBean.ShareDataBean> dlist;
+    private String mContent;
+    private String strUrl;
+    private String saveUrl;
+    private String shareTitle;
+    private String shareIcon;
+    private String shareUrl;
+    private String shareDes;
+
     @Override
     protected void init() {
+        presenter.myRecommned(this);
+        list = new ArrayList<>();
+        dlist = new ArrayList<>();
         sp = SharedPreferencesUtils.getUtil();
         url = getIntent().getStringExtra("jumPath");
         token = (String) sp.getKey(this, "dialog", "");
@@ -269,11 +292,17 @@ public class RecommendUserActivity extends BaseActivity {
         });
     }
 
-
     @Override
-    protected BasePresenter getPresenter() {
-        return null;
+    protected ReconmmnedUserPresenter getPresenter() {
+        return new ReconmmnedUserPresenter(this);
     }
+
+    private View.OnClickListener listem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     @Override
     protected int setLayoutId() {
@@ -281,7 +310,7 @@ public class RecommendUserActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.back_xx})
+    @OnClick({R.id.back, R.id.back_xx, R.id.share_recommned, R.id.redpacket_recommned, R.id.redpacket_record, R.id.recommned_list})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -296,7 +325,93 @@ public class RecommendUserActivity extends BaseActivity {
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
+            case R.id.share_recommned: //分享推荐
+                recommendPopwindow = new RecommendPopwindow(RecommendUserActivity.this, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        recommendPopwindow.dismiss();
+                        recommendPopwindow.backgroundAlpha(RecommendUserActivity.this, 1f);
+                        switch (v.getId()) {
+                            case R.id.weixinghaoyou:
+                                ShareUtils.shareWeb(RecommendUserActivity.this, Api.baseUrl()+shareUrl, shareTitle
+                                        , shareDes, shareIcon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN
+                                );
+                                break;
+                            case R.id.pengyouquan:
+                                ShareUtils.shareWeb(RecommendUserActivity.this, Api.baseUrl()+shareUrl, shareTitle
+                                        , shareDes, shareIcon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN_CIRCLE
+                                );
+                                break;
+                            case R.id.qqkongjian:
+                                Intent saveintent = new Intent(RecommendUserActivity.this, SaveRecommnedActivity.class);
+                                saveintent.putExtra("saveUrl", saveUrl);
+                                startActivity(saveintent);
+                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                                break;
+                            case R.id.copyurl:
+                                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                // 将文本内容放到系统剪贴板里。
+                                cm.setText(Api.baseUrl() + shareUrl);
+                                ToastUtils.showToast(RecommendUserActivity.this, "复制成功");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+                recommendPopwindow.showAtLocation(view,
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                break;
+            case R.id.redpacket_recommned://红包推荐 鞅分红包  商机币红包
+                ToastUtils.showToast(RecommendUserActivity.this, "红包推荐");
+                break;
+            case R.id.redpacket_record://红包记录
+                Intent intentrecord = new Intent(this, RedPacketRecordActivity.class);
+                startActivity(intentrecord);
+                this.overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.recommned_list://推荐列表
+                Intent intentlist = new Intent(this, RecommendListActivity.class);
+                intentlist.putExtra("strUrl", strUrl);
+                startActivity(intentlist);
+                this.overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        recommendUserWeb.stopLoading();
+        recommendUserWeb.removeAllViews();
+        recommendUserWeb.destroy();
+        recommendUserWeb = null;
+    }
+
+
+    @Override
+    public void successRecommed(RecommendUserBean recommendUserBean) {
+        if (recommendUserBean.status == 1) {
+            list.add(recommendUserBean.data);
+            mContent = recommendUserBean.data.title_content;
+            strUrl = recommendUserBean.data.recommend_list_url;
+            saveUrl = recommendUserBean.data.recommend_url;
+            shareTitle = recommendUserBean.data.share_data.share_title;
+            shareIcon = recommendUserBean.data.share_data.share_icon;
+            shareUrl = recommendUserBean.data.share_data.share_url;
+            shareDes = recommendUserBean.data.share_data.share_description;
+        }
+        textmContent.setText(mContent);
+    }
+
+    @Override
+    public void successRecommedList(List<RecommendUserBean.DataBean> recommendlist) {
+
+    }
+
+    @Override
+    public void onErro() {
+
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -312,16 +427,5 @@ public class RecommendUserActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        recommendUserWeb.stopLoading();
-        recommendUserWeb.removeAllViews();
-        recommendUserWeb.destroy();
-        recommendUserWeb = null;
-    }
-
 
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.zwonline.top28.activity.RecommendUserActivity">
 
@@ -43,13 +44,22 @@
         </RelativeLayout>
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="我的推荐"
+            android:textColor="#2b2b2b"
+            android:textSize="18sp" />
+
+        <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="Loading..."
             android:textColor="#2b2b2b"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <ProgressBar
@@ -63,5 +73,134 @@
     <WebView
         android:id="@+id/recommend_user_web"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent"
+        android:visibility="gone"></WebView>
+
+    <TextView
+        android:id="@+id/text_content"
+        android:layout_marginTop="10dp"
+        android:layout_width="327dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:text=""
+        android:textColor="#ff3d3d3d"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/share_recommned"
+        android:layout_width="wrap_content"
+        android:layout_height="96dp"
+        android:layout_gravity="center"
+        android:background="@mipmap/recommend_btn1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="67dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="14dp"
+            android:text="分享推荐"
+            android:textColor="#ffffffff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="17dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="5dp"
+            android:text="点击分享推荐用户"
+            android:textColor="#ffffffff"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/redpacket_recommned"
+        android:layout_width="wrap_content"
+        android:layout_height="96dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@mipmap/recommend_btn2"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="67dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="14dp"
+            android:text="红包推荐"
+            android:textColor="#ffffffff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="17dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="5dp"
+            android:text="发送商机币红包推荐用户"
+            android:textColor="#ffffffff"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/redpacket_record"
+
+        android:layout_width="wrap_content"
+        android:layout_height="96dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@mipmap/recommend_btn3"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="67dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="14dp"
+            android:text="红包记录"
+            android:textColor="#ffffffff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="17dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="5dp"
+            android:text="点击查看红包发送记录"
+            android:textColor="#ffffffff"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:id="@+id/recommned_list"
+        android:layout_width="wrap_content"
+        android:layout_height="96dp"
+        android:layout_gravity="center"
+        android:background="@mipmap/recommend_btn4"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="67dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="14dp"
+            android:text="推荐列表"
+            android:textColor="#ffffffff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="17dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="5dp"
+            android:text="点击查看我的推荐列表"
+            android:textColor="#ffffffff"
+            android:textSize="12sp" />
+    </LinearLayout>
 </LinearLayout>

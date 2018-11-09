@@ -45,9 +45,9 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
-    <!--//地图包、搜索包需要的基础权限-->
+    <!-- //地图包、搜索包需要的基础权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--//定位包、导航包需要的额外权限（注：基础权限也需要）-->
+    <!-- //定位包、导航包需要的额外权限（注：基础权限也需要） -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
@@ -156,8 +156,8 @@
         <activity
             android:name=".activity.HomeDetailsActivity"
             android:configChanges="locale|layoutDirection"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".activity.SettingActivity"
             android:configChanges="locale|layoutDirection" />
@@ -363,12 +363,13 @@
         <activity
             android:name=".activity.IntegralActivity"
             android:configChanges="locale|layoutDirection"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
         <activity
             android:name=".activity.EarnIntegralActivity"
             android:configChanges="locale|layoutDirection" />
-        <activity android:name=".activity.IntegralPayActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.IntegralPayActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activity.ForRecordActivity"
             android:configChanges="locale|layoutDirection" />
@@ -665,9 +666,9 @@
         <activity
             android:name=".activity.FeedBackActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
-        <activity android:name=".activity.DynamicDetailsActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
+        <activity
+            android:name=".activity.DynamicDetailsActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.DynamicCommentDetailsActivity" />
         <activity android:name=".activity.ShieldUserActivity" />
         <activity android:name=".activity.AddGetRelistActivity" />
@@ -733,8 +734,11 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activity.BindPhoneActivity" />
         <activity android:name=".activity.BindSuccessActivity" />
-        <activity android:name=".web.BaseWebViewActivity"></activity>
+        <activity android:name=".web.BaseWebViewActivity" />
         <!-- map -->
+        <activity android:name=".activity.RedPacketRecordActivity" />
+        <activity android:name=".activity.RecommendListActivity" />
+        <activity android:name=".activity.SaveRecommnedActivity"></activity>
     </application>
 
 </manifest>

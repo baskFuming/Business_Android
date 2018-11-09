@@ -41,6 +41,7 @@ import com.zwonline.top28.bean.PicturBean;
 import com.zwonline.top28.bean.ProjectBean;
 import com.zwonline.top28.bean.QrCodeBean;
 import com.zwonline.top28.bean.RecommendBean;
+import com.zwonline.top28.bean.RecommendUserBean;
 import com.zwonline.top28.bean.RegisterBean;
 import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.bean.SettingBean;
@@ -971,6 +972,20 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/App/Article/gift")
     Flowable<GiftBean> gift(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
+    /***
+     * 礼物接口
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Member/myRecommend")
+    Flowable<RecommendUserBean> myRecommend(
             @Field("timestamp") String timestamp,
             @Field("token") String token,
             @Field("sign") String sign

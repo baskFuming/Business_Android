@@ -15,6 +15,7 @@ import com.zwonline.top28.bean.GiftBean;
 import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
+import com.zwonline.top28.bean.RecommendUserBean;
 import com.zwonline.top28.bean.RewardListBean;
 import com.zwonline.top28.bean.ShareDataBean;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
@@ -349,6 +350,27 @@ public class HomeDetailsModel {
         Flowable<BusinessCoinBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
                 .iBalanceLogs(String.valueOf(timestamp), token, page, type, sign);
+        return flowable;
+    }
+
+    /**
+     *
+     * @param context
+     * @return  我的推荐
+     * @throws IOException
+     */
+    public Flowable<RecommendUserBean> MyRecommend(Context context) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        String token = (String) sp.getKey(context, "dialog", "");
+        long timestamp = new Date().getTime() / 1000;//获取时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("token", token);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<RecommendUserBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(ApiService.class, Api.url)
+                .myRecommend( String.valueOf(timestamp), token,sign);
         return flowable;
     }
 }

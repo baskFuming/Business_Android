@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.zwonline.top28.R;
 
 /**
- *    注册红包
+ *    首页红包
  * 1. 用户初次注册奖励红包
  * 2. 推荐人用户红包
  * <p>
