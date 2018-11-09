@@ -42,6 +42,7 @@ public class MyPageBean {
             public String image;
             public String link;
             public String eventId;
+            public String titleBarColor;
         }
     }
 }

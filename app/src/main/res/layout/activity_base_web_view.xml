@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.zwonline.top28.activity.HashrateActivity">
 
     <RelativeLayout
+        android:id="@+id/backgroud_relative"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:orientation="horizontal">
@@ -19,12 +20,13 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/back_image"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:src="@mipmap/return_black" />
+               />
         </RelativeLayout>
 
         <RelativeLayout
@@ -35,12 +37,13 @@
             android:visibility="gone">
 
             <ImageView
+                android:id="@+id/backx_image"
                 android:layout_width="17dp"
                 android:layout_height="17dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:src="@mipmap/back_x" />
+                 />
         </RelativeLayout>
 
 

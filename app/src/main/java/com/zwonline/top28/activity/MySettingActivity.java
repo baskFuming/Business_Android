@@ -55,10 +55,14 @@ public class MySettingActivity extends BaseActivity {
     private RelativeLayout amentpossword;
     private String avatar;
     private String nicknames;
-    private String mobile;
+    private String mobile;//判断是否有手机号绑定手机号
     private TextView bind;
     private RelativeLayout bindPhone;
     private ImageView bindImag;
+    private ProgressBar clearProgress;
+    private LinearLayout clearDialog;
+    private TextView bindWechat;//绑定微信未绑定显示
+    private String weChatUnionId;//微信union_id
     @BindView(R.id.text_cash)
     TextView tv_Cash;
     private Handler handler = new Handler() {
@@ -88,14 +92,15 @@ public class MySettingActivity extends BaseActivity {
         ;
 
     };
-    private ProgressBar clearProgress;
-    private LinearLayout clearDialog;
+
 
     @Override
     protected void init() {
         settingPassword = (TextView) findViewById(R.id.setting_password);
         sp = SharedPreferencesUtils.getUtil();
         mobile = (String) sp.getKey(this, "mobile", "");
+        weChatUnionId = (String) sp.getKey(this, "union_id", "");
+        ToastUtils.showToast(getApplicationContext(),weChatUnionId+"1111");
         initData();
         Intent intent = getIntent();
         avatar = (String) sp.getKey(getApplicationContext(), "avatar", "");
@@ -137,16 +142,32 @@ public class MySettingActivity extends BaseActivity {
         bind = (TextView) findViewById(R.id.bind);
         clearDialog = (LinearLayout) findViewById(R.id.clear_dialog);
         TextView clearTv = (TextView) findViewById(R.id.clear_tv);
+        bindWechat = (TextView) findViewById(R.id.bind_wechat);
+        ImageView bindWechatImag = (ImageView) findViewById(R.id.bind_wechat_imag);
+        RelativeLayout bindWechatRelative = (RelativeLayout) findViewById(R.id.bind_wechat_relative);
         clearTv.setSelected(true);
+        //判别是否绑定手机号
         if (StringUtil.isNotEmpty(mobile)) {
             bind.setText("已绑定");
             bindPhone.setClickable(false);
-            bindImag.setVisibility(View.GONE);
+            bindImag.setVisibility(View.VISIBLE);
             bind.setTextColor(Color.parseColor("#d1d1d1"));
         } else {
             bind.setText("未绑定");
             bind.setTextColor(Color.parseColor("#ff2b2b"));
             bindImag.setVisibility(View.VISIBLE);
+        }
+        //判别是否绑定微信
+        if (StringUtil.isNotEmpty(weChatUnionId)) {
+            bind.setText("已绑定");
+            bindWechatRelative.setClickable(false);
+            bindWechatImag.setVisibility(View.VISIBLE);
+            bindWechat.setTextColor(Color.parseColor("#d1d1d1"));
+        } else {
+            bindWechat.setText("未绑定");
+            bindWechatRelative.setClickable(true);
+            bindWechat.setTextColor(Color.parseColor("#ff2b2b"));
+            bindWechatImag.setVisibility(View.VISIBLE);
         }
     }
 
@@ -161,7 +182,8 @@ public class MySettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.bind_phone, R.id.about_owen, R.id.lin_discash, R.id.look_playing})
+    @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.bind_phone
+            , R.id.about_owen, R.id.lin_discash, R.id.look_playing, R.id.bind_wechat_relative})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -224,6 +246,9 @@ public class MySettingActivity extends BaseActivity {
             case R.id.bind_phone:
                 startActivity(new Intent(MySettingActivity.this, BindPhoneActivity.class));
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.bind_wechat_relative://绑定微信
+                ToastUtils.showToast(getApplicationContext(), "绑定微信");
                 break;
             case R.id.about_owen:
                 startActivity(new Intent(MySettingActivity.this, AboutUsActivity.class));

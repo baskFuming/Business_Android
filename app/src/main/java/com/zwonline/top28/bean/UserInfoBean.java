@@ -18,6 +18,7 @@ public class UserInfoBean {
     public String msg;
     public DataBean data;
     public String dialog;
+
     public static class DataBean {
         /**
          * user : {"uid":"6","nickname":"初心不负","realname":"","phone":"13810302297","age":"28","sex_cn":"男士","signature":"初心不负 方得始终","residence":"北京市丰台区","fans":"4","follow":"9","favorite":"17","publish":"0","share":"0","cate_pid":"320","avatar":"https://toutiao.28.com/data/upload/personal_avatars//180116/5a5d6d4f1c40f.jpeg_thumb.jpeg","utype":"2","username":"t2297sgdr","is_enterprise_auth_user":"0","company":{"id":"1","uid":"1","enterprise_name":"商机头条","logo":"https://toutiao.28.com/data/upload/personal_avatars//171125/5a195bd1066b7.png_thumb.png","sign":"创业保险 签约付费","company_name":"","cate_id":"337"}}
@@ -84,6 +85,8 @@ public class UserInfoBean {
             public String boc_amount;
             public String cp_amount;
             public String mbp_url;
+            public String bind_union_id;//微信union_id
+
             public static class CompanyBean {
                 /**
                  * id : 1

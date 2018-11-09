@@ -382,10 +382,6 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        recommendUserWeb.stopLoading();
-        recommendUserWeb.removeAllViews();
-        recommendUserWeb.destroy();
-        recommendUserWeb = null;
     }
 
 

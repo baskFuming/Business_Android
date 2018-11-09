@@ -35,12 +35,12 @@ public class RecommendDynamicHeadAdapter extends RecyclerView.Adapter<RecyclerVi
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.attention_dynamic_head_item, parent, false);
         final MyViewHolder holder = new MyViewHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickItemListener.setOnItemClick(v, holder.getPosition());
-            }
-        });
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onClickItemListener.setOnItemClick(v, holder.getPosition());
+//            }
+//        });
         return holder;
     }
 

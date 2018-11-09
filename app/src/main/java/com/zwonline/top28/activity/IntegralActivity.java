@@ -240,8 +240,8 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
                 //判断是算力还是商机币
                 if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
                     //算力跳转赚取算力说明
-                    Intent earnIntent = new Intent(this, RecommendUserActivity.class);
-                    earnIntent.putExtra("jumPath", BizConstant.EARNINTEGRAL);
+                    Intent earnIntent = new Intent(this, BaseWebViewActivity.class);
+                    earnIntent.putExtra("weburl", BizConstant.EARNINTEGRAL);
                     startActivity(earnIntent);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 } else {
@@ -255,7 +255,9 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
                 Intent hashrateIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
                 if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
                     hashrateIntent.putExtra("weburl", buyHashrateUrl);
+                    hashrateIntent.putExtra("titleBarColor","#5023DC");
                 } else {
+                    hashrateIntent.putExtra("titleBarColor","#5023DC");
                     hashrateIntent.putExtra("weburl", yangfenConvert + LanguageUitils.getVerName(IntegralActivity.this));
                 }
 

@@ -48,9 +48,9 @@ public class RegisterRedPacketsBean implements Serializable {
                 public String status;
                 public String content1;
                 public String content2;
-                //                public String content3;
-//                public String content4;
-//                public String content5;
+                public String content3;
+                public String content4;
+                //                public String content5;
 //                public String content6;
 //                public String content7;
 //                public String content8;
@@ -93,9 +93,9 @@ public class RegisterRedPacketsBean implements Serializable {
                 public String status;
                 public String content1;
                 public String content2;
-                //                public String content3;
-//                public String content4;
-//                public String content5;
+                public String content3;
+                public String content4;
+                //                public String content5;
 //                public String content6;
 //                public String content7;
 //                public String content8;

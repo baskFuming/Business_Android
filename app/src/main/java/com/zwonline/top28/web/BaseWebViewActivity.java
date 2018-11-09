@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -39,6 +41,7 @@ import com.zwonline.top28.activity.EarnIntegralActivity;
 import com.zwonline.top28.activity.HashrateActivity;
 import com.zwonline.top28.activity.IntegralPayActivity;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.web.BaseWebViewActivity;
 import com.zwonline.top28.activity.HomeDetailsActivity;
 import com.zwonline.top28.activity.IntegralActivity;
@@ -71,11 +74,18 @@ public class BaseWebViewActivity extends BaseActivity {
     private String url;
     private RewritePopwindow mPopwindow;
     private String token;
+    private String titleBarColor;
 
     @Override
     protected void init() {
-        initView();
         url = getIntent().getStringExtra("weburl") + "?version=" + LanguageUitils.getVerName(this);
+        titleBarColor = getIntent().getStringExtra("titleBarColor");
+        if (StringUtil.isNotEmpty(titleBarColor)) {
+            StatusBarUtil.setColor(this, Color.parseColor(titleBarColor), 0);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
+        }
+        initView();
+
         String uid = getIntent().getStringExtra("uid");
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
@@ -110,6 +120,22 @@ public class BaseWebViewActivity extends BaseActivity {
         service = (ImageView) findViewById(R.id.service);
         progressBar = (ProgressBar) findViewById(R.id.progress_Bar);
         hashrateWeb = (WebView) findViewById(R.id.hashrate_web);
+        ImageView backImage = (ImageView) findViewById(R.id.back_image);
+        ImageView backXImage = (ImageView) findViewById(R.id.backx_image);
+        RelativeLayout backgroud_relative = (RelativeLayout) findViewById(R.id.backgroud_relative);
+        if (StringUtil.isNotEmpty(titleBarColor)) {
+            backImage.setImageResource(R.mipmap.back);
+            backXImage.setImageResource(R.mipmap.close_x);
+            hashrate.setTextColor(Color.WHITE);
+            hashrates.setTextColor(Color.WHITE);
+            backgroud_relative.setBackgroundColor(Color.parseColor(titleBarColor));
+        } else {
+            backImage.setImageResource(R.mipmap.return_black);
+            backXImage.setImageResource(R.mipmap.back_x);
+            hashrate.setTextColor(Color.BLACK);
+            hashrates.setTextColor(Color.BLACK);
+            backgroud_relative.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
     }
 
     //webview配置

@@ -242,6 +242,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 sp.insertKey(getActivity(), "position", userInfoBean.data.user.position);
                 sp.insertKey(getActivity(), "mobile", userInfoBean.data.user.mobile);
                 sp.insertKey(getActivity(), "union_id", userInfoBean.data.user.union_id);
+                sp.insertKey(getActivity(), "bind_union_id ", userInfoBean.data.user.bind_union_id );
                 sp.insertKey(getActivity(), "mbp_amount", userInfoBean.data.user.mbp_amount);
                 sp.insertKey(getActivity(), "boc_amount", userInfoBean.data.user.boc_amount);
                 sp.insertKey(getActivity(), "cp_amount", userInfoBean.data.user.cp_amount);
@@ -337,6 +338,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 Intent guan = new Intent(getActivity(), BaseWebViewActivity.class);
                 guan.putExtra("uid", uid);
                 guan.putExtra("weburl", mbp_url);
+                guan.putExtra("titleBarColor","#5023DC");
                 guan.putExtra("attention", R.string.center_my_followed);
                 startActivity(guan);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);

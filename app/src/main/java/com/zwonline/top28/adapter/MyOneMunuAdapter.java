@@ -23,6 +23,9 @@ import com.zwonline.top28.web.BaseWebViewActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 菜单的适配器
+ */
 public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<MyPageBean.DataBean> list;
     private Context context;
@@ -70,6 +73,7 @@ public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     Intent intent = new Intent(context, BaseWebViewActivity.class);
                     intent.putExtra("uid", uid);
                     intent.putExtra("weburl", activityName);
+                    intent.putExtra("titleBarColor", twoList.get(positions).titleBarColor);
                     intent.putExtra("project", BizConstant.ALIPAY_METHOD);
                     context.startActivity(intent);
                 } else {

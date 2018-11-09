@@ -50,13 +50,14 @@ public class RecommendListActivity extends BaseActivity {
     private SharedPreferencesUtils sp;
     //http://toutiao.28.com/Members/myRecommendUserList.html
     private String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend_list);
         Intent intent = getIntent();
         url = intent.getStringExtra("strUrl");
-        sp =  SharedPreferencesUtils.getUtil();
+        sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
         synCookies(url, cookieString);
@@ -65,6 +66,7 @@ public class RecommendListActivity extends BaseActivity {
         ButterKnife.bind(this);
         webSettingInit();//webView 的相关配置
     }
+
     //WebView 方法配置
     private void webSettingInit() {
         WebSettings settings = webViewRecommed.getSettings();
@@ -84,7 +86,7 @@ public class RecommendListActivity extends BaseActivity {
         Map<String, String> headMap = new HashMap<>();
         headMap.put("Accept-Language", LanguageUitils.getCurCountryLan());
         webViewRecommed.loadUrl(url, headMap);
-        webViewRecommed.setWebViewClient(new WebViewClient(){
+        webViewRecommed.setWebViewClient(new WebViewClient() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, String url) {
@@ -96,7 +98,7 @@ public class RecommendListActivity extends BaseActivity {
                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     // 将文本内容放到系统剪贴板里。
                     cm.setText(invitationCode);
-                    ToastUtils.showToast(RecommendListActivity.this,"复制成功");
+                    ToastUtils.showToast(RecommendListActivity.this, "复制成功");
                     return true;
                 }
                 return false;
@@ -126,6 +128,7 @@ public class RecommendListActivity extends BaseActivity {
                     te_title.setVisibility(View.VISIBLE);
                 }
             }
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 if (newProgress == 100) {
@@ -150,6 +153,7 @@ public class RecommendListActivity extends BaseActivity {
                 break;
         }
     }
+
     /**
      * 将cookie同步到WebView
      *
@@ -167,6 +171,7 @@ public class RecommendListActivity extends BaseActivity {
         cookieManager.setCookie(url, cookieString);//cookies是在HttpClient中获得的cookie 如果没有特殊需求，这里只需要将session id以"key=value"形式作为cookie即可
         CookieSyncManager.getInstance().sync();
     }
+
     //Dialog弹窗关注
     private void showNormalDialogs(final String invitationCode) {
         /* @setIcon 设置对话框图标
@@ -189,10 +194,11 @@ public class RecommendListActivity extends BaseActivity {
         // 显示
         normalDialog.show();
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //这是一个监听用的按键的方法，keyCode 监听用户的动作，如果是按了返回键，同时Webview要返回的话，WebView执行回退操作，因为mWebView.canGoBack()返回的是一个Boolean类型，所以我们把它返回为true
-        if(keyCode==KeyEvent.KEYCODE_BACK&&webViewRecommed.canGoBack()){
+        if (keyCode == KeyEvent.KEYCODE_BACK && webViewRecommed.canGoBack()) {
             webViewRecommed.goBack();
             return true;
         }

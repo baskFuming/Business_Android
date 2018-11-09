@@ -136,6 +136,15 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private TextView recriveCode;
     private String redStatus;//是否是新人判断
     private String yangfenCheatsUrl;//鞅分秘籍URL
+    private TextView introduc_user;
+    private String content1;
+    private String content2;
+    private String content3;
+    private String btnName;
+    private TextView describeOne;
+    private TextView describeTwo;
+    private TextView describeThree;
+    private TextView text_busin;
 
     @Override
     protected void init() {
@@ -421,9 +430,31 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     redacketPopWindow = new RedacketPopWindow(MainActivity.this, reaListener);
                     View redacketView = redacketPopWindow.getContentView();
                     receive = redacketView.findViewById(R.id.receive);
+                    introduc_user = redacketView.findViewById(R.id.introduc_user);
+                    if (StringUtil.isNotEmpty(content1)) {
+                        introduc_user.setText(content1);
+                    }
+                    //红包取值范围
+                    TextView get_boc_scope = redacketView.findViewById(R.id.get_boc_scope);
+                    if (StringUtil.isNotEmpty(content2)) {
+                        get_boc_scope.setText(content2);
+                    }
+                    //价值
+                    TextView get_value = redacketView.findViewById(R.id.get_value);
+                    if (StringUtil.isNotEmpty(content3)) {
+                        get_value.setText(content3);
+                    }
+                    TextView click_get = redacketView.findViewById(R.id.click_get);
+                    if (StringUtil.isNotEmpty(btnName)) {
+                        click_get.setText(btnName);
+                    }
+                    describeOne = redacketView.findViewById(R.id.describe_one);
+                    describeTwo = redacketView.findViewById(R.id.describe_two);
+                    describeThree = redacketView.findViewById(R.id.describe_three);
                     recriveCode = redacketView.findViewById(R.id.recrive_code);
                     readbackground1 = redacketView.findViewById(R.id.readbackground1);
                     readbackground2 = redacketView.findViewById(R.id.readbackground2);
+                    text_busin = redacketView.findViewById(R.id.text_busin);
                     mian.post(new Runnable() {
                         @Override
                         public void run() {
@@ -728,6 +759,10 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     public void showRedPacketDialog(RegisterRedPacketsBean.DataBean.DialogItemBean.RegisterRedPacketBean registerRedPacketBean) {
         if (StringUtil.isNotEmpty(registerRedPacketBean.status)) {
             redStatus = registerRedPacketBean.status;
+            content1 = registerRedPacketBean.content1;
+            content2 = registerRedPacketBean.content2;
+            content3 = registerRedPacketBean.content3;
+            btnName = registerRedPacketBean.btn1.name;
         }
 
     }
@@ -745,8 +780,11 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         if (StringUtil.isNotEmpty(registerRedPacketBean.content2)) {
             recriveCode.setText(registerRedPacketBean.content2);//获取多少商机币
         }
+        describeOne.setText(registerRedPacketBean.content1);
+        describeTwo.setText(registerRedPacketBean.content3);
+        describeThree.setText(registerRedPacketBean.content4);
         if (StringUtil.isNotEmpty(registerRedPacketBean.btn2.action)) {
-            yangfenCheatsUrl = Api.baseUrl()+registerRedPacketBean.btn2.action;
+            yangfenCheatsUrl = Api.baseUrl() + registerRedPacketBean.btn2.action;
         }
     }
 
