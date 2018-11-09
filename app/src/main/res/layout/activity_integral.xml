@@ -44,7 +44,6 @@
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
         android:background="@mipmap/reward_bunner"
-
         android:visibility="visible">
 
         <TextView

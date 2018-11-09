@@ -9,6 +9,7 @@ import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.service.ApiService;
 import com.zwonline.top28.bean.AttentionBean;
+import com.zwonline.top28.bean.BindWechatBean;
 import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.RegisterBean;
 import com.zwonline.top28.bean.ShortMessage;
@@ -167,5 +168,29 @@ public class RegisterModel {
         });
     }
 
-
+    //绑定微信
+    public Flowable<BindWechatBean> bindWechat(Context context, String union_id, String open_id, String gender
+            , String nickname, String avatar, String country_code, String city, String province, String country, String language) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        String token = (String) sp.getKey(context, "dialog", "");
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("union_id", union_id);
+        map.put("open_id", open_id);
+        map.put("gender", gender);
+        map.put("nickname", nickname);
+        map.put("avatar", avatar);
+        map.put("country_code", country_code);
+        map.put("city",city);
+        map.put("province",province);
+        map.put("country",country);
+        map.put("language",language);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("token", token);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<BindWechatBean> flowable = ApiRetrofit.getInstance().getClientApi(ApiService.class, Api.url)
+                .bindWx(union_id, open_id, gender, nickname, avatar, country_code,city,province,country,language, String.valueOf(timestamp), token,sign);
+        return flowable;
+    }
 }

@@ -18,10 +18,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.zwonline.top28.APP;
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseActivity;
-import com.zwonline.top28.base.BasePresenter;
+import com.zwonline.top28.bean.BindWechatBean;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.presenter.BindWechatPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.CacheDataManager;
 import com.zwonline.top28.utils.ImageViewPlus;
@@ -29,11 +34,14 @@ import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
+import com.zwonline.top28.view.IbindWechatActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static io.reactivex.schedulers.Schedulers.newThread;
 
 /**
  * 描述：设置页面
@@ -41,9 +49,7 @@ import static io.reactivex.schedulers.Schedulers.newThread;
  * @author YSG
  * @date 2018/1/23
  */
-public class MySettingActivity extends BaseActivity {
-
-
+public class MySettingActivity extends BaseActivity<IbindWechatActivity,BindWechatPresenter>implements IbindWechatActivity {
     private SharedPreferencesUtils sp;
     private String isDefaultPassword;
     private TextView settingPassword;
@@ -65,6 +71,10 @@ public class MySettingActivity extends BaseActivity {
     private String weChatUnionId;//微信union_id
     @BindView(R.id.text_cash)
     TextView tv_Cash;
+    @BindView(R.id.bind_wechat_relative)
+    RelativeLayout bindWechatRelative;
+
+    private List<BindWechatBean.DataBean> list;
     private Handler handler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {
@@ -96,11 +106,11 @@ public class MySettingActivity extends BaseActivity {
 
     @Override
     protected void init() {
+        list = new ArrayList<>();
         settingPassword = (TextView) findViewById(R.id.setting_password);
         sp = SharedPreferencesUtils.getUtil();
         mobile = (String) sp.getKey(this, "mobile", "");
         weChatUnionId = (String) sp.getKey(this, "union_id", "");
-        ToastUtils.showToast(getApplicationContext(),weChatUnionId+"1111");
         initData();
         Intent intent = getIntent();
         avatar = (String) sp.getKey(getApplicationContext(), "avatar", "");
@@ -117,7 +127,6 @@ public class MySettingActivity extends BaseActivity {
             settingPassword.setText(this.getString(R.string.user_update_password));
         }
         try {
-
             tv_Cash.setText(CacheDataManager.getTotalCacheSize(this));
 
         } catch (Exception e) {
@@ -127,6 +136,11 @@ public class MySettingActivity extends BaseActivity {
         }
         //获取缓存
 //        tv_Cash.setText(DataClearUtil.getTotalCacheSize(this));
+    }
+
+    @Override
+    protected BindWechatPresenter getPresenter() {
+        return new BindWechatPresenter(this,this);
     }
 
     private void initData() {
@@ -144,7 +158,6 @@ public class MySettingActivity extends BaseActivity {
         TextView clearTv = (TextView) findViewById(R.id.clear_tv);
         bindWechat = (TextView) findViewById(R.id.bind_wechat);
         ImageView bindWechatImag = (ImageView) findViewById(R.id.bind_wechat_imag);
-        RelativeLayout bindWechatRelative = (RelativeLayout) findViewById(R.id.bind_wechat_relative);
         clearTv.setSelected(true);
         //判别是否绑定手机号
         if (StringUtil.isNotEmpty(mobile)) {
@@ -159,7 +172,7 @@ public class MySettingActivity extends BaseActivity {
         }
         //判别是否绑定微信
         if (StringUtil.isNotEmpty(weChatUnionId)) {
-            bind.setText("已绑定");
+            bindWechat.setText("已绑定");
             bindWechatRelative.setClickable(false);
             bindWechatImag.setVisibility(View.VISIBLE);
             bindWechat.setTextColor(Color.parseColor("#d1d1d1"));
@@ -171,10 +184,7 @@ public class MySettingActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected BasePresenter getPresenter() {
-        return null;
-    }
+
 
     @Override
     protected int setLayoutId() {
@@ -247,8 +257,12 @@ public class MySettingActivity extends BaseActivity {
                 startActivity(new Intent(MySettingActivity.this, BindPhoneActivity.class));
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
-            case R.id.bind_wechat_relative://绑定微信
-                ToastUtils.showToast(getApplicationContext(), "绑定微信");
+            case R.id.bind_wechat_relative://绑定微信2
+                if (!APP.mWxApi.isWXAppInstalled()) {
+                    ToastUtils.showToast(getApplicationContext(), "绑定微信");
+                } else {
+                    authorization(SHARE_MEDIA.WEIXIN);
+                }
                 break;
             case R.id.about_owen:
                 startActivity(new Intent(MySettingActivity.this, AboutUsActivity.class));
@@ -313,6 +327,18 @@ public class MySettingActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+    //绑定微信
+    @Override
+    public void bindWechat(BindWechatBean bindWechatBean) {
+        if (bindWechatBean.status==1){
+            list.add(bindWechatBean.data);
+        }
+    }
+
+    @Override
+    public void onErro() {
+
+    }
 
     class clearCache implements Runnable {
 
@@ -343,5 +369,67 @@ public class MySettingActivity extends BaseActivity {
 
     }
 
+    private void authorization(SHARE_MEDIA weixin) {
+        UMShareAPI.get(this).getPlatformInfo(this, weixin, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA platform) {
+//                ToastUtils.showToast(WithoutCodeLoginActivity.this, "微信授权登录");
+            }
 
+            /**
+             * @desc 授权成功的回调
+             * @param platform 平台名称
+             * @param action 行为序号，开发者用不上
+             * @param map 用户资料返回
+             */
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> map) {
+                sp.insertKey(MySettingActivity.this, "islogin", true);
+                //sdk是6.4.4的,但是获取值的时候用的是6.2以前的(access_token)才能获取到值,未知原因
+                String uid = map.get("uid");
+                final String open_id = map.get("openid");//微博没有
+                final String union_id = map.get("unionid");//微博没有
+                String access_token = map.get("access_token");
+                String refresh_token = map.get("refresh_token");//微信,qq,微博都没有获取到
+                String expires_in = map.get("expires_in");
+                final String name = map.get("name");
+                final String gender = map.get("gender");
+                final String iconurl = map.get("iconurl");
+                //city province country language
+                final String city = map.get("city");
+                final String province = map.get("province");
+                final String country = map.get("country");
+                final String language = map.get("language");
+                String countrycode = map.get("countrycode");
+                //添加微信登录接口
+                //拿到信息去请求登录接口。。。差一个接口
+                presenter.bindWechatNumber(MySettingActivity.this, union_id, open_id, gender, name, iconurl, "", city, province, country, language);
+            }
+            /**
+             * @desc 授权失败的回调
+             * @param platform 平台名称
+             * @param action 行为序号，开发者用不上
+             * @param throwable 错误原因
+             */
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable throwable) {
+                ToastUtils.showToast(MySettingActivity.this, "授权失败");
+            }
+
+            /**
+             * @desc 授权取消的回调
+             * @param platform 平台名称
+             * @param action 行为序号，开发者用不上
+             */
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+                ToastUtils.showToast(MySettingActivity.this, "授权取消");
+            }
+        });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
 }

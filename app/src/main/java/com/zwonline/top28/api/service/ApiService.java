@@ -10,6 +10,7 @@ import com.zwonline.top28.bean.BalanceBean;
 import com.zwonline.top28.bean.BankBean;
 import com.zwonline.top28.bean.BannerAdBean;
 import com.zwonline.top28.bean.BannerBean;
+import com.zwonline.top28.bean.BindWechatBean;
 import com.zwonline.top28.bean.BusinessClassifyBean;
 import com.zwonline.top28.bean.BusinessListBean;
 import com.zwonline.top28.bean.CompanyBean;
@@ -986,6 +987,25 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/App/Member/myRecommend")
     Flowable<RecommendUserBean> myRecommend(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
+
+    //绑定微信
+    @FormUrlEncoded
+    @POST("/App/Public/bindWx")
+    Flowable<BindWechatBean> bindWx(
+            @Field("union_id") String union_id,
+            @Field("open_id") String open_id,
+            @Field("gender") String gender,
+            @Field("nickname") String nickname,
+            @Field("avatar") String avatar,
+            @Field("country_code") String country_code,
+            @Field("city") String city,
+            @Field("province") String province,
+            @Field("country") String country,
+            @Field("language") String language,
             @Field("timestamp") String timestamp,
             @Field("token") String token,
             @Field("sign") String sign
