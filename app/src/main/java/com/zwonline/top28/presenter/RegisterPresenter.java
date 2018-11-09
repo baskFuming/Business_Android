@@ -11,6 +11,7 @@ import com.zwonline.top28.bean.RegisterBean;
 import com.zwonline.top28.bean.ShortMessage;
 import com.zwonline.top28.model.RegisterModel;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IRegisterActivity;
 
 import java.io.IOException;
@@ -107,12 +108,13 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
             e.printStackTrace();
         }
     }
+
     //city province country language
     //微信登录
     public void loginWechatListen(final Context context, String union_id, String open_id, String gender, String nickname, String avatar, String country_code
-    ,String city,String province,String country,String language) {
+            , String city, String province, String country, String language) {
         try {
-            Flowable<LoginWechatBean> flowable = model.loginWechat(context, union_id, open_id, gender, nickname, avatar, country_code,city,province,country,language);
+            Flowable<LoginWechatBean> flowable = model.loginWechat(context, union_id, open_id, gender, nickname, avatar, country_code, city, province, country, language);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<LoginWechatBean>() {
@@ -202,7 +204,7 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
      * @param union_id
      * @param token
      */
-    public void BindMobile(Context context, String mobile, String union_id, String token) {
+    public void BindMobile(final Context context, String mobile, String union_id, String token) {
         try {
             Flowable<AttentionBean> flowable = model.mBindMobile(context, mobile, union_id, token);
             flowable.subscribeOn(Schedulers.io())
@@ -211,7 +213,11 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
 
                         @Override
                         protected void onBaseNext(AttentionBean registerBean) {
-                            iRegisterActivity.showBindMobile(registerBean);
+                            if (registerBean.status == 1) {
+                                iRegisterActivity.showBindMobile(registerBean);
+                            } else {
+                                ToastUtils.showToast(context, registerBean.msg);
+                            }
                         }
 
                         @Override

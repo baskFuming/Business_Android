@@ -36,17 +36,19 @@ public class UserInfoModel {
      * @throws IOException
      */
     public Flowable<UserInfoBean> UserInfo(Context context) throws IOException {
+        String versionName = LanguageUitils.getVersionName(context);
         sp = SharedPreferencesUtils.getUtil();
         long timestamp = new Date().getTime() / 1000;//获取时间戳
         Map<String, String> map = new HashMap<>();
         String token = (String) sp.getKey(context, "dialog", "");
         map.put("token", token);
+        map.put("app_version", versionName);
         map.put("timestamp", String.valueOf(timestamp));
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<UserInfoBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .iUserInfo(String.valueOf(timestamp), token, sign);
+                .iUserInfo(String.valueOf(timestamp), token, versionName, sign);
         return flowable;
     }
 
@@ -58,17 +60,19 @@ public class UserInfoModel {
      * @throws IOException
      */
     public Flowable<NoticeNotReadCountBean> NoticeNotReadCount(Context context) throws IOException {
+        String versionName = LanguageUitils.getVersionName(context);
         sp = SharedPreferencesUtils.getUtil();
         long timestamp = new Date().getTime() / 1000;//获取时间戳
         Map<String, String> map = new HashMap<>();
         String token = (String) sp.getKey(context, "dialog", "");
         map.put("token", token);
+        map.put("app_version", versionName);
         map.put("timestamp", String.valueOf(timestamp));
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<NoticeNotReadCountBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
-                .iNotReadCount(String.valueOf(timestamp), token, sign);
+                .iNotReadCount(String.valueOf(timestamp), token, versionName, sign);
         return flowable;
     }
 

@@ -97,14 +97,6 @@
                 android:textColor="#ffffffff"
                 android:textSize="16sp" />
 
-            <LinearLayout
-                android:layout_width="269dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/blue"
-                android:gravity="center">
 
                 <TextView
                     android:id="@+id/recrive_code"
@@ -112,10 +104,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="获得60商机币"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
                     android:textColor="#ffffffff"
                     android:textSize="34sp" />
-            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"

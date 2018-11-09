@@ -87,10 +87,10 @@ public class UserInfoPresenter extends BasePresenter<IUserInfo> {
                     .subscribeWith(new DisposableSubscriber<NoticeNotReadCountBean>() {
                         @Override
                         public void onNext(NoticeNotReadCountBean noticeNotReadCountBean) {
-                            if (noticeNotReadCountBean.status==1){
+                            if (noticeNotReadCountBean.status == 1) {
                                 iUserInfo.showNoticeNoRead(noticeNotReadCountBean);
-                            }else {
-                                ToastUtils.showToast(context,noticeNotReadCountBean.msg);
+                            } else {
+                                ToastUtils.showToast(context, noticeNotReadCountBean.msg);
                             }
                         }
 
@@ -125,6 +125,8 @@ public class UserInfoPresenter extends BasePresenter<IUserInfo> {
                             String status = String.valueOf(myPageBean.status);
                             if (myPageBean.status == 1) {
                                 iUserInfo.showPersonCenterMenu(myPageBean.data);
+                            }else {
+                                ToastUtils.showToast(context,myPageBean.msg);
                             }
 
                         }

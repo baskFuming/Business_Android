@@ -44,6 +44,9 @@ public class BizConstant {
     public static final int PAGE = 1;
     public static final String TYPE_ONE = "1";
     public static final String TYPE_TWO = "2";
+    public static final String TYPE_THREE = "3";
+    public static final String TYPE_FOUR = "4";
+    public static final String TYPE_FIVE = "5";
 
     /**
      * 中国台湾渠道
@@ -253,7 +256,12 @@ public class BizConstant {
      * 推荐用户
      */
     public static final String RECOMMENTUSER = "http://toutiao.28.com/Members/recommend_list.html";
-    public static final String YSMY="http://store-toutiao.28.com/wap/index.php?ctl=settings";
-    public static final String YSSEARCH="http://store-toutiao.28.com/wap/index.php?ctl=deals";
+    public static final String YSMY = "http://store-toutiao.28.com/wap/index.php?ctl=settings";
+    public static final String YSSEARCH = "http://store-toutiao.28.com/wap/index.php?ctl=deals";
 
+    /**
+     * 弹窗
+     */
+    public static final String REDPACKETDIALOG = "register_red_packet";//新人注册红包
+    public static final String SHOWREDPACKETDIALOG = "show_register_red_packet";
 }

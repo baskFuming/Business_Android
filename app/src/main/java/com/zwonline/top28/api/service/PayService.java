@@ -437,6 +437,7 @@ public interface PayService {
     Flowable<NoticeNotReadCountBean> iNotReadCount(
             @Field("timestamp") String timestamp,
             @Field("token") String token,
+            @Field("app_version") String app_version,
             @Field("sign") String sign
     );
 

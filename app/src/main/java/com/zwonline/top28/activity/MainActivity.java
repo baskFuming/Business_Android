@@ -41,8 +41,10 @@ import com.netease.nimlib.sdk.team.model.Team;
 import com.umeng.socialize.UMShareAPI;
 import com.xys.libzxing.zxing.common.Constant;
 import com.zwonline.top28.R;
+import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseMainActivity;
 import com.zwonline.top28.bean.HongbaoPermissionBean;
+import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.bean.UnclaimedMbpCountBean;
 import com.zwonline.top28.bean.UpdateCodeBean;
 import com.zwonline.top28.constants.BizConstant;
@@ -67,6 +69,7 @@ import com.zwonline.top28.utils.popwindow.CustomPopuWindow;
 import com.zwonline.top28.utils.popwindow.RedacketPopWindow;
 import com.zwonline.top28.utils.popwindow.YangFenUnclaimedWindow;
 import com.zwonline.top28.view.IMainActivity;
+import com.zwonline.top28.web.BaseWebViewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -78,6 +81,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindArray;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 
 
@@ -130,6 +134,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private LinearLayout readbackground1;
     private LinearLayout readbackground2;
     private TextView recriveCode;
+    private String redStatus;//是否是新人判断
+    private String yangfenCheatsUrl;//鞅分秘籍URL
 
     @Override
     protected void init() {
@@ -169,6 +175,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         initMessageListener();
         int code = getVersionCode();//获取版本号
         if (NetUtils.isConnected(getApplicationContext())) {
+            presenter.RegisterRedPacketDialogs(this, BizConstant.REDPACKETDIALOG, BizConstant.TYPE_ONE);//新人注册红包弹窗
             presenter.UpdataVersion(getApplicationContext(), platform, String.valueOf(code));
         } else {
             ToastUtils.showToast(getApplicationContext(), "请检查网络");
@@ -404,22 +411,31 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 
 //            customPopuWindow.showAtLocation(this.findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         } else {
-            if (islogine) {
-                //yangFenLingQu();//鞅分领取
-                presenter.UnclaimedMbpCount(getApplicationContext());
-                //新用户随机红包
-                redacketPopWindow = new RedacketPopWindow(MainActivity.this, reaListener);
-                View redacketView = redacketPopWindow.getContentView();
-                receive = redacketView.findViewById(R.id.receive);
-                recriveCode = redacketView.findViewById(R.id.recrive_code);
-                readbackground1 = redacketView.findViewById(R.id.readbackground1);
-                readbackground2 = redacketView.findViewById(R.id.readbackground2);
-                mian.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        redacketPopWindow.showAtLocation(mian, Gravity.CENTER, 0, 0);
-                    }
-                });
+            if (islogine) {//判断是否登录
+                /**
+                 * 前提是是否登录状态
+                 * 判断是否是新人，redStatus是1是新人弹出新人领商机币红包，其他调查看鞅分接口
+                 */
+                if (StringUtil.isNotEmpty(redStatus) && redStatus.equals(BizConstant.NEW)) {
+                    //新用户随机红包
+                    redacketPopWindow = new RedacketPopWindow(MainActivity.this, reaListener);
+                    View redacketView = redacketPopWindow.getContentView();
+                    receive = redacketView.findViewById(R.id.receive);
+                    recriveCode = redacketView.findViewById(R.id.recrive_code);
+                    readbackground1 = redacketView.findViewById(R.id.readbackground1);
+                    readbackground2 = redacketView.findViewById(R.id.readbackground2);
+                    mian.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            redacketPopWindow.showAtLocation(mian, Gravity.CENTER, 0, 0);
+                        }
+                    });
+                } else {
+                    //yangFenLingQu();//鞅分领取
+                    presenter.UnclaimedMbpCount(getApplicationContext());
+                }
+
+
             }
 
             //否则吐司，说现在是最新的版本
@@ -454,14 +470,10 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.receive://打开红包
+                    presenter.RegisterRedPacketDialogs(MainActivity.this, BizConstant.SHOWREDPACKETDIALOG, BizConstant.TYPE_TWO);
                     MyYAnimation myYAnimation = new MyYAnimation();
                     myYAnimation.setRepeatCount(Animation.INFINITE); //旋转的次数（无数次）
                     receive.startAnimation(myYAnimation);
-                    receive.clearAnimation();
-                    readbackground1.setVisibility(View.GONE);
-                    readbackground2.setVisibility(View.VISIBLE);
-//                    redacketPopWindow.dismiss();
-//                    redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
                     break;
                 case R.id.text_busin://查看商机币
                     Intent intent = new Intent(MainActivity.this, IntegralActivity.class);
@@ -472,8 +484,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 //                    redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
                     break;
                 case R.id.text_cheats://前往秘籍
-                    Intent intent1 = new Intent(MainActivity.this, GuideActivity.class);
-                    intent1.putExtra("type", BizConstant.RECOMMEND);
+                    Intent intent1 = new Intent(MainActivity.this, BaseWebViewActivity.class);
+                    intent1.putExtra("weburl", yangfenCheatsUrl);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
 //                    redacketPopWindow.dismiss();
@@ -704,6 +716,37 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             String has_permission = hongbaoPermissionBean.data.has_permission;
             if (sp != null)
                 sp.insertKey(context, "has_permission", has_permission);
+        }
+    }
+
+    /**
+     * 新人注册红包弹窗
+     *
+     * @param registerRedPacketBean
+     */
+    @Override
+    public void showRedPacketDialog(RegisterRedPacketsBean.DataBean.DialogItemBean.RegisterRedPacketBean registerRedPacketBean) {
+        if (StringUtil.isNotEmpty(registerRedPacketBean.status)) {
+            redStatus = registerRedPacketBean.status;
+        }
+
+    }
+
+    /**
+     * 点击领取新人红包
+     *
+     * @param registerRedPacketBean
+     */
+    @Override
+    public void showGetRedPacketDialog(RegisterRedPacketsBean.DataBean.DialogItemBean.ShowRegisterRedPacketBean registerRedPacketBean) {
+        receive.clearAnimation();
+        readbackground1.setVisibility(View.GONE);
+        readbackground2.setVisibility(View.VISIBLE);
+        if (StringUtil.isNotEmpty(registerRedPacketBean.content2)) {
+            recriveCode.setText(registerRedPacketBean.content2);//获取多少商机币
+        }
+        if (StringUtil.isNotEmpty(registerRedPacketBean.btn2.action)) {
+            yangfenCheatsUrl = Api.baseUrl()+registerRedPacketBean.btn2.action;
         }
     }
 

@@ -75,8 +75,8 @@ public class BaseWebViewActivity extends BaseActivity {
     @Override
     protected void init() {
         initView();
-        url = getIntent().getStringExtra("weburl")+"?version="+LanguageUitils.getVerName(this);
-        String uid= getIntent().getStringExtra("uid");
+        url = getIntent().getStringExtra("weburl") + "?version=" + LanguageUitils.getVerName(this);
+        String uid = getIntent().getStringExtra("uid");
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
@@ -111,6 +111,7 @@ public class BaseWebViewActivity extends BaseActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress_Bar);
         hashrateWeb = (WebView) findViewById(R.id.hashrate_web);
     }
+
     //webview配置
     private void webSettingInit() {
         WebSettings settings = hashrateWeb.getSettings();
@@ -138,6 +139,7 @@ public class BaseWebViewActivity extends BaseActivity {
                 //跳转到个人主页
                 if (url.contains("http://top28app/computePower/")) {
                     Intent intent1 = new Intent(BaseWebViewActivity.this, IntegralActivity.class);
+                    intent1.putExtra("type", BizConstant.TYPE_ONE);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
@@ -159,6 +161,7 @@ public class BaseWebViewActivity extends BaseActivity {
                 //购买商机币
                 if (url.contains("http://top28app/rechargeBusinessOpportunityCoin/")) {
                     Intent intent1 = new Intent(BaseWebViewActivity.this, IntegralPayActivity.class);
+                    intent1.putExtra("type", BizConstant.TYPE_TWO);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
@@ -180,7 +183,7 @@ public class BaseWebViewActivity extends BaseActivity {
 
                 //联系客服
                 if (url.contains("http://top28app//pushToIM/")) {
-                    String urls=url;
+                    String urls = url;
 //                    service.setVisibility(View.VISIBLE);
                     String path = "http://top28app//pushToIM/";
                     String uids = url.substring(path.length(), url.length());
@@ -424,6 +427,7 @@ public class BaseWebViewActivity extends BaseActivity {
 
         });
     }
+
     @OnClick({R.id.back, R.id.back_xx})
     public void onViewClicked(View view) {
         switch (view.getId()) {

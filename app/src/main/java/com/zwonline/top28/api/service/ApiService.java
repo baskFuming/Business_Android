@@ -42,6 +42,7 @@ import com.zwonline.top28.bean.ProjectBean;
 import com.zwonline.top28.bean.QrCodeBean;
 import com.zwonline.top28.bean.RecommendBean;
 import com.zwonline.top28.bean.RegisterBean;
+import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShareDataBean;
 import com.zwonline.top28.bean.ShortMessage;
@@ -798,6 +799,7 @@ public interface ApiService {
     Flowable<UserInfoBean> iUserInfo(
             @Field("timestamp") String timestamp,
             @Field("token") String token,
+            @Field("app_version") String app_version,
             @Field("sign") String sign
     );
 
@@ -886,6 +888,26 @@ public interface ApiService {
     );
 
     /**
+     * 弹窗通用接口
+     *
+     * @param timestamp
+     * @param token
+     * @param app_version
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Dialog/showDialog")
+    Flowable<RegisterRedPacketsBean> showDialog(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("app_version") String app_version,
+            @Field("type") String type,
+            @Field("sign") String sign
+
+    );
+
+    /**
      * 消息顶部banner广告接口
      *
      * @param timestamp
@@ -919,6 +941,7 @@ public interface ApiService {
             @Field("sign") String sign
 
     );
+
     /**
      * 礼物数量接口
      *

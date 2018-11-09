@@ -8,6 +8,7 @@ import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.service.ApiService;
+import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
 
@@ -44,6 +45,7 @@ public class RetPossWordModel {
 
     //账号密码登录
     public Flowable<LoginBean> loginUserNumber(Context context, String mobile, String password) throws IOException {
+        String vationName = LanguageUitils.getVerName(context);
         long timestamp = new Date().getTime() / 1000;//时间戳
         sp = SharedPreferencesUtils.getUtil();
         String token = (String) sp.getKey(context, "dialog", "");
@@ -51,6 +53,7 @@ public class RetPossWordModel {
         map.put("mobile", mobile);
         map.put("timestamp", String.valueOf(timestamp));
         map.put("password", password);
+
         map.put("token", token);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
@@ -62,17 +65,19 @@ public class RetPossWordModel {
 
     //获取个人信息
     public Flowable<UserInfoBean> UserInfo(Context context) throws IOException {
+        String versionName = LanguageUitils.getVersionName(context);
         sp = SharedPreferencesUtils.getUtil();
         long timestamp = new Date().getTime() / 1000;//获取时间戳
         Map<String, String> map = new HashMap<>();
         String token = (String) sp.getKey(context, "dialog", "");
         map.put("timestamp", String.valueOf(timestamp));
-        map.put("token",token);
+        map.put("token", token);
+        map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<UserInfoBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .iUserInfo(String.valueOf(timestamp), token, sign);
+                .iUserInfo(String.valueOf(timestamp), token, versionName, sign);
         return flowable;
     }
 }
