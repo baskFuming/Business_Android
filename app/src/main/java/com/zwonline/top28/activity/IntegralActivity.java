@@ -1,6 +1,7 @@
 package com.zwonline.top28.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -128,6 +129,9 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
         integralView = (ViewPager) findViewById(R.id.integral_view);
         buyHashrate = (TextView) findViewById(R.id.buy_hashrate);
         buyGolden = (TextView) findViewById(R.id.buy_golden);
+        LinearLayout pay_hashrate_linear = (LinearLayout) findViewById(R.id.pay_hashrate_linear);
+        LinearLayout boc_golden_linear = (LinearLayout) findViewById(R.id.boc_golden_linear);
+        TextView hashrate_underline = (TextView) findViewById(R.id.hashrate_underline);
         //冻结商机币
         freeze = (TextView) findViewById(R.id.freeze);
         if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
@@ -137,8 +141,11 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
             freeze.setVisibility(View.GONE);
 //            businessCoinLinear.setVisibility(View.GONE);
             buyGolden.setVisibility(View.GONE);
+            pay_hashrate_linear.setVisibility(View.VISIBLE);
+            boc_golden_linear.setVisibility(View.GONE);
             buyHashrate.setVisibility(View.VISIBLE);
             buyHashrate.setText("购买算力");
+            hashrate_underline.setBackgroundColor(Color.parseColor("#cc40f9"));
             integralCh.setBackgroundResource(R.mipmap.suanli_bg);
         } else {
             title.setText(getString(R.string.opportunities_currency));
@@ -149,6 +156,9 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
 //            businessCoinLinear.setVisibility(View.VISIBLE);
             buyGolden.setVisibility(View.VISIBLE);
             buyHashrate.setVisibility(View.VISIBLE);
+            pay_hashrate_linear.setVisibility(View.VISIBLE);
+            boc_golden_linear.setVisibility(View.VISIBLE);
+            hashrate_underline.setBackgroundColor(Color.parseColor("#fd524e"));
             buyHashrate.setText("兑换鞅分");
         }
         recordList = new ArrayList<>();
@@ -255,9 +265,9 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
                 Intent hashrateIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
                 if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
                     hashrateIntent.putExtra("weburl", buyHashrateUrl);
-                    hashrateIntent.putExtra("titleBarColor","#5023DC");
+                    hashrateIntent.putExtra("titleBarColor", "#5023DC");
                 } else {
-                    hashrateIntent.putExtra("titleBarColor","#5023DC");
+                    hashrateIntent.putExtra("titleBarColor", "#5023DC");
                     hashrateIntent.putExtra("weburl", yangfenConvert + LanguageUitils.getVerName(IntegralActivity.this));
                 }
 
