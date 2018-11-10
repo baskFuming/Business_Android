@@ -37,6 +37,7 @@ import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
+import com.zwonline.top28.utils.country.CityActivity;
 import com.zwonline.top28.utils.popwindow.BindWechatPopWindow;
 import com.zwonline.top28.utils.popwindow.CompletePopwindow;
 import com.zwonline.top28.utils.popwindow.SuccessPopWindow;
@@ -399,6 +400,10 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         if (StringUtil.isNotEmpty(bindSuccess.content3)) {
             bind_search.setText(bindSuccess.content3 + "");
         }
+
+        bindWechat.setText("已绑定");
+        bindWechatRelative.setClickable(false);
+        bindWechat.setTextColor(Color.parseColor("#d1d1d1"));
     }
 
     /**
@@ -411,19 +416,23 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         bindWechatPopWindow = new BindWechatPopWindow(this, listener);
         bindWechatPopWindow.showAtLocation(MySettingActivity.this.findViewById(R.id.setting_layout), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         View bindView = bindWechatPopWindow.getContentView();
-        TextView bind_information = bindWechat.findViewById(R.id.bind_information);
-        TextView bind_force = bindWechat.findViewById(R.id.bind_force);
-        TextView bind_money = bindWechat.findViewById(R.id.bind_money);
-        ImageView img_sure = bindWechat.findViewById(R.id.type_image);
-        img_sure.setImageResource(R.mipmap.phome_img);
+        TextView bind_information = bindView.findViewById(R.id.bind_information);
+        TextView bind_force = bindView.findViewById(R.id.bind_force);
+        TextView bind_money = bindView.findViewById(R.id.bind_money);
+        TextView bind_type = bindView.findViewById(R.id.bind_type);
+        ImageView type_image = bindView.findViewById(R.id.type_image);
+        type_image.setImageResource(R.mipmap.phome_img);
         if (StringUtil.isNotEmpty(mobileBind.content1)) {
-            bind_information.setText(mobileBind.content1 + "");
+            bind_type.setText(mobileBind.content1 + "");
         }
         if (StringUtil.isNotEmpty(mobileBind.content2)) {
-            bind_force.setText(mobileBind.content2 + "");
+            bind_information.setText(mobileBind.content2 + "");
         }
         if (StringUtil.isNotEmpty(mobileBind.content3)) {
             bind_money.setText(mobileBind.content3 + "");
+        }
+        if (StringUtil.isNotEmpty(mobileBind.content4)) {
+            bind_money.setText(mobileBind.content4 + "");
         }
     }
 
@@ -434,7 +443,25 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
      */
     @Override
     public void showBindMobileSuccess(RegisterRedPacketsBean.DataBean.DialogItemBean.MobileBindSuccess mobileBindSuccess) {
-
+        SuccessPopWindow bindWechatPopWindow = new SuccessPopWindow(this);
+        bindWechatPopWindow.showAtLocation(MySettingActivity.this.findViewById(R.id.setting_layout), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        View bindViewSuccess = bindWechatPopWindow.getContentView();
+        TextView bind_title = bindViewSuccess.findViewById(R.id.bind_title);
+        TextView bind_content = bindViewSuccess.findViewById(R.id.bind_content);
+        TextView bind_search = bindViewSuccess.findViewById(R.id.bind_search);
+        if (StringUtil.isNotEmpty(mobileBindSuccess.content1)) {
+            bind_title.setText(mobileBindSuccess.content1 + "");
+        }
+        if (StringUtil.isNotEmpty(mobileBindSuccess.content2)) {
+            bind_content.setText(mobileBindSuccess.content2 + "");
+        }
+        if (StringUtil.isNotEmpty(mobileBindSuccess.content3)) {
+            bind_search.setText(mobileBindSuccess.content3 + "");
+        }
+        bind.setText("已绑定");
+        bindPhone.setClickable(false);
+        bindImag.setVisibility(View.VISIBLE);
+        bind.setTextColor(Color.parseColor("#d1d1d1"));
     }
 
 
@@ -457,7 +484,8 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
                             authorization(SHARE_MEDIA.WEIXIN);
                         }
                     } else if (StringUtil.isEmpty(mobile)) {
-                        startActivity(new Intent(MySettingActivity.this, BindPhoneActivity.class));
+                        Intent intent = new Intent(MySettingActivity.this, BindPhoneActivity.class);
+                        startActivityForResult(intent, 1);
                         overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     }
 
@@ -565,9 +593,24 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         });
     }
 
+    //    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String bind_phone_success = data.getStringExtra("bind_phone_success");
+                if (StringUtil.isNotEmpty(bind_phone_success) && bind_phone_success.equals(BizConstant.TYPE_ONE)) {
+                    presenter.Dialogs(this, BizConstant.MOBILE_BIND_SUCCESS, BizConstant.TYPE_FOUR);//绑定手机号成功
+                }
+
+            }
+        }
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -220,7 +220,12 @@ public class BindPhoneActivity extends BaseActivity<IRegisterActivity, RegisterP
 //            startActivity(intent);
 //            finish();
 //            overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-            presenter.Dialogs(this, BizConstant.MOBILE_BIND_SUCCESS);//绑定手机号成功
+            Intent intent = new Intent(getApplicationContext(), BindPhoneActivity.class);
+            intent.putExtra("bind_phone_success", "1");
+            setResult(RESULT_OK, intent);
+            finish();
+            overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+
         } else {
             ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
         }
