@@ -2,6 +2,7 @@ package com.zwonline.top28.presenter;
 
 import android.content.Context;
 
+import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.bean.MyPageBean;
 import com.zwonline.top28.bean.NoticeNotReadCountBean;
@@ -119,27 +120,33 @@ public class UserInfoPresenter extends BasePresenter<IUserInfo> {
             Flowable<MyPageBean> flowable = userInfoModel.mPersonCenterMenu(context);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSubscriber<MyPageBean>() {
+                    .subscribeWith(new BaseDisposableSubscriber<MyPageBean>(context) {
+
                         @Override
-                        public void onNext(MyPageBean myPageBean) {
+                        protected void onBaseNext(MyPageBean myPageBean) {
                             String status = String.valueOf(myPageBean.status);
                             if (myPageBean.status == 1) {
                                 iUserInfo.showPersonCenterMenu(myPageBean.data);
                             }else {
                                 ToastUtils.showToast(context,myPageBean.msg);
                             }
-
                         }
 
                         @Override
-                        public void onError(Throwable t) {
-                            iUserInfo.showErro();
+                        protected String getTitleMsg() {
+                            return null;
                         }
 
                         @Override
-                        public void onComplete() {
+                        protected boolean isNeedProgressDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
 
                         }
+
                     });
         } catch (IOException e) {
             e.printStackTrace();

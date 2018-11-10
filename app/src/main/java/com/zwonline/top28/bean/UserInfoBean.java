@@ -85,6 +85,9 @@ public class UserInfoBean {
             public String boc_amount;
             public String cp_amount;
             public String mbp_url;
+            public String vip_level;
+            public String vip_url;
+            public String vip_icon;
             public String bind_union_id;//微信union_id
 
             public static class CompanyBean {

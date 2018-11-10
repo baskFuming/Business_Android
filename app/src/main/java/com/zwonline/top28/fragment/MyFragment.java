@@ -156,6 +156,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     Unbinder unbinder1;
     @BindView(R.id.notice_img)
     NotificationButton noticeImg;
+    @BindView(R.id.vip_image)
+    ImageView vipImage;
     private SharedPreferencesUtils sp;
     private String nickName;
     private String username;
@@ -172,6 +174,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     private List<MyPageBean.DataBean> menuList;
     private MyOneMunuAdapter myOneMenuAdapter;
     private String mbp_url;
+    private String vip_url;
 
     @Override
     protected void init(View view) {
@@ -228,6 +231,16 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             age = userInfoBean.data.user.age;
             uid = userInfoBean.data.user.uid;
             mbp_url = userInfoBean.data.user.mbp_url;//鞅分跳转链接
+            vip_url = userInfoBean.data.user.vip_url;
+            String vipLevel = userInfoBean.data.user.vip_level;
+            if (StringUtil.isNotEmpty(vipLevel) && vipLevel.equals(BizConstant.IS_FAIL)) {
+                vipImage.setVisibility(View.GONE);
+            } else {
+                vipImage.setVisibility(View.VISIBLE);
+                if (StringUtil.isNotEmpty(userInfoBean.data.user.vip_icon)) {
+                    Glide.with(getActivity()).load(userInfoBean.data.user.vip_icon).into(vipImage);
+                }
+            }
             if (sp != null) {
                 sp.insertKey(getActivity(), "avatar", userInfoBean.data.user.avatar);
                 sp.insertKey(getActivity(), "uid", userInfoBean.data.user.uid);
@@ -312,7 +325,10 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
         }
     }
 
-    @OnClick({R.id.user_tou, R.id.tv_guanzhu_linear, R.id.tv_fensi_linear, R.id.tv_shoucang_linear, R.id.article, R.id.transmit, R.id.video, R.id.wallet, R.id.my_inspect, R.id.aeo, R.id.recommend_user, R.id.insurance, R.id.my_issue, R.id.my_share, R.id.my_business, R.id.exit, R.id.setting_relat, R.id.management, R.id.ensure_pool, R.id.notice_img})
+    @OnClick({R.id.user_tou, R.id.tv_guanzhu_linear, R.id.tv_fensi_linear, R.id.tv_shoucang_linear,
+            R.id.article, R.id.transmit, R.id.video, R.id.wallet, R.id.my_inspect, R.id.aeo,
+            R.id.recommend_user, R.id.insurance, R.id.my_issue, R.id.my_share, R.id.my_business,
+            R.id.exit, R.id.setting_relat, R.id.management, R.id.ensure_pool, R.id.notice_img, R.id.vip_image, R.id.mbp_exchange, R.id.my_collect})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -337,7 +353,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 Intent guan = new Intent(getActivity(), BaseWebViewActivity.class);
                 guan.putExtra("uid", uid);
                 guan.putExtra("weburl", mbp_url);
-                guan.putExtra("titleBarColor","#5023DC");
+                guan.putExtra("titleBarColor", "#5023DC");
                 guan.putExtra("attention", R.string.center_my_followed);
                 startActivity(guan);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
@@ -384,8 +400,9 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 break;
             case R.id.wallet://钱包
                 RecordUserBehavior.recordUserBehavior(getActivity(), BizConstant.CLICK_WALLET);
-                Intent WalletIntent = new Intent(getActivity(), WalletActivity.class);
-                WalletIntent.putExtra("back", BizConstant.ALREADY_FAVORITE);
+                Intent WalletIntent = new Intent(getActivity(), BaseWebViewActivity.class);
+//                WalletIntent.putExtra("back", BizConstant.ALREADY_FAVORITE);
+                WalletIntent.putExtra("weburl", "https://toutiao.28.com/Integral/account.html");
                 startActivity(WalletIntent);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
@@ -469,6 +486,25 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             case R.id.notice_img://公告
 
                 startActivity(new Intent(getActivity(), AnnouncementActivity.class));
+                getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.vip_image://VIP跳转地址
+                if (StringUtil.isNotEmpty(vip_url)) {
+                    Intent vipIntent = new Intent(getActivity(), BaseWebViewActivity.class);
+                    vipIntent.putExtra("weburl", vip_url);
+                    startActivity(vipIntent);
+                    getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                }
+            case R.id.mbp_exchange://鞅分兑换
+                Intent exchangeIntent = new Intent(getActivity(), BaseWebViewActivity.class);
+                exchangeIntent.putExtra("titleBarColor", "#5023DC");
+                exchangeIntent.putExtra("weburl", "https://toutiao.28.com/Integral/exchange.html");
+                startActivity(exchangeIntent);
+                getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.my_collect://我的收藏
+                Intent myCollectIntent = new Intent(getActivity(), MyCollectActivity.class);
+                startActivity(myCollectIntent);
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
         }

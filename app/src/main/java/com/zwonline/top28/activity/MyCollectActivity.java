@@ -17,7 +17,9 @@ import com.zwonline.top28.adapter.MyCollectAdapter;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.MyCollectBean;
 import com.zwonline.top28.presenter.MyCollectPresenter;
+import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IMyCollectActivity;
@@ -55,7 +57,6 @@ public class MyCollectActivity extends BaseActivity<IMyCollectActivity, MyCollec
         cList = new ArrayList<>();
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
-        collect.setText(intent.getStringExtra("collect"));
         presenter.mMyCollect(this, uid, page);
         recyclerViewData();
     }

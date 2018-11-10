@@ -16,7 +16,9 @@ import com.zwonline.top28.adapter.MyIssueAdapter;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.MyIssueBean;
 import com.zwonline.top28.presenter.MyIssuePresenter;
+import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IMyIssueActivity;
@@ -54,7 +56,9 @@ public class MyIssueActivity extends BaseActivity<IMyIssueActivity, MyIssuePrese
         iList = new ArrayList<>();
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
-        issue.setText(intent.getStringExtra("issue"));
+        if (StringUtil.isNotEmpty(intent.getStringExtra("issue"))){
+            issue.setText(intent.getStringExtra("issue"));
+        }
         if (TextUtils.isEmpty(uid)) {
             presenter.mMyissues(this, page);
         } else {

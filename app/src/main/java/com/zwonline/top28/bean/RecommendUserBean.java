@@ -28,7 +28,7 @@ public class RecommendUserBean {
         public String recommend_list_url;
         public String recommend_url;
         public ShareDataBean share_data;
-
+        public String recommend_id;
         public static class ShareDataBean {
             /**
              * share_title : 有福一起享，有钱一起花，现在注册还不晚！

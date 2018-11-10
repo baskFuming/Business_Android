@@ -119,6 +119,16 @@
                         android:textStyle="bold"
                         android:visibility="visible" />
 
+                    <ImageView
+                        android:id="@+id/vip_image"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_toRightOf="@id/user_name"
+                        android:textSize="25sp"
+                        android:visibility="visible" />
+
                     <TextView
                         android:id="@+id/company"
                         android:layout_width="wrap_content"
@@ -298,7 +308,7 @@
                     android:textColor="#383838"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
 
                 <LinearLayout
@@ -310,7 +320,7 @@
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/article"
@@ -340,18 +350,7 @@
                         android:textSize="14sp" />
 
                     <!--android:drawableTop="@mipmap/ic_video"-->
-                    <TextView
-                        android:id="@+id/video"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/wode_qygl"
-                        android:gravity="center"
-                        android:text="我的主页"
-                        android:textColor="#383838"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:layout_width="0dp"
@@ -378,7 +377,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="25dp"
                     android:paddingStart="25dp"
-                    android:text="@string/user_function"
+                    android:text="鞅分挖矿"
                     android:textColor="#383838"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -392,20 +391,6 @@
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
-
-                    <TextView
-                        android:id="@+id/wallet"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/wode_qb"
-                        android:gravity="center"
-                        android:text="@string/pay_syb"
-                        android:visibility="gone"
-                        android:textColor="#383838"
-                        android:textSize="14sp" />
 
 
                     <TextView
@@ -421,19 +406,32 @@
                         android:textColor="#383838"
                         android:textSize="14sp" />
 
-
                     <TextView
-                        android:id="@+id/insurance"
+                        android:id="@+id/mbp_exchange"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/wode_syb"
+                        android:drawableTop="@mipmap/wode_yfdh"
                         android:gravity="center"
-                        android:text="@string/sub_security_plan"
+                        android:text="鞅分兑换"
                         android:textColor="#383838"
                         android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/wallet"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_qb"
+                        android:gravity="center"
+                        android:text="@string/pay_syb"
+                        android:textColor="#383838"
+                        android:textSize="14sp"
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/recommend_user"
@@ -447,6 +445,17 @@
                         android:text="@string/user_suggested_users"
                         android:textColor="#383838"
                         android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:textColor="#383838"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <View
@@ -527,7 +536,20 @@
                         android:drawableTop="@mipmap/wode_wdkc"
                         android:gravity="center"
                         android:text="@string/user_my_inspect"
-                        android:visibility="gone"
+                        android:textColor="#383838"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/video"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_qygl"
+                        android:gravity="center"
+                        android:text="我的主页"
                         android:textColor="#383838"
                         android:textSize="14sp" />
 
@@ -538,6 +560,34 @@
                         android:layout_weight="1"
                         android:drawablePadding="10dp"
                         android:gravity="center"
+                        android:textColor="#383838"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/insurance"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_syb"
+                        android:gravity="center"
+                        android:text="@string/sub_security_plan"
+                        android:textColor="#383838"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/my_collect"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/wode_wdsc2"
+                        android:gravity="center"
+                        android:text="我的收藏"
                         android:textColor="#383838"
                         android:textSize="14sp" />
                 </LinearLayout>
