@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +25,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -31,10 +38,13 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.RecommendUserBean;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.ReconmmnedUserPresenter;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
+import com.zwonline.top28.utils.WXUtils;
 import com.zwonline.top28.utils.popwindow.RecommendPopwindow;
 import com.zwonline.top28.view.IRecommnedActivity;
 import com.zwonline.top28.wxapi.RewritePopwindow;
@@ -89,6 +99,11 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
     private String shareIcon;
     private String shareUrl;
     private String shareDes;
+    private String shareRecommendId;
+    private String wx_page_type;
+    private int wXinType;
+    private IWXAPI api;
+
 
     @Override
     protected void init() {
@@ -96,6 +111,8 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
         list = new ArrayList<>();
         dlist = new ArrayList<>();
         sp = SharedPreferencesUtils.getUtil();
+        api = WXAPIFactory.createWXAPI(this, "wx979d60eb9639eb65");
+        wx_page_type = (String) sp.getKey(this, "wx_page_type", "");
         url = getIntent().getStringExtra("jumPath");
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
@@ -131,12 +148,12 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
 
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                if (newProgress == 100) {
-                    progressBar.setVisibility(View.GONE);
-                } else {
-                    progressBar.setVisibility(View.VISIBLE);
-                    progressBar.setProgress(newProgress);
-                }
+//                if (newProgress == 100) {
+//                    progressBar.setVisibility(View.GONE);
+//                } else {
+//                    progressBar.setVisibility(View.VISIBLE);
+//                    progressBar.setProgress(newProgress);
+//                }
             }
 
             @Override
@@ -332,15 +349,11 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
                         recommendPopwindow.dismiss();
                         recommendPopwindow.backgroundAlpha(RecommendUserActivity.this, 1f);
                         switch (v.getId()) {
-                            case R.id.weixinghaoyou:
-                                ShareUtils.shareWeb(RecommendUserActivity.this, Api.baseUrl()+shareUrl, shareTitle
-                                        , shareDes, shareIcon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN
-                                );
+                            case R.id.weixinghaoyou://微信分享
+                                shareWechat(shareRecommendId,shareTitle,shareDes);
                                 break;
-                            case R.id.pengyouquan:
-                                ShareUtils.shareWeb(RecommendUserActivity.this, Api.baseUrl()+shareUrl, shareTitle
-                                        , shareDes, shareIcon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN_CIRCLE
-                                );
+                            case R.id.pengyouquan://微信分享
+                                shareWechat(shareRecommendId,shareTitle,shareDes);
                                 break;
                             case R.id.qqkongjian:
                                 Intent saveintent = new Intent(RecommendUserActivity.this, SaveRecommnedActivity.class);
@@ -351,7 +364,7 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
                             case R.id.copyurl:
                                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                                 // 将文本内容放到系统剪贴板里。
-                                cm.setText(Api.baseUrl() + shareUrl+"#"+shareTitle);
+                                cm.setText(Api.baseUrl() + shareUrl + "#" + shareTitle);
                                 ToastUtils.showToast(RecommendUserActivity.this, "复制成功");
                                 break;
                             default:
@@ -396,6 +409,7 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
             shareIcon = recommendUserBean.data.share_data.share_icon;
             shareUrl = recommendUserBean.data.share_data.share_url;
             shareDes = recommendUserBean.data.share_data.share_description;
+            shareRecommendId = recommendUserBean.data.recommend_id;
         }
         textmContent.setText(mContent);
     }
@@ -422,6 +436,39 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    //小程序分享
+    private void shareWechat(String recommend_id,String shareTitle,String shareDes) {
+        if (StringUtil.isNotEmpty(wx_page_type) && wx_page_type.equals(BizConstant.ALREADY_FAVORITE)) {
+            wXinType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;
+        } else {
+            wXinType = WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW;
+        }
+        WXMiniProgramObject miniProgramObject = new WXMiniProgramObject();
+        miniProgramObject.webpageUrl = "https://toutiao.28.com";//小程序网页地址
+        miniProgramObject.userName = "gh_9c5277dd09df";//小程序ID
+        miniProgramObject.path = "pages/packet/packet?recommend_id=" + recommend_id;//小程序路径
+        // 0.正式版本  1.测试版本  2.体验版本
+        miniProgramObject.miniprogramType = wXinType;
+        WXMediaMessage mediaMessage = new WXMediaMessage(miniProgramObject);
+        mediaMessage.title =shareTitle;//自定标题
+        mediaMessage.description =shareDes;//描述
+        Matrix matrix = new Matrix();
+        matrix.setScale(0.5f, 0.5f);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        Bitmap sendBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        bitmap.recycle();
+        mediaMessage.thumbData = WXUtils.bmpToByteArray(sendBitmap, true);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        req.message = mediaMessage;
+        api.sendReq(req);
+    }
+
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
 }
