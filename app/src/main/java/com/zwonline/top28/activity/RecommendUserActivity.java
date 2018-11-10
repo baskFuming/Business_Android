@@ -456,7 +456,7 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
         mediaMessage.description =shareDes;//描述
         Matrix matrix = new Matrix();
         matrix.setScale(0.5f, 0.5f);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.wechat_imgs);
         Bitmap sendBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         bitmap.recycle();
         mediaMessage.thumbData = WXUtils.bmpToByteArray(sendBitmap, true);
