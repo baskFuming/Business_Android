@@ -211,7 +211,11 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
+                if (getScrollY() >(recyclerView.getScrollState())){
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                } else {
+                    floatingActionButton.setVisibility(View.GONE);
+                }
             }
         });
         //置顶

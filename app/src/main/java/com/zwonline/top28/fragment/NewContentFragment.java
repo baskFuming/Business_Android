@@ -149,7 +149,7 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
             newcontentRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    if (getScrollY() > newState){
+                    if (getScrollY() >newState){
                         floatingActionButton.setVisibility(View.VISIBLE);
                     } else {
                         floatingActionButton.setVisibility(View.GONE);
@@ -158,7 +158,11 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
 
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
+                    if (getScrollY() >(recyclerView.getScrollState())){
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                    } else {
+                        floatingActionButton.setVisibility(View.GONE);
+                    }
                 }
             });
 
