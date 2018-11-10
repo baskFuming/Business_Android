@@ -403,6 +403,7 @@
                         android:drawableTop="@mipmap/wode_qb"
                         android:gravity="center"
                         android:text="@string/pay_syb"
+                        android:visibility="gone"
                         android:textColor="#383838"
                         android:textSize="14sp" />
 
@@ -526,6 +527,7 @@
                         android:drawableTop="@mipmap/wode_wdkc"
                         android:gravity="center"
                         android:text="@string/user_my_inspect"
+                        android:visibility="gone"
                         android:textColor="#383838"
                         android:textSize="14sp" />
 

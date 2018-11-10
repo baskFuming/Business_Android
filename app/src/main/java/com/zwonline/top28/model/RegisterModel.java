@@ -12,7 +12,9 @@ import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.BindWechatBean;
 import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.RegisterBean;
+import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.bean.ShortMessage;
+import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
 
@@ -191,6 +193,34 @@ public class RegisterModel {
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<BindWechatBean> flowable = ApiRetrofit.getInstance().getClientApi(ApiService.class, Api.url)
                 .bindWx(union_id, open_id, gender, nickname, avatar, country_code,city,province,country,language, String.valueOf(timestamp), token,sign);
+        return flowable;
+    }
+
+
+    /**
+     * 弹窗接口
+     *
+     * @param context
+     * @param type
+     * @return
+     * @throws IOException
+     */
+    public Flowable<RegisterRedPacketsBean> mShowDialog(Context context, String type) throws IOException {
+        String versionName = LanguageUitils.getVersionName(context);
+        sp = SharedPreferencesUtils.getUtil();
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        String token = (String) sp.getKey(context, "dialog", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("type", type);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("app_version", versionName);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        SignUtils.removeNullValue(map);
+        Flowable<RegisterRedPacketsBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(ApiService.class, Api.url)
+                .showDialog(String.valueOf(timestamp), token, versionName, type, sign);
         return flowable;
     }
 }

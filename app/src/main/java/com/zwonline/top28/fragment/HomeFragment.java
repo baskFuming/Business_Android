@@ -195,12 +195,10 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     }
 
     private void loadingTablayout() {
-        HomeBean.DataBean bean = new HomeBean.DataBean("300", getString(R.string.center_recommend));
-        list.add(1, bean);
-//        classList.add(bean1);
-//        classList.add(bean1);
-//        classList.add(bean1);
-//        classList.add(bean1);
+        if (isAdded()) {
+            HomeBean.DataBean bean = new HomeBean.DataBean("300", getString(R.string.center_recommend));
+            list.add(1, bean);
+        }
         MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getChildFragmentManager(), list);
 //        viewpager.setOffscreenPageLimit(1);
         viewpager.setAdapter(myFragmentAdapter);

@@ -8,9 +8,12 @@ import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.RegisterBean;
+import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.bean.ShortMessage;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.model.RegisterModel;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IRegisterActivity;
 
@@ -241,4 +244,46 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
         }
     }
 
+    /**
+     * 弹窗接口
+     * dialogType==1绑定微信弹窗==2绑定微信成功弹窗==3绑定手机号弹窗==4绑定手机号成功弹窗
+     *
+     * @param context
+     */
+    public void Dialogs(final Context context, String type) {
+        try {
+            Flowable<RegisterRedPacketsBean> flowable = model.mShowDialog(context, type);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new BaseDisposableSubscriber<RegisterRedPacketsBean>(context) {
+                        @Override
+                        protected void onBaseNext(RegisterRedPacketsBean registerRedPacketsBean) {
+                            if (registerRedPacketsBean.status == 1) {
+                                //4绑定手机号成功弹窗
+                                iRegisterActivity.showBindMobileSuccess(registerRedPacketsBean.data.dialog_item.mobile_bind_success);
+                            } else {
+                                ToastUtils.showToast(context, registerRedPacketsBean.msg);
+                            }
+                        }
+
+                        @Override
+                        protected String getTitleMsg() {
+                            return null;
+                        }
+
+                        @Override
+                        protected boolean isNeedProgressDialog() {
+                            return false;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
+
+                        }
+
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -113,13 +113,21 @@ public class InformationNoticeActivity extends BaseActivity<InforNoticeActivity,
                     return;
                 }
                 if (dataBeanList.status == 1) {
-                    String url = dList.get(position).url;
-                    String[] str = url.split("/");
-//                //跳转到动态详情页面
-                    Intent intent = new Intent(getApplicationContext(), DynamicDetailsActivity.class);
-                    intent.putExtra("moment_id", str[1]);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    if (dList.get(position).url.contains("/")) {
+                        String url = dList.get(position).url;
+                        String[] str = url.split("/");
+                        if (str.length >= 2) {
+                            //跳转到动态详情页面
+                            Intent intent = new Intent(getApplicationContext(), DynamicDetailsActivity.class);
+                            intent.putExtra("moment_id", str[1]);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                        } else {
+                            ToastUtils.showToast(getApplicationContext(), "缺少参数");
+                        }
+//
+                    }
+
                 } else {
                     ToastUtils.showToast(getApplicationContext(), dataBeanList.msg);
                 }

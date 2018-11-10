@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,7 +30,7 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
     private int[] imageIdArray;//图片资源的数组
     private List<View> viewList;//图片资源的集合
     private ViewGroup vg;//放置圆点
-
+    private int[] imageIdArrays;//查看玩法
     //实例化原点View
     private ImageView iv_point;
     private ImageView[] ivPointArray;
@@ -36,10 +38,15 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
     //最后一页的按钮
     private Button ib_start;
     private String type;
+    private int len;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //去掉标题栏
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //设置全屏
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_guide);
         type = getIntent().getStringExtra("type");
         ib_start = (Button) findViewById(R.id.guide_ib_start);
@@ -98,20 +105,31 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
      */
     private void initViewPager() {
         vp = (ViewPager) findViewById(R.id.guide_vp);
-        //实例化图片资源
+        //第一次下载刚进来
         imageIdArray = new int[]{R.mipmap.page1, R.mipmap.page2, R.mipmap.page3, R.mipmap.page4, R.mipmap.page5, R.mipmap.page6};
+        imageIdArrays = new int[]{R.mipmap.page5, R.mipmap.w2_an, R.mipmap.w3_an, R.mipmap.w4_an, R.mipmap.w5_an, R.mipmap.w6_an, R.mipmap.w7_an};
         viewList = new ArrayList<>();
         //获取一个Layout参数，设置为全屏
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         //循环创建View并加入到集合中
-        int len = imageIdArray.length;
+        if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
+            len = imageIdArrays.length;
+        } else {
+            len = imageIdArray.length;
+        }
+
         for (int i = 0; i < len; i++) {
             //new ImageView并设置全屏和图片资源
             ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(params);
-            imageView.setBackgroundResource(imageIdArray[i]);
+            if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
+                imageView.setBackgroundResource(imageIdArrays[i]);
+            } else {
+                imageView.setBackgroundResource(imageIdArray[i]);
+            }
+
 
             //将ImageView加入到集合中
             viewList.add(imageView);
@@ -146,11 +164,20 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
 //        }
 
         //判断是否是最后一页，若是则显示按钮
-        if (position == imageIdArray.length - 1) {
-            ib_start.setVisibility(View.VISIBLE);
+        if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
+            if (position == imageIdArrays.length - 1) {
+                ib_start.setVisibility(View.VISIBLE);
+            } else {
+                ib_start.setVisibility(View.GONE);
+            }
         } else {
-            ib_start.setVisibility(View.GONE);
+            if (position == imageIdArray.length - 1) {
+                ib_start.setVisibility(View.VISIBLE);
+            } else {
+                ib_start.setVisibility(View.GONE);
+            }
         }
+
     }
 
 
@@ -158,5 +185,6 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
     public void onPageScrollStateChanged(int state) {
 
     }
+
 
 }

@@ -45,4 +45,8 @@ public interface IMainActivity {
      */
     void showGetRedPacketDialog(RegisterRedPacketsBean.DataBean.DialogItemBean.ShowRegisterRedPacketBean showRegisterRedPacketBean);
 
+    /**
+     * 错误
+     */
+    void Erro();
 }

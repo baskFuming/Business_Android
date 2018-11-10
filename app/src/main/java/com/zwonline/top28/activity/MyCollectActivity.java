@@ -126,7 +126,7 @@ public class MyCollectActivity extends BaseActivity<IMyCollectActivity, MyCollec
                     startActivity(intent);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 } else {
-                    int positions=position-1;
+                    int positions = position - 1;
                     Intent intent = new Intent(MyCollectActivity.this, HomeDetailsActivity.class);
                     intent.putExtra("id", cList.get(positions).id + "");
                     intent.putExtra("token", token);

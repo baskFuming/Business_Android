@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.zwonline.top28.R;
 
@@ -17,16 +19,27 @@ import com.zwonline.top28.R;
  * 绑定成功
  */
 public class SuccessPopWindow extends PopupWindow{
-    private LinearLayout imageView;
+    private RelativeLayout imageView;
     private View window;
+    private final TextView bind_sure;
+
     public SuccessPopWindow(final Activity context) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         window = inflater.inflate(R.layout.bind_success_pop, null);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        imageView = (LinearLayout) window.findViewById(R.id.lin_close);
+        imageView = (RelativeLayout) window.findViewById(R.id.lin_close);
+        bind_sure = (TextView) window.findViewById(R.id.bind_sure);
 //        close.setOnClickListener(listener);
         imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //销毁弹出框
+                dismiss();
+                backgroundAlpha(context, 1f);
+            }
+        });
+        bind_sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //销毁弹出框

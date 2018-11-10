@@ -11,6 +11,7 @@
         android:background="@drawable/business_serch_withe_shape"
         >
         <TextView
+            android:id="@+id/bind_type"
             android:layout_width="79dp"
             android:layout_height="20dp"
             android:text="绑定微信"
@@ -20,27 +21,28 @@
             android:layout_marginLeft="100dp"
             android:gravity="center"
             />
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/lin_close"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true"
             >
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
+                android:layout_alignParentRight="true"
                 android:src="@mipmap/reward_close"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"/>
-        </LinearLayout>
+                android:layout_marginTop="20dp"/>
+        </RelativeLayout>
         <ImageView
-            android:id="@+id/img_sure"
+            android:id="@+id/type_image"
             android:layout_width="79dp"
             android:layout_height="79dp"
             android:layout_marginTop="40dp"
             android:layout_marginLeft="100dp"
-            android:src="@mipmap/wechat_img"/>
+            />
         <LinearLayout
             android:layout_marginTop="33dp"
             android:gravity="center"
@@ -48,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@+id/img_sure">
+            android:layout_below="@+id/type_image">
             <TextView
                 android:id="@+id/bind_information"
                 android:layout_width="wrap_content"
@@ -63,7 +65,7 @@
                 android:id="@+id/bind_force"
                 android:layout_marginTop="6dp"
                 android:layout_width="wrap_content"
-                android:layout_height="33dp"
+                android:layout_height="wrap_content"
                 android:text="20-200算力奖励"
                 android:textColor="#ff3d3d3d"
                 android:textSize="24sp"
@@ -73,7 +75,7 @@
             <TextView
                 android:id="@+id/bind_money"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:text="价值4-40元人民币"
                 android:textColor="#ff3d3d3d"
                 android:textSize="14sp"

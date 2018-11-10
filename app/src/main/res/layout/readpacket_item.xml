@@ -67,6 +67,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
+                android:text="点击领取"
                 android:textColor="#ffffffff"
                 android:textSize="16sp" />
         </LinearLayout>

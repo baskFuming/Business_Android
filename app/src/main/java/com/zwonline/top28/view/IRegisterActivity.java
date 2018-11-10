@@ -2,6 +2,7 @@ package com.zwonline.top28.view;
 
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.LoginWechatBean;
+import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.bean.ShortMessage;
 
 /**
@@ -36,5 +37,12 @@ public interface IRegisterActivity {
      * @param attentionBean
      */
     void showBindMobile(AttentionBean attentionBean);
+
+    /**
+     * 绑定手机号弹窗
+     *
+     * @param mobileBindSuccess
+     */
+    void showBindMobileSuccess(RegisterRedPacketsBean.DataBean.DialogItemBean.MobileBindSuccess mobileBindSuccess);
 
 }

@@ -34,7 +34,10 @@ public class RegisterRedPacketsBean implements Serializable {
 
             public RegisterRedPacketBean register_red_packet;
             public ShowRegisterRedPacketBean show_register_red_packet;
-
+            public MobileBind mobile_bind;
+            public WXBind wx_bind;
+            public WXBindSuccess wx_bind_success;
+            public MobileBindSuccess mobile_bind_success;
             public static class RegisterRedPacketBean {
                 /**
                  * status : 1
@@ -79,6 +82,152 @@ public class RegisterRedPacketsBean implements Serializable {
                     public String action;
                 }
             }
+            public static class WXBindSuccess {
+                /**
+                 * status : 1
+                 * content1 : 薄礼相送，赠送给您一个
+                 * content2 : 20-100商机币
+                 * 随机红包
+                 * content3 : 价值2-10元人民币
+                 * btn1 : {"name":"点击领取","action":"/App/BusinessOpportunityCoin/getRegisterRedPacket.html"}
+                 */
+
+                public String status;
+                public String content1;
+                public String content2;
+                public String content3;
+                public String content4;
+                //                public String content5;
+//                public String content6;
+//                public String content7;
+//                public String content8;
+//                public String content9;
+//                public String content10;
+                public Btn1Bean btn1;
+                public Btn2Bean btn2;
+
+                public static class Btn1Bean {
+                    /**
+                     * name : 点击领取
+                     * action : /App/BusinessOpportunityCoin/getRegisterRedPacket.html
+                     */
+
+                    public String name;
+                    public String action;
+                }
+
+                public static class Btn2Bean {
+                    /**
+                     * name : 点击领取
+                     * action : /App/BusinessOpportunityCoin/getRegisterRedPacket.html
+                     */
+
+                    public String name;
+                    public String action;
+                }
+            }
+
+            public static class MobileBind {
+                /**
+                 * status : 1
+                 * content1 : 薄礼相送，赠送给您一个
+                 * content2 : 20-100商机币
+                 * 随机红包
+                 * content3 : 价值2-10元人民币
+                 * btn1 : {"name":"点击领取","action":"/App/BusinessOpportunityCoin/getRegisterRedPacket.html"}
+                 */
+
+                public String status;
+                public String content1;
+                public String content2;
+                public String content3;
+                public String content4;
+                public Btn1Bean btn1;
+                public Btn2Bean btn2;
+
+                public static class Btn1Bean {
+                    /**
+                     * name : 点击领取
+                     * action : /App/BusinessOpportunityCoin/getRegisterRedPacket.html
+                     */
+
+                    public String name;
+                    public String action;
+                }
+
+                public static class Btn2Bean {
+                    /**
+                     * name : 点击领取
+                     * action : /App/BusinessOpportunityCoin/getRegisterRedPacket.html
+                     */
+
+                    public String name;
+                    public String action;
+                }
+            }
+
+            public static class WXBind {
+
+                public String status;
+                public String content1;
+                public String content2;
+                public String content3;
+                public String content4;
+                public Btn1Bean btn1;
+                public Btn2Bean btn2;
+
+                public static class Btn1Bean {
+                    /**
+                     * name : 点击领取
+                     * action : /App/BusinessOpportunityCoin/getRegisterRedPacket.html
+                     */
+
+                    public String name;
+                    public String action;
+                }
+
+                public static class Btn2Bean {
+                    /**
+                     * name : 点击领取
+                     * action : /App/BusinessOpportunityCoin/getRegisterRedPacket.html
+                     */
+
+                    public String name;
+                    public String action;
+                }
+            }
+
+            public static class MobileBindSuccess {
+
+                public String status;
+                public String content1;
+                public String content2;
+                public String content3;
+                public String content4;
+                public Btn1Bean btn1;
+                public Btn2Bean btn2;
+
+                public static class Btn1Bean {
+                    /**
+                     * name : 点击领取
+                     * action : /App/BusinessOpportunityCoin/getRegisterRedPacket.html
+                     */
+
+                    public String name;
+                    public String action;
+                }
+
+                public static class Btn2Bean {
+                    /**
+                     * name : 点击领取
+                     * action : /App/BusinessOpportunityCoin/getRegisterRedPacket.html
+                     */
+
+                    public String name;
+                    public String action;
+                }
+            }
+
 
             public static class ShowRegisterRedPacketBean {
                 /**

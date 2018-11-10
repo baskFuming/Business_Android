@@ -184,7 +184,9 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         initMessageListener();
         int code = getVersionCode();//获取版本号
         if (NetUtils.isConnected(getApplicationContext())) {
-            presenter.RegisterRedPacketDialogs(this, BizConstant.REDPACKETDIALOG, BizConstant.TYPE_ONE);//新人注册红包弹窗
+            if (islogine){
+                presenter.RegisterRedPacketDialogs(this, BizConstant.REDPACKETDIALOG, BizConstant.TYPE_ONE);//新人注册红包弹窗
+            }
             presenter.UpdataVersion(getApplicationContext(), platform, String.valueOf(code));
         } else {
             ToastUtils.showToast(getApplicationContext(), "请检查网络");
@@ -445,9 +447,9 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                         get_value.setText(content3);
                     }
                     TextView click_get = redacketView.findViewById(R.id.click_get);
-                    if (StringUtil.isNotEmpty(btnName)) {
-                        click_get.setText(btnName);
-                    }
+//                    if (StringUtil.isNotEmpty(btnName)) {
+//                        click_get.setText(btnName);
+//                    }
                     describeOne = redacketView.findViewById(R.id.describe_one);
                     describeTwo = redacketView.findViewById(R.id.describe_two);
                     describeThree = redacketView.findViewById(R.id.describe_three);
@@ -562,8 +564,12 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
      * 双击返回键退出
      */
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
+        if (redacketPopWindow!=null){
+            redacketPopWindow.dismiss();
+            redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
+        }
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+
             if (mIsExit) {
                 MainActivity.this.finish();
 
@@ -762,7 +768,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             content1 = registerRedPacketBean.content1;
             content2 = registerRedPacketBean.content2;
             content3 = registerRedPacketBean.content3;
-            btnName = registerRedPacketBean.btn1.name;
+//            btnName = registerRedPacketBean.btn1.name;
         }
 
     }
@@ -786,6 +792,13 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         if (StringUtil.isNotEmpty(registerRedPacketBean.btn2.action)) {
             yangfenCheatsUrl = Api.baseUrl() + registerRedPacketBean.btn2.action;
         }
+    }
+
+    @Override
+    public void Erro() {
+        receive.clearAnimation();
+        redacketPopWindow.dismiss();
+        redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
     }
 
 

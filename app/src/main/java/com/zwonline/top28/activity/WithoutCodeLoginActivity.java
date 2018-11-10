@@ -39,6 +39,7 @@ import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.LoginWechatBean;
+import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShortMessage;
 import com.zwonline.top28.constants.BizConstant;
@@ -327,6 +328,11 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
      */
     @Override
     public void showBindMobile(AttentionBean attentionBean) {
+
+    }
+
+    @Override
+    public void showBindMobileSuccess(RegisterRedPacketsBean.DataBean.DialogItemBean.MobileBindSuccess mobileBindSuccess) {
 
     }
 

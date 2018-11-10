@@ -874,7 +874,7 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
      *
      * @param context
      */
-    public void MomentDetail(Context context, String momment_id) {
+    public void MomentDetail(final Context context, String momment_id) {
         try {
             Flowable<DynamicDetailsesBean> flowable = sendFriendCircleModel.mMomentDetail(context, momment_id);
             flowable.subscribeOn(Schedulers.io())
@@ -883,7 +883,12 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
 
                         @Override
                         protected void onBaseNext(DynamicDetailsesBean dynamicDetailsesBean) {
-                            iSendFriendCircleActivity.showMomentDetail(dynamicDetailsesBean);
+                            if (dynamicDetailsesBean.status == 1) {
+
+                                iSendFriendCircleActivity.showMomentDetail(dynamicDetailsesBean);
+                            } else {
+                                ToastUtils.showToast(context, dynamicDetailsesBean.msg);
+                            }
                         }
 
                         @Override

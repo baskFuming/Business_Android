@@ -3,6 +3,7 @@ package com.zwonline.top28.utils.popwindow;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.PaintDrawable;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,22 +11,28 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.zwonline.top28.R;
 
 /**
  * 绑定微信号
  */
-public class BindWechatPopWindow extends PopupWindow{
-    private LinearLayout imageView;
+public class BindWechatPopWindow extends PopupWindow {
+    private RelativeLayout imageView;
     private View window;
-    public BindWechatPopWindow(final Activity context) {
+
+    public BindWechatPopWindow(final Activity context, View.OnClickListener itemsOnClick) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         window = inflater.inflate(R.layout.bind_weixin_pop, null);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        imageView = (LinearLayout) window.findViewById(R.id.lin_close);
+        imageView = (RelativeLayout) window.findViewById(R.id.lin_close);
+        TextView bind_wechat = (TextView) window.findViewById(R.id.bind_wechat);
 //        close.setOnClickListener(listener);
+        bind_wechat.setOnClickListener(itemsOnClick);
+        imageView.setOnClickListener(itemsOnClick);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,6 +49,7 @@ public class BindWechatPopWindow extends PopupWindow{
         this.setHeight(ViewGroup.LayoutParams.FILL_PARENT);
         //设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
+
         //设置SelectPicPopupWindow弹出窗体动画效果
 //        this.setAnimationStyle(R.style.AnimBottom);
         //实例化一个ColorDrawable颜色为半透明

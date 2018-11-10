@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.bean.AttentionBean;
 import com.zwonline.top28.bean.LoginWechatBean;
+import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.ShortMessage;
 import com.zwonline.top28.constants.BizConstant;
@@ -33,6 +35,7 @@ import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.country.CityActivity;
+import com.zwonline.top28.utils.popwindow.SuccessPopWindow;
 import com.zwonline.top28.view.IRegisterActivity;
 
 import org.json.JSONException;
@@ -49,6 +52,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
+/**
+ * 绑定手机号
+ */
 public class BindPhoneActivity extends BaseActivity<IRegisterActivity, RegisterPresenter> implements IRegisterActivity {
 
     private RelativeLayout back;
@@ -209,13 +215,38 @@ public class BindPhoneActivity extends BaseActivity<IRegisterActivity, RegisterP
     @Override
     public void showBindMobile(AttentionBean attentionBean) {
         if (attentionBean.status == 1) {
-            Intent intent = new Intent(this, BindSuccessActivity.class);
-            intent.putExtra("phone_num", iphone.getText().toString().trim());
-            startActivity(intent);
-            finish();
-            overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//            Intent intent = new Intent(this, BindSuccessActivity.class);
+//            intent.putExtra("phone_num", iphone.getText().toString().trim());
+//            startActivity(intent);
+//            finish();
+//            overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+            presenter.Dialogs(this, BizConstant.MOBILE_BIND_SUCCESS);//绑定手机号成功
         } else {
             ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
+        }
+    }
+
+    /**
+     * 绑定手机号成功弹窗
+     *
+     * @param mobileBindSuccess
+     */
+    @Override
+    public void showBindMobileSuccess(RegisterRedPacketsBean.DataBean.DialogItemBean.MobileBindSuccess mobileBindSuccess) {
+        SuccessPopWindow bindWechatPopWindow = new SuccessPopWindow(this);
+        bindWechatPopWindow.showAtLocation(BindPhoneActivity.this.findViewById(R.id.setting_layout), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        View bindViewSuccess = bindWechatPopWindow.getContentView();
+        TextView bind_title = bindViewSuccess.findViewById(R.id.bind_title);
+        TextView bind_content = bindViewSuccess.findViewById(R.id.bind_content);
+        TextView bind_search = bindViewSuccess.findViewById(R.id.bind_search);
+        if (StringUtil.isNotEmpty(mobileBindSuccess.content1)) {
+            bind_title.setText(mobileBindSuccess.content1 + "");
+        }
+        if (StringUtil.isNotEmpty(mobileBindSuccess.content2)) {
+            bind_content.setText(mobileBindSuccess.content2 + "");
+        }
+        if (StringUtil.isNotEmpty(mobileBindSuccess.content3)) {
+            bind_search.setText(mobileBindSuccess.content3 + "");
         }
     }
 

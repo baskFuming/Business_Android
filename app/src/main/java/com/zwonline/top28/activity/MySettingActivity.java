@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,7 +26,9 @@ import com.zwonline.top28.APP;
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.BindWechatBean;
+import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.fragment.InformationFragment;
 import com.zwonline.top28.presenter.BindWechatPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.CacheDataManager;
@@ -34,6 +37,9 @@ import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
+import com.zwonline.top28.utils.popwindow.BindWechatPopWindow;
+import com.zwonline.top28.utils.popwindow.CompletePopwindow;
+import com.zwonline.top28.utils.popwindow.SuccessPopWindow;
 import com.zwonline.top28.view.IbindWechatActivity;
 
 import java.util.ArrayList;
@@ -49,7 +55,7 @@ import butterknife.OnClick;
  * @author YSG
  * @date 2018/1/23
  */
-public class MySettingActivity extends BaseActivity<IbindWechatActivity,BindWechatPresenter>implements IbindWechatActivity {
+public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWechatPresenter> implements IbindWechatActivity {
     private SharedPreferencesUtils sp;
     private String isDefaultPassword;
     private TextView settingPassword;
@@ -102,6 +108,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity,BindWech
         ;
 
     };
+    private BindWechatPopWindow bindWechatPopWindow;
 
 
     @Override
@@ -140,7 +147,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity,BindWech
 
     @Override
     protected BindWechatPresenter getPresenter() {
-        return new BindWechatPresenter(this,this);
+        return new BindWechatPresenter(this, this);
     }
 
     private void initData() {
@@ -166,6 +173,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity,BindWech
             bindImag.setVisibility(View.VISIBLE);
             bind.setTextColor(Color.parseColor("#d1d1d1"));
         } else {
+            presenter.Dialogs(this, BizConstant.MOBILE_BIND, BizConstant.TYPE_THREE);//绑定手机号
             bind.setText("未绑定");
             bind.setTextColor(Color.parseColor("#ff2b2b"));
             bindImag.setVisibility(View.VISIBLE);
@@ -177,13 +185,13 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity,BindWech
             bindWechatImag.setVisibility(View.VISIBLE);
             bindWechat.setTextColor(Color.parseColor("#d1d1d1"));
         } else {
+            presenter.Dialogs(this, BizConstant.WX_BIND, BizConstant.TYPE_ONE);//绑定微信
             bindWechat.setText("未绑定");
             bindWechatRelative.setClickable(true);
             bindWechat.setTextColor(Color.parseColor("#ff2b2b"));
             bindWechatImag.setVisibility(View.VISIBLE);
         }
     }
-
 
 
     @Override
@@ -327,13 +335,141 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity,BindWech
     protected void onDestroy() {
         super.onDestroy();
     }
+
     //绑定微信
     @Override
     public void bindWechat(BindWechatBean bindWechatBean) {
-        if (bindWechatBean.status==1){
+        if (bindWechatBean.status == 1) {
             list.add(bindWechatBean.data);
+            presenter.Dialogs(this, BizConstant.WX_BIND_SUCCESS, BizConstant.TYPE_TWO);
+        } else {
+            ToastUtils.showToast(getApplicationContext(), bindWechatBean.msg);
         }
     }
+
+    /**
+     * 绑定微信弹窗
+     *
+     * @param bindWechatBean
+     */
+    @Override
+    public void showBindWechatPop(RegisterRedPacketsBean.DataBean.DialogItemBean.WXBind bindWechatBean) {
+        bindWechatPopWindow = new BindWechatPopWindow(this, listener);
+        bindWechatPopWindow.showAtLocation(MySettingActivity.this.findViewById(R.id.setting_layout), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        View bindView = bindWechatPopWindow.getContentView();
+        TextView bind_information = bindView.findViewById(R.id.bind_information);
+        TextView bind_force = bindView.findViewById(R.id.bind_force);
+        TextView bind_money = bindView.findViewById(R.id.bind_money);
+        TextView bind_type = bindView.findViewById(R.id.bind_type);
+        ImageView type_image = bindView.findViewById(R.id.type_image);
+        type_image.setImageResource(R.mipmap.wechat_img);
+        if (StringUtil.isNotEmpty(bindWechatBean.content1)) {
+            bind_type.setText(bindWechatBean.content1 + "");
+        }
+        if (StringUtil.isNotEmpty(bindWechatBean.content2)) {
+            bind_information.setText(bindWechatBean.content2 + "");
+        }
+        if (StringUtil.isNotEmpty(bindWechatBean.content3)) {
+            bind_money.setText(bindWechatBean.content3 + "");
+        }
+        if (StringUtil.isNotEmpty(bindWechatBean.content4)) {
+            bind_money.setText(bindWechatBean.content4 + "");
+        }
+    }
+
+    /**
+     * 绑定微信成功
+     *
+     * @param bindSuccess
+     */
+    @Override
+    public void showBindWechatSuccess(RegisterRedPacketsBean.DataBean.DialogItemBean.WXBindSuccess bindSuccess) {
+        SuccessPopWindow bindWechatPopWindow = new SuccessPopWindow(this);
+        bindWechatPopWindow.showAtLocation(MySettingActivity.this.findViewById(R.id.setting_layout), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        View bindViewSuccess = bindWechatPopWindow.getContentView();
+        TextView bind_title = bindViewSuccess.findViewById(R.id.bind_title);
+        TextView bind_content = bindViewSuccess.findViewById(R.id.bind_content);
+        TextView bind_search = bindViewSuccess.findViewById(R.id.bind_search);
+        if (StringUtil.isNotEmpty(bindSuccess.content1)) {
+            bind_title.setText(bindSuccess.content1 + "");
+        }
+        if (StringUtil.isNotEmpty(bindSuccess.content2)) {
+            bind_content.setText(bindSuccess.content2 + "");
+        }
+        if (StringUtil.isNotEmpty(bindSuccess.content3)) {
+            bind_search.setText(bindSuccess.content3 + "");
+        }
+    }
+
+    /**
+     * 绑定手机号弹窗
+     *
+     * @param mobileBind
+     */
+    @Override
+    public void showBindMobile(RegisterRedPacketsBean.DataBean.DialogItemBean.MobileBind mobileBind) {
+        bindWechatPopWindow = new BindWechatPopWindow(this, listener);
+        bindWechatPopWindow.showAtLocation(MySettingActivity.this.findViewById(R.id.setting_layout), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        View bindView = bindWechatPopWindow.getContentView();
+        TextView bind_information = bindWechat.findViewById(R.id.bind_information);
+        TextView bind_force = bindWechat.findViewById(R.id.bind_force);
+        TextView bind_money = bindWechat.findViewById(R.id.bind_money);
+        ImageView img_sure = bindWechat.findViewById(R.id.type_image);
+        img_sure.setImageResource(R.mipmap.phome_img);
+        if (StringUtil.isNotEmpty(mobileBind.content1)) {
+            bind_information.setText(mobileBind.content1 + "");
+        }
+        if (StringUtil.isNotEmpty(mobileBind.content2)) {
+            bind_force.setText(mobileBind.content2 + "");
+        }
+        if (StringUtil.isNotEmpty(mobileBind.content3)) {
+            bind_money.setText(mobileBind.content3 + "");
+        }
+    }
+
+    /**
+     * 绑定手机号成功弹窗
+     *
+     * @param mobileBindSuccess
+     */
+    @Override
+    public void showBindMobileSuccess(RegisterRedPacketsBean.DataBean.DialogItemBean.MobileBindSuccess mobileBindSuccess) {
+
+    }
+
+
+    /**
+     * 绑定手机号或者绑定微信弹窗
+     */
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.lin_close:
+                    bindWechatPopWindow.dismiss();
+                    bindWechatPopWindow.backgroundAlpha(MySettingActivity.this, 1f);
+                    break;
+                case R.id.bind_wechat:
+                    if (StringUtil.isEmpty(weChatUnionId)) {
+                        if (!APP.mWxApi.isWXAppInstalled()) {
+                            ToastUtils.showToast(getApplicationContext(), "绑定微信");
+                        } else {
+                            authorization(SHARE_MEDIA.WEIXIN);
+                        }
+                    } else if (StringUtil.isEmpty(mobile)) {
+                        startActivity(new Intent(MySettingActivity.this, BindPhoneActivity.class));
+                        overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    }
+
+                    bindWechatPopWindow.dismiss();
+                    bindWechatPopWindow.backgroundAlpha(MySettingActivity.this, 1f);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onErro() {
@@ -405,6 +541,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity,BindWech
                 //拿到信息去请求登录接口。。。差一个接口
                 presenter.bindWechatNumber(MySettingActivity.this, union_id, open_id, gender, name, iconurl, "", city, province, country, language);
             }
+
             /**
              * @desc 授权失败的回调
              * @param platform 平台名称
@@ -427,6 +564,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity,BindWech
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

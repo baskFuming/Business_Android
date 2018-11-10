@@ -156,6 +156,7 @@ public class MainPresenter extends BasePresenter<IMainActivity> {
                                     iMainActivity.showGetRedPacketDialog(registerRedPacketsBean.data.dialog_item.show_register_red_packet);
                                 }
                             } else {
+                                iMainActivity.Erro();
                                 ToastUtils.showToast(context, registerRedPacketsBean.msg);
                             }
                         }

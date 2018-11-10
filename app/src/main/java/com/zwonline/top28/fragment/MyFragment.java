@@ -242,7 +242,6 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 sp.insertKey(getActivity(), "position", userInfoBean.data.user.position);
                 sp.insertKey(getActivity(), "mobile", userInfoBean.data.user.mobile);
                 sp.insertKey(getActivity(), "union_id", userInfoBean.data.user.union_id);
-                sp.insertKey(getActivity(), "bind_union_id ", userInfoBean.data.user.bind_union_id );
                 sp.insertKey(getActivity(), "mbp_amount", userInfoBean.data.user.mbp_amount);
                 sp.insertKey(getActivity(), "boc_amount", userInfoBean.data.user.boc_amount);
                 sp.insertKey(getActivity(), "cp_amount", userInfoBean.data.user.cp_amount);

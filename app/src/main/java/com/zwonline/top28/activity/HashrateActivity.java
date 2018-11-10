@@ -5,12 +5,14 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.ClipboardManager;
@@ -18,13 +20,16 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,6 +41,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zwonline.top28.R;
+import com.zwonline.top28.adapter.GuidePageAdapter;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
@@ -50,7 +56,9 @@ import com.zwonline.top28.wxapi.ShareUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.OnClick;
@@ -58,7 +66,7 @@ import butterknife.OnClick;
 /**
  * 鞅分挖矿
  */
-public class HashrateActivity extends BaseActivity {
+public class HashrateActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     private RelativeLayout back;
     private RelativeLayout backXx;
     private TextView hashrate;
@@ -71,16 +79,41 @@ public class HashrateActivity extends BaseActivity {
     private String url = Api.baseUrl() + "/Integral/createIntegral?version=";
     private ImageView service;
     private RewritePopwindow mPopwindow;
+    private ViewPager vp;
+    private int[] imageIdArray;//图片资源的数组
+    private List<View> viewList;//图片资源的集合
+    private ViewGroup vg;//放置圆点
+    //实例化原点View
+    private ImageView iv_point;
+    private ImageView[] ivPointArray;
+    private SharedPreferences hashrateSp;
+    private boolean isfristHashrate;
+    private Button ib_start;
+    private LinearLayout hashrate_linear;
+    private RelativeLayout hashrate_guide;
 
     @Override
     protected void init() {
-        initView();
         StatusBarUtil.setColor(this, Color.parseColor("#5023DC"), 0);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
+        initView();
+        hashrateSp = getSharedPreferences("startup", 0);
+        //这个文件里面的布尔常量名，和它的初始状态，状态为是，则触发下面的方法
+        isfristHashrate = hashrateSp.getBoolean("isfristHashrate", true);
+        isFrist();
+        ib_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hashrate_linear.setVisibility(View.VISIBLE);
+                hashrate_guide.setVisibility(View.GONE);
+            }
+        });
+
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
+        initViewPager();
         String cookieString = "PHPSESSID=" + token + "; path=/";
-        synCookies(url+LanguageUitils.getVerName(this), cookieString);
+        synCookies(url + LanguageUitils.getVerName(this), cookieString);
         webSettingInit();
         //客服聊天
         service.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +123,22 @@ public class HashrateActivity extends BaseActivity {
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
         });
+    }
+
+    /**
+     * 判断是不是第一次下载app，如果是第一次下载显示引导页，不是直接显示转载文章页
+     */
+    private void isFrist() {
+        if (isfristHashrate) {
+            SharedPreferences.Editor edit = hashrateSp.edit();//创建状态储存文件
+            edit.putBoolean("isfristHashrate", false);//将参数put，改变其状态
+            edit.commit();//保证文件的创建和编辑
+            hashrate_linear.setVisibility(View.GONE);
+            hashrate_guide.setVisibility(View.VISIBLE);
+        } else {
+            hashrate_linear.setVisibility(View.VISIBLE);
+            hashrate_guide.setVisibility(View.GONE);
+        }
     }
 
     //webview配置
@@ -110,7 +159,7 @@ public class HashrateActivity extends BaseActivity {
         //请求头
         Map<String, String> headMap = new HashMap<>();
         headMap.put("Accept-Language", LanguageUitils.getCurCountryLan());
-        hashrateWeb.loadUrl(url+LanguageUitils.getVerName(this), headMap);
+        hashrateWeb.loadUrl(url + LanguageUitils.getVerName(this), headMap);
         hashrateWeb.setWebViewClient(new WebViewClient() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
@@ -426,6 +475,9 @@ public class HashrateActivity extends BaseActivity {
         hashrates = (TextView) findViewById(R.id.hashrates);
         progressBar = (ProgressBar) findViewById(R.id.progress_Bar);
         hashrateWeb = (WebView) findViewById(R.id.hashrate_web);
+        hashrate_guide = (RelativeLayout) findViewById(R.id.hashrate_guide);
+        hashrate_linear = (LinearLayout) findViewById(R.id.hashrate_linear);
+        ib_start = (Button) findViewById(R.id.guide_ib_start);
     }
 
     @OnClick({R.id.back, R.id.back_xx})
@@ -501,5 +553,69 @@ public class HashrateActivity extends BaseActivity {
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * 加载图片ViewPager
+     */
+    private void initViewPager() {
+        vp = (ViewPager) findViewById(R.id.guide_vp);
+        //实例化图片资源
+        imageIdArray = new int[]{R.mipmap.page5, R.mipmap.w2_an, R.mipmap.w3_an, R.mipmap.w4_an, R.mipmap.w5_an, R.mipmap.w6_an, R.mipmap.w7_an};
+        viewList = new ArrayList<>();
+        //获取一个Layout参数，设置为全屏
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
+        //循环创建View并加入到集合中
+        int len = imageIdArray.length;
+        for (int i = 0; i < len; i++) {
+            //new ImageView并设置全屏和图片资源
+            ImageView imageView = new ImageView(this);
+            imageView.setLayoutParams(params);
+            imageView.setBackgroundResource(imageIdArray[i]);
+
+            //将ImageView加入到集合中
+            viewList.add(imageView);
+        }
+
+        //View集合初始化好后，设置Adapter
+        vp.setAdapter(new GuidePageAdapter(viewList));
+        //设置滑动监听
+        vp.setOnPageChangeListener(this);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    /**
+     * 滑动后的监听
+     *
+     * @param position
+     */
+    @Override
+    public void onPageSelected(int position) {
+        //循环设置当前页的标记图
+        int length = imageIdArray.length;
+//        for (int i = 0; i < length; i++) {
+//            ivPointArray[position].setBackgroundResource(R.mipmap.guide1);
+//            if (position != i) {
+//                ivPointArray[i].setBackgroundResource(R.mipmap.guide1);
+//            }
+//        }
+
+        //判断是否是最后一页，若是则显示按钮
+        if (position == imageIdArray.length - 1) {
+            ib_start.setVisibility(View.VISIBLE);
+        } else {
+            ib_start.setVisibility(View.GONE);
+
+        }
+    }
+
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 }

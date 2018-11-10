@@ -264,4 +264,8 @@ public class BizConstant {
      */
     public static final String REDPACKETDIALOG = "register_red_packet";//新人注册红包
     public static final String SHOWREDPACKETDIALOG = "show_register_red_packet";
+    public static final String MOBILE_BIND = "mobile_bind";//绑定手机号
+    public static final String MOBILE_BIND_SUCCESS = "mobile_bind_success";//绑定手机号成功
+    public static final String WX_BIND = "wx_bind";//绑定微信
+    public static final String WX_BIND_SUCCESS = "wx_bind_success";//绑定微信成功
 }
