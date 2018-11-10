@@ -58,6 +58,7 @@ import com.zwonline.top28.nim.session.SessionHelper;
 import com.zwonline.top28.nim.team.TeamCreateHelper;
 import com.zwonline.top28.presenter.MainPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
+import com.zwonline.top28.utils.CacheDataManager;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.MyYAnimation;
 import com.zwonline.top28.utils.NetUtils;
@@ -184,7 +185,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         initMessageListener();
         int code = getVersionCode();//获取版本号
         if (NetUtils.isConnected(getApplicationContext())) {
-            if (islogine){
+            if (islogine) {
                 presenter.RegisterRedPacketDialogs(this, BizConstant.REDPACKETDIALOG, BizConstant.TYPE_ONE);//新人注册红包弹窗
             }
             presenter.UpdataVersion(getApplicationContext(), platform, String.valueOf(code));
@@ -564,7 +565,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
      * 双击返回键退出
      */
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (redacketPopWindow!=null){
+        if (redacketPopWindow != null) {
             redacketPopWindow.dismiss();
             redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
         }
@@ -724,6 +725,11 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             forceUpdate = updateCodeBean.data.force_update;
 
             package_download_url = updateCodeBean.data.package_download_url;
+            String flush_cache = updateCodeBean.data.flush_cache;
+            //清理缓存
+            if (StringUtil.isNotEmpty(flush_cache) && flush_cache.equals(BizConstant.TYPE_ONE)) {
+                CacheDataManager.clearAllCache(MainActivity.this);
+            }
             checkVersion();
         }
     }
