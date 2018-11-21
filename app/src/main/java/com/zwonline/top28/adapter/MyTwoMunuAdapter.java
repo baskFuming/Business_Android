@@ -65,7 +65,7 @@ public class MyTwoMunuAdapter extends BaseAdapter {
         } else {
             //调本地图片
             int resID = context.getResources().getIdentifier(list.get(position).image, "mipmap", context.getPackageName());
-            Drawable drawable = context.getResources().getDrawable(resID);
+             Drawable drawable = context.getResources().getDrawable(resID);
             holder.icon.setImageDrawable(drawable);
         }
 

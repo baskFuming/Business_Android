@@ -84,7 +84,6 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     private ImageView hotBusiness;
     private RelativeLayout hot_business_relat;
     private LinearLayout home_linear;
-    private YangFenUnclaimedWindow yangFenUnclaimedWindow;
     private List<HomeBean.DataBean> list;
 
     //二次修改
@@ -199,7 +198,7 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
             HomeBean.DataBean bean = new HomeBean.DataBean("300", getString(R.string.center_recommend));
             list.add(1, bean);
         }
-        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getChildFragmentManager(), list);
+        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getActivity().getSupportFragmentManager(), list);
 //        viewpager.setOffscreenPageLimit(1);
         viewpager.setAdapter(myFragmentAdapter);
 //        viewpager.setCurrentItem(1);

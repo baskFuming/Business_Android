@@ -24,9 +24,12 @@ import com.tencent.smtt.sdk.CookieSyncManager;
 import com.zwonline.top28.R;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,8 +99,13 @@ public class RecommendListActivity extends BaseActivity {
                     String path = "http://top28app//copyToClipboard/";
                     String invitationCode = url.substring(path.length(), url.length());
                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
                     // 将文本内容放到系统剪贴板里。
-                    cm.setText(invitationCode);
+                    try {
+                        cm.setText(URLDecoder.decode(invitationCode, "utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     ToastUtils.showToast(RecommendListActivity.this, "复制成功");
                     return true;
                 }
@@ -188,7 +196,15 @@ public class RecommendListActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         // 将文本内容放到系统剪贴板里。
-                        cm.setText(invitationCode);
+                        if (StringUtil.isNotEmpty(invitationCode)) {
+
+                            try {
+                                //解码
+                                cm.setText(URLDecoder.decode(invitationCode, "utf-8"));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 });
         // 显示

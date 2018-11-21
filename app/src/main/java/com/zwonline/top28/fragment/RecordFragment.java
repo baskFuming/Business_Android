@@ -54,19 +54,22 @@ public class RecordFragment extends BasesFragment<IIntegralActivity, IntergralPr
         if (getArguments() != null) {
             cate_ids = getArguments().getInt("cate_id");
             cate_name = getArguments().getString("cate_name");
-            if (cate_ids == 200) {
-                presenter.showAllIntergralList(getActivity(), BizConstant.ALREADY_FAVORITE);
-            } else if (cate_ids == 300) {
-                presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, BizConstant.ALREADY_FAVORITE);
-            } else if (cate_ids == 400) {
-                presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, BizConstant.ALREADY_FAVORITE);
-            } else if (cate_ids == 500) {
-                presenter.BalanceRecord(getActivity(), "", page);
-            } else if (cate_ids == 600) {
-                presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE, page);
-            } else {
-                presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO, page);
+            if (StringUtil.isNotEmpty(String.valueOf(cate_ids))){
+                if (cate_ids == 200) {
+                    presenter.showAllIntergralList(getActivity(), BizConstant.ALREADY_FAVORITE);
+                } else if (cate_ids == 300) {
+                    presenter.showIntergralList(getActivity(), BizConstant.TYPE_ONE, BizConstant.ALREADY_FAVORITE);
+                } else if (cate_ids == 400) {
+                    presenter.showIntergralList(getActivity(), BizConstant.TYPE_TWO, BizConstant.ALREADY_FAVORITE);
+                } else if (cate_ids == 500) {
+                    presenter.BalanceRecord(getActivity(), "", page);
+                } else if (cate_ids == 600) {
+                    presenter.BalanceRecord(getActivity(), BizConstant.TYPE_ONE, page);
+                } else {
+                    presenter.BalanceRecord(getActivity(), BizConstant.TYPE_TWO, page);
+                }
             }
+
         }
 
 //        presenter.showAllIntergralList(getActivity(), "1");

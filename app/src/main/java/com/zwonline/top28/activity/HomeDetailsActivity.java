@@ -66,6 +66,7 @@ import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.HomeDetailsPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.AdapterUtility;
+import com.zwonline.top28.utils.GlideLoadUtils;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.ObservableScrollView;
@@ -354,7 +355,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                 TextView author = contentView.findViewById(R.id.author);
                 TextView currency_balance = (TextView) contentView.findViewById(R.id.currency_balance);
                 if (StringUtil.isNotEmpty(balances)) {
-                    currency_balance.setText(balances);
+                    currency_balance.setText("商机币余额：" + balances);
                 }
                 proportion = contentView.findViewById(R.id.proportion);
                 if (StringUtil.isNotEmpty(userName)) {
@@ -647,12 +648,14 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
 
         title.setText(homeDetails.data.vo.title);
         ititle1 = homeDetails.data.vo.title;
-        if (homeDetails.data.members_info.sex.equals(BizConstant.SEX)) {
-            RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
-            Glide.with(this).load(homeDetails.data.members.avatars).apply(options).into(userhead);
-        } else {
-            RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_female).error(R.mipmap.no_photo_female);
-            Glide.with(this).load(homeDetails.data.members.avatars).apply(options).into(userhead);
+        if (this != null) {
+            if (homeDetails.data.members_info.sex.equals(BizConstant.SEX)) {
+                RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+                Glide.with(this).load(homeDetails.data.members.avatars).apply(options).into(userhead);
+            } else {
+                RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_female).error(R.mipmap.no_photo_female);
+                Glide.with(this).load(homeDetails.data.members.avatars).apply(options).into(userhead);
+            }
         }
         userhead.setOnClickListener(new View.OnClickListener() {
             @Override

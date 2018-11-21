@@ -65,10 +65,10 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="160dp"
-            android:textColor="#727272"
-            android:textSize="16dp"
             android:maxLines="6"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical"
+            android:textColor="#727272"
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/coerce_sure"
@@ -79,7 +79,18 @@
             android:gravity="center_horizontal"
             android:text="立即更新"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="visible" />
 
+        <ProgressBar
+            android:id="@+id/pb_progressbar_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:max="100"
+            android:visibility="gone"
+            android:progressDrawable="@drawable/progress_bar" />
     </LinearLayout>
 </LinearLayout>

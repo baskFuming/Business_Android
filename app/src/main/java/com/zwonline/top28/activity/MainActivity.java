@@ -1,16 +1,25 @@
 package com.zwonline.top28.activity;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.ContentObserver;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -20,6 +29,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -77,6 +87,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -146,6 +157,10 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private TextView describeTwo;
     private TextView describeThree;
     private TextView text_busin;
+    private DownloadManager mDownloadManager;
+    private long mId;
+    private ProgressBar mProgressBar;
+    private TextView coerceSure;
 
     @Override
     protected void init() {
@@ -417,7 +432,9 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                 @Override
                 public void run() {
                     customPopuWindow.showAtLocation(mian, Gravity.CENTER, 0, 0);
-
+                    View customView = customPopuWindow.getContentView();
+                    mProgressBar = customView.findViewById(R.id.pb_progressbar_bar);
+                    coerceSure = customView.findViewById(R.id.coerce_sure);
                 }
             });
 
@@ -488,9 +505,13 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
                     break;
                 case R.id.sure:
+//                    listener(package_download_url);
                     LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
                     break;
                 case R.id.coerce_sure:
+//                    listener(package_download_url);
+//                    coerceSure.setVisibility(View.GONE);
+//                    mProgressBar.setVisibility(View.VISIBLE);
                     LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
                     break;
             }
@@ -901,6 +922,85 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 
         // my own policy
         return "99+";
+    }
+
+
+    private void listenerDownApk(String apkUrl) {
+        //此处使用DownLoadManager开启下载任务
+        mDownloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
+        // 下载过程和下载完成后通知栏有通知消息。
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE | DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setTitle("下载");
+        request.setDescription("apk正在下载");
+        //设置保存目录  /storage/emulated/0/Android/包名/files/Download
+        request.setDestinationInExternalFilesDir(MainActivity.this, Environment.DIRECTORY_DOWNLOADS, "jiaogeyi.apk");
+        mId = mDownloadManager.enqueue(request);
+
+        //注册内容观察者，实时显示进度
+        MyContentObserver downloadChangeObserver = new MyContentObserver(null);
+        getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, downloadChangeObserver);
+        //Toast.makeText(MainActivity.this,"XXXX",Toast.LENGTH_SHORT).show();
+        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                long longExtra = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (mId == longExtra) {
+//                    Uri downloadUri = mDownloadManager.getUriForDownloadedFile(id);
+                    Intent install = new Intent(Intent.ACTION_VIEW);
+                    File apkFile = getExternalFilesDir("DownLoad/shangjitoutiao.apk");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        install.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        Uri uriForFile = FileProvider.getUriForFile(context, "com.zwonline.top28.fileprovider", apkFile);
+                        install.setDataAndType(uriForFile, "application/vnd.android.package-archive");
+                    } else {
+                        install.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+                    }
+
+                    install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(install);
+                    Toast.makeText(MainActivity.this, "ZZZZ", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        };
+
+        registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    class MyContentObserver extends ContentObserver {
+
+        public MyContentObserver(Handler handler) {
+            super(handler);
+        }
+
+
+        @TargetApi(Build.VERSION_CODES.N)
+        @Override
+        public void onChange(boolean selfChange) {
+            DownloadManager.Query query = new DownloadManager.Query();
+            query.setFilterById(mId);
+            DownloadManager dManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            final Cursor cursor = dManager.query(query);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int totalColumn = cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
+                final int currentColumn = cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
+                int totalSize = cursor.getInt(totalColumn);
+                int currentSize = cursor.getInt(currentColumn);
+                float percent = (float) currentSize / (float) totalSize;
+                float progress = (float) Math.floor(percent * 100);
+//                mPrecent.setText(progress+"%");
+                mProgressBar.setProgress((int) progress, true);
+                if (progress == 100) {
+                    customPopuWindow.dismiss();
+                    customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
+                }
+            }
+        }
+
     }
 
 }

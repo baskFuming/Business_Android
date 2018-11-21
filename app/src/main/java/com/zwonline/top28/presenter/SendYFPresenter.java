@@ -50,20 +50,26 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
             Flowable<SendYFBean> flowable = sendYfModel.sendYf(context, postscript, total_amount, total_package, random_flag);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSubscriber<SendYFBean>() {
+                    .subscribeWith(new BaseDisposableSubscriber<SendYFBean>(context) {
+
                         @Override
-                        public void onNext(SendYFBean sendYFBean) {
+                        protected void onBaseNext(SendYFBean sendYFBean) {
                             Log.i("sendYFBean==", sendYFBean.msg);
                             iSendYFActivity.showYfdata(sendYFBean);
                         }
 
                         @Override
-                        public void onError(Throwable t) {
-
+                        protected String getTitleMsg() {
+                            return null;
                         }
 
                         @Override
-                        public void onComplete() {
+                        protected boolean isNeedProgressDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
 
                         }
 
@@ -88,22 +94,28 @@ public class SendYFPresenter extends BasePresenter<ISendYFActivity> {
             Flowable<SendYFBean> flowable = sendYfModel.mSendBocHongBao(context, postscript, total_amount, total_package, random_flag);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableSubscriber<SendYFBean>() {
+                    .subscribeWith(new BaseDisposableSubscriber<SendYFBean>(context) {
+
                         @Override
-                        public void onNext(SendYFBean sendYFBean) {
-                            Log.i("sendYFBean==", sendYFBean.msg);
+                        protected void onBaseNext(SendYFBean sendYFBean) {
                             iSendYFActivity.showYfdata(sendYFBean);
                         }
 
                         @Override
-                        public void onError(Throwable t) {
-
+                        protected String getTitleMsg() {
+                            return null;
                         }
 
                         @Override
-                        public void onComplete() {
+                        protected boolean isNeedProgressDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
 
                         }
+
 
                     });
         } catch (IOException e) {

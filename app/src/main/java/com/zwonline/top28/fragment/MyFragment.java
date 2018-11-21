@@ -233,7 +233,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             mbp_url = userInfoBean.data.user.mbp_url;//鞅分跳转链接
             vip_url = userInfoBean.data.user.vip_url;
             String vipLevel = userInfoBean.data.user.vip_level;
-            if (StringUtil.isNotEmpty(vipLevel) && vipLevel.equals(BizConstant.IS_FAIL)) {
+            if (StringUtil.isEmpty(vipLevel)) {
                 vipImage.setVisibility(View.GONE);
             } else {
                 vipImage.setVisibility(View.VISIBLE);
@@ -268,6 +268,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 tvFensiNum.setText((String) sp.getKey(getActivity(), "cp_amount", ""));
                 tvShoucangNum.setText((String) sp.getKey(getActivity(), "boc_amount", ""));
             }
+
             if (StringUtil.isNotEmpty(userInfoBean.data.user.nickname)) {
                 username = userInfoBean.data.user.nickname;
 //                userName.setText(userInfoBean.data.user.nickname+"");
@@ -495,6 +496,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                     startActivity(vipIntent);
                     getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 }
+                break;
             case R.id.mbp_exchange://鞅分兑换
                 Intent exchangeIntent = new Intent(getActivity(), BaseWebViewActivity.class);
                 exchangeIntent.putExtra("titleBarColor", "#5023DC");

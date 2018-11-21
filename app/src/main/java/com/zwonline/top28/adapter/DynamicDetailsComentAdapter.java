@@ -214,7 +214,7 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
         ImageViewPlus commentsUserHead;
         TextView commentsUserName, commentsTime, commentsContent, comment_user1, comment_user2, look_more_comment, like_num;
         LinearLayout linear_like;
-        RelativeLayout linear_child_comments;
+        LinearLayout linear_child_comments;
         CheckBox choose_like;
 
 
@@ -228,7 +228,7 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
             comment_user1 = (TextView) itemView.findViewById(R.id.comment_user1);
             like_num = (TextView) itemView.findViewById(R.id.like_num);
             look_more_comment = (TextView) itemView.findViewById(R.id.look_more_comment);
-            linear_child_comments = (RelativeLayout) itemView.findViewById(R.id.linear_child_comments);
+            linear_child_comments = (LinearLayout) itemView.findViewById(R.id.linear_child_comments);
             linear_like = (LinearLayout) itemView.findViewById(R.id.linear_like);
             choose_like = (CheckBox) itemView.findViewById(R.id.choose_like);
 

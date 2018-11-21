@@ -602,11 +602,14 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
         }
         rewardList.addAll(rewardLists);
         rewardistAdapter.notifyDataSetChanged();
-        rewardistAdapter.homePageSetOnclick(new RewardListAdapter.HomePageInterface() {
+        rewardistAdapter.setOnClickItemListener(new RewardListAdapter.OnClickItemListener() {
             @Override
-            public void onclick(View view, int position) {
+            public void setOnItemClick(View view, int position) {
+                if (AntiShake.check(view.getId())) {    //判断是否多次点击
+                    return;
+                }
                 Intent intent = new Intent(DynamicDetailsActivity.this, HomePageActivity.class);
-                intent.putExtra("uid", rewardList.get(position).reward_user_id);
+                intent.putExtra("uid", rewardList.get(position - 1).reward_user_id);
                 startActivity(intent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
@@ -1118,11 +1121,14 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
             likeLists.clear();
         }
         likeLists.addAll(likeList);
-        likeListAdapter.homePageSetOnclick(new LikeListAdapter.HomePageInterface() {
+        likeListAdapter.setOnClickItemListener(new LikeListAdapter.OnClickItemListener() {
             @Override
-            public void onclick(View view, int position) {
+            public void setOnItemClick(View view, int position) {
+                if (AntiShake.check(view.getId())) {    //判断是否多次点击
+                    return;
+                }
                 Intent intent = new Intent(DynamicDetailsActivity.this, HomePageActivity.class);
-                intent.putExtra("uid", likeLists.get(position).uid);
+                intent.putExtra("uid", likeLists.get(position - 1).uid);
                 startActivity(intent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }

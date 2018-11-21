@@ -61,6 +61,9 @@ import java.util.Map;
 
 import butterknife.OnClick;
 
+/**
+ * baseWebView
+ */
 public class BaseWebViewActivity extends BaseActivity {
 
     private RelativeLayout back;
@@ -78,7 +81,8 @@ public class BaseWebViewActivity extends BaseActivity {
 
     @Override
     protected void init() {
-        url = getIntent().getStringExtra("weburl") + "?version=" + LanguageUitils.getVerName(this);
+        Intent intent = getIntent();
+        url = intent.getStringExtra("weburl") + "?version=" + LanguageUitils.getVerName(this);
         titleBarColor = getIntent().getStringExtra("titleBarColor");
         if (StringUtil.isNotEmpty(titleBarColor)) {
             StatusBarUtil.setColor(this, Color.parseColor(titleBarColor), 0);

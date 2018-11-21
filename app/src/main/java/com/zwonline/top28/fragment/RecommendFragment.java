@@ -976,6 +976,5 @@ public class RecommendFragment extends BasesFragment<ISendFriendCircleActivity, 
         return -top + firstVisiblePosition * c.getHeight();
     }
 
-
 }
 

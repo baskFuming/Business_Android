@@ -37,6 +37,7 @@ import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.NumberOperateUtil;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.ISendYFActivity;
 
@@ -213,8 +214,13 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                                     //随机红包
                                     presenter.mBocHongBao(SendYangFenActivity.this, content, yangFenNum, hongBaoCount, BizConstant.PAGE);
                                 } else {
-                                    //普通红包
-                                    presenter.mBocHongBao(SendYangFenActivity.this, content, hongBaoCount, showYfNum.getText().toString(), Integer.parseInt(BizConstant.IS_FAIL));
+                                    if (!showYfNum.getText().toString().equals("0.0")) {
+                                        //普通红包
+                                        presenter.mBocHongBao(SendYangFenActivity.this, content, showYfNum.getText().toString(), hongBaoCount, Integer.parseInt(BizConstant.IS_FAIL));
+                                    } else {
+                                        ToastUtils.showToast(getApplicationContext(), "商机币数量不能为空!");
+                                    }
+
 //                            ToastUtil.showToast(getApplicationContext(),showYfNum.getText().toString());
                                 }
                             } else if (StringUtil.isNotEmpty(packageType) && packageType.equals(BizConstant.RECOMMEND)) {
@@ -223,12 +229,17 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                                     //随机红包
                                     presenter.mSendYF(SendYangFenActivity.this, content, yangFenNum, hongBaoCount, BizConstant.PAGE);
                                 } else {
-                                    //普通红包
-                                    presenter.mSendYF(SendYangFenActivity.this, content, hongBaoCount, showYfNum.getText().toString(), Integer.parseInt(BizConstant.IS_FAIL));
+                                    if (!showYfNum.getText().toString().equals("0.0")) {
+                                        //普通红包
+                                        presenter.mSendYF(SendYangFenActivity.this, content, showYfNum.getText().toString(), hongBaoCount, Integer.parseInt(BizConstant.IS_FAIL));
+                                    } else {
+                                        ToastUtils.showToast(getApplicationContext(), "鞅分数量不能为空!");
+                                    }
+
 //                            ToastUtil.showToast(getApplicationContext(),showYfNum.getText().toString());
                                 }
                             }
-
+                            sendYF.setClickable(false);
                         } else {
                             ToastUtil.showToast(getApplicationContext(), "数量不能为空");
                         }
@@ -244,7 +255,7 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                             //鞅分红包
                             presenter.mSendYF(SendYangFenActivity.this, content, yangFenNum, BizConstant.NEW, BizConstant.PAGE);
                         }
-
+                        sendYF.setClickable(false);
                     } else {
                         ToastUtil.showToast(getApplicationContext(), "数量不能为空");
                     }
@@ -272,6 +283,7 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
             setResult(Activity.RESULT_OK, intent);//返回页面1
             finish();
         } else {
+            sendYF.setClickable(true);
             ToastUtil.showToast(getApplicationContext(), sendYFBean.msg);
         }
     }

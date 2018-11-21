@@ -138,7 +138,7 @@ public abstract class LogBase {
                 Log.println(priority, tag, threadId + "/" + msg + '\n' + Log.getStackTraceString(tr));
 
                 if (level <= priority && (interceptor == null || interceptor.checkValidBeforeWrite())) {
-                    writeLog(LogFormat.formatLog(tag, timeStr, msg, tr));
+//                    writeLog(LogFormat.formatLog(tag, timeStr, msg, tr));
                 }
             }
         };

@@ -146,25 +146,25 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
         newcontentRecy.setAdapter(adapter);
         //一键置顶
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            newcontentRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    if (getScrollY() >newState){
-                        floatingActionButton.setVisibility(View.VISIBLE);
-                    } else {
-                        floatingActionButton.setVisibility(View.GONE);
-                    }
+        newcontentRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (getScrollY() > newState) {
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                } else {
+                    floatingActionButton.setVisibility(View.GONE);
                 }
+            }
 
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if (getScrollY() >(recyclerView.getScrollState())){
-                        floatingActionButton.setVisibility(View.VISIBLE);
-                    } else {
-                        floatingActionButton.setVisibility(View.GONE);
-                    }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (getScrollY() > (recyclerView.getScrollState())) {
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                } else {
+                    floatingActionButton.setVisibility(View.GONE);
                 }
-            });
+            }
+        });
 
         //添加置顶
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -966,5 +966,15 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
         return -top + firstVisiblePosition * c.getHeight();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
 
+        //可见的并且是初始化之后才加载
+        if (isVisibleToUser) {
+            presenter.GetMyNotificationCount(getActivity());
+            presenter.MomentLists(getActivity(), 1, "", "", "");
+
+        }
+    }
 }

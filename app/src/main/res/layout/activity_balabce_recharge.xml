@@ -204,16 +204,23 @@
         <!--android:layout_marginTop="15dp"-->
         <!--android:layout_marginLeft="15dp"/>-->
     </LinearLayout>
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="45dp"
+    android:layout_gravity="center_horizontal"
+    android:textSize="14sp"
+    android:textColor="@color/gray7"
+    android:text="此充值只能用于支付加盟款"/>
     <Button
         android:id="@+id/balance_recharge"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="50dp"
         android:background="@drawable/btn_register_shape"
         android:text="@string/balance_recharge"
+        android:layout_marginTop="10dp"
         android:textColor="@color/white"
         android:textSize="18sp" />
 </LinearLayout>

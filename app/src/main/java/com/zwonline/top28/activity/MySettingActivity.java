@@ -477,13 +477,13 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
                     bindWechatPopWindow.backgroundAlpha(MySettingActivity.this, 1f);
                     break;
                 case R.id.bind_wechat:
-                    if (StringUtil.isEmpty(weChatUnionId)) {
+                    if (StringUtil.isEmpty(weChatUnionId)) {//微信授权
                         if (!APP.mWxApi.isWXAppInstalled()) {
                             ToastUtils.showToast(getApplicationContext(), "绑定微信");
                         } else {
                             authorization(SHARE_MEDIA.WEIXIN);
                         }
-                    } else if (StringUtil.isEmpty(mobile)) {
+                    } else if (StringUtil.isEmpty(mobile)) {//跳转帮手机号页面
                         Intent intent = new Intent(MySettingActivity.this, BindPhoneActivity.class);
                         startActivityForResult(intent, 1);
                         overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);

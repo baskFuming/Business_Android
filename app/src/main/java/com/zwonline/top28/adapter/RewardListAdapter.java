@@ -36,12 +36,12 @@ public class RewardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.rewardlistfragment, parent, false);
         final MyViewHolder holder = new MyViewHolder(view);
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onClickItemListener.setOnItemClick(v, holder.getPosition());
-//            }
-//        });
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickItemListener.setOnItemClick(v, holder.getPosition());
+            }
+        });
         return holder;
     }
 
@@ -65,13 +65,6 @@ public class RewardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else if (StringUtil.isNotEmpty(gift_id) && gift_id.equals(BizConstant.MY)) {
             myViewHolder.reward_image.setImageResource(R.mipmap.reward_gift5);
         }
-        //点击头像跳个人中心
-        myViewHolder.reward_userhead.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                homePageInterface.onclick(v, position);
-            }
-        });
     }
 
     @Override

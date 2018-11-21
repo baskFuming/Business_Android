@@ -135,7 +135,7 @@ public class FriendCircleFragment extends BasesFragment {
         fList.add(myDynamicFragment);
         adapter = new MyAdapter(getActivity().getSupportFragmentManager());
         friendPager.setAdapter(adapter);
-        friendPager.setOffscreenPageLimit(1);
+        friendPager.setOffscreenPageLimit(fList.size());
 
         initMagicIndicator();
         //将名称加载tab名字列表，正常情况下，我们应该在values/arrays.xml中进行定义然后调用

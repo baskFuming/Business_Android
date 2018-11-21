@@ -1035,6 +1035,15 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
         int top = c.getTop();
         return -top + firstVisiblePosition * c.getHeight();
     }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
 
+        //可见的并且是初始化之后才加载
+        if (isVisibleToUser) {
+            presenter.GetMyNotificationCount(getActivity());
+            presenter.MomentLists(getActivity(), 1, userId, "", "");
+        }
+    }
 
 }

@@ -39,12 +39,12 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.like_list_item, parent, false);
         final MyViewHolder holder = new MyViewHolder(view);
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onClickItemListener.setOnItemClick(v, holder.getPosition());
-//            }
-//        });
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickItemListener.setOnItemClick(v, holder.getPosition());
+            }
+        });
         return holder;
     }
 
@@ -58,15 +58,15 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             myViewHolder.like_time.setText("暂无签名");
         }
-        myViewHolder.like_userhead.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AntiShake.check(v.getId())) {    //判断是否多次点击
-                    return;
-                }
-                homePageInterface.onclick(v, position);
-            }
-        });
+//        myViewHolder.like_userhead.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (AntiShake.check(v.getId())) {    //判断是否多次点击
+//                    return;
+//                }
+//                homePageInterface.onclick(v, position);
+//            }
+//        });
         RequestOptions options = new RequestOptions().error(R.mipmap.no_photo_male).placeholder(R.mipmap.no_photo_male);
         Glide.with(context).load(list.get(position).avatars).apply(options).into(myViewHolder.like_userhead);
     }

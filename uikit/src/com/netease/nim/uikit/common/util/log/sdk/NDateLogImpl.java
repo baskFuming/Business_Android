@@ -27,6 +27,6 @@ public class NDateLogImpl extends NLogImpl {
     @Override
     void writeLog(final String log) {
         this.logPath = logDir + File.separator + LogFormat.getLogFileName(logNamePrefix);
-        FileUtils.appendFile(log, logPath);
+//        FileUtils.appendFile(log, logPath);
     }
 }

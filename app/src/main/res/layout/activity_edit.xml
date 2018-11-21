@@ -54,11 +54,9 @@
         <WebView
             android:id="@+id/edit_web"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></WebView>
+            android:layout_height="match_parent"
+            android:layout_marginBottom="100dp"></WebView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="130dp"></View>
 
     </LinearLayout>
 
