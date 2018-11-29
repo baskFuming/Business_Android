@@ -43,7 +43,7 @@
         android:layout_height="150dp"
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
-        android:background="@mipmap/reward_bunner"
+        android:background="@mipmap/coin_bg"
         android:visibility="visible">
 
         <TextView
@@ -143,7 +143,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/reword__shape"
             android:gravity="center"
-            android:textColor="@color/reded"
+            android:textColor="#5162FF"
             android:textSize="14sp"
 
             />
@@ -221,7 +221,7 @@
 
 
     </RelativeLayout>
-
+    <!--之前算力-->
     <RelativeLayout
         android:id="@+id/integral_tw"
         android:layout_width="match_parent"
@@ -309,6 +309,112 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/type_chang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="21dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/exchange_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/coin_1" />
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="17dp"
+                android:gravity="center"
+                android:text="兑换鞅分"
+                android:textColor="#ff747474"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/recharge_power"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:src="@mipmap/coin_2" />
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:text="充值算力"
+                android:textColor="#ff747474"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/exchange_gold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/coin_3" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="17dp"
+                android:text="兑换金票"
+                android:textColor="#ff747474"
+                android:textSize="11sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/card_exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/coin_4" />
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="17dp"
+                android:text="卡密兑换"
+                android:textColor="#ff747474"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:id="@+id/chang_view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#fff2f2f2"
+        android:layout_marginTop="25dp"></View>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/integral_tab"

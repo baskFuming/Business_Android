@@ -17,7 +17,6 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.BusinessCoinBean;
-import com.zwonline.top28.bean.IntegralBean;
 import com.zwonline.top28.bean.IntegralRecordBean;
 import com.zwonline.top28.bean.MyCurrencyBean;
 import com.zwonline.top28.constants.BizConstant;
@@ -32,6 +31,7 @@ import com.zwonline.top28.web.BaseWebViewActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -68,6 +68,12 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
     private String yangfenConvert = Api.baseUrl() + "/Integral/exchange.html?version=";//兑换鞅分
     private TextView buyGolden;
     private TextView buyHashrate;
+    @BindView(R.id.type_chang)
+    LinearLayout linTypeChang;
+    @BindView(R.id.chang_view)
+    View viewChangView;
+    @BindView(R.id.business_coin_linear)
+    LinearLayout linBusiness;
 
     @Override
     protected void init() {
@@ -146,12 +152,15 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
             buyHashrate.setVisibility(View.VISIBLE);
             buyHashrate.setText("购买算力");
             hashrate_underline.setBackgroundColor(Color.parseColor("#cc40f9"));
-            integralCh.setBackgroundResource(R.mipmap.suanli_bg);
+            integralCh.setBackgroundResource(R.mipmap.coin_bg);
+            linTypeChang.setVisibility(View.GONE);
+            viewChangView.setVisibility(View.GONE);
         } else {
             title.setText(getString(R.string.opportunities_currency));
             moneyZh.setText(getString(R.string.my_opportunities_currency));
             earnState.setText(getString(R.string.buy_opportunities_currency));
-            integralCh.setBackgroundResource(R.mipmap.reward_bunner);
+            integralCh.setBackgroundResource(R.mipmap.coin_bg);
+            linBusiness.setVisibility(View.GONE);
             freeze.setVisibility(View.VISIBLE);
 //            businessCoinLinear.setVisibility(View.VISIBLE);
             buyGolden.setVisibility(View.VISIBLE);
@@ -160,6 +169,8 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
             boc_golden_linear.setVisibility(View.VISIBLE);
             hashrate_underline.setBackgroundColor(Color.parseColor("#fd524e"));
             buyHashrate.setText("兑换鞅分");
+            linTypeChang.setVisibility(View.VISIBLE);
+            viewChangView.setVisibility(View.VISIBLE);
         }
         recordList = new ArrayList<>();
         IntegralRecordBean integralRecordBean = new IntegralRecordBean();
@@ -211,7 +222,8 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
     }
 
 
-    @OnClick({R.id.integral_back, R.id.earn_integral_tw, R.id.convert_tw, R.id.integtal_pay_tw, R.id.integral_tab, R.id.earn_integral_ch, R.id.integtal_pay_ch, R.id.earn_state, R.id.buy_hashrate, R.id.buy_golden})
+    @OnClick({R.id.integral_back, R.id.earn_integral_tw, R.id.convert_tw, R.id.integtal_pay_tw, R.id.integral_tab, R.id.earn_integral_ch, R.id.integtal_pay_ch, R.id.earn_state, R.id.buy_hashrate, R.id.buy_golden
+    ,R.id.exchange_money,R.id.recharge_power,R.id.exchange_gold,R.id.card_exchange})
     public void onViewClicked(View v) {
         if (AntiShake.check(v.getId())) {    //判断是否多次点击
             return;
@@ -278,6 +290,32 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
                 Intent goldenIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
                 goldenIntent.putExtra("weburl", buyGoldenUrl);
                 startActivity(goldenIntent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.exchange_money://兑换鞅分
+                Intent  exchangemoneyIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
+                exchangemoneyIntent.putExtra("titleBarColor", "#5023DC");
+                exchangemoneyIntent.putExtra("weburl", "https://toutiao.28.com/Integral/exchange.html");
+                startActivity(exchangemoneyIntent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.recharge_power://充值算力
+                Intent  rechargepowerIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
+                rechargepowerIntent.putExtra("weburl", buyHashrateUrl);
+                rechargepowerIntent.putExtra("titleBarColor", "#5023DC");
+                startActivity(rechargepowerIntent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.exchange_gold://兑换金票
+                Intent  exchange_goldIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
+                exchange_goldIntent.putExtra("weburl", buyGoldenUrl);
+                startActivity(exchange_goldIntent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.card_exchange://卡密兑换
+                Intent cardIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
+//                cardIntent.putExtra("weburl", buyGoldenUrl);//传卡密的URL
+                startActivity(cardIntent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             default:
