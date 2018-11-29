@@ -63,7 +63,7 @@ public class SettingModel {
 
     //个人设置资料  weixin email telephone job_cate_pid
     public Flowable<SettingBean> mSetingModel(Context context, String nick_name,
-                                              String real_name, int sex, String age,
+                                              String real_name, String sex, String age,
                                               String address, String favourite_industry,
                                               String bio, String weixin, String email, String telephone, String job_cate_pid
             , String enterprise, String position) throws IOException {

@@ -9,6 +9,7 @@ import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.IntegralBean;
 import com.zwonline.top28.bean.MyCurrencyBean;
 import com.zwonline.top28.model.MyCurrencyModel;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IMyCurrencyActivity;
 
 import java.io.IOException;
@@ -103,7 +104,7 @@ public class MyCurrencyPresenter extends BasePresenter<IMyCurrencyActivity> {
      * @param type
      * @param page
      */
-    public void BalanceLog(Context context, String type, int page) {
+    public void BalanceLog(final Context context, String type, int page) {
         try {
             Flowable<BusinessCoinBean> flowable = myCurrencyModel.mBalanceLog(context, type, page);
             flowable.subscribeOn(Schedulers.io())
@@ -112,7 +113,11 @@ public class MyCurrencyPresenter extends BasePresenter<IMyCurrencyActivity> {
                         @Override
                         protected void onBaseNext(BusinessCoinBean myCurrencyBean) {
                             Log.e("myCurrencyBean==", myCurrencyBean.msg);
-                            iMyCurrencyActivity.showBalanceLog(myCurrencyBean);
+                            if (myCurrencyBean.status == 1) {
+                                iMyCurrencyActivity.showBalanceLog(myCurrencyBean);
+                            } else {
+                                ToastUtils.showToast(context, myCurrencyBean.msg);
+                            }
                         }
 
                         @Override

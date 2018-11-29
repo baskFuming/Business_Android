@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,9 +18,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -70,6 +74,7 @@ import com.zwonline.top28.presenter.MainPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.CacheDataManager;
 import com.zwonline.top28.utils.LanguageUitils;
+import com.zwonline.top28.utils.LogUtils;
 import com.zwonline.top28.utils.MyYAnimation;
 import com.zwonline.top28.utils.NetUtils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
@@ -88,6 +93,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -95,6 +103,9 @@ import java.util.TimerTask;
 
 import butterknife.BindArray;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.http.Url;
 
 
 public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter> implements RadioGroup.OnCheckedChangeListener, IMainActivity {
@@ -159,8 +170,36 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private TextView text_busin;
     private DownloadManager mDownloadManager;
     private long mId;
-    private ProgressBar mProgressBar;
+    private ProgressBar updataProgressbar;
+    private ProgressBar forceUpdataProgressbar;
     private TextView coerceSure;
+    private LinearLayout updataLinear;
+    private TextView updataTv;
+    private TextView forceUpdataTv;
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (StringUtil.isNotEmpty(forceUpdate) && forceUpdate.equals(BizConstant.IS_FAIL)) {
+                updataTv.setText(percent + "%");
+            } else {
+                forceUpdataTv.setText(percent + "%");
+            }
+            if (percent == 100) {
+                updataLinear.setVisibility(View.VISIBLE);
+                coerceSure.setVisibility(View.VISIBLE);
+                updataProgressbar.setVisibility(View.GONE);
+                updataProgressbar.setProgress(0);
+                forceUpdataProgressbar.setVisibility(View.GONE);
+                forceUpdataProgressbar.setProgress(0);
+                forceUpdataTv.setVisibility(View.GONE);
+                updataTv.setVisibility(View.GONE);
+            }
+        }
+    };
+    private int percent;
+    private int progress;
 
     @Override
     protected void init() {
@@ -212,7 +251,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     }
 
     /**
-     *
+     * 默认启动页面
      */
     private void initFragmentManager() {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -301,30 +340,6 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                 break;
             case R.id.rb_yangshi:
                 if (islogine) {
-//                    if (page == 1) {
-//                        rbHome.setChecked(true);
-//                        switchFragment(homeFragment);
-//                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                    } else if (page == 3) {
-//                        rbBusinessCircle.setChecked(true);
-//                        switchFragment(businessFragment);
-//                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                    } else if (page == 4) {
-//                        rbInfo.setChecked(true);
-//                        switchFragment(informationFragment);
-//                        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                    } else if (page == 5) {
-//                        rbMy.setChecked(true);
-//                        switchFragment(myFragment);
-//                        StatusBarUtil.setColor(this, getResources().getColor(R.color.reded), 0);
-//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
-//                    }
-//
-//                    startActivity(new Intent(this, YangShiActivity.class));
-//                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     rbInfo.setChecked(false);
                     rbHome.setChecked(false);
                     rbMy.setChecked(false);
@@ -429,11 +444,17 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 //            showDialogUpdate();//弹出提示版本更新的对话框
             customPopuWindow = new CustomPopuWindow(MainActivity.this, description, forceUpdate, listener);
             mian.post(new Runnable() {
+
+
                 @Override
                 public void run() {
                     customPopuWindow.showAtLocation(mian, Gravity.CENTER, 0, 0);
                     View customView = customPopuWindow.getContentView();
-                    mProgressBar = customView.findViewById(R.id.pb_progressbar_bar);
+                    updataProgressbar = customView.findViewById(R.id.updata_progressbar);
+                    updataLinear = customView.findViewById(R.id.updata_linear);
+                    forceUpdataProgressbar = customView.findViewById(R.id.force_updata_progressbar);
+                    updataTv = customView.findViewById(R.id.updata_tv);
+                    forceUpdataTv = customView.findViewById(R.id.force_updata_tv);
                     coerceSure = customView.findViewById(R.id.coerce_sure);
                 }
             });
@@ -505,14 +526,24 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
                     break;
                 case R.id.sure:
-//                    listener(package_download_url);
-                    LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
+//                    listenerDownApk(package_download_url);
+                    downloadApk(package_download_url);
+                    updataLinear.setVisibility(View.GONE);
+                    updataProgressbar.setVisibility(View.VISIBLE);
+                    updataTv.setVisibility(View.VISIBLE);
+//                    customPopuWindow.dismiss();
+//                    customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
+//                    LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
                     break;
                 case R.id.coerce_sure:
-//                    listener(package_download_url);
-//                    coerceSure.setVisibility(View.GONE);
-//                    mProgressBar.setVisibility(View.VISIBLE);
-                    LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
+//                    listenerDownApk(package_download_url);
+                    coerceSure.setVisibility(View.GONE);
+                    forceUpdataProgressbar.setVisibility(View.VISIBLE);
+                    forceUpdataTv.setVisibility(View.VISIBLE);
+                    downloadApk(package_download_url);
+//                    customPopuWindow.dismiss();
+//                    customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
+//                    LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
                     break;
             }
         }
@@ -567,7 +598,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         }
         //获取所有的未读消息
         unreadMsgsCount = NIMClient.getService(MsgService.class).getTotalUnreadCount();
-        badgeView.setBadgeCount(unreadMsgsCount);
+        if (StringUtil.isNotEmpty(String.valueOf(unreadMsgsCount)))
+            badgeView.setBadgeCount(unreadMsgsCount);
     }
 
     //重新获取焦点,着再次刷新一下未读消息
@@ -743,7 +775,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             //更新版本
             description = updateCodeBean.data.description;
             //强制更新
-            forceUpdate = updateCodeBean.data.force_update;
+//            forceUpdate = updateCodeBean.data.force_update;
+            forceUpdate = "0";
 
             package_download_url = updateCodeBean.data.package_download_url;
             String flush_cache = updateCodeBean.data.flush_cache;
@@ -823,9 +856,12 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 
     @Override
     public void Erro() {
-        receive.clearAnimation();
-        redacketPopWindow.dismiss();
-        redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
+        if (redacketPopWindow != null) {
+            receive.clearAnimation();
+            redacketPopWindow.dismiss();
+            redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
+        }
+
     }
 
 
@@ -925,83 +961,114 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     }
 
 
-    private void listenerDownApk(String apkUrl) {
-        //此处使用DownLoadManager开启下载任务
-        mDownloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+    /**
+     * 从服务器端下载最新apk
+     */
+    private void downloadApk(String url) {
+        //访问网络下载apk
+        new Thread(new DownloadApk(url)).start();
+    }
 
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
-        // 下载过程和下载完成后通知栏有通知消息。
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE | DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setTitle("下载");
-        request.setDescription("apk正在下载");
-        //设置保存目录  /storage/emulated/0/Android/包名/files/Download
-        request.setDestinationInExternalFilesDir(MainActivity.this, Environment.DIRECTORY_DOWNLOADS, "jiaogeyi.apk");
-        mId = mDownloadManager.enqueue(request);
+    /**
+     * 访问网络下载apk
+     */
+    public class DownloadApk implements Runnable {
+        InputStream is;
+        FileOutputStream fos;
+        String url;
 
-        //注册内容观察者，实时显示进度
-        MyContentObserver downloadChangeObserver = new MyContentObserver(null);
-        getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, downloadChangeObserver);
-        //Toast.makeText(MainActivity.this,"XXXX",Toast.LENGTH_SHORT).show();
-        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        public DownloadApk(String url) {
+            this.url = url;
+        }
 
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                long longExtra = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                if (mId == longExtra) {
-//                    Uri downloadUri = mDownloadManager.getUriForDownloadedFile(id);
-                    Intent install = new Intent(Intent.ACTION_VIEW);
-                    File apkFile = getExternalFilesDir("DownLoad/shangjitoutiao.apk");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        install.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        Uri uriForFile = FileProvider.getUriForFile(context, "com.zwonline.top28.fileprovider", apkFile);
-                        install.setDataAndType(uriForFile, "application/vnd.android.package-archive");
-                    } else {
-                        install.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void run() {
+            OkHttpClient client = new OkHttpClient();
+//            String url = "https://raw.githubusercontent.com/WVector/AppUpdateDemo/master/apk/app-debug.apk";
+            Request request = new Request.Builder().get().url(url).build();
+            try {
+                okhttp3.Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    //获取内容总长度
+                    long contentLength = response.body().contentLength();
+                    //设置最大值
+                    updataProgressbar.setMax((int) contentLength);
+                    forceUpdataProgressbar.setMax((int) contentLength);
+                    //设置最大值
+                    //保存到sd卡
+                    File apkFile = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".apk");
+                    fos = new FileOutputStream(apkFile);
+                    //获得输入流
+                    is = response.body().byteStream();
+                    //定义缓冲区大小
+                    byte[] bys = new byte[1024];
+                    progress = 0;
+                    int len = -1;
+                    while ((len = is.read(bys)) != -1) {
+                        try {
+                            Thread.sleep(1);
+                            fos.write(bys, 0, len);
+                            fos.flush();
+                            progress += len;
+                            //设置进度forceUpdate判断是强制更新还是非强制更新:0是非强制更新1是强制更新
+                            if (StringUtil.isNotEmpty(forceUpdate) && forceUpdate.equals(BizConstant.IS_FAIL)) {
+                                updataProgressbar.setProgress(progress);
+                            } else {
+                                forceUpdataProgressbar.setProgress(progress);
+                            }
+                            // 注意强转方式，防止一直为0
+                            percent = (int) (100.0 * progress / contentLength);
+                            Message msg = new Message();
+                            handler.sendMessage(msg);
+                        } catch (InterruptedException e) {
+                        }
                     }
 
-                    install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(install);
-                    Toast.makeText(MainActivity.this, "ZZZZ", Toast.LENGTH_SHORT).show();
+                    //下载完成,提示用户安装
+                    installApk(apkFile);
+
                 }
-            }
-
-        };
-
-        registerReceiver(broadcastReceiver, intentFilter);
-    }
-
-    class MyContentObserver extends ContentObserver {
-
-        public MyContentObserver(Handler handler) {
-            super(handler);
-        }
-
-
-        @TargetApi(Build.VERSION_CODES.N)
-        @Override
-        public void onChange(boolean selfChange) {
-            DownloadManager.Query query = new DownloadManager.Query();
-            query.setFilterById(mId);
-            DownloadManager dManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-            final Cursor cursor = dManager.query(query);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int totalColumn = cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
-                final int currentColumn = cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
-                int totalSize = cursor.getInt(totalColumn);
-                int currentSize = cursor.getInt(currentColumn);
-                float percent = (float) currentSize / (float) totalSize;
-                float progress = (float) Math.floor(percent * 100);
-//                mPrecent.setText(progress+"%");
-                mProgressBar.setProgress((int) progress, true);
-                if (progress == 100) {
-                    customPopuWindow.dismiss();
-                    customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
+            } catch (Exception e) {
+                //                load2Login();
+            } finally {
+                //关闭io流
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    is = null;
+                }
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    fos = null;
                 }
             }
         }
-
     }
 
+    /**
+     * 下载完成,提示用户安装
+     * file 为File文件 或 fileName 主要看你上一个方法有没有转文件名
+     */
+    private void installApk(File file) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(this, "com.zwonline.top28.fileprovider", file);
+            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(Uri.parse("file://" + file),
+                    "application/vnd.android.package-archive");
+        }
+        startActivityForResult(intent, 119);
+    }
 }
 

@@ -7,6 +7,7 @@ import com.zwonline.top28.api.subscriber.BaseDisposableSubscriber;
 import com.zwonline.top28.base.BasePresenter;
 import com.zwonline.top28.bean.IntegralBean;
 import com.zwonline.top28.model.IntegralModel;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IIntegralActivity;
 
 import java.io.IOException;
@@ -99,7 +100,7 @@ public class IntergralPresenter extends BasePresenter<IIntegralActivity> {
      * @param type
      * @param page
      */
-    public void BalanceRecord(Context context, String type, int page) {
+    public void BalanceRecord(final Context context, String type, int page) {
         try {
             Flowable<IntegralBean> flowable = integralModel.mBalanceRecord(context, type, page);
             flowable.subscribeOn(Schedulers.io())
@@ -108,7 +109,11 @@ public class IntergralPresenter extends BasePresenter<IIntegralActivity> {
                         @Override
                         public void onNext(IntegralBean integralBean) {
                             Log.e("myCurrencyBean==", integralBean.msg);
-                            iIntegralActivity.showIntegralListByTypeId(integralBean.data.list);
+                            if (integralBean.status == 1) {
+                                iIntegralActivity.showIntegralListByTypeId(integralBean.data.list);
+                            } else {
+                                ToastUtils.showToast(context, integralBean.msg);
+                            }
                         }
 
                         @Override

@@ -63,6 +63,7 @@ public class RecommendListActivity extends BaseActivity {
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
+        if (StringUtil.isNotEmpty(url))
         synCookies(url, cookieString);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

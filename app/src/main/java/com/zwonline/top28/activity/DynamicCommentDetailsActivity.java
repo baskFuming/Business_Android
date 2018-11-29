@@ -173,6 +173,12 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
         linearLike = (LinearLayout) findViewById(R.id.linear_like);
         linearLike.setOnClickListener(this);
         commentDetailsRelat = (RelativeLayout) findViewById(R.id.comment_details_relat);
+        commentLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeDate();
+            }
+        });
         //判断是否攒过
         if (StringUtil.isNotEmpty(did_i_votes) && did_i_votes.equals(BizConstant.IS_FAIL)) {
             commentLikes.setChecked(false);
@@ -371,8 +377,8 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
         if (addBankBean.status == 1) {
             int content_nums = Integer.parseInt(content_num) + 1;
             content_num = content_nums + "";
-        }else {
-            ToastUtils.showToast(getApplicationContext(),addBankBean.msg);
+        } else {
+            ToastUtils.showToast(getApplicationContext(), addBankBean.msg);
         }
         presenter.mDynamicComment(this, page, article_id, commentId, "", "");
     }
@@ -391,20 +397,34 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
                 overridePendingTransition(0, R.anim.push_buttom_out);
                 break;
             case R.id.linear_like:
-                if (islogins) {
-                    if (did_i_votes.equals(BizConstant.IS_FAIL)) {
-                        if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
-                            presenter.LikeMomentComment(getApplicationContext(), commentId, BizConstant.IS_SUC);
-                        } else {
-                            presenter.LikeMomentComment(getApplicationContext(), commentId, BizConstant.ALIPAY_METHOD);
-                        }
-                    } else {
-                        ToastUtils.showToast(getApplicationContext(), "已经点过赞了哦");
-                    }
-                } else {
-                    ToastUtils.showToast(getApplicationContext(), "请先登录");
-                }
+                likeDate();
                 break;
+        }
+    }
+
+    /**
+     * 点赞的方法
+     */
+    public void likeDate() {
+        if (islogins) {
+            if (did_i_votes.equals(BizConstant.IS_FAIL)) {
+                if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.IS_SUC)) {
+                    presenter.LikeMomentComment(getApplicationContext(), commentId, BizConstant.IS_SUC);
+                } else {
+                    presenter.LikeMomentComment(getApplicationContext(), commentId, BizConstant.ALIPAY_METHOD);
+                }
+                commentLikes.setChecked(true);
+                commentLikes.setEnabled(false);
+                praiseNums.setTextColor(Color.parseColor("#1d1d1d"));
+                int likeNum = Integer.parseInt(zans) + 1;
+                praiseNums.setText(likeNum + "");
+                did_i_votes = BizConstant.IS_SUC;
+                zans = likeNum + "";
+            } else {
+                ToastUtils.showToast(getApplicationContext(), "已经点过赞了哦");
+            }
+        } else {
+            ToastUtils.showToast(getApplicationContext(), "请先登录");
         }
     }
 
@@ -506,13 +526,7 @@ public class DynamicCommentDetailsActivity extends BaseActivity<ISendFriendCircl
     @Override
     public void showLikeMomentComment(AttentionBean attentionBean) {
         if (attentionBean.status == 1) {
-            commentLikes.setChecked(true);
-            commentLikes.setEnabled(false);
-            praiseNums.setTextColor(Color.parseColor("#1d1d1d"));
-            int likeNum = Integer.parseInt(zans) + 1;
-            praiseNums.setText(likeNum + "");
-            did_i_votes = BizConstant.IS_SUC;
-            zans = likeNum + "";
+
         } else {
             ToastUtil.showToast(getApplicationContext(), attentionBean.msg);
         }

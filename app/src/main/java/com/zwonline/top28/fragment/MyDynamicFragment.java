@@ -188,7 +188,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
         newcontentRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (getScrollY() > newState){
+                if (getScrollY() > newState) {
                     floatingActionButton.setVisibility(View.VISIBLE);
                 } else {
                     floatingActionButton.setVisibility(View.GONE);
@@ -197,7 +197,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (getScrollY() >(recyclerView.getScrollState())){
+                if (getScrollY() > (recyclerView.getScrollState())) {
                     floatingActionButton.setVisibility(View.VISIBLE);
                 } else {
                     floatingActionButton.setVisibility(View.GONE);
@@ -698,6 +698,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
     public void showGift(List<GiftBean.DataBean> giftBean) {
 
     }
+
     /**
      * 打赏接口
      *
@@ -1023,6 +1024,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
             EventBus.getDefault().unregister(this);
         }
     }
+
     /*
               getScrollY 该方法用于测算ListView滑动的距离
             */
@@ -1035,14 +1037,18 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
         int top = c.getTop();
         return -top + firstVisiblePosition * c.getHeight();
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
         //可见的并且是初始化之后才加载
         if (isVisibleToUser) {
-            presenter.GetMyNotificationCount(getActivity());
-            presenter.MomentLists(getActivity(), 1, userId, "", "");
+            if (islogins) {
+                presenter.GetMyNotificationCount(getActivity());
+                presenter.MomentLists(getActivity(), 1, userId, "", "");
+            }
+
         }
     }
 

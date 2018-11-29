@@ -722,7 +722,7 @@ public interface ApiService {
             @Field("sign") String sign,
             @Field("nick_name") String nick_name,
             @Field("real_name") String real_name,
-            @Field("sex") int sex,
+            @Field("sex") String sex,
             @Field("age") String age,
             @Field("address") String address,
             @Field("favourite_industry") String favourite_industry,

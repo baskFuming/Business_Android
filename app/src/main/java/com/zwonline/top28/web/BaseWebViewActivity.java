@@ -94,6 +94,7 @@ public class BaseWebViewActivity extends BaseActivity {
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
+        if (StringUtil.isNotEmpty(url))
         synCookies(url, cookieString);
         webSettingInit();
         //客服聊天

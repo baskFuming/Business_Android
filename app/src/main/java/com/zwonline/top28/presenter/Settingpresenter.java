@@ -11,6 +11,7 @@ import com.zwonline.top28.bean.SettingBean;
 import com.zwonline.top28.bean.UserInfoBean;
 import com.zwonline.top28.model.SettingModel;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.ISettingView;
 
 import java.io.File;
@@ -31,26 +32,32 @@ public class Settingpresenter extends BasePresenter<ISettingView> {
     private SettingModel settingModel;
     private ISettingView iSettingView;
     private SharedPreferencesUtils sp;
+
     public Settingpresenter(ISettingView iSettingView) {
         this.iSettingView = iSettingView;
         settingModel = new SettingModel();
-        sp= SharedPreferencesUtils.getUtil();
+        sp = SharedPreferencesUtils.getUtil();
     }
 
     //上传头像
-        public void mSettingHead(final Context context, File file) {
+    public void mSettingHead(final Context context, File file) {
         try {
-            Flowable<HeadBean> flowable = settingModel.SettingHead(context,file );
+            Flowable<HeadBean> flowable = settingModel.SettingHead(context, file);
             flowable.subscribeOn(Schedulers.io())
 
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<HeadBean>() {
                         @Override
                         public void onNext(HeadBean headBean) {
-                            Log.e("data==",headBean.data);
-                            sp.insertKey(context,"avatar",headBean.data);
-                            iSettingView.showSettingHead(headBean);
+                            Log.e("data==", headBean.data);
+                            sp.insertKey(context, "avatar", headBean.data);
+                            if (headBean.status == 1) {
+                                iSettingView.showSettingHead(headBean);
+                            } else {
+                                ToastUtils.showToast(context, headBean.msg);
+                            }
                         }
+
                         @Override
                         public void onError(Throwable t) {
 
@@ -75,9 +82,9 @@ public class Settingpresenter extends BasePresenter<ISettingView> {
                     .subscribeWith(new DisposableSubscriber<IndustryBean>() {
                         @Override
                         public void onNext(IndustryBean industryBean) {
-                            if (industryBean!=null&&industryBean.data!=null&&industryBean.data.size()>0){
+                            if (industryBean != null && industryBean.data != null && industryBean.data.size() > 0) {
                                 iSettingView.showIndustry(industryBean.data);
-                            }else {
+                            } else {
                                 iSettingView.onErro();
                             }
                         }
@@ -96,23 +103,24 @@ public class Settingpresenter extends BasePresenter<ISettingView> {
             e.printStackTrace();
         }
     }
+
     //设置个人资料
     public void mSetting(final Context context, String nick_name,
-                         String real_name, int sex, String age,
+                         String real_name, String sex, String age,
                          String address, String favourite_industry,
-                         String bio,String weixin,String email,String telephone,String job_cate_pid,String enterprise
-    ,String position) {
+                         String bio, String weixin, String email, String telephone, String job_cate_pid, String enterprise
+            , String position) {
         try {
             Flowable<SettingBean> flowable = settingModel.mSetingModel(context, nick_name, real_name, sex, age, address,
-                    favourite_industry, bio,weixin,email,telephone,job_cate_pid,enterprise,position);
+                    favourite_industry, bio, weixin, email, telephone, job_cate_pid, enterprise, position);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<SettingBean>() {
                         @Override
                         public void onNext(SettingBean headBean) {
-                            if (headBean.status==1){
+                            if (headBean.status == 1) {
                                 iSettingView.isSucceed();
-                            }else {
+                            } else {
                                 iSettingView.onErro();
                             }
                             iSettingView.showSetting(headBean);
@@ -132,18 +140,19 @@ public class Settingpresenter extends BasePresenter<ISettingView> {
             e.printStackTrace();
         }
     }
+
     //获取用户信息
-    public void mUserInfo(Context context){
+    public void mUserInfo(Context context) {
         try {
-            Flowable<UserInfoBean>flowable=settingModel.UserInfo(context);
+            Flowable<UserInfoBean> flowable = settingModel.UserInfo(context);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<UserInfoBean>() {
                         @Override
                         public void onNext(UserInfoBean userInfoBean) {
-                            if (userInfoBean!=null&&userInfoBean.data!=null){
+                            if (userInfoBean != null && userInfoBean.data != null) {
                                 iSettingView.showUserInfo(userInfoBean);
-                            }else {
+                            } else {
                                 iSettingView.onErro();
                             }
 

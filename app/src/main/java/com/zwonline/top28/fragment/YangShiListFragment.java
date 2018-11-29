@@ -97,7 +97,9 @@ public class YangShiListFragment extends BasesFragment<IYangShiActivity, YangShi
 //        if (page == 1) {
 //            ysList.clear();
 //        }
-        ysLists.addAll(ysList);
+        if (ysList!=null){
+            ysLists.addAll(ysList);
+        }
         ysListAdapter.setOnClickItemListener(new YSListAdapter.OnClickItemListener() {
             @Override
             public void setOnItemClick(View view, int position) {

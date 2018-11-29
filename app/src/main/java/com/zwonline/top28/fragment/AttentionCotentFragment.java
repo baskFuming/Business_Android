@@ -81,7 +81,6 @@ import butterknife.OnClick;
 public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActivity, SendFriendCirclePresenter> implements ISendFriendCircleActivity {
 
 
-
     private XRecyclerView newcontentRecy;
     private int page = 1;
     private AttentionDynamicAdapter adapter;
@@ -198,11 +197,11 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
         adapter = new AttentionDynamicAdapter(newContentList, getActivity());
         setHeader(newcontentRecy);
         newcontentRecy.setAdapter(adapter);
-      //一键返回顶部
+        //一键返回顶部
         newcontentRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (getScrollY() > newState){
+                if (getScrollY() > newState) {
                     floatingActionButton.setVisibility(View.VISIBLE);
                 } else {
                     floatingActionButton.setVisibility(View.GONE);
@@ -211,7 +210,7 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (getScrollY() >(recyclerView.getScrollState())){
+                if (getScrollY() > (recyclerView.getScrollState())) {
                     floatingActionButton.setVisibility(View.VISIBLE);
                 } else {
                     floatingActionButton.setVisibility(View.GONE);
@@ -249,7 +248,9 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
     @Override
     public void showAttentionDynamic(List<AtentionDynamicHeadBean.DataBean.ListBean> issueList) {
         attentionList.clear();
-        attentionList.addAll(issueList);
+        if (issueList!=null){
+            attentionList.addAll(issueList);
+        }
         attentionDynamicHeadAdapter.setOnClickItemListener(new BusinessProductAdapter.OnClickItemListener() {
             @Override
             public void setOnItemClick(View view, int position) {
@@ -1141,14 +1142,17 @@ public class AttentionCotentFragment extends BasesFragment<ISendFriendCircleActi
         int top = c.getTop();
         return -top + firstVisiblePosition * c.getHeight();
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
         //可见的并且是初始化之后才加载
         if (isVisibleToUser) {
-            presenter.GetMyNotificationCount(getActivity());
-            presenter.MomentLists(getActivity(), 1, "", BizConstant.ALREADY_FAVORITE, "");
+            if (islogins) {
+                presenter.GetMyNotificationCount(getActivity());
+                presenter.MomentLists(getActivity(), 1, "", BizConstant.ALREADY_FAVORITE, "");
+            }
         }
     }
 }

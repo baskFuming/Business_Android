@@ -351,7 +351,7 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                         Double parseDouble = Double.parseDouble(yangfenCounts);
                         Double parseDoubles = Double.parseDouble(pointsEdittexts);
                         Double cp = NumberOperateUtil.mul(parseDouble, parseDoubles);
-                        //普通红包
+                        //
                         showYfNum.setText(cp + "");
                     } else {
                         showYfNum.setText("0");
@@ -375,7 +375,7 @@ public class SendYangFenActivity extends BaseActivity<ISendYFActivity, SendYFPre
                         Double parseDouble = Double.parseDouble(yangfenCounts);
                         Double parseDoubles = Double.parseDouble(pointsEdittexts);
                         Double cp = NumberOperateUtil.mul(parseDouble, parseDoubles);
-                        //普通红包
+                        //
                         showYfNum.setText(cp + "");
                     } else {
                         showYfNum.setText("0");

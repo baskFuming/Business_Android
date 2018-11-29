@@ -762,6 +762,10 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                         } else {
                             presenter.LikeMomentComment(getApplicationContext(), dynamicList.get(position).comment_id, BizConstant.ALIPAY_METHOD);
                         }
+                        dynamicList.get(commentLikePosition).did_i_vote = BizConstant.IS_SUC;//重置状态
+                        int like_count = Integer.parseInt(dynamicList.get(commentLikePosition).like_count) + 1;
+                        dynamicList.get(commentLikePosition).like_count = like_count + "";
+                        adapter.notifyDataSetChanged();
                     } else {
                         ToastUtils.showToast(getApplicationContext(), "已经点过赞了哦");
                     }
@@ -1053,10 +1057,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
     @Override
     public void showLikeMomentComment(AttentionBean attentionBean) {
         if (attentionBean.status == 1) {
-            dynamicList.get(commentLikePosition).did_i_vote = BizConstant.IS_SUC;//重置状态
-            int like_count = Integer.parseInt(dynamicList.get(commentLikePosition).like_count) + 1;
-            dynamicList.get(commentLikePosition).like_count = like_count + "";
-            adapter.notifyDataSetChanged();
+
         } else {
             ToastUtils.showToast(getApplicationContext(), attentionBean.msg);
         }

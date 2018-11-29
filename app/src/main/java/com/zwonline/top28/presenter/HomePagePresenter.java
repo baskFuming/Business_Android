@@ -41,7 +41,7 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
     }
 
     //用户主页信息
-    public void mCompany(Context context, String uid) {
+    public void mCompany(final Context context, String uid) {
         try {
             Flowable<PersonageInfoBean> flowable = homePageModel.Company(context, uid);
             flowable.subscribeOn(Schedulers.io())
@@ -49,11 +49,17 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
                     .subscribeWith(new DisposableSubscriber<PersonageInfoBean>() {
                         @Override
                         public void onNext(PersonageInfoBean companyBean) {
-                            if (companyBean != null && companyBean.data != null) {
-                                iHomePageActivity.showCompany(companyBean);
+                            if (companyBean.status == 1) {
+                                if (companyBean != null && companyBean.data != null) {
+
+                                    iHomePageActivity.showCompany(companyBean);
+                                } else {
+                                    iHomePageActivity.onErro();
+                                }
                             } else {
-                                iHomePageActivity.onErro();
+                                ToastUtils.showToast(context, companyBean.msg);
                             }
+
 //                            EventBus.getDefault().post(companyBean);
                         }
 
@@ -296,6 +302,7 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
                                 }
                             }
                         }
+
                         @Override
                         public void onError(Throwable t) {
                             iHomePageActivity.onErro();
@@ -366,9 +373,9 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
     }
 
     //微信分享名片
-    public void cardShareWXin(Context context,String show_realname,String show_telephone,String show_weixin,String show_address,String show_enterprise,String show_position){
+    public void cardShareWXin(Context context, String show_realname, String show_telephone, String show_weixin, String show_address, String show_enterprise, String show_position) {
         try {
-            Flowable<RealBean> flowable = homePageModel.shareWxin(context, show_realname,show_telephone,show_weixin,show_address,show_enterprise,show_position);
+            Flowable<RealBean> flowable = homePageModel.shareWxin(context, show_realname, show_telephone, show_weixin, show_address, show_enterprise, show_position);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<RealBean>() {
@@ -391,23 +398,24 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
             e.printStackTrace();
         }
     }
+
     //设置个人资料
     public void mSetting(final Context context, String nick_name,
                          String real_name, int sex, String age,
                          String address, String favourite_industry,
-                         String bio,String weixin,String email,String telephone,String job_cate_pid,String enterprise,String position) {
+                         String bio, String weixin, String email, String telephone, String job_cate_pid, String enterprise, String position) {
         try {
 
             Flowable<SettingBean> flowable = homePageModel.mSetingModel(context, nick_name, real_name, sex, age, address,
-                    favourite_industry, bio,weixin,email,telephone,job_cate_pid,enterprise,position);
+                    favourite_industry, bio, weixin, email, telephone, job_cate_pid, enterprise, position);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<SettingBean>() {
                         @Override
                         public void onNext(SettingBean headBean) {
-                            if (headBean.status==1){
+                            if (headBean.status == 1) {
                                 iHomePageActivity.isSucceed();
-                            }else {
+                            } else {
                                 iHomePageActivity.onErro();
                             }
                             iHomePageActivity.showSetting(headBean);
@@ -427,18 +435,19 @@ public class HomePagePresenter extends BasePresenter<IHomePageActivity> {
             e.printStackTrace();
         }
     }
+
     //获取用户信息
-    public void mUserInfo(Context context){
+    public void mUserInfo(Context context) {
         try {
-            Flowable<UserInfoBean>flowable=homePageModel.UserInfo(context);
+            Flowable<UserInfoBean> flowable = homePageModel.UserInfo(context);
             flowable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSubscriber<UserInfoBean>() {
                         @Override
                         public void onNext(UserInfoBean userInfoBean) {
-                            if (userInfoBean!=null&&userInfoBean.data!=null){
+                            if (userInfoBean != null && userInfoBean.data != null) {
                                 iHomePageActivity.showUserInfo(userInfoBean);
-                            }else {
+                            } else {
                                 iHomePageActivity.onErro();
                             }
 

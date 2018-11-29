@@ -972,9 +972,10 @@ public class NewContentFragment extends BasesFragment<ISendFriendCircleActivity,
 
         //可见的并且是初始化之后才加载
         if (isVisibleToUser) {
-            presenter.GetMyNotificationCount(getActivity());
-            presenter.MomentLists(getActivity(), 1, "", "", "");
-
+            if (islogins){
+                presenter.GetMyNotificationCount(getActivity());
+                presenter.MomentLists(getActivity(), 1, "", "", "");
+            }
         }
     }
 }

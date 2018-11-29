@@ -30,6 +30,7 @@ import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.service.PayService;
 import com.zwonline.top28.bean.ArticleCommentBean;
 import com.zwonline.top28.bean.ZanBean;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
@@ -59,7 +60,8 @@ public class ArticleCommentAdapter extends BaseAdapter {
     private boolean islogins;
     private PopupWindow mCurPopupWindow;
     private ItemContentInterface itemContentInterface;
-    private int dian=0;
+    private int dian = 0;
+
     public ArticleCommentAdapter(List<ArticleCommentBean.DataBean> list, Context context) {
         this.list = list;
         this.context = context;
@@ -215,9 +217,7 @@ public class ArticleCommentAdapter extends BaseAdapter {
                     context.startActivity(intent);
                 }
             });
-            if (list.get(position).did_i_vote.equals("1")) {
 
-            }
             if (list.get(position).did_i_vote.equals("1")) {
                 holder.praise_num.setTextColor(Color.parseColor("#FF2B2B"));
                 holder.comment_like.setChecked(true);
@@ -267,15 +267,16 @@ public class ArticleCommentAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     if (islogins) {
-
                         String token = (String) sp.getKey(context, "dialog", "");
                         try {
-                            int vote = Integer.parseInt(list.get(position).zan) + 1;
-                            dianZan(list.get(position).comment_id, token);
-                            holder.comment_like.setChecked(true);
-                            holder.praise_num.setText(vote + "");
-                            holder.praise_num.setTextColor(Color.parseColor("#FF2B2B"));
-                            holder.praise_like.setEnabled(false);
+                            if (list.get(position).did_i_vote.equals("0")) {
+                                list.get(position).did_i_vote = BizConstant.IS_SUC;
+                                list.get(position).zan = Integer.parseInt(list.get(position).zan) + 1 + "";
+                                dianZan(list.get(position).comment_id, token);
+                            } else if (list.get(position).did_i_vote.equals("1")) {
+                                ToastUtils.showToast(context, "您已经点赞过了哦");
+                            }
+                            notifyDataSetChanged();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -292,7 +293,7 @@ public class ArticleCommentAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        TextView comment_user_name, comment_issue_time, praise_num,  look_more_comment, comment_content,comment_user1, comment_user2;
+        TextView comment_user_name, comment_issue_time, praise_num, look_more_comment, comment_content, comment_user1, comment_user2;
         ImageViewPlus comment_user_head;
         CheckBox comment_like;
         LinearLayout linear_child_comments, have_comment, no_comment;

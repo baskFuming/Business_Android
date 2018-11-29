@@ -373,11 +373,12 @@ public class SettingActivity extends BaseActivity<ISettingView, Settingpresenter
                 break;
             case R.id.btn_setting:
                 presenter.mSetting(getApplicationContext(), nickName.getText().toString().trim(),
-                        realName.getText().toString().trim(), Integer.parseInt(sex_id), age.getText().toString().trim(),
+                        realName.getText().toString().trim(), sex_id, age.getText().toString().trim(),
                         address.getText().toString().trim(), interested_cate_id,
                         bio.getText().toString().trim(), ed_my_wxin.getText().toString().trim(),
                         ed_my_email.getText().toString().trim(), ed_my_phone.getText().toString().trim(),
                         job_cate_pid, "", "");
+
                 RecordUserBehavior.recordUserBehavior(SettingActivity.this, BizConstant.EDITED_PROFILE);
 //                Intent intent = new Intent();
 //                intent.putExtra("nickname", nickName.getText().toString().trim());

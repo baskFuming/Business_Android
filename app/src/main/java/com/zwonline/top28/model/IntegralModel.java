@@ -54,9 +54,11 @@ public class IntegralModel {
         map.put("token", token);
         map.put("timestamp", String.valueOf(timestamp));
         map.put("page", page);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         return ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
-                .iAllIntegralList(String.valueOf(timestamp), token, page, SignUtils.getSignature(map, Api.PRIVATE_KEY));
+                .iAllIntegralList(String.valueOf(timestamp), token, page, sign);
     }
 
 

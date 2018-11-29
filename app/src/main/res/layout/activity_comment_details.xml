@@ -146,7 +146,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
                     android:textColor="#1d1d1d"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="9dp"
                     android:textSize="12sp" />
             </LinearLayout>
             <!--<CheckBox-->

@@ -64,7 +64,11 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                         @Override
                         protected void onBaseNext(PictursBean pictursBean) {
                             Log.e("data==", pictursBean.msg);
-                            iSendFriendCircleActivity.showPictures(pictursBean);
+                            if (pictursBean.status == 1) {
+                                iSendFriendCircleActivity.showPictures(pictursBean);
+                            } else {
+                                ToastUtils.showToast(context, pictursBean.msg);
+                            }
                         }
 
                         @Override
@@ -955,7 +959,7 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
      *
      * @param context
      */
-    public void StarRecommendUserList(Context context) {
+    public void StarRecommendUserList(final Context context) {
         try {
             Flowable<AtentionDynamicHeadBean> flowable = sendFriendCircleModel.mStarRecommendUserList(context);
             flowable.subscribeOn(Schedulers.io())
@@ -963,7 +967,11 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                     .subscribeWith(new DisposableSubscriber<AtentionDynamicHeadBean>() {
                         @Override
                         public void onNext(AtentionDynamicHeadBean attentionBean) {
-                            iSendFriendCircleActivity.showAttentionDynamic(attentionBean.data.list);
+                            if (attentionBean.status == 1) {
+                                iSendFriendCircleActivity.showAttentionDynamic(attentionBean.data.list);
+                            } else if (attentionBean.status == -99) {
+                                ToastUtils.showToast(context, attentionBean.msg);
+                            }
                         }
 
                         @Override

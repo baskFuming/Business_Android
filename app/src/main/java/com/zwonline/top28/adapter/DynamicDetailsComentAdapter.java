@@ -107,7 +107,7 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
 //                    if (list.get(position).user_id.equals(uid)) {
 //                        spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 //                    } else {
-                        spannable.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(0).user_id), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(0).user_id), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 //                    }
                     myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
                     myViewHolder.comment_user1.setText(spannable);
@@ -122,8 +122,8 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
 //                        spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                        spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 //                    } else {
-                        spannable1.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(0).user_id), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                        spannable2.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(1).user_id), 0, list.get(position).commentsExcerpt.get(1).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable1.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(0).user_id), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable2.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(1).user_id), 0, list.get(position).commentsExcerpt.get(1).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 //                    }
                     myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
                     myViewHolder.comment_user2.setMovementMethod(LinkMovementMethod.getInstance());
@@ -145,8 +145,8 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
 //                        spannable1.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 //                        spannable2.setSpan(new ForegroundColorSpan(Color.parseColor("#228FFE")), 0, list.get(position).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 //                    } else {
-                        spannable1.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(0).user_id), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                        spannable2.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(1).user_id), 0, list.get(position).commentsExcerpt.get(1).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable1.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(0).user_id), 0, list.get(position).commentsExcerpt.get(0).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannable2.setSpan(new TextClick(context, list.get(position).commentsExcerpt.get(1).user_id), 0, list.get(position).commentsExcerpt.get(1).member.nickname.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 //                    }
                     myViewHolder.comment_user1.setMovementMethod(LinkMovementMethod.getInstance());
                     myViewHolder.comment_user2.setMovementMethod(LinkMovementMethod.getInstance());
@@ -203,6 +203,12 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
                 itemContentInterface.onclick(v, position);
             }
         });
+        myViewHolder.choose_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentLikeContentInterface.onclick(v, position, myViewHolder.choose_like, myViewHolder.like_num);
+            }
+        });
     }
 
     @Override
@@ -214,7 +220,7 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
         ImageViewPlus commentsUserHead;
         TextView commentsUserName, commentsTime, commentsContent, comment_user1, comment_user2, look_more_comment, like_num;
         LinearLayout linear_like;
-        LinearLayout linear_child_comments;
+        RelativeLayout linear_child_comments;
         CheckBox choose_like;
 
 
@@ -228,7 +234,7 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
             comment_user1 = (TextView) itemView.findViewById(R.id.comment_user1);
             like_num = (TextView) itemView.findViewById(R.id.like_num);
             look_more_comment = (TextView) itemView.findViewById(R.id.look_more_comment);
-            linear_child_comments = (LinearLayout) itemView.findViewById(R.id.linear_child_comments);
+            linear_child_comments = itemView.findViewById(R.id.linear_child_comments);
             linear_like = (LinearLayout) itemView.findViewById(R.id.linear_like);
             choose_like = (CheckBox) itemView.findViewById(R.id.choose_like);
 

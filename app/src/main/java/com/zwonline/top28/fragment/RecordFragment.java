@@ -132,7 +132,9 @@ public class RecordFragment extends BasesFragment<IIntegralActivity, IntergralPr
         if (page == 1) {
             list.clear();
         }
-        list.addAll(integralList);
+        if (integralList!=null){
+            list.addAll(integralList);
+        }
 
         recordAdapter.notifyDataSetChanged();
         recordRecy.setLoadingListener(new XRecyclerView.LoadingListener() {
