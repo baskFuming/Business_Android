@@ -1,12 +1,14 @@
 package com.zwonline.top28.activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +30,7 @@ import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.view.IMyCurrencyActivity;
 import com.zwonline.top28.web.BaseWebViewActivity;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +69,7 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
     private String buyHashrateUrl = Api.baseUrl() + "/Members/boc_list_pay.html";
     private String buyGoldenUrl = Api.baseUrl() + "/Integral/exchangeMoney.html";
     private String yangfenConvert = Api.baseUrl() + "/Integral/exchange.html?version=";//兑换鞅分
+    private String kalmanWeb = Api.baseUrl()+"/Members/cardPay.html";
     private TextView buyGolden;
     private TextView buyHashrate;
     @BindView(R.id.type_chang)
@@ -86,6 +90,7 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
         } else {
             presenter.BalanceLog(this, "", 0);//商机币
         }
+        setIndicator(integralTab,20,20);
     }
 
     /**
@@ -314,7 +319,7 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
                 break;
             case R.id.card_exchange://卡密兑换
                 Intent cardIntent = new Intent(IntegralActivity.this, BaseWebViewActivity.class);
-//                cardIntent.putExtra("weburl", buyGoldenUrl);//传卡密的URL
+                cardIntent.putExtra("weburl", kalmanWeb);//传卡密的URL
                 startActivity(cardIntent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
@@ -358,6 +363,33 @@ public class IntegralActivity extends BaseActivity<IMyCurrencyActivity, MyCurren
             return hlist.size();
         }
 
+    }
+    public void setIndicator(TabLayout tabs, int leftDip, int rightDip)
+    {
+        Class<?> tabLayout = tabs.getClass();
+        Field tabStrip = null;
+        try {
+            tabStrip = tabLayout.getDeclaredField("mTabStrip");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        tabStrip.setAccessible(true);
+        LinearLayout llTab = null;
+        try {
+            llTab = (LinearLayout) tabStrip.get(tabs);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        int left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, leftDip, Resources.getSystem().getDisplayMetrics());
+        int right = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, rightDip, Resources.getSystem().getDisplayMetrics());
+        for (int i = 0; i < llTab.getChildCount(); i++) {
+            View child = llTab.getChildAt(i);
+            child.setPadding(0, 0, 0, 0);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+            params.leftMargin = left;
+            params.rightMargin = right;
+            child.setLayoutParams(params); child.invalidate();
+        }
     }
 
 }
