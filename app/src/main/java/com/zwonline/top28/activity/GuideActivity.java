@@ -1,6 +1,9 @@
 package com.zwonline.top28.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,10 +16,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.contrarywind.timer.MessageHandler;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.GuidePageAdapter;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +29,9 @@ import java.util.List;
 /**
  * 引导页
  * type值1引导页2查看玩法
+ * imageIdArray引导页
+ * imageIdArrays查看玩法
+ * isLast是true最后一张图片false不是最后一张图片
  */
 public class GuideActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     private ViewPager vp;
@@ -39,6 +47,10 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
     private Button ib_start;
     private String type;
     private int len;
+    private boolean isLast = false;//判断是否是最后一页
+    private ImageView imageView;
+    private int positons;
+    private LinearLayout.LayoutParams params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +65,24 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
         ib_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
-                    finish();
+                //判断是否是最后一页，如果是最后一页点击finish()界面，不是最后一页点击切换图片
+                if (isLast) {
+                    if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
+                        finish();
+                    } else {
+                        startActivity(new Intent(GuideActivity.this, MainActivity.class));
+                        finish();
+                        overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    }
                 } else {
-                    startActivity(new Intent(GuideActivity.this, MainActivity.class));
-                    finish();
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-
+                    //点击切换图片
+                    vp.setCurrentItem(positons + 1, true);
                 }
-
             }
         });
 
         //加载ViewPager
         initViewPager();
-
         //加载底部圆点
 //        initPoint();
     }
@@ -96,8 +111,6 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
             //将数组中的ImageView加入到ViewGroup
             vg.addView(ivPointArray[i]);
         }
-
-
     }
 
     /**
@@ -110,7 +123,7 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
         imageIdArrays = new int[]{R.mipmap.page5, R.mipmap.w2_an, R.mipmap.w3_an, R.mipmap.w4_an, R.mipmap.w5_an, R.mipmap.w6_an, R.mipmap.w7_an};
         viewList = new ArrayList<>();
         //获取一个Layout参数，设置为全屏
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+        params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         //循环创建View并加入到集合中
@@ -122,19 +135,16 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
 
         for (int i = 0; i < len; i++) {
             //new ImageView并设置全屏和图片资源
-            ImageView imageView = new ImageView(this);
+            imageView = new ImageView(this);
             imageView.setLayoutParams(params);
             if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
                 imageView.setBackgroundResource(imageIdArrays[i]);
             } else {
                 imageView.setBackgroundResource(imageIdArray[i]);
             }
-
-
             //将ImageView加入到集合中
             viewList.add(imageView);
         }
-
         //View集合初始化好后，设置Adapter
         vp.setAdapter(new GuidePageAdapter(viewList));
         //设置滑动监听
@@ -156,6 +166,7 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
     public void onPageSelected(int position) {
         //循环设置当前页的标记图
         int length = imageIdArray.length;
+        this.positons = position;
 //        for (int i = 0; i < length; i++) {
 //            ivPointArray[position].setBackgroundResource(R.mipmap.guide1);
 //            if (position != i) {
@@ -165,21 +176,32 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
 
         //判断是否是最后一页，若是则显示按钮
         if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
-            if (position == imageIdArrays.length - 1) {
-                ib_start.setVisibility(View.VISIBLE);
-            } else {
-                ib_start.setVisibility(View.GONE);
-            }
+            guideType(imageIdArrays, position);
         } else {
-            if (position == imageIdArray.length - 1) {
-                ib_start.setVisibility(View.VISIBLE);
-            } else {
-                ib_start.setVisibility(View.GONE);
-            }
+            guideType(imageIdArray, position);
         }
 
     }
 
+    /**
+     * 判断引导页类别
+     *
+     * @param imageArray
+     * @param position
+     */
+    public void guideType(int[] imageArray, int position) {
+        if (position == imageArray.length - 1) {
+            ib_start.setText("朕已阅");
+            ib_start.setTextColor(Color.parseColor("#FFFFFF"));
+            ib_start.setBackgroundResource(R.drawable.btn_red_shape);
+            isLast = true;
+        } else {
+            ib_start.setText("下一页");
+            ib_start.setTextColor(Color.parseColor("#FF2B2B"));
+            ib_start.setBackgroundResource(R.drawable.reword__shape);
+            isLast = false;
+        }
+    }
 
     @Override
     public void onPageScrollStateChanged(int state) {

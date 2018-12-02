@@ -1111,7 +1111,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             applauseCount.setText(giftSumBean.data.list.get(1).count);
             kissCount.setText(giftSumBean.data.list.get(0).count);
         } else {
-            ToastUtils.showToast(this, "请先登录");
+            ToastUtils.showToast(this, giftImg);
         }
 
     }

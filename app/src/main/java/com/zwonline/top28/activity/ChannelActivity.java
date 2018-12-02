@@ -5,31 +5,27 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,112 +37,109 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zwonline.top28.R;
-import com.zwonline.top28.adapter.GuidePageAdapter;
-import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
+import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
+import com.zwonline.top28.activity.ChannelActivity;
+import com.zwonline.top28.web.BaseWebViewActivity;
 import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.OnClick;
 
 /**
- * 鞅分挖矿
+ * 更多频道管理
  */
-public class HashrateActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class ChannelActivity extends BaseActivity {
+
     private RelativeLayout back;
     private RelativeLayout backXx;
     private TextView hashrate;
     private TextView hashrates;
-    private SharedPreferencesUtils sp;
-
+    private ImageView service;
     private ProgressBar progressBar;
     private WebView hashrateWeb;
-    private String token;
-    private String url = Api.baseUrl() + "/Integral/createIntegral?version=";
-    private ImageView service;
+    private SharedPreferencesUtils sp;
+    private String url;
     private RewritePopwindow mPopwindow;
-    private ViewPager vp;
-    private int[] imageIdArray;//图片资源的数组
-    private List<View> viewList;//图片资源的集合
-    private ViewGroup vg;//放置圆点
-    //实例化原点View
-    private ImageView iv_point;
-    private ImageView[] ivPointArray;
-    private SharedPreferences hashrateSp;
-    private boolean isfristHashrate;
-    private Button ib_start;
-    private LinearLayout hashrate_linear;
-    private RelativeLayout hashrate_guide;
-    private boolean isLast = false;
-    private int positions;
+    private String token;
+    private String titleBarColor;
 
     @Override
     protected void init() {
-        StatusBarUtil.setColor(this, Color.parseColor("#5023DC"), 0);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
+        Intent intent = getIntent();
+        url = intent.getStringExtra("weburl");
+        titleBarColor = getIntent().getStringExtra("titleBarColor");
+        if (StringUtil.isNotEmpty(titleBarColor)) {
+            StatusBarUtil.setColor(this, Color.parseColor(titleBarColor), 0);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
+        }
         initView();
-        hashrateSp = getSharedPreferences("startup", 0);
-        //这个文件里面的布尔常量名，和它的初始状态，状态为是，则触发下面的方法
-        isfristHashrate = hashrateSp.getBoolean("isfristHashrate", true);
-        isFrist();
-        ib_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLast) {
-                    hashrate_linear.setVisibility(View.VISIBLE);
-                    hashrate_guide.setVisibility(View.GONE);
-                } else {
-                    vp.setCurrentItem(positions + 1, true);
-                }
 
-            }
-        });
-
+        String uid = getIntent().getStringExtra("uid");
         sp = SharedPreferencesUtils.getUtil();
         token = (String) sp.getKey(this, "dialog", "");
-        initViewPager();
         String cookieString = "PHPSESSID=" + token + "; path=/";
-        synCookies(url + LanguageUitils.getVerName(this), cookieString);
+        if (StringUtil.isNotEmpty(url))
+            synCookies(url, cookieString);
         webSettingInit();
         //客服聊天
         service.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NimUIKit.startP2PSession(HashrateActivity.this, "272");
+                NimUIKit.startP2PSession(ChannelActivity.this, "272");
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
         });
     }
 
-    /**
-     * 判断是不是第一次下载app，如果是第一次下载显示引导页，不是直接显示转载文章页
-     */
-    private void isFrist() {
-        if (isfristHashrate) {
-            SharedPreferences.Editor edit = hashrateSp.edit();//创建状态储存文件
-            edit.putBoolean("isfristHashrate", false);//将参数put，改变其状态
-            edit.commit();//保证文件的创建和编辑
-            hashrate_linear.setVisibility(View.GONE);
-            hashrate_guide.setVisibility(View.VISIBLE);
-            ib_start.setVisibility(View.VISIBLE);
+    @Override
+    protected BasePresenter getPresenter() {
+        return null;
+    }
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.activity_base_web_view;
+    }
+
+    private void initView() {
+        back = (RelativeLayout) findViewById(R.id.back);
+        backXx = (RelativeLayout) findViewById(R.id.back_xx);
+        hashrate = (TextView) findViewById(R.id.hashrate);
+        hashrates = (TextView) findViewById(R.id.hashrates);
+        service = (ImageView) findViewById(R.id.service);
+        progressBar = (ProgressBar) findViewById(R.id.progress_Bar);
+        hashrateWeb = (WebView) findViewById(R.id.hashrate_web);
+        ImageView backImage = (ImageView) findViewById(R.id.back_image);
+        ImageView backXImage = (ImageView) findViewById(R.id.backx_image);
+        RelativeLayout backgroud_relative = (RelativeLayout) findViewById(R.id.backgroud_relative);
+        if (StringUtil.isNotEmpty(titleBarColor)) {
+            backImage.setImageResource(R.mipmap.back);
+            backXImage.setImageResource(R.mipmap.close_x);
+            hashrate.setTextColor(Color.WHITE);
+            hashrates.setTextColor(Color.WHITE);
+            backgroud_relative.setBackgroundColor(Color.parseColor(titleBarColor));
         } else {
-            hashrate_linear.setVisibility(View.VISIBLE);
-            hashrate_guide.setVisibility(View.GONE);
-            ib_start.setVisibility(View.GONE);
+            backImage.setImageResource(R.mipmap.return_black);
+            backXImage.setImageResource(R.mipmap.back_x);
+            hashrate.setTextColor(Color.BLACK);
+            hashrates.setTextColor(Color.BLACK);
+            backgroud_relative.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
     }
 
@@ -157,7 +150,7 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setJavaScriptEnabled(true);
-        settings.setUserAgentString("app28/");
+        settings.setUserAgentString("Mozilla/5.0 (Linux; Android 4.4.4; SAMSUNG-SM-N900A Build/tt) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/33.0.0.0 Mobile Safari/537.36:app28/");
         settings.setSupportZoom(true);
         settings.setBlockNetworkImage(false);//解决图片不显示
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -168,24 +161,16 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
         //请求头
         Map<String, String> headMap = new HashMap<>();
         headMap.put("Accept-Language", LanguageUitils.getCurCountryLan());
-        hashrateWeb.loadUrl(url + LanguageUitils.getVerName(this), headMap);
+        hashrateWeb.loadUrl(url, headMap);
         hashrateWeb.setWebViewClient(new WebViewClient() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, String url) {
 //                ToastUtil.showToast(getApplicationContext(),url);
-                //算力详情
+                //跳转到个人主页
                 if (url.contains("http://top28app/computePower/")) {
-                    Intent intent1 = new Intent(HashrateActivity.this, IntegralActivity.class);
-                    intent1.putExtra("type", BizConstant.NEW);
-                    startActivity(intent1);
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                    return true;
-                }
-                //商机币
-                if (url.contains("http://top28app/pushBoc/")) {
-                    Intent intent1 = new Intent(HashrateActivity.this, IntegralActivity.class);
-                    intent1.putExtra("type", BizConstant.RECOMMEND);
+                    Intent intent1 = new Intent(ChannelActivity.this, IntegralActivity.class);
+                    intent1.putExtra("type", BizConstant.TYPE_ONE);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
@@ -199,20 +184,27 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
                 }
                 //赚取算力
                 if (url.contains("http://top28app/computePowerTask/")) {
-                    Intent intent1 = new Intent(HashrateActivity.this, EarnIntegralActivity.class);
+                    Intent intent1 = new Intent(ChannelActivity.this, EarnIntegralActivity.class);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
                 }
                 //购买商机币
-                if (url.contains("http://top28app/rechargeBusinessOpportunityCoin")) {
-                    Intent intent1 = new Intent(HashrateActivity.this, IntegralPayActivity.class);
+                if (url.contains("http://top28app/rechargeBusinessOpportunityCoin/")) {
+                    Intent intent1 = new Intent(ChannelActivity.this, IntegralPayActivity.class);
+                    intent1.putExtra("type", BizConstant.TYPE_TWO);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
                 }
-
-
+                //商机币
+                if (url.contains("http://top28app/pushBoc/")) {
+                    Intent intent1 = new Intent(ChannelActivity.this, IntegralActivity.class);
+                    intent1.putExtra("type", BizConstant.RECOMMEND);
+                    startActivity(intent1);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    return true;
+                }
                 if (url.contains("open28app")) {
                     Uri uri = Uri.parse(url);
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -226,7 +218,7 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
 //                    service.setVisibility(View.VISIBLE);
                     String path = "http://top28app//pushToIM/";
                     String uids = url.substring(path.length(), url.length());
-                    NimUIKit.startP2PSession(HashrateActivity.this, uids);
+                    NimUIKit.startP2PSession(ChannelActivity.this, uids);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
                 }
@@ -236,7 +228,7 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
                     try {
                         startActivity(new Intent("android.intent.action.VIEW", Uri.parse(url)));
                     } catch (Exception e) {
-                        new AlertDialog.Builder(HashrateActivity.this)
+                        new AlertDialog.Builder(ChannelActivity.this)
                                 .setMessage("未检测到支付宝客户端，请安装后重试。")
                                 .setPositiveButton("立即安装", new DialogInterface.OnClickListener() {
 
@@ -255,7 +247,7 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
                     String path = "https://toutiao.28.com/Index/article/id/";
                     String paths = ".html";
                     String ids = url.substring(path.length(), url.length() - paths.length());
-                    Intent intent = new Intent(HashrateActivity.this, HomeDetailsActivity.class);
+                    Intent intent = new Intent(ChannelActivity.this, HomeDetailsActivity.class);
                     intent.putExtra("id", ids);
                     startActivity(intent);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
@@ -268,7 +260,71 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
                     showNormalDialogs(invitationCode);
                     return true;
                 }
+                /**
+                 * close等于1关闭页面  其他不关闭
+                 * action等于1返回首页等于2跳转新的界面等于3跳转IM
+                 *tagid返回首页的下标
+                 * openurl跳转链接
+                 */
+                if (url.contains("GetJson")) {
+                    String path = "https://app28/GetJson/";
+                    String ids = null;
+                    try {
+                        ids = URLDecoder.decode(url.substring(path.length(), url.length()), "utf-8");
+                        JSONObject jobj = new JSONObject(ids.toString());
+                        String openurl = jobj.getString("openurl");
+                        String tagid = jobj.getString("tagid");
+                        String close = jobj.getString("close");
+                        String action = jobj.getString("action");
+                        if (StringUtil.isNotEmpty(close) && close.equals(BizConstant.IS_SUC)) {
+                            if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_ONE)) {
+                                MessageFollow messageFollow = new MessageFollow();
+                                if (StringUtil.isNotEmpty(tagid)){
+                                    messageFollow.homeTag = Integer.parseInt(tagid);
+                                    EventBus.getDefault().post(messageFollow);
+                                }
+                                finish();
+                                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                            } else if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_TWO)) {
+                                Intent intent = new Intent(ChannelActivity.this, BaseWebViewActivity.class);
+                                intent.putExtra("weburl", openurl);
+                                startActivity(intent);
+                                finish();
+                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                            } else if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_THREE)) {
+                                NimUIKit.startP2PSession(ChannelActivity.this, tagid);
+                                finish();
+                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                            }
+                        } else {
+                            if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_ONE)) {
+                                MessageFollow messageFollow = new MessageFollow();
+                                if (StringUtil.isNotEmpty(tagid)){
+                                    messageFollow.homeTag = Integer.parseInt(tagid);
+                                    EventBus.getDefault().post(messageFollow);
+                                }
+                                startActivity(new Intent(ChannelActivity.this, MainActivity.class));
+                                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                            } else if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_TWO)) {
+                                Intent intent = new Intent(ChannelActivity.this, BaseWebViewActivity.class);
+                                intent.putExtra("weburl", openurl);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                            } else if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_THREE)) {
+                                NimUIKit.startP2PSession(ChannelActivity.this, tagid);
+                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
+//                    Intent intent = new Intent(ChannelActivity.this, HomeDetailsActivity.class);
+//                    intent.putExtra("id", ids);
+//                    startActivity(intent);
+//                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    return true;
+                }
                 //判断用户单击的是那个超连接
                 String tag = "tel";
                 if (url.contains(tag)) {
@@ -277,13 +333,13 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
                     Uri data = Uri.parse(mobile);
                     mIntent.setData(data);
                     //Android6.0以后的动态获取打电话权限
-                    if (ActivityCompat.checkSelfPermission(HashrateActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(ChannelActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                         startActivity(mIntent);
                         //这个超连接,java已经处理了，webview不要处理
                         return true;
                     } else {
                         //申请权限
-                        ActivityCompat.requestPermissions(HashrateActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                        ActivityCompat.requestPermissions(ChannelActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
                         return true;
                     }
                 }
@@ -291,9 +347,10 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
                     String commandStr = url.replace("http://top28app//", "");
                     String[] str = commandStr.split("/");
 
+                    Log.i("webview", str[0]);
 
                     if (str[0].equals("showNavBar")) {
-                        ((AppCompatActivity) HashrateActivity.this).getSupportActionBar().show();
+                        ((AppCompatActivity) ChannelActivity.this).getSupportActionBar().show();
                     }
 
                     //显示右上按钮
@@ -329,29 +386,29 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
                                     final String finalTitle = title;
                                     final String finalDescription = description;
                                     final String finalIcon = icon;
-                                    mPopwindow = new RewritePopwindow(HashrateActivity.this, new View.OnClickListener() {
+                                    mPopwindow = new RewritePopwindow(ChannelActivity.this, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             mPopwindow.dismiss();
-                                            mPopwindow.backgroundAlpha(HashrateActivity.this, 1f);
+                                            mPopwindow.backgroundAlpha(ChannelActivity.this, 1f);
                                             switch (v.getId()) {
                                                 case R.id.weixinghaoyou:
-                                                    ShareUtils.shareWeb(HashrateActivity.this, finalShare_url, finalTitle
+                                                    ShareUtils.shareWeb(ChannelActivity.this, finalShare_url, finalTitle
                                                             , finalDescription, finalIcon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN
                                                     );
                                                     break;
                                                 case R.id.pengyouquan:
-                                                    ShareUtils.shareWeb(HashrateActivity.this, finalShare_url, finalTitle
+                                                    ShareUtils.shareWeb(ChannelActivity.this, finalShare_url, finalTitle
                                                             , finalDescription, finalIcon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN_CIRCLE
                                                     );
                                                     break;
                                                 case R.id.qqhaoyou:
-                                                    ShareUtils.shareWeb(HashrateActivity.this, finalShare_url, finalTitle
+                                                    ShareUtils.shareWeb(ChannelActivity.this, finalShare_url, finalTitle
                                                             , finalDescription, finalIcon, R.mipmap.ic_launcher, SHARE_MEDIA.QQ
                                                     );
                                                     break;
                                                 case R.id.qqkongjian:
-                                                    ShareUtils.shareWeb(HashrateActivity.this, finalShare_url, finalTitle
+                                                    ShareUtils.shareWeb(ChannelActivity.this, finalShare_url, finalTitle
                                                             , finalDescription, finalIcon, R.mipmap.ic_launcher, SHARE_MEDIA.QZONE
                                                     );
                                                     break;
@@ -427,7 +484,7 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
 
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-                AlertDialog.Builder b = new AlertDialog.Builder(HashrateActivity.this);
+                AlertDialog.Builder b = new AlertDialog.Builder(ChannelActivity.this);
 //                b.setTitle("Alert");
                 b.setMessage(message);
                 b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -444,7 +501,7 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
             //设置响应js 的Confirm()函数
             @Override
             public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
-                AlertDialog.Builder b = new AlertDialog.Builder(HashrateActivity.this);
+                AlertDialog.Builder b = new AlertDialog.Builder(ChannelActivity.this);
                 b.setTitle("Confirm");
                 b.setMessage(message);
                 b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -464,29 +521,6 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
             }
 
         });
-    }
-
-    @Override
-    protected BasePresenter getPresenter() {
-        return null;
-    }
-
-    @Override
-    protected int setLayoutId() {
-        return R.layout.activity_hashrate;
-    }
-
-    private void initView() {
-        service = (ImageView) findViewById(R.id.service);
-        back = (RelativeLayout) findViewById(R.id.back);
-        backXx = (RelativeLayout) findViewById(R.id.back_xx);
-        hashrate = (TextView) findViewById(R.id.hashrate);
-        hashrates = (TextView) findViewById(R.id.hashrates);
-        progressBar = (ProgressBar) findViewById(R.id.progress_Bar);
-        hashrateWeb = (WebView) findViewById(R.id.hashrate_web);
-        hashrate_guide = (RelativeLayout) findViewById(R.id.hashrate_guide);
-        hashrate_linear = (LinearLayout) findViewById(R.id.hashrate_linear);
-        ib_start = (Button) findViewById(R.id.guide_ib_start);
     }
 
     @OnClick({R.id.back, R.id.back_xx})
@@ -529,6 +563,9 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
         hashrateWeb.removeAllViews();
         hashrateWeb.destroy();
         hashrateWeb = null;
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
 
     }
 
@@ -540,7 +577,7 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
          * setXXX方法返回Dialog对象，因此可以链式设置属性
          */
         final AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(HashrateActivity.this);
+                new AlertDialog.Builder(ChannelActivity.this);
         normalDialog.setMessage("复制成功");
 
         normalDialog.setNegativeButton("确定",
@@ -562,75 +599,4 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
-    /**
-     * 加载图片ViewPager
-     */
-    private void initViewPager() {
-        vp = (ViewPager) findViewById(R.id.guide_vp);
-        //实例化图片资源
-        imageIdArray = new int[]{R.mipmap.w2_an, R.mipmap.w3_an, R.mipmap.w4_an, R.mipmap.w5_an, R.mipmap.w6_an, R.mipmap.w7_an};
-        viewList = new ArrayList<>();
-        //获取一个Layout参数，设置为全屏
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-
-        //循环创建View并加入到集合中
-        int len = imageIdArray.length;
-        for (int i = 0; i < len; i++) {
-            //new ImageView并设置全屏和图片资源
-            ImageView imageView = new ImageView(this);
-            imageView.setLayoutParams(params);
-            imageView.setBackgroundResource(imageIdArray[i]);
-
-            //将ImageView加入到集合中
-            viewList.add(imageView);
-        }
-
-        //View集合初始化好后，设置Adapter
-        vp.setAdapter(new GuidePageAdapter(viewList));
-        //设置滑动监听
-        vp.setOnPageChangeListener(this);
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    /**
-     * 滑动后的监听
-     *
-     * @param position
-     */
-    @Override
-    public void onPageSelected(int position) {
-        this.positions = position;
-        //循环设置当前页的标记图
-        int length = imageIdArray.length;
-//        for (int i = 0; i < length; i++) {
-//            ivPointArray[position].setBackgroundResource(R.mipmap.guide1);
-//            if (position != i) {
-//                ivPointArray[i].setBackgroundResource(R.mipmap.guide1);
-//            }
-//        }
-
-        //判断是否是最后一页，若是则显示按钮
-        if (position == imageIdArray.length - 1) {
-            ib_start.setText("朕已阅");
-            ib_start.setTextColor(Color.parseColor("#FFFFFF"));
-            ib_start.setBackgroundResource(R.drawable.btn_red_shape);
-            isLast = true;
-        } else {
-            ib_start.setText("下一页");
-            ib_start.setTextColor(Color.parseColor("#FF2B2B"));
-            ib_start.setBackgroundResource(R.drawable.reword__shape);
-            isLast = false;
-        }
-    }
-
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
 }

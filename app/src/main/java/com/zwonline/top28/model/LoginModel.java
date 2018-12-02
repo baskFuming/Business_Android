@@ -123,22 +123,22 @@ public class LoginModel {
         Map<String, String> map = new HashMap<>();
         map.put("union_id", union_id);
         map.put("open_id", open_id);
-        map.put("gender",gender);
-        map.put("nickname",nickname);
-        map.put("avatar",avatar);
-        map.put("country_code",country_code);
+        map.put("gender", gender);
+        map.put("nickname", nickname);
+        map.put("avatar", avatar);
+        map.put("country_code", country_code);
         map.put("city",city);
         map.put("province",province);
         map.put("country",country);
         map.put("language",language);
         map.put("timestamp", String.valueOf(timestamp));
         map.put("token", token);
+        SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
-        Flowable<LoginWechatBean> flowable = ApiRetrofit.getInstance().getClientApi(ApiService.class, Api.url).loginWechat(
-                union_id, open_id, gender,nickname,avatar,country_code,city,province,country,language,String.valueOf(timestamp),token,sign);
+        Flowable<LoginWechatBean> flowable = ApiRetrofit.getInstance().getClientApi(ApiService.class, Api.url)
+                .loginWechat(union_id, open_id, gender, nickname, avatar, country_code,city,province,country,language, String.valueOf(timestamp), token,sign);
         return flowable;
     }
-
     //登录云信
     public void doLogin(String account, String token) {
 

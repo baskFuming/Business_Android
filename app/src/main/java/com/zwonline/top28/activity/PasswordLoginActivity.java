@@ -270,7 +270,6 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
             finish();
             overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
         } else if (status == -1) {
-            Toast.makeText(PasswordLoginActivity.this, "授权登录失败", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(PasswordLoginActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
@@ -286,9 +285,7 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
             sp.insertKey(getApplicationContext(), "follow", loginWechatBean.getData().getUser().getFollow());
             sp.insertKey(getApplicationContext(), "fans", loginWechatBean.getData().getUser().getFans());
             sp.insertKey(getApplicationContext(), "favorite", loginWechatBean.getData().getUser().getFavorite());
-            Toast.makeText(getApplicationContext(),"微信授权登陆成功", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getApplicationContext(),"授权登录失败", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -421,7 +418,7 @@ public class PasswordLoginActivity extends BaseActivity<ILoginActivity, LoginPre
         UMShareAPI.get(this).getPlatformInfo(this, weixin, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {
-                ToastUtils.showToast(PasswordLoginActivity.this, "微信授权登录");
+//                ToastUtils.showToast(PasswordLoginActivity.this, "微信授权登录");
             }
             /**
              * @desc 授权成功的回调

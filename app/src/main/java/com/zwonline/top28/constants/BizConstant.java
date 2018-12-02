@@ -18,6 +18,7 @@ public class BizConstant {
      * 热商机
      */
     public static final String HOT_BUSINESS = "http://www.91jmw.com/";
+    public static final String MORE_CHANNEL="https://toutiao.28.com/Home/Qiyehao/channel";
 
     /**
      * 极验验证API验证

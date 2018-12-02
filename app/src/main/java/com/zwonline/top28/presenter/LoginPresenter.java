@@ -10,6 +10,7 @@ import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.ShortMessage;
 import com.zwonline.top28.model.LoginModel;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.ILoginActivity;
 
 import java.io.IOException;
@@ -249,6 +250,8 @@ public class LoginPresenter extends BasePresenter<ILoginActivity> {
                                             loginWechatBean.getData().getYunxin().getAccount()
                                     );
                                     iLoginActivity.getToken(loginWechatBean.getDialog());
+                                }else {
+                                    ToastUtils.showToast(context,loginWechatBean.getMsg());
                                 }
                             } else {
                                 iLoginActivity.onErro();

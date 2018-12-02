@@ -358,8 +358,6 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
                         public void onNext(GiftSumBean attentionBean) {
                             if (attentionBean.status == 1) {
                                 iHomeDetails.showGiftSummary(attentionBean);
-                            } else {
-                                ToastUtils.showToast(context, attentionBean.msg);
                             }
                         }
 
@@ -391,11 +389,7 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
                     .subscribeWith(new DisposableSubscriber<GiftBean>() {
                         @Override
                         public void onNext(GiftBean attentionBean) {
-                            if (attentionBean.status == 1) {
-                                iHomeDetails.showGift(attentionBean);
-                            } else {
-                                ToastUtils.showToast(context, attentionBean.msg);
-                            }
+                            iHomeDetails.showGift(attentionBean);
                         }
 
                         @Override
@@ -507,8 +501,6 @@ public class HomeDetailsPresenter extends BasePresenter<IHomeDetails> {
                             LogUtils.e("myCurrencyBean==", myCurrencyBean.msg);
                             if (myCurrencyBean.status == 1) {
                                 iHomeDetails.showBocBanlance(myCurrencyBean);
-                            } else {
-                                ToastUtils.showToast(context, myCurrencyBean.msg);
                             }
                         }
 

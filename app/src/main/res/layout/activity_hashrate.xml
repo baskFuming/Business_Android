@@ -29,16 +29,16 @@
 
         <Button
             android:id="@+id/guide_ib_start"
-            android:layout_width="123dp"
-            android:layout_height="52dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginRight="25dp"
-            android:background="@drawable/btn_red_shape"
-            android:text="朕已阅"
-            android:textColor="@color/white"
-            android:textSize="24sp"
+            android:background="@drawable/reword__shape"
+            android:text="下一页"
+            android:textColor="@color/reded"
+            android:textSize="16sp"
             android:visibility="gone" />
     </RelativeLayout>
 

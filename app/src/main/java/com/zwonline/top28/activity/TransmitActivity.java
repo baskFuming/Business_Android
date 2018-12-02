@@ -2,6 +2,7 @@ package com.zwonline.top28.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -74,6 +75,8 @@ public class TransmitActivity extends BaseActivity implements ViewPager.OnPageCh
     private LinearLayout transmit_linear;
     private SharedPreferences transmit;
     private boolean isfristTtansmit;
+    private boolean isLast = false;
+    private int positions;
 
     @Override
     protected void init() {
@@ -87,8 +90,13 @@ public class TransmitActivity extends BaseActivity implements ViewPager.OnPageCh
         ib_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                transmit_linear.setVisibility(View.VISIBLE);
-                transmit_guide.setVisibility(View.GONE);
+                if (isLast) {
+                    transmit_linear.setVisibility(View.VISIBLE);
+                    transmit_guide.setVisibility(View.GONE);
+                } else {
+                    vp.setCurrentItem(positions + 1, true);
+                }
+
             }
         });
         sp = SharedPreferencesUtils.getUtil();
@@ -109,8 +117,10 @@ public class TransmitActivity extends BaseActivity implements ViewPager.OnPageCh
             edit.putBoolean("isfristTtansmit", false);//将参数put，改变其状态
             edit.commit();//保证文件的创建和编辑
             transmit_linear.setVisibility(View.GONE);
+            ib_start.setVisibility(View.VISIBLE);
             transmit_guide.setVisibility(View.VISIBLE);
         } else {
+            ib_start.setVisibility(View.GONE);
             transmit_linear.setVisibility(View.VISIBLE);
             transmit_guide.setVisibility(View.GONE);
         }
@@ -233,6 +243,7 @@ public class TransmitActivity extends BaseActivity implements ViewPager.OnPageCh
      */
     @Override
     public void onPageSelected(int position) {
+        this.positions = position;
         //循环设置当前页的标记图
         int length = imageIdArray.length;
 //        for (int i = 0; i < length; i++) {
@@ -244,10 +255,15 @@ public class TransmitActivity extends BaseActivity implements ViewPager.OnPageCh
 
         //判断是否是最后一页，若是则显示按钮
         if (position == imageIdArray.length - 1) {
-            ib_start.setVisibility(View.VISIBLE);
+            ib_start.setText("朕已阅");
+            ib_start.setTextColor(Color.parseColor("#FFFFFF"));
+            ib_start.setBackgroundResource(R.drawable.btn_red_shape);
+            isLast = true;
         } else {
-            ib_start.setVisibility(View.GONE);
-
+            ib_start.setText("下一页");
+            ib_start.setTextColor(Color.parseColor("#FF2B2B"));
+            ib_start.setBackgroundResource(R.drawable.reword__shape);
+            isLast = false;
         }
     }
 

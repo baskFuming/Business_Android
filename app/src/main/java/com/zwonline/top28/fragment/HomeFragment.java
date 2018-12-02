@@ -3,6 +3,7 @@ package com.zwonline.top28.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.VpnService;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,10 +27,12 @@ import android.widget.Toast;
 import com.jaeger.library.StatusBarUtil;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.AdvertisingActivity;
+import com.zwonline.top28.activity.ChannelActivity;
 import com.zwonline.top28.activity.HomeSearchActivity;
 import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.HomeBean;
+import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.HomeClassPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
@@ -37,6 +40,7 @@ import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.NetUtils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.popwindow.YangFenUnclaimedWindow;
 import com.zwonline.top28.view.IHomeClassFrag;
@@ -51,6 +55,10 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +86,8 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     TabLayout tablayout;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
+    @BindView(R.id.more_channel)
+    RelativeLayout moreChannel;
     Unbinder unbinder;
     private SharedPreferencesUtils sp;
     private boolean isfer;
@@ -100,9 +110,10 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
         super.onAttach(context);
     }
 
-
+    @Subscribe
     @Override
     protected void init(View view) {
+        EventBus.getDefault().register(this);
 //        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
         sp = SharedPreferencesUtils.getUtil();
         list = new ArrayList<>();
@@ -144,6 +155,22 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
         //触摸监听
         touchListener();
 
+        moreChannel.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (AntiShake.check(v.getId())) {    //判断是否多次点击
+                    return;
+                }
+
+                Intent intent = new Intent(getActivity(), ChannelActivity.class);
+                intent.putExtra("weburl", BizConstant.MORE_CHANNEL);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+            }
+        });
+
+
     }
 
     private int getStatusBarHeight(Context context) {
@@ -171,26 +198,6 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
         list.clear();
         list.addAll(classList);
         loadingTablayout();
-//        for (int i = 0; i < classList.size(); i++) {
-//            tablayout.newTab().setText(classList.get(i).cate_name);
-//        }
-//
-//        tablayout.newTab().setText(R.string.center_recommend);
-//
-//        if (classList.size() > 5) {
-//
-//            tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-//        } else {
-//            tablayout.setTabMode(TabLayout.MODE_FIXED);
-//        }
-//
-//        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getChildFragmentManager(), classList);
-//        viewpager.setAdapter(myFragmentAdapter);
-//        viewpager.setOffscreenPageLimit(1);
-
-//        StringUtil.reflex(tablayout);
-//        tablayout.setTabsFromPagerAdapter(myFragmentAdapter);
-//        tablayout.setupWithViewPager(viewpager);
     }
 
     private void loadingTablayout() {
@@ -334,7 +341,7 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
     private void date(View view) {
         isfer = (boolean) sp.getKey(getActivity(), "isfer", false);
         if (isfer) {
-            hot_business_relat.setVisibility(View.VISIBLE);
+            hot_business_relat.setVisibility(View.GONE);
         } else {
             //第二次进入跳转
             hot_business_relat.setVisibility(View.GONE);
@@ -355,6 +362,23 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
 
         // 将myTouchListener注册到分发列表
         ((MainActivity) this.getActivity()).registerMyTouchListener(myTouchListener);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageFollow messageFollow) {
+        if (StringUtil.isNotEmpty(String.valueOf(messageFollow.homeTag))){
+            int homeTag = messageFollow.homeTag;
+            viewpager.setCurrentItem(homeTag, false);
+        }
     }
 
 

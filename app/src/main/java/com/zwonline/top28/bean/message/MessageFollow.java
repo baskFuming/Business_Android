@@ -18,4 +18,5 @@ public class MessageFollow {
     public String myComment;
     public String avatar;
     public String nickname;
+    public int homeTag;
 }

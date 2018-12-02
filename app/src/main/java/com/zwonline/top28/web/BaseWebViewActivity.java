@@ -38,11 +38,11 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.EarnIntegralActivity;
-import com.zwonline.top28.activity.HashrateActivity;
 import com.zwonline.top28.activity.IntegralPayActivity;
+import com.zwonline.top28.activity.MainActivity;
+import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.StringUtil;
-import com.zwonline.top28.web.BaseWebViewActivity;
 import com.zwonline.top28.activity.HomeDetailsActivity;
 import com.zwonline.top28.activity.IntegralActivity;
 import com.zwonline.top28.base.BaseActivity;
@@ -53,9 +53,11 @@ import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +84,7 @@ public class BaseWebViewActivity extends BaseActivity {
     @Override
     protected void init() {
         Intent intent = getIntent();
-        url = intent.getStringExtra("weburl") + "?version=" + LanguageUitils.getVerName(this);
+        url = intent.getStringExtra("weburl")+ "?version=" + LanguageUitils.getVerName(this);
         titleBarColor = getIntent().getStringExtra("titleBarColor");
         if (StringUtil.isNotEmpty(titleBarColor)) {
             StatusBarUtil.setColor(this, Color.parseColor(titleBarColor), 0);
@@ -95,7 +97,7 @@ public class BaseWebViewActivity extends BaseActivity {
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
         if (StringUtil.isNotEmpty(url))
-        synCookies(url, cookieString);
+            synCookies(url, cookieString);
         webSettingInit();
         //客服聊天
         service.setOnClickListener(new View.OnClickListener() {
@@ -260,7 +262,70 @@ public class BaseWebViewActivity extends BaseActivity {
                     showNormalDialogs(invitationCode);
                     return true;
                 }
+                /**
+                 * close等于1关闭页面  其他不关闭
+                 * action等于1返回首页等于2跳转新的界面等于3跳转IM
+                 *tagid返回首页的下标
+                 * openurl跳转链接
+                 */
+                if (url.contains("GetJson")) {
+//                    service.setVisibility(View.VISIBLE);
+                    String path = "https://app28/GetJson/";
+                    String ids = null;
+                    try {
+                        ids = URLDecoder.decode(url.substring(path.length(), url.length()), "utf-8");
+                        JSONObject jobj = new JSONObject(ids.toString());
+                        String openurl = jobj.getString("openurl");
+                        String tagid = jobj.getString("tagid");
+                        String close = jobj.getString("close");
+                        String action = jobj.getString("action");
+                        if (StringUtil.isNotEmpty(close) && close.equals(BizConstant.IS_SUC)) {
+                            if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_ONE)) {
+                                MessageFollow messageFollow = new MessageFollow();
+                                if (StringUtil.isNotEmpty(tagid))
+                                    messageFollow.homeTag = Integer.parseInt(tagid);
+                                EventBus.getDefault().post(messageFollow);
+                                finish();
+                                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                            } else if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_TWO)) {
+                                Intent intent = new Intent(BaseWebViewActivity.this, BaseWebViewActivity.class);
+                                intent.putExtra("weburl", openurl);
+                                startActivity(intent);
+                                finish();
+                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                            } else if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_THREE)) {
+                                NimUIKit.startP2PSession(BaseWebViewActivity.this, tagid);
+                                finish();
+                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                            }
+                        } else {
+                            if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_ONE)) {
+                                MessageFollow messageFollow = new MessageFollow();
+                                if (StringUtil.isNotEmpty(tagid))
+                                    messageFollow.homeTag = Integer.parseInt(tagid);
+                                EventBus.getDefault().post(messageFollow);
+                                startActivity(new Intent(BaseWebViewActivity.this, MainActivity.class));
+                                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                            } else if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_TWO)) {
+                                Intent intent = new Intent(BaseWebViewActivity.this, BaseWebViewActivity.class);
+                                intent.putExtra("weburl", openurl);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                            } else if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_THREE)) {
+                                NimUIKit.startP2PSession(BaseWebViewActivity.this, tagid);
+                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
+//                    Intent intent = new Intent(BaseWebViewActivity.this, HomeDetailsActivity.class);
+//                    intent.putExtra("id", ids);
+//                    startActivity(intent);
+//                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    return true;
+                }
                 //判断用户单击的是那个超连接
                 String tag = "tel";
                 if (url.contains(tag)) {

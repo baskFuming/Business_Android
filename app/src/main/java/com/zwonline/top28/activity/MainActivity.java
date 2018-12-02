@@ -775,9 +775,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
             //更新版本
             description = updateCodeBean.data.description;
             //强制更新
-//            forceUpdate = updateCodeBean.data.force_update;
-            forceUpdate = "0";
-
+            forceUpdate = updateCodeBean.data.force_update;
             package_download_url = updateCodeBean.data.package_download_url;
             String flush_cache = updateCodeBean.data.flush_cache;
             //清理缓存
@@ -1057,18 +1055,29 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
      * 下载完成,提示用户安装
      * file 为File文件 或 fileName 主要看你上一个方法有没有转文件名
      */
+//    private void installApks(File file) {
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            Uri contentUri = FileProvider.getUriForFile(this, "com.zwonline.top28.fileprovider", file);
+//            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+//        } else {
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.setDataAndType(Uri.parse("file://" + file),
+//                    "application/vnd.android.package-archive");
+//        }
+//        startActivityForResult(intent, 119);
+//    }
     private void installApk(File file) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(this, "com.zwonline.top28.fileprovider", file);
-            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
-        } else {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(Uri.parse("file://" + file),
-                    "application/vnd.android.package-archive");
-        }
+        //调用系统安装程序
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
         startActivityForResult(intent, 119);
     }
+
+
 }
 

@@ -174,7 +174,7 @@ public class BusinessFragment extends BasesFragment<IBusinessClassFra, BusinessC
                 } else {
 //                    NavigationBar.transparencyBar(getActivity());
 //                    getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
-                    StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+//                    StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
                     line.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
                     tv_bottom.setVisibility(View.VISIBLE);
                     etHome.setBackgroundResource(R.drawable.business_serch_shape);

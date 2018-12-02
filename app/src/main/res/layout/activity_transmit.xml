@@ -29,16 +29,16 @@
 
         <Button
             android:id="@+id/guide_ib_start"
-            android:layout_width="123dp"
-            android:layout_height="52dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginRight="25dp"
-            android:background="@drawable/btn_red_shape"
-            android:text="朕已阅"
-            android:textColor="@color/white"
-            android:textSize="24sp"
+            android:background="@drawable/reword__shape"
+            android:text="下一页"
+            android:textColor="@color/reded"
+            android:textSize="16sp"
             android:visibility="gone" />
     </RelativeLayout>
 
@@ -70,17 +70,18 @@
             android:textColor="#2B2B2B"
             android:textSize="18sp" />
     </RelativeLayout>
+
     <TextView
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="亲，只能发表商机、创业、投融资相关内容，\n其他内容会被删除并扣除算力哦~"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:ellipsize="marquee"
-        android:textSize="14sp"
+        android:layout_marginLeft="15dp"
         android:layout_marginRight="16dp"
-        />
+        android:layout_marginTop="5dp"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:text="亲，只能发表商机、创业、投融资相关内容，\n其他内容会被删除并扣除算力哦~"
+        android:textSize="14sp" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -110,8 +111,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:gravity="center_horizontal"
-        android:visibility="gone"
         android:orientation="horizontal"
+        android:visibility="gone"
 
         >
 

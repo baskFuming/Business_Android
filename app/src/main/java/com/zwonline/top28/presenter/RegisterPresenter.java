@@ -136,6 +136,8 @@ public class RegisterPresenter extends BasePresenter<IRegisterActivity> {
                                             loginWechatBean.getData().getYunxin().getAccount()
                                     );
                                     iRegisterActivity.getToken(loginWechatBean.getDialog());
+                                } else {
+                                    ToastUtils.showToast(context, loginWechatBean.getMsg());
                                 }
                             } else {
                                 iRegisterActivity.onErro();
