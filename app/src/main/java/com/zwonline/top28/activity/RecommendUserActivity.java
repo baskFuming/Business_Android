@@ -81,6 +81,7 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
     WebView recommendUserWeb;
     @BindView(R.id.text_content)
     TextView textmContent;
+
     private SharedPreferencesUtils sp;
     private String uid;
     private String token;

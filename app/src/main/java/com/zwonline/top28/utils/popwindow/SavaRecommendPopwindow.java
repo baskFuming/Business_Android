@@ -17,6 +17,7 @@ import com.zwonline.top28.R;
     我的推荐 分享
  */
 public class SavaRecommendPopwindow extends PopupWindow {
+
     private View mView;
     public SavaRecommendPopwindow(final Activity context, View.OnClickListener itemsOnClick) {
         super(context);

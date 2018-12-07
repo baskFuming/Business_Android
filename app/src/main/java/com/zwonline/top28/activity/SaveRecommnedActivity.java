@@ -102,6 +102,7 @@ public class SaveRecommnedActivity extends BaseActivity {
     }
 
 
+
     //WebView 方法配置
     private void webSettingInit() {
         WebSettings settings = webViewRecommed.getSettings();

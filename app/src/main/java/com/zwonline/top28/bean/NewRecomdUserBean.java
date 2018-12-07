@@ -6,6 +6,8 @@ package com.zwonline.top28.bean;
 public class NewRecomdUserBean {
 
 
+
+
     /**
      * status : 1
      * msg : 成功

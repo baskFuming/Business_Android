@@ -399,6 +399,7 @@ public class HomeDetailsModel {
      * @return  启动屏广告接口
      * @throws IOException
      *
+     *
      */
     public Flowable<LanchScreenBean> lanchScreenAD(Context context) throws IOException {
         sp = SharedPreferencesUtils.getUtil();
@@ -414,5 +415,4 @@ public class HomeDetailsModel {
                 .launchScreenAd( String.valueOf(timestamp), token,sign);
         return flowable;
     }
-
 }
