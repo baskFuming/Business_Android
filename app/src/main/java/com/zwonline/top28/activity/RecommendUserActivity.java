@@ -35,8 +35,8 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zwonline.top28.R;
-import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
+import com.zwonline.top28.bean.NewRecomdUserBean;
 import com.zwonline.top28.bean.RecommendUserBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.ReconmmnedUserPresenter;
@@ -81,16 +81,15 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
     WebView recommendUserWeb;
     @BindView(R.id.text_content)
     TextView textmContent;
-
     private SharedPreferencesUtils sp;
     private String uid;
     private String token;
-    //    private String url = "http://toutiao.28.com/Members/recommend_list.html";
+    //private String url = "http://toutiao.28.com/Members/recommend_list.html";
     private String url;
     private RewritePopwindow mPopwindow;
-
     private RecommendPopwindow recommendPopwindow;
     private List<RecommendUserBean.DataBean> list;
+    private List<NewRecomdUserBean.DataBean> newdlist;
     private List<RecommendUserBean.DataBean.ShareDataBean> dlist;
     private String mContent;
     private String strUrl;
@@ -104,10 +103,20 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
     private int wXinType;
     private IWXAPI api;
 
+    /**
+     * 新推荐
+     */
+    private String new_share_title;
+    private String new_share_description;
+    private String new_share_icon;
+    private String new_share_url;
+    private String new_html_Url;
 
     @Override
     protected void init() {
+        presenter.NewMyRecommned(this);
         presenter.myRecommned(this);
+        newdlist = new ArrayList<>();
         list = new ArrayList<>();
         dlist = new ArrayList<>();
         sp = SharedPreferencesUtils.getUtil();
@@ -343,37 +352,57 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
             case R.id.share_recommned: //分享推荐
-                recommendPopwindow = new RecommendPopwindow(RecommendUserActivity.this, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        recommendPopwindow.dismiss();
-                        recommendPopwindow.backgroundAlpha(RecommendUserActivity.this, 1f);
-                        switch (v.getId()) {
-                            case R.id.weixinghaoyou://微信分享
-                                shareWechat(shareRecommendId,shareTitle,shareDes);
-                                break;
-                            case R.id.pengyouquan://微信分享
-                                shareWechat(shareRecommendId,shareTitle,shareDes);
-                                break;
-                            case R.id.qqkongjian:
-                                Intent saveintent = new Intent(RecommendUserActivity.this, SaveRecommnedActivity.class);
-                                saveintent.putExtra("saveUrl", saveUrl);
-                                startActivity(saveintent);
-                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                                break;
-                            case R.id.copyurl:
-                                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                                // 将文本内容放到系统剪贴板里。
-                                cm.setText(Api.baseUrl() + shareUrl + "#" + shareTitle);
-                                ToastUtils.showToast(RecommendUserActivity.this, "复制成功");
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                });
-                recommendPopwindow.showAtLocation(view,
-                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                Intent saveintent = new Intent(RecommendUserActivity.this, SaveRecommnedActivity.class);
+                saveintent.putExtra("saveUrl", saveUrl);
+                saveintent.putExtra("new_share_url",new_share_url);
+                saveintent.putExtra("new_share_title",new_share_title);
+                saveintent.putExtra("new_share_description",new_share_description);
+                saveintent.putExtra("new_share_icon",new_share_icon);
+                saveintent.putExtra("shareTitle", new_html_Url);
+                saveintent.putExtra("shareUrl", new_share_title);
+                startActivity(saveintent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//                recommendPopwindow = new RecommendPopwindow(RecommendUserActivity.this, new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        recommendPopwindow.dismiss();
+//                        recommendPopwindow.backgroundAlpha(RecommendUserActivity.this, 1f);
+//                        switch (v.getId()) {
+//                            case R.id.weixinghaoyou://微信分享
+//                                ShareUtils.shareWeb(RecommendUserActivity.this, new_share_url, new_share_title
+//                                        , new_share_description, new_share_icon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN
+//                                );
+////                                shareWechat(shareRecommendId, shareTitle, shareDes);小程序
+//                                break;
+//                            case R.id.pengyouquan://微信分享
+//                                shareWechat(shareRecommendId, shareTitle, shareDes);
+//                                break;
+//                            case R.id.qqkongjian:
+//                                Intent saveintent = new Intent(RecommendUserActivity.this, SaveRecommnedActivity.class);
+//                                saveintent.putExtra("saveUrl", saveUrl);
+//                                saveintent.putExtra("new_share_url",new_share_url);
+//                                saveintent.putExtra("new_share_title",new_share_title);
+//                                saveintent.putExtra("new_share_description",new_share_description);
+//                                saveintent.putExtra("new_share_icon",new_share_icon);
+//                                saveintent.putExtra("shareTitle", new_html_Url);
+//                                saveintent.putExtra("shareUrl", new_share_title);
+//                                startActivity(saveintent);
+//                                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//                                break;
+//                            case R.id.copyurl:
+//                                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+//                                // 将文本内容放到系统剪贴板里。
+////                                cm.setText(Api.baseUrl() + new_html_Url + "#" + new_share_title);
+//                                cm.setText(new_html_Url + "#" + new_share_title);
+//                                ToastUtils.showToast(RecommendUserActivity.this, "复制成功");
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                    }
+//                });
+//                recommendPopwindow.showAtLocation(view,
+//                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.redpacket_recommned://红包推荐 鞅分红包  商机币红包
                 ToastUtils.showToast(RecommendUserActivity.this, "红包推荐");
@@ -413,16 +442,30 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
         }
         textmContent.setText(mContent);
     }
+    /**
+     * @param newRecomdUserBean 新的用户推荐
+     */
+    @Override
+    public void newSuccessRecomed(NewRecomdUserBean newRecomdUserBean) {
+        if (newRecomdUserBean.status == 1) {
+            newdlist.add(newRecomdUserBean.data);
+            new_share_title = newRecomdUserBean.data.share_data.share_title;
+            new_share_description = newRecomdUserBean.data.share_data.share_description;
+            new_share_icon = newRecomdUserBean.data.share_data.share_icon;
+            new_share_url = newRecomdUserBean.data.share_data.share_url;
+            new_html_Url = newRecomdUserBean.data.url;//网页复制链接
+        }
+    }
 
     @Override
-    public void successRecommedList(List<RecommendUserBean.DataBean> recommendlist) {
-
+    public void successRecommedList(List<NewRecomdUserBean.DataBean> recommendlist) {
     }
 
     @Override
     public void onErro() {
 
     }
+
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK) && recommendUserWeb.canGoBack()) {
@@ -439,7 +482,7 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
     }
 
     //小程序分享
-    private void shareWechat(String recommend_id,String shareTitle,String shareDes) {
+    private void shareWechat(String recommend_id, String shareTitle, String shareDes) {
         if (StringUtil.isNotEmpty(wx_page_type) && wx_page_type.equals(BizConstant.ALREADY_FAVORITE)) {
             wXinType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;
         } else {
@@ -452,8 +495,8 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
         // 0.正式版本  1.测试版本  2.体验版本
         miniProgramObject.miniprogramType = wXinType;
         WXMediaMessage mediaMessage = new WXMediaMessage(miniProgramObject);
-        mediaMessage.title =shareTitle;//自定标题
-        mediaMessage.description =shareDes;//描述
+        mediaMessage.title = shareTitle;//自定标题
+        mediaMessage.description = shareDes;//描述
         Matrix matrix = new Matrix();
         matrix.setScale(0.5f, 0.5f);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.wechat_login);

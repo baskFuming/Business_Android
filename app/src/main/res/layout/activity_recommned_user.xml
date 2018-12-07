@@ -29,10 +29,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Loding........"
+            android:text="Loading........"
             android:textColor="#2B2B2B"
             android:textSize="18sp" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/save_liner"
         android:layout_below="@+id/top"
@@ -53,7 +54,7 @@
             android:layout_height="match_parent"></WebView>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/saveImag"
+        android:id="@+id/liner_saveImag"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_height="56dp"
@@ -65,7 +66,7 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:text="保存图片到相册"
+            android:text="分享"
             android:textColor="#ffffffff"
             android:textSize="18sp"
             />

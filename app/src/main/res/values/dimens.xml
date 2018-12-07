@@ -106,4 +106,19 @@
     <dimen name="width">24dp</dimen>
     <dimen name="ui_20_dip">20dp</dimen>
     <dimen name="height">495dp</dimen>
+
+    <dimen name="dp540">540dp</dimen>
+    <dimen name="dp39">39dp</dimen>
+    <dimen name="dp20">20dp</dimen>
+    <dimen name="dp3">3dp</dimen>
+    <dimen name="sp10">10sp</dimen>
+    <dimen name="dp125">125dp</dimen>
+    <dimen name="dp116">116dp</dimen>
+    <dimen name="dp23">23dp</dimen>
+    <dimen name="sp9">9sp</dimen>
+    <dimen name="dp185">185dp</dimen>
+    <dimen name="dp34">34dp</dimen>
+    <dimen name="sp24">24sp</dimen>
+    <dimen name="dp40">40dp</dimen>
+    <dimen name="sp12">12sp</dimen>
 </resources>

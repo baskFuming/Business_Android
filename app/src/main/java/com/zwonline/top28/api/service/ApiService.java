@@ -25,6 +25,7 @@ import com.zwonline.top28.bean.HomeDetailsBean;
 import com.zwonline.top28.bean.HotExamineBean;
 import com.zwonline.top28.bean.IndustryBean;
 import com.zwonline.top28.bean.JZHOBean;
+import com.zwonline.top28.bean.LanchScreenBean;
 import com.zwonline.top28.bean.LoginBean;
 import com.zwonline.top28.bean.LoginWechatBean;
 import com.zwonline.top28.bean.MyAttentionBean;
@@ -36,6 +37,7 @@ import com.zwonline.top28.bean.MyFansBean;
 import com.zwonline.top28.bean.MyIssueBean;
 import com.zwonline.top28.bean.MyPageBean;
 import com.zwonline.top28.bean.MyShareBean;
+import com.zwonline.top28.bean.NewRecomdUserBean;
 import com.zwonline.top28.bean.PaymentBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
 import com.zwonline.top28.bean.PicturBean;
@@ -978,7 +980,7 @@ public interface ApiService {
             @Field("sign") String sign
     );
     /***
-     * 礼物接口
+     * 推荐接口
      * @param timestamp
      * @param token
      * @param sign
@@ -991,6 +993,22 @@ public interface ApiService {
             @Field("token") String token,
             @Field("sign") String sign
     );
+
+    /***
+     *  新的推荐接口
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Member/getRecommendData")
+    Flowable<NewRecomdUserBean> newMyRecommend(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
+
 
     //绑定微信
     @FormUrlEncoded
@@ -1011,4 +1029,18 @@ public interface ApiService {
             @Field("sign") String sign
     );
 
+    /***
+     * 启动屏广告接口
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Public/launchScreenAd")
+    Flowable<LanchScreenBean> launchScreenAd(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
 }

@@ -14,6 +14,8 @@ import com.zwonline.top28.bean.BusinessCoinBean;
 import com.zwonline.top28.bean.GiftBean;
 import com.zwonline.top28.bean.GiftSumBean;
 import com.zwonline.top28.bean.HomeDetailsBean;
+import com.zwonline.top28.bean.LanchScreenBean;
+import com.zwonline.top28.bean.NewRecomdUserBean;
 import com.zwonline.top28.bean.PersonageInfoBean;
 import com.zwonline.top28.bean.RecommendUserBean;
 import com.zwonline.top28.bean.RewardListBean;
@@ -373,4 +375,44 @@ public class HomeDetailsModel {
                 .myRecommend( String.valueOf(timestamp), token,sign);
         return flowable;
     }
+    /**
+     * @param context
+     * @return  新的我的推荐
+     * @throws IOException
+     */
+    public Flowable<NewRecomdUserBean> newRecommend(Context context) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        String token = (String) sp.getKey(context, "dialog", "");
+        long timestamp = new Date().getTime() / 1000;//获取时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("token", token);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<NewRecomdUserBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(ApiService.class, Api.url)
+                .newMyRecommend( String.valueOf(timestamp), token,sign);
+        return flowable;
+    }
+    /**
+     * @param context
+     * @return  启动屏广告接口
+     * @throws IOException
+     *
+     */
+    public Flowable<LanchScreenBean> lanchScreenAD(Context context) throws IOException {
+        sp = SharedPreferencesUtils.getUtil();
+        String token = (String) sp.getKey(context, "dialog", "");
+        long timestamp = new Date().getTime() / 1000;//获取时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("token", token);
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        Flowable<LanchScreenBean> flowable = ApiRetrofit.getInstance()
+                .getClientApi(ApiService.class, Api.url)
+                .launchScreenAd( String.valueOf(timestamp), token,sign);
+        return flowable;
+    }
+
 }

@@ -2,6 +2,8 @@ package com.zwonline.top28.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -28,12 +31,16 @@ import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.CookieSyncManager;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zwonline.top28.R;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
+import com.zwonline.top28.utils.popwindow.SavaRecommendPopwindow;
+import com.zwonline.top28.wxapi.ShareUtils;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -47,7 +54,7 @@ import butterknife.OnClick;
 import cn.forward.androids.base.BaseActivity;
 
 /**
- *  保存相册
+ * 保存相册
  */
 public class SaveRecommnedActivity extends BaseActivity {
     private String TAG = "RecommnedUsersActivity";
@@ -58,14 +65,20 @@ public class SaveRecommnedActivity extends BaseActivity {
     ProgressBar progressBar;
     @BindView(R.id.title)
     TextView te_title;
-    @BindView(R.id.saveImag)
-    LinearLayout lin_SaveImg;
     @BindView(R.id.save_liner)
     LinearLayout save_liner;
     private String token;
     private SharedPreferencesUtils sp;
     //http://toutiao.28.com/Members/myRecommendUserList.html
     private String url;
+    private String shareUrl;
+    private String shareTitle;
+    private SavaRecommendPopwindow savaRecommendPopwindow;
+
+    private String new_share_url;
+    private String new_share_title;
+    private String new_share_description;
+    private String new_share_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,17 +89,18 @@ public class SaveRecommnedActivity extends BaseActivity {
         ButterKnife.bind(this);
         sp = SharedPreferencesUtils.getUtil();
         url = getIntent().getStringExtra("saveUrl");
+        shareUrl = getIntent().getStringExtra("shareUrl");
+        new_share_url = getIntent().getStringExtra("new_share_url");
+        new_share_title = getIntent().getStringExtra("new_share_title");
+        new_share_description = getIntent().getStringExtra("new_share_description");
+        new_share_icon = getIntent().getStringExtra("new_share_icon");
+        shareTitle = getIntent().getStringExtra("shareTitle");
         token = (String) sp.getKey(this, "dialog", "");
         String cookieString = "PHPSESSID=" + token + "; path=/";
         synCookies(url, cookieString);
         webSettingInit();
-        lin_SaveImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveImage();
-            }
-        });
     }
+
 
     //WebView 方法配置
     private void webSettingInit() {
@@ -151,7 +165,8 @@ public class SaveRecommnedActivity extends BaseActivity {
         });
 
     }
-    @OnClick({R.id.back, R.id.saveImag})
+
+    @OnClick({R.id.back, R.id.liner_saveImag})
     public void onCliceListen(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -161,9 +176,37 @@ public class SaveRecommnedActivity extends BaseActivity {
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
-            case R.id.saveImag:
-                //保存图片到相册
-                ToastUtils.showToast(this, "保存图片到相册");
+            case R.id.liner_saveImag:
+                savaRecommendPopwindow = new SavaRecommendPopwindow(SaveRecommnedActivity.this, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        savaRecommendPopwindow.dismiss();
+                        savaRecommendPopwindow.backgroundAlpha(SaveRecommnedActivity.this, 1f);
+                        switch (v.getId()) {
+                            case R.id.weixinghaoyou://微信分享
+                                ShareUtils.shareWeb(SaveRecommnedActivity.this, new_share_url, new_share_title
+                                        , new_share_description, new_share_icon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN
+                                );
+                                break;
+                            case R.id.pengyouquan://微信分享  将小程序换为网页地址
+
+                                break;
+                            case R.id.qqkongjian:
+                                saveImage();
+                                break;
+                            case R.id.copyurl:
+                                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                // 将文本内容放到系统剪贴板里。
+                                cm.setText(shareUrl + "#" + shareTitle);
+                                ToastUtils.showToast(SaveRecommnedActivity.this, "复制成功");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+                savaRecommendPopwindow.showAtLocation(view,
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
         }
     }
@@ -231,6 +274,7 @@ public class SaveRecommnedActivity extends BaseActivity {
             ToastUtil.showToast(this, "图片保存成功");
         }
     }
+
     //判断读写权限   保存图片监听方法
     public void onSavePrivateKeyClick(View view) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -255,6 +299,12 @@ public class SaveRecommnedActivity extends BaseActivity {
         } else {
             saveImage();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
