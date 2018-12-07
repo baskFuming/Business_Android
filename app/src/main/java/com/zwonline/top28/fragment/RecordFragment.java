@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.zwonline.top28.R;
 import com.zwonline.top28.adapter.RecordAdapter;
-import com.zwonline.top28.base.BaseFragment;
 import com.zwonline.top28.base.BasesFragment;
 import com.zwonline.top28.bean.IntegralBean;
 import com.zwonline.top28.bean.IntegralRecordBean;
@@ -19,7 +17,6 @@ import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.IntergralPresenter;
 import com.zwonline.top28.utils.StringUtil;
-import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.view.IIntegralActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -80,6 +77,7 @@ public class RecordFragment extends BasesFragment<IIntegralActivity, IntergralPr
         recordRecy.getDefaultFootView().setLoadingHint(getString(R.string.loading));
         recordRecy.getDefaultFootView().setNoMoreHint(getString(R.string.load_end));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager.setSmoothScrollbarEnabled(false);
         recordRecy.setLayoutManager(linearLayoutManager);
         recordAdapter = new RecordAdapter(list, getActivity());
         recordRecy.setAdapter(recordAdapter);
