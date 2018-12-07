@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SplashViewActivity">
+
+    <ImageView
+        android:id="@+id/img_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/relative"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        />
+
+    <com.zwonline.top28.utils.CountDownView
+        android:id="@+id/count_down_view"
+        android:layout_width="@dimen/dp39"
+        android:layout_height="@dimen/dp39"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp20"
+        app:background_color="@color/M8800000"
+        app:borders_color="@color/M45E3BF"
+        app:borders_width="@dimen/dp3"
+        app:text_size="@dimen/sp10" />
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="114dp">
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/clogo" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/start"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/startup"
+        android:visibility="gone"/>
+</RelativeLayout>
