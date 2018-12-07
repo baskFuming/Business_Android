@@ -84,7 +84,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:resizeableActivity="true"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -143,15 +143,16 @@
             android:process=":core" />
 
         <activity
-            android:name=".activity.StartupActivity"
-            android:configChanges="locale|layoutDirection"
-            android:theme="@style/Theme.MyAppTheme">
+            android:name=".activity.SplashViewActivity"
+            android:theme="@style/Theme.MyAppTheme"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.SplashActivity" />
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="locale|layoutDirection" />
@@ -239,10 +240,11 @@
         <activity
             android:name=".activity.MyProjectActivity"
             android:configChanges="locale|layoutDirection" />
+        <!-- android:launchMode="singleTask" -->
         <activity
             android:name=".activity.MainActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize|keyboardHidden|fontScale"
             android:launchMode="singleTask"
+            android:configChanges="locale|layoutDirection|orientation|screenSize|keyboardHidden|fontScale"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"> <!-- 通过浏览器Url启动app -->
             <intent-filter>
@@ -754,7 +756,8 @@
         <activity android:name=".activity.RecommendListActivity" />
         <activity android:name=".activity.SaveRecommnedActivity" />
         <activity android:name=".activity.LookPlayActivity" />
-        <activity android:name=".activity.ChannelActivity"></activity>
+        <activity android:name=".activity.ChannelActivity" />
+        <activity android:name=".activity.LanchScreenWebActivity"></activity>
     </application>
 
 </manifest>
