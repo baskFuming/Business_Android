@@ -20,5 +20,7 @@ public class HongbaoPermissionBean {
          */
 
         public String has_permission;
+
+        public String has_boc_permission;
     }
 }

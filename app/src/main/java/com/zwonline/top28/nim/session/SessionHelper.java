@@ -189,10 +189,10 @@ public class SessionHelper {
 //            actions.add(new RTSAction());
 //            actions.add(new SnapChatAction());
 //            actions.add(new GuessAction());
-            actions.add(new YangFenAction());
+//            actions.add(new YangFenAction());
 //            actions.add(new FileAction());
 //            actions.add(new TipAction());\
-            actions.add(new SJBAction());
+//            actions.add(new SJBAction());
 //            if (NIMRedPacketClient.isEnable()) {
 //                actions.add(new RedPacketAction());
 //            }
@@ -268,7 +268,7 @@ public class SessionHelper {
 //            actions.add(new SnapChatAction());
 //            actions.add(new GuessAction());
 //            actions.add(new FileAction());
-            actions.add(new SJBAction());
+//            actions.add(new SJBAction());
             myP2pCustomization.actions = actions;
             myP2pCustomization.withSticker = true;
             // 定制ActionBar右边的按钮，可以加多个
@@ -391,7 +391,7 @@ public class SessionHelper {
 //            actions.add(new FileAction());
 //            if (NIMRedPacketClient.isEnable()) {
 //            actions.add(new YangFenAction());
-            actions.add(new SJBAction());
+//            actions.add(new SJBAction());
 //            actions.add(new RedPacketAction());
 //            }
 //            actions.add(new TipAction());
@@ -430,7 +430,7 @@ public class SessionHelper {
 //                actions.add(new RedPacketAction());
 //            }
 //            actions.add(new YangFenAction());
-            actions.add(new SJBAction());
+//            actions.add(new SJBAction());
 //            if (NIMRedPacketClient.isEnable()) {
 //            }
 //            actions.add(new TipAction());

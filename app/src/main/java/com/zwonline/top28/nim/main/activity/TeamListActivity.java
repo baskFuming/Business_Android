@@ -79,6 +79,8 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
     private List<List<Team>> lists;
     private MyExpandableListView myExpandableListView;
     private String has_permission;
+    private String has_boc_permission;
+
     public static final void start(Context context, int teamItemTypes) {
         Intent intent = new Intent();
         intent.setClass(context, TeamListActivity.class);
@@ -99,6 +101,7 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
         sp = SharedPreferencesUtils.getUtil();
         uid = (String) sp.getKey(getApplicationContext(), "uid", "");
         has_permission = (String) sp.getKey(getApplicationContext(), "has_permission", "");
+        has_boc_permission = (String) sp.getKey(getApplicationContext(), "has_boc_permission", "");
         ToolBarOptions options = new NimToolBarOptions();
         options.titleId = itemType == ItemTypes.TEAMS.ADVANCED_TEAM ? R.string.advanced_team : R.string.normal_team;
         setToolBar(R.id.toolbar, options);
@@ -130,12 +133,18 @@ public class TeamListActivity extends UI implements AdapterView.OnItemClickListe
                 SessionCustomization sessionCustomization = new SessionCustomization();
 
                 ArrayList<BaseAction> actions = new ArrayList<>();
+                //鞅分红包权限
                 if (StringUtil.isEmpty(has_permission) || has_permission.equals(BizConstant.ENTERPRISE_tRUE)) {
                     actions.remove(new YangFenAction());
                 } else if (has_permission.equals(BizConstant.ALREADY_FAVORITE)) {
                     actions.add(new YangFenAction());
                 }
-                actions.add(new SJBAction());
+                //商机币红包权限
+                if (StringUtil.isNotEmpty(has_permission) && has_boc_permission.equals(BizConstant.TYPE_ONE)) {
+                    actions.add(new SJBAction());
+                } else {
+                    actions.remove(new SJBAction());
+                }
                 sessionCustomization.actions = actions;
                 NimUIKit.startChatting(getApplicationContext(), lists.get(groupPosition).get(childPosition).getId(), SessionTypeEnum.Team, sessionCustomization, null);
                 SessionHelper.startTeamSession(TeamListActivity.this, lists.get(groupPosition).get(childPosition).getId());

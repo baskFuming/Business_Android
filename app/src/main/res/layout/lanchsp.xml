@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@mipmap/startup"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/img_background"
@@ -12,20 +11,21 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/relative"
         android:contentDescription="@null"
-        android:scaleType="fitXY"
-        />
+        android:scaleType="fitXY" />
+
     <TextView
         android:id="@+id/skip_view"
         android:layout_width="70dp"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:textColor="@color/backgroundgray"
         android:textSize="14sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <com.zwonline.top28.utils.CountDownView
         android:id="@+id/count_down_view"
         android:layout_width="@dimen/dp39"
@@ -35,18 +35,20 @@
         android:layout_marginEnd="@dimen/dp20"
         android:layout_marginRight="@dimen/dp20"
         android:layout_marginTop="@dimen/dp20"
+        android:visibility="gone"
         app:background_color="@color/M8800000"
         app:borders_color="@color/M45E3BF"
         app:borders_width="@dimen/dp3"
-        app:text_size="@dimen/sp10"
-        android:visibility="visible"/>
+        app:text_size="@dimen/sp10" />
+
     <com.zwonline.top28.utils.CountDownViewUtils
         android:id="@+id/cdv_time"
         android:layout_width="39dp"
         android:layout_height="39dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="40dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:visibility="gone"
         app:cd_animator_time="3"
         app:cd_animator_time_unit="秒"
         app:cd_arc_color="#000000"
@@ -56,16 +58,16 @@
         app:cd_location="top"
         app:cd_retreat_type="forward"
         app:cd_text_color="#000000"
-        app:cd_text_size="9sp"
-        android:visibility="gone"/>
+        app:cd_text_size="9sp" />
 
     <RelativeLayout
         android:id="@+id/relative"
-        android:background="#FFFFFF"
-        android:visibility="gone"
         android:layout_width="match_parent"
+        android:layout_height="114dp"
         android:layout_alignParentBottom="true"
-        android:layout_height="114dp">
+        android:background="#FFFFFF"
+        android:visibility="gone">
+
         <ImageView
             android:id="@+id/app_logo"
             android:layout_width="match_parent"
@@ -75,11 +77,12 @@
             android:layout_marginTop="10dp"
             android:src="@mipmap/clogo" />
     </RelativeLayout>
+
     <ImageView
         android:id="@+id/start"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@mipmap/startup"
-        android:visibility="gone"/>
+        android:visibility="visible" />
 
 </RelativeLayout>

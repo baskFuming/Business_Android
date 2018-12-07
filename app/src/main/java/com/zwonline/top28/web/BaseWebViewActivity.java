@@ -48,6 +48,7 @@ import com.zwonline.top28.R;
 import com.zwonline.top28.activity.EarnIntegralActivity;
 import com.zwonline.top28.activity.IntegralPayActivity;
 import com.zwonline.top28.activity.MainActivity;
+import com.zwonline.top28.activity.SplashViewActivity;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.RecordUserBehavior;
@@ -75,6 +76,7 @@ import butterknife.OnClick;
 
 /**
  * baseWebView
+ * eventId：来判断返回的操作1.开屏广告过来的; click_change_account：切换账号;    其他直接finish()关掉
  */
 public class BaseWebViewActivity extends BaseActivity {
 
@@ -541,7 +543,7 @@ public class BaseWebViewActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                if (isNetErro){
+                if (isNetErro) {
                     if (title.length() > 14) {
                         hashrate.setText(title);
                         hashrate.setVisibility(View.VISIBLE);
@@ -551,7 +553,7 @@ public class BaseWebViewActivity extends BaseActivity {
                         hashrates.setVisibility(View.VISIBLE);
                         hashrate.setVisibility(View.GONE);
                     }
-                }else {
+                } else {
                     hashrates.setVisibility(View.GONE);
                     hashrate.setVisibility(View.GONE);
                 }
@@ -623,29 +625,13 @@ public class BaseWebViewActivity extends BaseActivity {
                     hashrateWeb.goBack();// 返回前一个页面
                     service.setVisibility(View.GONE);
                 } else {
-                    if (StringUtil.isNotEmpty(eventId) && eventId.equals("click_change_account")) {
-                        Intent intent = new Intent(BaseWebViewActivity.this, MainActivity.class);
-                        intent.putExtra("loginType", BizConstant.MYLOGIN);
-                        startActivity(intent);
-                        finish();
-                        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
-                    } else {
-                        finish();
-                    }
+                    backAction();
                 }
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
             case R.id.back_xx:
                 service.setVisibility(View.GONE);
-                if (StringUtil.isNotEmpty(eventId) && eventId.equals("click_change_account")) {
-                    Intent intent = new Intent(BaseWebViewActivity.this, MainActivity.class);
-                    intent.putExtra("loginType", BizConstant.MYLOGIN);
-                    startActivity(intent);
-                    finish();
-                    overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
-                } else {
-                    finish();
-                }
+                backAction();
                 break;
             case R.id.retry:
                 webSettingInit();
@@ -664,15 +650,7 @@ public class BaseWebViewActivity extends BaseActivity {
             service.setVisibility(View.GONE);
             return true;
         } else {
-            if (StringUtil.isNotEmpty(eventId) && eventId.equals("click_change_account")) {
-                Intent intent = new Intent(BaseWebViewActivity.this, MainActivity.class);
-                intent.putExtra("loginType", BizConstant.MYLOGIN);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
-            } else {
-                finish();
-            }
+            backAction();
             backXx.setVisibility(View.GONE);
         }
         return super.onKeyDown(keyCode, event);
@@ -716,5 +694,26 @@ public class BaseWebViewActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 返回的方法
+     */
+    public void backAction() {
+        if (StringUtil.isNotEmpty(eventId) && eventId.equals("click_change_account")) {
+            Intent intent = new Intent(BaseWebViewActivity.this, MainActivity.class);
+            intent.putExtra("loginType", BizConstant.MYLOGIN);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+        } else if (StringUtil.isNotEmpty(eventId) && eventId.equals(BizConstant.TYPE_ONE)) {
+            Intent intent = new Intent(BaseWebViewActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+        } else {
+            finish();
+            overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+        }
     }
 }

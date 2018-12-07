@@ -130,7 +130,7 @@ public class InformationFragment extends BasesFragment {
     private InfoFragmentPageAdapter mPagerAdapter;
     //修改后的Tablayout
     private MagicIndicator magicIndicator;
-    private String[] titles = new String[]{"消息", "我的"};
+    private String[] titles = new String[]{"消息", "好友"};
     private ViewPager infoPager;
     private List<Fragment> fList = new ArrayList<>();
     private MyAdapter adapter;

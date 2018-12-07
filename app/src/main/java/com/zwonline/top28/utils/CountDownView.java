@@ -45,7 +45,7 @@ public class CountDownView extends View {
     private StaticLayout staticLayout;
 
     private CountDownTimerListener listener;
-
+    private CountDownTimer downTimer;
     //倒计时 显示5秒什么的
     float lastTime = 5000;
 
@@ -141,14 +141,14 @@ public class CountDownView extends View {
             listener.onStartCount();
         }
         //倒计时器     第一个参数表示总时间，第二个参数表示间隔时间
-        new CountDownTimer((long) lastTime, 30) {
+        downTimer = new CountDownTimer((long) lastTime, 30) {
 
             @Override
             public void onTick(long millisUntilFinished) {
                 if (b) {
                     progress = 360 - ((lastTime - millisUntilFinished) / lastTime) * 360;
                 } else {
-                    cancel();
+                    downTimer.cancel();
                 }
                 invalidate();
             }
@@ -176,5 +176,12 @@ public class CountDownView extends View {
         void onFinishCount();
 
     }
-
+    /**
+     * 取消倒计时
+     */
+    public void cancel() {
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
+    }
 }

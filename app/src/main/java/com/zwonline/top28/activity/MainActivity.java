@@ -862,8 +862,10 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     public void showHongBaoPermission(HongbaoPermissionBean hongbaoPermissionBean) {
         if (hongbaoPermissionBean.status == 1) {
             String has_permission = hongbaoPermissionBean.data.has_permission;
+            String has_boc_permission = hongbaoPermissionBean.data.has_boc_permission;
             if (sp != null)
                 sp.insertKey(context, "has_permission", has_permission);
+            sp.insertKey(context, "has_boc_permission", has_boc_permission);
         }
     }
 

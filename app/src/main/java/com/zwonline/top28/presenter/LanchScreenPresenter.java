@@ -37,7 +37,9 @@ public class LanchScreenPresenter extends BasePresenter<ILanchScreenActivity> {
                     .subscribeWith(new DisposableSubscriber<LanchScreenBean>() {
                         @Override
                         public void onNext(LanchScreenBean companyBean) {
-                            iHomeDetails.successLanch(companyBean);
+                            if (companyBean.status==1){
+                                iHomeDetails.successLanch(companyBean);
+                            }
                         }
 
                         @Override

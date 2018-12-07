@@ -125,6 +125,7 @@ public class UserProfileActivity extends UI {
     private EditText remarksEt;
     private SharedPreferencesUtils sp;
     private String has_permission;
+    private String has_boc_permission;
 
     public static void start(Context context, String account) {
         Intent intent = new Intent();
@@ -160,6 +161,7 @@ public class UserProfileActivity extends UI {
         signature = intent.getStringExtra("signature");
         account = intent.getStringExtra(Extras.EXTRA_ACCOUNT);
         sp = SharedPreferencesUtils.getUtil();
+        has_boc_permission = (String) sp.getKey(getApplicationContext(), "has_boc_permission", "");
         has_permission = (String) sp.getKey(getApplicationContext(), "has_permission", "");
         initActionbar();
 
@@ -708,7 +710,7 @@ public class UserProfileActivity extends UI {
     }
 
     /**
-     *聊天
+     * 聊天
      */
     private void onChat() {
         //红包权限
@@ -719,7 +721,12 @@ public class UserProfileActivity extends UI {
         } else if (has_permission.equals(BizConstant.ALREADY_FAVORITE)) {
             actions.add(new YangFenAction());
         }
-        actions.add(new SJBAction());
+        //商机币红包权限
+        if (StringUtil.isNotEmpty(has_permission) && has_boc_permission.equals(BizConstant.TYPE_ONE)) {
+            actions.add(new SJBAction());
+        } else {
+            actions.remove(new SJBAction());
+        }
         sessionCustomization.actions = actions;
         NimUIKit.startChatting(getApplicationContext(), account, SessionTypeEnum.P2P, sessionCustomization, null);
         //单聊

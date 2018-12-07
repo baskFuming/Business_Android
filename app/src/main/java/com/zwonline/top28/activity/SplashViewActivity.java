@@ -21,6 +21,7 @@ import com.bumptech.glide.request.target.Target;
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.LanchScreenBean;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.LanchScreenPresenter;
 import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.CountDownView;
@@ -29,6 +30,7 @@ import com.zwonline.top28.utils.NetUtils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.view.ILanchScreenActivity;
+import com.zwonline.top28.web.BaseWebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,8 +99,8 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
                 if (!isAD) {
                     Intent intent = new Intent(SplashViewActivity.this, MainActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     finish();
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 } else {
                     return;
                 }
@@ -108,10 +110,11 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
         countDownView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countDownView.cancel();
                 Intent intent = new Intent(SplashViewActivity.this, MainActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 finish();
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
         });
         //启动倒计时
@@ -121,11 +124,12 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
             @Override
             public void onClick(View v) {
                 //点击广告后停止计时
-                countDownView.start(false);
+                countDownView.cancel();
                 isAD = true;
                 if (StringUtil.isNotEmpty(jump_url) && jump_out == 0) {
-                    Intent cardIntent = new Intent(SplashViewActivity.this, LanchScreenWebActivity.class);
-                    cardIntent.putExtra("jump_url", jump_url);
+                    Intent cardIntent = new Intent(SplashViewActivity.this, BaseWebViewActivity.class);
+                    cardIntent.putExtra("weburl", jump_url);
+                    cardIntent.putExtra("eventId", BizConstant.TYPE_ONE);
                     startActivity(cardIntent);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     finish();
@@ -169,6 +173,8 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
             img_url = lanchScreenBean.data.img_url;
             jump_url = lanchScreenBean.data.jump_url;
             jump_out = lanchScreenBean.data.jump_out;
+            imageviewStart.setVisibility(View.GONE);
+            countDownView.setVisibility(View.GONE);
             if (NetUtils.isConnected(this)) {
                 //RequestOptions options= new RequestOptions();
                 //增加图片加载完成监听
@@ -182,9 +188,10 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                AlphaAnimation alpha= new AlphaAnimation(0.0f,1.0f);//渐变
+                                AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);//渐变
                                 alpha.setDuration(500);
                                 MainRe.startAnimation(alpha);
+                                countDownView.setVisibility(View.VISIBLE);
                                 reimage.setVisibility(View.VISIBLE);
                                 return false;
                             }

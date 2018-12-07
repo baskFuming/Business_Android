@@ -136,6 +136,7 @@ public class SessionListFragment extends TabFragment {
     private String is_webview;
     private String project_id;
     private String notify;
+    private String has_boc_permission;
 
     public static SessionListFragment getInstance(String pageName) {
         Bundle args = new Bundle();
@@ -163,6 +164,7 @@ public class SessionListFragment extends TabFragment {
         recentContactList = new ArrayList<>();
         accid = (String) sp.getKey(getActivity(), "account", "");
         has_permission = (String) sp.getKey(getActivity(), "has_permission", "");
+        has_boc_permission = (String) sp.getKey(getActivity(), "has_boc_permission", "");
         registerObservers(true);
         addRecentContactsFragment();
         return view;
@@ -403,7 +405,12 @@ public class SessionListFragment extends TabFragment {
                 } else if (has_permission.equals(BizConstant.ALREADY_FAVORITE)) {
                     actions.add(new YangFenAction());
                 }
-                actions.add(new SJBAction());
+
+                if (StringUtil.isNotEmpty(has_permission) && has_boc_permission.equals(BizConstant.TYPE_ONE)) {
+                    actions.add(new SJBAction());
+                } else {
+                    actions.remove(new SJBAction());
+                }
                 sessionCustomization.actions = actions;
 
                 // 回调函数，以供打开会话窗口时传入定制化参数，或者做其他动作
@@ -485,8 +492,6 @@ public class SessionListFragment extends TabFragment {
 
         });
     }
-
-
 
 
     //为弹出窗口实现监听类
