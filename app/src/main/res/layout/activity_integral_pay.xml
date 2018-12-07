@@ -302,7 +302,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/rectangle_shape_gay"
                 android:orientation="vertical">
 
@@ -322,17 +323,16 @@
                         android:drawableLeft="@mipmap/ic_pos"
                         android:drawablePadding="10dp"
                         android:drawableRight="@drawable/pay_selector"
-                        android:text="@string/pos_pay"
+                        android:text="微信支付"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="18dp"
                         android:layout_marginRight="20dp"
-                        android:layout_marginTop="10dp"
                         android:background="@color/fenge"
                         android:visibility="gone"></View>
 

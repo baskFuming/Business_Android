@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:visibility="gone"
-        android:src="@mipmap/page_21"/>
+        android:src="@mipmap/t4"/>
     <FrameLayout
         android:id="@+id/framelayout"
         android:layout_width="match_parent"

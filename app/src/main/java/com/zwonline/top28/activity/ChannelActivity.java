@@ -22,6 +22,8 @@ import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -78,6 +80,8 @@ public class ChannelActivity extends BaseActivity {
     private RewritePopwindow mPopwindow;
     private String token;
     private String titleBarColor;
+    private RelativeLayout netErro;
+    private boolean isNetErro = true;
 
     @Override
     protected void init() {
@@ -127,6 +131,7 @@ public class ChannelActivity extends BaseActivity {
         hashrateWeb = (WebView) findViewById(R.id.hashrate_web);
         ImageView backImage = (ImageView) findViewById(R.id.back_image);
         ImageView backXImage = (ImageView) findViewById(R.id.backx_image);
+        netErro = (RelativeLayout) findViewById(R.id.net_erro);
         RelativeLayout backgroud_relative = (RelativeLayout) findViewById(R.id.backgroud_relative);
         if (StringUtil.isNotEmpty(titleBarColor)) {
             backImage.setImageResource(R.mipmap.back);
@@ -241,6 +246,19 @@ public class ChannelActivity extends BaseActivity {
                     }
                     return true;
                 }
+
+                // 如下方案可在非微信内部WebView的H5页面中调出微信支付
+                if (url.startsWith("weixin://wap/pay?")) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                } else {
+                    Map<String, String> extraHeaders = new HashMap<String, String>();
+                    extraHeaders.put("Referer", "http://lebaopay.28.com");
+                    view.loadUrl(url, extraHeaders);
+                }
                 //跳转文章详情
                 if (url.contains("https://toutiao.28.com/Index/article/id")) {
 //                    service.setVisibility(View.VISIBLE);
@@ -279,7 +297,7 @@ public class ChannelActivity extends BaseActivity {
                         if (StringUtil.isNotEmpty(close) && close.equals(BizConstant.IS_SUC)) {
                             if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_ONE)) {
                                 MessageFollow messageFollow = new MessageFollow();
-                                if (StringUtil.isNotEmpty(tagid)){
+                                if (StringUtil.isNotEmpty(tagid)) {
                                     messageFollow.homeTag = Integer.parseInt(tagid);
                                     EventBus.getDefault().post(messageFollow);
                                 }
@@ -299,7 +317,7 @@ public class ChannelActivity extends BaseActivity {
                         } else {
                             if (StringUtil.isNotEmpty(action) && action.equals(BizConstant.TYPE_ONE)) {
                                 MessageFollow messageFollow = new MessageFollow();
-                                if (StringUtil.isNotEmpty(tagid)){
+                                if (StringUtil.isNotEmpty(tagid)) {
                                     messageFollow.homeTag = Integer.parseInt(tagid);
                                     EventBus.getDefault().post(messageFollow);
                                 }
@@ -448,6 +466,45 @@ public class ChannelActivity extends BaseActivity {
             public void onPageFinished(WebView view, String url) {
                 // TODO Auto-generated method stub
                 super.onPageFinished(view, url);
+                if (isNetErro) {
+                    hashrateWeb.setVisibility(View.VISIBLE);
+                    netErro.setVisibility(View.GONE);
+                } else {
+                    hashrateWeb.setVisibility(View.GONE);
+                    netErro.setVisibility(View.VISIBLE);
+                }
+            }
+
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                //Log.e(TAG, "onReceivedError: ----url:" + error.getDescription());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    return;
+                }
+                // 在这里显示自定义错误页
+                netErro.setVisibility(View.VISIBLE);
+                hashrateWeb.setVisibility(View.GONE);
+                hashrate.setVisibility(View.GONE);
+                hashrates.setVisibility(View.GONE);
+//                mProgressBar.setVisibility(View.GONE);
+                isNetErro = false;
+            }
+
+            // 新版本，只会在Android6及以上调用
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                if (request.isForMainFrame()) { // 或者： if(request.getUrl().toString() .equals(getUrl()))
+                    // 在这里显示自定义错误页
+                    netErro.setVisibility(View.VISIBLE);
+                    hashrateWeb.setVisibility(View.GONE);
+                    hashrate.setVisibility(View.GONE);
+                    hashrates.setVisibility(View.GONE);
+                    isNetErro = false;
+                }
             }
         });
         hashrateWeb.setWebChromeClient(new WebChromeClient() {
@@ -455,20 +512,19 @@ public class ChannelActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                if (title.length() > 14) {
-                    hashrate.setText(title);
-                    hashrate.setVisibility(View.VISIBLE);
+                if (isNetErro) {
+                    if (title.length() > 14) {
+                        hashrate.setText(title);
+                        hashrate.setVisibility(View.VISIBLE);
+                        hashrates.setVisibility(View.GONE);
+                    } else {
+                        hashrates.setText(title);
+                        hashrates.setVisibility(View.VISIBLE);
+                        hashrate.setVisibility(View.GONE);
+                    }
+                } else {
                     hashrates.setVisibility(View.GONE);
-                } else {
-                    hashrates.setText(title);
-                    hashrates.setVisibility(View.VISIBLE);
                     hashrate.setVisibility(View.GONE);
-                }
-                if (hashrateWeb.canGoBack()) {
-                    backXx.setVisibility(View.VISIBLE);
-                } else {
-                    backXx.setVisibility(View.GONE);
-
                 }
             }
 
@@ -523,7 +579,7 @@ public class ChannelActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.back, R.id.back_xx})
+    @OnClick({R.id.back, R.id.back_xx, R.id.retry})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -539,6 +595,12 @@ public class ChannelActivity extends BaseActivity {
                 service.setVisibility(View.GONE);
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                break;
+            case R.id.retry:
+                webSettingInit();
+                isNetErro = true;
+                break;
+            default:
                 break;
         }
     }

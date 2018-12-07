@@ -1,5 +1,6 @@
 package com.zwonline.top28.constants;
 
+import com.zwonline.top28.R;
 import com.zwonline.top28.api.Api;
 
 /**
@@ -18,7 +19,10 @@ public class BizConstant {
      * 热商机
      */
     public static final String HOT_BUSINESS = "http://www.91jmw.com/";
-    public static final String MORE_CHANNEL="https://toutiao.28.com/Home/Qiyehao/channel";
+    /**
+     * 频道
+     */
+    public static final String MORE_CHANNEL = "https://toutiao.28.com/Home/Qiyehao/channel";
 
     /**
      * 极验验证API验证
@@ -79,7 +83,7 @@ public class BizConstant {
      */
     public static final String CLICK_PAY = "click_pay";
     /**
-     * 手约保
+     * 守约保
      */
     public static final String CLICK_SYB = "click_syb";
     /**
@@ -269,4 +273,21 @@ public class BizConstant {
     public static final String MOBILE_BIND_SUCCESS = "mobile_bind_success";//绑定手机号成功
     public static final String WX_BIND = "wx_bind";//绑定微信
     public static final String WX_BIND_SUCCESS = "wx_bind_success";//绑定微信成功
+
+
+    /**
+     * 引导页数组
+     * 1.企业用户
+     * 2.创业者
+     * 3.区块链爱好者
+     * 4.区块链投资者
+     * 5.转载文章
+     * 6.积分挖矿
+     */
+    public static final int[] ENTERPRISEIMAGEARRAY = new int[]{R.mipmap.q1, R.mipmap.q2, R.mipmap.q3, R.mipmap.q4};
+    public static final int[] ENTREPRENEURIMAGEARRAY = new int[]{R.mipmap.w1, R.mipmap.w2, R.mipmap.w3, R.mipmap.w4};
+    public static final int[] ENTHUSIASTIMAGEARRAY = new int[]{R.mipmap.e1, R.mipmap.e2, R.mipmap.e3, R.mipmap.e4, R.mipmap.e5, R.mipmap.e6, R.mipmap.e7, R.mipmap.e8};
+    public static final int[] INVESTORIMAGEARRAY = new int[]{R.mipmap.r1, R.mipmap.r2, R.mipmap.r3, R.mipmap.r4, R.mipmap.r5, R.mipmap.r6, R.mipmap.r7};
+    public static final int[] REPRINTEDARTICLES = new int[]{R.mipmap.t1, R.mipmap.t2, R.mipmap.t3};
+    public static final int[] INTEGRALDIG = new int[]{R.mipmap.y1, R.mipmap.y2, R.mipmap.y3, R.mipmap.y4, R.mipmap.y5};
 }

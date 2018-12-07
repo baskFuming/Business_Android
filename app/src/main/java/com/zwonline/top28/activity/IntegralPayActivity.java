@@ -38,6 +38,7 @@ import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.popwindow.PaySucPopuWindow;
 import com.zwonline.top28.view.IIntegralPayActivity;
+import com.zwonline.top28.web.BaseWebViewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -248,7 +249,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
 //                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, pointsMonney.getText().toString());
 //                        ToastUtils.showToast(IntegralPayActivity.this, "选着的是银行卡" + orderCode);
                         Double Monney = Double.valueOf(pointsEditText.getText().toString());
-                        if (Monney>balance) {
+                        if (Monney > balance) {
                             paySureBtn.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
                         } else {
                             paySureBtn.setBackgroundResource(R.drawable.btn_register_shape);
@@ -256,9 +257,12 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
 
                         }
                     } else if (payCheckedId == posBtn.getId()) {
-                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, payAmount);//支付接口
+//                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, payAmount);//支付接口
 //                        ToastUtils.showToast(IntegralPayActivity.this, "选着的pos机");
-
+                        Intent intent = new Intent(IntegralPayActivity.this, ChannelActivity.class);
+                        intent.putExtra("weburl", "http://lebaopaytest.28.com/h/confirmPay");
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     } else {
                         ToastUtils.showToast(IntegralPayActivity.this, getString(R.string.common_pay_method_empty));
                         return;
@@ -790,9 +794,9 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     public void isBalance() {
 
         if (StringUtil.isNotEmpty(String.valueOf(balance))) {
-            if (StringUtil.isNotEmpty(pointsEditText.getText().toString())){
+            if (StringUtil.isNotEmpty(pointsEditText.getText().toString())) {
                 Double Monney = Double.valueOf(pointsEditText.getText().toString());
-                if (Monney >balance) {
+                if (Monney > balance) {
                     paySureBtn.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
                     paySureBtn.setEnabled(false);
                 } else {

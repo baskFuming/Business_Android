@@ -82,6 +82,7 @@ import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.badge.MainBadgeView;
 import com.zwonline.top28.utils.popwindow.CustomPopuWindow;
+import com.zwonline.top28.utils.popwindow.GuidePopuWindow;
 import com.zwonline.top28.utils.popwindow.RedacketPopWindow;
 import com.zwonline.top28.utils.popwindow.YangFenUnclaimedWindow;
 import com.zwonline.top28.view.IMainActivity;
@@ -176,6 +177,9 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private LinearLayout updataLinear;
     private TextView updataTv;
     private TextView forceUpdataTv;
+    private SharedPreferences homeSp;
+    private boolean isfristHome;
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -200,6 +204,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     };
     private int percent;
     private int progress;
+    private GuidePopuWindow guidePopuWindow;
 
     @Override
     protected void init() {
@@ -209,6 +214,9 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         informationFragment = new InformationFragment();
         myFragment = new MyFragment();
         yangShiFragment = new YangShiFragment();
+        homeSp = getSharedPreferences("startup", 0);
+        //这个文件里面的布尔常量名，和它的初始状态，状态为是，则触发下面的方法
+        isfristHome = homeSp.getBoolean("isfristHome", true);
         initView();
 //        ToastUtils.showToast(this,LanguageUitils.getVersionName(this)+"");
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -508,6 +516,23 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                 }
 
 
+            } else {
+                if (isfristHome) {
+                    SharedPreferences.Editor edit = homeSp.edit();//创建状态储存文件
+                    edit.putBoolean("isfristHome", false);//将参数put，改变其状态
+                    edit.commit();//保证文件的创建和编辑
+                    //引导页弹框
+                    guidePopuWindow = new GuidePopuWindow(MainActivity.this, guideListener);
+                    mian.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            guidePopuWindow.showAtLocation(mian, Gravity.CENTER, 0, 0);
+                            View customView = guidePopuWindow.getContentView();
+                        }
+                    });
+                }
+
+
             }
 
             //否则吐司，说现在是最新的版本
@@ -515,6 +540,40 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 //            Log.v("updata", "当前已经是最新的版本");
         }
     }
+
+    //引导页
+    private View.OnClickListener guideListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.enterprise_user://企业用户
+                    Intent intent = new Intent(MainActivity.this, GuideActivity.class);
+                    intent.putExtra("imageArray", BizConstant.ENTERPRISEIMAGEARRAY);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    break;
+                case R.id.entrepreneur://创业者
+                    Intent entrepreneur_intent = new Intent(MainActivity.this, GuideActivity.class);
+                    entrepreneur_intent.putExtra("imageArray", BizConstant.ENTREPRENEURIMAGEARRAY);
+                    startActivity(entrepreneur_intent);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    break;
+                case R.id.blockchain_enthusiast://区块链爱好者
+                    Intent enthusiast_intent = new Intent(MainActivity.this, GuideActivity.class);
+                    enthusiast_intent.putExtra("imageArray", BizConstant.ENTHUSIASTIMAGEARRAY);
+                    startActivity(enthusiast_intent);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    break;
+                case R.id.blockchain_investor://区块链投资者
+                    Intent investor_intent = new Intent(MainActivity.this, GuideActivity.class);
+                    investor_intent.putExtra("imageArray", BizConstant.INVESTORIMAGEARRAY);
+                    startActivity(investor_intent);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    break;
+            }
+        }
+    };
+
 
     //版本更新
     private View.OnClickListener listener = new View.OnClickListener() {
@@ -526,23 +585,17 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
                     break;
                 case R.id.sure:
-//                    listenerDownApk(package_download_url);
                     downloadApk(package_download_url);
                     updataLinear.setVisibility(View.GONE);
                     updataProgressbar.setVisibility(View.VISIBLE);
                     updataTv.setVisibility(View.VISIBLE);
-//                    customPopuWindow.dismiss();
-//                    customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
 //                    LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
                     break;
                 case R.id.coerce_sure:
-//                    listenerDownApk(package_download_url);
                     coerceSure.setVisibility(View.GONE);
                     forceUpdataProgressbar.setVisibility(View.VISIBLE);
                     forceUpdataTv.setVisibility(View.VISIBLE);
                     downloadApk(package_download_url);
-//                    customPopuWindow.dismiss();
-//                    customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
 //                    LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
                     break;
             }

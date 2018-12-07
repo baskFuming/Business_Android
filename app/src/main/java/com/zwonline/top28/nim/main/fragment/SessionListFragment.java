@@ -59,6 +59,7 @@ import com.zwonline.top28.api.ApiRetrofit;
 import com.zwonline.top28.api.service.ApiService;
 import com.zwonline.top28.base.BaseMainActivity;
 import com.zwonline.top28.bean.BannerAdBean;
+import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.nim.config.preference.Preferences;
 import com.zwonline.top28.nim.login.LoginActivity;
@@ -77,11 +78,17 @@ import com.zwonline.top28.nim.shangjibi.SJBAction;
 import com.zwonline.top28.nim.shangjibi.SJBAttachment;
 import com.zwonline.top28.nim.yangfen.YangFenAction;
 import com.zwonline.top28.nim.yangfen.YangFenAttachment;
+import com.zwonline.top28.tip.toast.ToastUtil;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.StringUtil;
+import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.badge.BadgeViews;
 import com.zwonline.top28.utils.popwindow.EmptyPopwindow;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -128,6 +135,7 @@ public class SessionListFragment extends TabFragment {
     private String is_jump_off;
     private String is_webview;
     private String project_id;
+    private String notify;
 
     public static SessionListFragment getInstance(String pageName) {
         Bundle args = new Bundle();
@@ -143,6 +151,7 @@ public class SessionListFragment extends TabFragment {
         onCurrent();
         View view = inflater.inflate(R.layout.session_list, null);
         initView(view);
+//        EventBus.getDefault().register(this);
         sp = SharedPreferencesUtils.getUtil();
         try {
             BannerAd(getActivity());
@@ -154,6 +163,7 @@ public class SessionListFragment extends TabFragment {
         recentContactList = new ArrayList<>();
         accid = (String) sp.getKey(getActivity(), "account", "");
         has_permission = (String) sp.getKey(getActivity(), "has_permission", "");
+        registerObservers(true);
         addRecentContactsFragment();
         return view;
     }
@@ -222,6 +232,11 @@ public class SessionListFragment extends TabFragment {
         super.onDestroy();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+//        EventBus.getDefault().unregister(this);
+    }
 
     private void registerObservers(boolean register) {
         NIMClient.getService(AuthServiceObserver.class).observeOtherClients(clientsObserver, register);
@@ -472,11 +487,7 @@ public class SessionListFragment extends TabFragment {
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-    }
 
     //为弹出窗口实现监听类
     private View.OnClickListener itemsOnClick = new View.OnClickListener() {
@@ -575,5 +586,17 @@ public class SessionListFragment extends TabFragment {
 
                     }
                 });
+    }
+
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onMessageEvent(MessageFollow messageFollow) {
+//        if (StringUtil.isNotEmpty(messageFollow.notifyCount)&&messageFollow.notifyCount.equals(BizConstant.TYPE_ONE)) {
+//            notify = messageFollow.notifyCount;
+//    }
+//    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

@@ -10,25 +10,35 @@
 
     <include layout="@layout/base_title_helper" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="查看不同角色玩法"
-        android:textColor="#3D3D3D"
-        android:textSize="22sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:text="不一样的角色，不一样的玩法"
-        android:textColor="#3D3D3D"
-        android:textSize="@dimen/sp_16" />
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        ></LinearLayout>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="查看不同角色玩法"
+                android:textColor="#3D3D3D"
+                android:textSize="22sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="不一样的角色，不一样的玩法"
+                android:textColor="#3D3D3D"
+                android:textSize="@dimen/sp_16" />
+
+            <include layout="@layout/base_role"></include>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

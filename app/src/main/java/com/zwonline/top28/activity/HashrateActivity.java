@@ -24,6 +24,8 @@ import android.view.ViewGroup;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -93,6 +95,8 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
     private RelativeLayout hashrate_guide;
     private boolean isLast = false;
     private int positions;
+    private RelativeLayout netErro;
+    private boolean isNetErro = true;
 
     @Override
     protected void init() {
@@ -391,6 +395,45 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
             public void onPageFinished(WebView view, String url) {
                 // TODO Auto-generated method stub
                 super.onPageFinished(view, url);
+                if (isNetErro) {
+                    hashrateWeb.setVisibility(View.VISIBLE);
+                    netErro.setVisibility(View.GONE);
+                } else {
+                    hashrateWeb.setVisibility(View.GONE);
+                    netErro.setVisibility(View.VISIBLE);
+                }
+//
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                //Log.e(TAG, "onReceivedError: ----url:" + error.getDescription());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    return;
+                }
+                // 在这里显示自定义错误页
+                netErro.setVisibility(View.VISIBLE);
+                hashrateWeb.setVisibility(View.GONE);
+                hashrate.setVisibility(View.GONE);
+                hashrates.setVisibility(View.GONE);
+//                mProgressBar.setVisibility(View.GONE);
+                isNetErro = false;
+            }
+
+            // 新版本，只会在Android6及以上调用
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                if (request.isForMainFrame()) { // 或者： if(request.getUrl().toString() .equals(getUrl()))
+                    // 在这里显示自定义错误页
+                    netErro.setVisibility(View.VISIBLE);
+                    hashrateWeb.setVisibility(View.GONE);
+                    hashrate.setVisibility(View.GONE);
+                    hashrates.setVisibility(View.GONE);
+                    isNetErro = false;
+                }
             }
         });
         hashrateWeb.setWebChromeClient(new WebChromeClient() {
@@ -398,13 +441,18 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                if (title.length() > 14) {
-                    hashrate.setText(title);
-                    hashrate.setVisibility(View.VISIBLE);
-                    hashrates.setVisibility(View.GONE);
+                if (isNetErro) {
+                    if (title.length() > 14) {
+                        hashrate.setText(title);
+                        hashrate.setVisibility(View.VISIBLE);
+                        hashrates.setVisibility(View.GONE);
+                    } else {
+                        hashrates.setText(title);
+                        hashrates.setVisibility(View.VISIBLE);
+                        hashrate.setVisibility(View.GONE);
+                    }
                 } else {
-                    hashrates.setText(title);
-                    hashrates.setVisibility(View.VISIBLE);
+                    hashrates.setVisibility(View.GONE);
                     hashrate.setVisibility(View.GONE);
                 }
                 if (hashrateWeb.canGoBack()) {
@@ -487,9 +535,10 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
         hashrate_guide = (RelativeLayout) findViewById(R.id.hashrate_guide);
         hashrate_linear = (LinearLayout) findViewById(R.id.hashrate_linear);
         ib_start = (Button) findViewById(R.id.guide_ib_start);
+        netErro = (RelativeLayout) findViewById(R.id.net_erro);
     }
 
-    @OnClick({R.id.back, R.id.back_xx})
+    @OnClick({R.id.back, R.id.back_xx, R.id.retry})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -505,6 +554,13 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
                 service.setVisibility(View.GONE);
                 finish();
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                break;
+
+            case R.id.retry:
+                webSettingInit();
+                isNetErro = true;
+                break;
+            default:
                 break;
         }
     }
@@ -568,7 +624,7 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
     private void initViewPager() {
         vp = (ViewPager) findViewById(R.id.guide_vp);
         //实例化图片资源
-        imageIdArray = new int[]{R.mipmap.w2_an, R.mipmap.w3_an, R.mipmap.w4_an, R.mipmap.w5_an, R.mipmap.w6_an, R.mipmap.w7_an};
+        imageIdArray = BizConstant.INTEGRALDIG;
         viewList = new ArrayList<>();
         //获取一个Layout参数，设置为全屏
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

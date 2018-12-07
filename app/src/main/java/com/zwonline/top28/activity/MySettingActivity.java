@@ -294,7 +294,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
 
                 break;
             case R.id.look_playing://查看玩法
-                Intent lookIntent = new Intent(MySettingActivity.this, GuideActivity.class);
+                Intent lookIntent = new Intent(MySettingActivity.this, LookPlayActivity.class);
                 lookIntent.putExtra("type", BizConstant.RECOMMEND);
                 startActivity(lookIntent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);

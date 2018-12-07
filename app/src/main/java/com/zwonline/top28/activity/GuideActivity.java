@@ -45,12 +45,12 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
 
     //最后一页的按钮
     private Button ib_start;
-    private String type;
     private int len;
     private boolean isLast = false;//判断是否是最后一页
     private ImageView imageView;
     private int positons;
     private LinearLayout.LayoutParams params;
+    private int[] imageArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +60,16 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
         //设置全屏
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_guide);
-        type = getIntent().getStringExtra("type");
+        imageArray = getIntent().getIntArrayExtra("imageArray");
+
         ib_start = (Button) findViewById(R.id.guide_ib_start);
         ib_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //判断是否是最后一页，如果是最后一页点击finish()界面，不是最后一页点击切换图片
                 if (isLast) {
-                    if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
                         finish();
-                    } else {
-                        startActivity(new Intent(GuideActivity.this, MainActivity.class));
-                        finish();
-                        overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                    }
+                   overridePendingTransition(R.anim.activity_left_in,R.anim.activity_right_out);
                 } else {
                     //点击切换图片
                     vp.setCurrentItem(positons + 1, true);
@@ -119,29 +115,18 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
     private void initViewPager() {
         vp = (ViewPager) findViewById(R.id.guide_vp);
         //第一次下载刚进来
-        imageIdArray = new int[]{R.mipmap.page1, R.mipmap.page2, R.mipmap.page3, R.mipmap.page4, R.mipmap.page5, R.mipmap.page6};
-        imageIdArrays = new int[]{R.mipmap.page5, R.mipmap.w2_an, R.mipmap.w3_an, R.mipmap.w4_an, R.mipmap.w5_an, R.mipmap.w6_an, R.mipmap.w7_an};
         viewList = new ArrayList<>();
         //获取一个Layout参数，设置为全屏
         params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         //循环创建View并加入到集合中
-        if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
-            len = imageIdArrays.length;
-        } else {
-            len = imageIdArray.length;
-        }
-
+        len = imageArray.length;
         for (int i = 0; i < len; i++) {
             //new ImageView并设置全屏和图片资源
             imageView = new ImageView(this);
             imageView.setLayoutParams(params);
-            if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
-                imageView.setBackgroundResource(imageIdArrays[i]);
-            } else {
-                imageView.setBackgroundResource(imageIdArray[i]);
-            }
+            imageView.setBackgroundResource(imageArray[i]);
             //将ImageView加入到集合中
             viewList.add(imageView);
         }
@@ -165,7 +150,7 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
     @Override
     public void onPageSelected(int position) {
         //循环设置当前页的标记图
-        int length = imageIdArray.length;
+        int length = imageArray.length;
         this.positons = position;
 //        for (int i = 0; i < length; i++) {
 //            ivPointArray[position].setBackgroundResource(R.mipmap.guide1);
@@ -175,11 +160,12 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
 //        }
 
         //判断是否是最后一页，若是则显示按钮
-        if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
-            guideType(imageIdArrays, position);
-        } else {
-            guideType(imageIdArray, position);
-        }
+        guideType(imageArray, position);
+//        if (StringUtil.isNotEmpty(type) && type.equals(BizConstant.RECOMMEND)) {
+//            guideType(imageIdArrays, position);
+//        } else {
+//            guideType(imageIdArray, position);
+//        }
 
     }
 
@@ -196,7 +182,7 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
             ib_start.setBackgroundResource(R.drawable.btn_red_shape);
             isLast = true;
         } else {
-            ib_start.setText("下一页");
+            ib_start.setText("下一步");
             ib_start.setTextColor(Color.parseColor("#FF2B2B"));
             ib_start.setBackgroundResource(R.drawable.reword__shape);
             isLast = false;

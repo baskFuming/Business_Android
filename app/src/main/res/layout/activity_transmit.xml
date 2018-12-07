@@ -29,14 +29,14 @@
 
         <Button
             android:id="@+id/guide_ib_start"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
+            android:layout_width="96dp"
+            android:layout_height="36dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginBottom="73dp"
+            android:layout_marginRight="36dp"
             android:background="@drawable/reword__shape"
-            android:text="下一页"
+            android:text="下一步"
             android:textColor="@color/reded"
             android:textSize="16sp"
             android:visibility="gone" />

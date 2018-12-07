@@ -375,7 +375,7 @@ public class HomeFragment extends BasesFragment<IHomeClassFrag, HomeClassPresent
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageFollow messageFollow) {
-        if (StringUtil.isNotEmpty(String.valueOf(messageFollow.homeTag))){
+        if (StringUtil.isNotEmpty(String.valueOf(messageFollow.homeTag))) {
             int homeTag = messageFollow.homeTag;
             viewpager.setCurrentItem(homeTag, false);
         }

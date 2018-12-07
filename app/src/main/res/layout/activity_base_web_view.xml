@@ -25,8 +25,7 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-               />
+                android:layout_marginLeft="10dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -42,8 +41,7 @@
                 android:layout_height="17dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                 />
+                android:layout_marginLeft="10dp" />
         </RelativeLayout>
 
 
@@ -97,5 +95,34 @@
     <WebView
         android:id="@+id/hashrate_web"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent"
+        android:visibility="visible"></WebView>
+
+    <RelativeLayout
+        android:id="@+id/net_erro"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/no_network"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/retry"
+            android:layout_width="109dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="51dp"
+            android:background="@drawable/neterro_shape"
+            android:gravity="center"
+            android:text="重试"
+            android:textColor="#3296FE"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
 </LinearLayout>

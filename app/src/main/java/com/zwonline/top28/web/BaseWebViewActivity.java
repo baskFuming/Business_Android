@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.ClipboardManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -22,6 +24,8 @@ import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -32,6 +36,10 @@ import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -42,6 +50,8 @@ import com.zwonline.top28.activity.IntegralPayActivity;
 import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.bean.message.MessageFollow;
 import com.zwonline.top28.constants.BizConstant;
+import com.zwonline.top28.presenter.RecordUserBehavior;
+import com.zwonline.top28.utils.SignUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.activity.HomeDetailsActivity;
 import com.zwonline.top28.activity.IntegralActivity;
@@ -80,11 +90,17 @@ public class BaseWebViewActivity extends BaseActivity {
     private RewritePopwindow mPopwindow;
     private String token;
     private String titleBarColor;
+    private String nonceStr = "t8EcKocBEuOKd7jG";
+    private String eventId;
+    private RelativeLayout netErro;
+    private boolean isNetErro = true;
+    private ImageView backXImage;
 
     @Override
     protected void init() {
         Intent intent = getIntent();
-        url = intent.getStringExtra("weburl")+ "?version=" + LanguageUitils.getVerName(this);
+        eventId = intent.getStringExtra("eventId");
+        url = intent.getStringExtra("weburl") + "?version=" + LanguageUitils.getVerName(this);
         titleBarColor = getIntent().getStringExtra("titleBarColor");
         if (StringUtil.isNotEmpty(titleBarColor)) {
             StatusBarUtil.setColor(this, Color.parseColor(titleBarColor), 0);
@@ -128,7 +144,9 @@ public class BaseWebViewActivity extends BaseActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress_Bar);
         hashrateWeb = (WebView) findViewById(R.id.hashrate_web);
         ImageView backImage = (ImageView) findViewById(R.id.back_image);
-        ImageView backXImage = (ImageView) findViewById(R.id.backx_image);
+        backXImage = (ImageView) findViewById(R.id.backx_image);
+        netErro = (RelativeLayout) findViewById(R.id.net_erro);
+
         RelativeLayout backgroud_relative = (RelativeLayout) findViewById(R.id.backgroud_relative);
         if (StringUtil.isNotEmpty(titleBarColor)) {
             backImage.setImageResource(R.mipmap.back);
@@ -243,6 +261,18 @@ public class BaseWebViewActivity extends BaseActivity {
                     }
                     return true;
                 }
+                // 如下方案可在非微信内部WebView的H5页面中调出微信支付
+                if (url.startsWith("weixin://wap/pay?")) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                } else {
+                    Map<String, String> extraHeaders = new HashMap<String, String>();
+                    extraHeaders.put("Referer", "http://lebaopay.28.com");
+                    view.loadUrl(url, extraHeaders);
+                }
                 //跳转文章详情
                 if (url.contains("https://toutiao.28.com/Index/article/id")) {
 //                    service.setVisibility(View.VISIBLE);
@@ -261,6 +291,29 @@ public class BaseWebViewActivity extends BaseActivity {
                     String invitationCode = url.substring(path.length(), url.length());
                     showNormalDialogs(invitationCode);
                     return true;
+                }
+                /**
+                 * 切换账号
+                 */
+                if (url.contains("top28app/reLogin")) {
+                    String path = "http://top28app/reLogin/";
+                    String base64String = url.substring(path.length(), url.length() - nonceStr.length());
+                    String s = new String(Base64.decode(base64String.getBytes(), Base64.DEFAULT));
+                    if (s.contains("##")) {
+                        String[] str = s.split("##");
+                        if (str.length >= 3) {
+                            NIMClient.getService(AuthService.class).logout();//退出网易云信
+                            sp.insertKey(BaseWebViewActivity.this, "dialog", str[0]);
+                            sp.insertKey(BaseWebViewActivity.this, "account", str[1]);
+                            sp.insertKey(BaseWebViewActivity.this, "token", str[2]);
+                            SignUtils.doLogin(str[1], str[2]);
+                        }
+                        Intent intent = new Intent(BaseWebViewActivity.this, MainActivity.class);
+                        intent.putExtra("loginType", BizConstant.MYLOGIN);
+                        startActivity(intent);
+                        finish();
+                        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                    }
                 }
                 /**
                  * close等于1关闭页面  其他不关闭
@@ -320,10 +373,6 @@ public class BaseWebViewActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-//                    Intent intent = new Intent(BaseWebViewActivity.this, HomeDetailsActivity.class);
-//                    intent.putExtra("id", ids);
-//                    startActivity(intent);
-//                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                     return true;
                 }
                 //判断用户单击的是那个超连接
@@ -441,14 +490,50 @@ public class BaseWebViewActivity extends BaseActivity {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                // TODO Auto-generated method stub
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                // TODO Auto-generated method stub
-                super.onPageFinished(view, url);
+                if (isNetErro) {
+                    hashrateWeb.setVisibility(View.VISIBLE);
+                    netErro.setVisibility(View.GONE);
+                } else {
+                    hashrateWeb.setVisibility(View.GONE);
+                    netErro.setVisibility(View.VISIBLE);
+                }
+//
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                //Log.e(TAG, "onReceivedError: ----url:" + error.getDescription());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    return;
+                }
+                // 在这里显示自定义错误页
+                netErro.setVisibility(View.VISIBLE);
+                hashrateWeb.setVisibility(View.GONE);
+                hashrate.setVisibility(View.GONE);
+                hashrates.setVisibility(View.GONE);
+//                mProgressBar.setVisibility(View.GONE);
+                isNetErro = false;
+            }
+
+            // 新版本，只会在Android6及以上调用
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                if (request.isForMainFrame()) { // 或者： if(request.getUrl().toString() .equals(getUrl()))
+                    // 在这里显示自定义错误页
+                    netErro.setVisibility(View.VISIBLE);
+                    hashrateWeb.setVisibility(View.GONE);
+                    hashrate.setVisibility(View.GONE);
+                    hashrates.setVisibility(View.GONE);
+                    isNetErro = false;
+                }
             }
         });
         hashrateWeb.setWebChromeClient(new WebChromeClient() {
@@ -456,15 +541,21 @@ public class BaseWebViewActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                if (title.length() > 14) {
-                    hashrate.setText(title);
-                    hashrate.setVisibility(View.VISIBLE);
+                if (isNetErro){
+                    if (title.length() > 14) {
+                        hashrate.setText(title);
+                        hashrate.setVisibility(View.VISIBLE);
+                        hashrates.setVisibility(View.GONE);
+                    } else {
+                        hashrates.setText(title);
+                        hashrates.setVisibility(View.VISIBLE);
+                        hashrate.setVisibility(View.GONE);
+                    }
+                }else {
                     hashrates.setVisibility(View.GONE);
-                } else {
-                    hashrates.setText(title);
-                    hashrates.setVisibility(View.VISIBLE);
                     hashrate.setVisibility(View.GONE);
                 }
+
                 if (hashrateWeb.canGoBack()) {
                     backXx.setVisibility(View.VISIBLE);
                 } else {
@@ -524,7 +615,7 @@ public class BaseWebViewActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.back, R.id.back_xx})
+    @OnClick({R.id.back, R.id.back_xx, R.id.retry})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -532,14 +623,35 @@ public class BaseWebViewActivity extends BaseActivity {
                     hashrateWeb.goBack();// 返回前一个页面
                     service.setVisibility(View.GONE);
                 } else {
-                    finish();
+                    if (StringUtil.isNotEmpty(eventId) && eventId.equals("click_change_account")) {
+                        Intent intent = new Intent(BaseWebViewActivity.this, MainActivity.class);
+                        intent.putExtra("loginType", BizConstant.MYLOGIN);
+                        startActivity(intent);
+                        finish();
+                        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                    } else {
+                        finish();
+                    }
                 }
                 overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
                 break;
             case R.id.back_xx:
                 service.setVisibility(View.GONE);
-                finish();
-                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                if (StringUtil.isNotEmpty(eventId) && eventId.equals("click_change_account")) {
+                    Intent intent = new Intent(BaseWebViewActivity.this, MainActivity.class);
+                    intent.putExtra("loginType", BizConstant.MYLOGIN);
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+                } else {
+                    finish();
+                }
+                break;
+            case R.id.retry:
+                webSettingInit();
+                isNetErro = true;
+                break;
+            default:
                 break;
         }
     }
@@ -552,6 +664,15 @@ public class BaseWebViewActivity extends BaseActivity {
             service.setVisibility(View.GONE);
             return true;
         } else {
+            if (StringUtil.isNotEmpty(eventId) && eventId.equals("click_change_account")) {
+                Intent intent = new Intent(BaseWebViewActivity.this, MainActivity.class);
+                intent.putExtra("loginType", BizConstant.MYLOGIN);
+                startActivity(intent);
+                finish();
+                overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+            } else {
+                finish();
+            }
             backXx.setVisibility(View.GONE);
         }
         return super.onKeyDown(keyCode, event);

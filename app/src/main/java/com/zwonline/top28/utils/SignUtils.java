@@ -1,5 +1,13 @@
 package com.zwonline.top28.utils;
 
+import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
+
+import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.LoginInfo;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -166,4 +174,27 @@ public class SignUtils {
     public static boolean isEmpty(Object obj) {
         return obj == null || obj.toString().length() == 0;
     }
+
+
+    public static void doLogin(String account, String token) {
+
+        NimUIKit.login(new LoginInfo(account, token), new RequestCallback<LoginInfo>() {
+            @Override
+            public void onSuccess(LoginInfo loginInfo) {
+
+            }
+
+            @Override
+            public void onFailed(int i) {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+
+            }
+        });
+    }
+
+
 }

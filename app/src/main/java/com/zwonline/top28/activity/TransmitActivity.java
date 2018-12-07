@@ -22,6 +22,7 @@ import com.zwonline.top28.adapter.GuidePageAdapter;
 import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.base.BasePresenter;
+import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
@@ -206,7 +207,8 @@ public class TransmitActivity extends BaseActivity implements ViewPager.OnPageCh
     private void initViewPager() {
         vp = (ViewPager) findViewById(R.id.guide_vp);
         //实例化图片资源
-        imageIdArray = new int[]{R.mipmap.page_22, R.mipmap.page_23, R.mipmap.page_24};
+//        imageIdArray = new int[]{R.mipmap.page_22, R.mipmap.page_23, R.mipmap.page_24};
+        imageIdArray = BizConstant.REPRINTEDARTICLES;
         viewList = new ArrayList<>();
         //获取一个Layout参数，设置为全屏
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

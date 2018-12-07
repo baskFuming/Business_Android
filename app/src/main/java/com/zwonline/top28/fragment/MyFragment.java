@@ -27,6 +27,7 @@ import com.zwonline.top28.activity.HashrateActivity;
 import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.activity.InsuranceActivity;
 import com.zwonline.top28.activity.IntegralActivity;
+import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.activity.MyAttentionsActivity;
 import com.zwonline.top28.activity.MyCollectActivity;
 import com.zwonline.top28.activity.MyExamineActivity;
@@ -200,7 +201,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
         Glide.with(getActivity()).load(sp.getKey(getActivity(), "avatar", "")).apply(options).into(userTou);
 //        UserDatas();
-        myOneMenuAdapter = new MyOneMunuAdapter(menuList, getActivity());
+        myOneMenuAdapter = new MyOneMunuAdapter(menuList, getActivity() , (MainActivity) getActivity());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         ScrollLinearLayoutManager scrollLinearLayoutManager = new ScrollLinearLayoutManager(getActivity());
         scrollLinearLayoutManager.setScrollEnabled(false);
@@ -267,6 +268,10 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 tvGuanzhuNum.setText((String) sp.getKey(getActivity(), "mbp_amount", ""));
                 tvFensiNum.setText((String) sp.getKey(getActivity(), "cp_amount", ""));
                 tvShoucangNum.setText((String) sp.getKey(getActivity(), "boc_amount", ""));
+                userName.setText((String) sp.getKey(getActivity(), "nickname", ""));
+                titleUserName.setText((String) sp.getKey(getActivity(), "nickname", ""));
+                RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
+                Glide.with(getActivity()).load(sp.getKey(getActivity(), "avatar", "")).apply(options).into(userTou);
             }
 
             if (StringUtil.isNotEmpty(userInfoBean.data.user.nickname)) {

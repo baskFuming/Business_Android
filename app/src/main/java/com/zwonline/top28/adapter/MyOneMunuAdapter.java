@@ -11,6 +11,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.zwonline.top28.R;
+import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.bean.MyPageBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.ScrollGridView;
@@ -29,11 +30,13 @@ import java.util.List;
 public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<MyPageBean.DataBean> list;
     private Context context;
+    private MainActivity mainActivity;
     private SharedPreferencesUtils sp;
 
-    public MyOneMunuAdapter(List<MyPageBean.DataBean> list, Context context) {
+    public MyOneMunuAdapter(List<MyPageBean.DataBean> list, Context context,MainActivity mainActivity) {
         this.list = list;
         this.context = context;
+        this.mainActivity=mainActivity;
     }
 
     @Override
@@ -71,11 +74,15 @@ public class MyOneMunuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 String activityName = twoList.get(positions).link;
                 if (StringUtil.isNotEmpty(activityName) && activityName.contains("http")) {
                     Intent intent = new Intent(context, BaseWebViewActivity.class);
-                    intent.putExtra("uid", uid);
+                    intent.putExtra("eventId", twoList.get(positions).eventId);
+                    intent.putExtra("weburl", activityName);
                     intent.putExtra("weburl", activityName);
                     intent.putExtra("titleBarColor", twoList.get(positions).titleBarColor);
                     intent.putExtra("project", BizConstant.ALIPAY_METHOD);
                     context.startActivity(intent);
+                    if (StringUtil.isNotEmpty(twoList.get(positions).eventId)&&twoList.get(positions).eventId.equals("click_change_account")){
+                    mainActivity.finish();
+                    }
                 } else {
                     Class clazz = null;
                     try {

@@ -140,7 +140,7 @@ public class LoginModel {
         return flowable;
     }
     //登录云信
-    public void doLogin(String account, String token) {
+    public void  doLogin(String account, String token) {
 
         NimUIKit.login(new LoginInfo(account, token), new RequestCallback<LoginInfo>() {
             @Override
