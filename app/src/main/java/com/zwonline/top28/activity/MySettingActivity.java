@@ -24,11 +24,11 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zwonline.top28.APP;
 import com.zwonline.top28.R;
+import com.zwonline.top28.api.Api;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.BindWechatBean;
 import com.zwonline.top28.bean.RegisterRedPacketsBean;
 import com.zwonline.top28.constants.BizConstant;
-import com.zwonline.top28.fragment.InformationFragment;
 import com.zwonline.top28.presenter.BindWechatPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.CacheDataManager;
@@ -37,11 +37,10 @@ import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.click.AntiShake;
-import com.zwonline.top28.utils.country.CityActivity;
 import com.zwonline.top28.utils.popwindow.BindWechatPopWindow;
-import com.zwonline.top28.utils.popwindow.CompletePopwindow;
 import com.zwonline.top28.utils.popwindow.SuccessPopWindow;
 import com.zwonline.top28.view.IbindWechatActivity;
+import com.zwonline.top28.web.BaseWebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,8 +79,14 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
     TextView tv_Cash;
     @BindView(R.id.bind_wechat_relative)
     RelativeLayout bindWechatRelative;
-
+    private String invitation_uids;
+    private String invitation_nicknames;
+    private RelativeLayout reayoutRecommned;//我的推荐
+    private TextView textMyRecond;
     private List<BindWechatBean.DataBean> list;
+    private BindWechatPopWindow bindWechatPopWindow;
+    private RelativeLayout re_Recommned;
+    private ImageView imageRe;
     private Handler handler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {
@@ -103,14 +108,8 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
                     }
 
             }
-
         }
-
-        ;
-
     };
-    private BindWechatPopWindow bindWechatPopWindow;
-
 
     @Override
     protected void init() {
@@ -123,6 +122,8 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         Intent intent = getIntent();
         avatar = (String) sp.getKey(getApplicationContext(), "avatar", "");
         nicknames = (String) sp.getKey(getApplicationContext(), "nickname", "");
+        invitation_uids = (String) sp.getKey(getApplicationContext(), "invitation_uid", "");
+        invitation_nicknames = (String) sp.getKey(getApplicationContext(), "invitation_nickname", "");
         nickname.setText(nicknames);
         isDefaultPassword = intent.getStringExtra("is_default_password");
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male)
@@ -138,12 +139,19 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
             tv_Cash.setText(CacheDataManager.getTotalCacheSize(this));
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
-        //获取缓存
-//        tv_Cash.setText(DataClearUtil.getTotalCacheSize(this));
+        if (StringUtil.isNotEmpty(invitation_uids)) {
+            textMyRecond.setText(invitation_nicknames);
+            textMyRecond.setTextColor(Color.parseColor("#d1d1d1"));
+            imageRe.setVisibility(View.GONE);
+            re_Recommned.setClickable(false);
+        } else {
+            re_Recommned.setClickable(true);
+            textMyRecond.setText("未绑定");
+            imageRe.setVisibility(View.VISIBLE);
+            bindWechat.setTextColor(Color.parseColor("#ff2b2b"));
+        }
     }
 
     @Override
@@ -165,13 +173,16 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         clearDialog = (LinearLayout) findViewById(R.id.clear_dialog);
         TextView clearTv = (TextView) findViewById(R.id.clear_tv);
         bindWechat = (TextView) findViewById(R.id.bind_wechat);
+        textMyRecond = (TextView) findViewById(R.id.bind_myrecommd);
+        re_Recommned = (RelativeLayout) findViewById(R.id.bind_remyrecommd);
+        imageRe = (ImageView) findViewById(R.id.recommd_img);
         ImageView bindWechatImag = (ImageView) findViewById(R.id.bind_wechat_imag);
         clearTv.setSelected(true);
         //判别是否绑定手机号
         if (StringUtil.isNotEmpty(mobile)) {
             bind.setText("已绑定");
             bindPhone.setClickable(false);
-            bindImag.setVisibility(View.VISIBLE);
+            bindImag.setVisibility(View.GONE);
             bind.setTextColor(Color.parseColor("#d1d1d1"));
         } else {
             presenter.Dialogs(this, BizConstant.MOBILE_BIND, BizConstant.TYPE_THREE);//绑定手机号
@@ -183,7 +194,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         if (StringUtil.isNotEmpty(weChatUnionId)) {
             bindWechat.setText("已绑定");
             bindWechatRelative.setClickable(false);
-            bindWechatImag.setVisibility(View.VISIBLE);
+            bindWechatImag.setVisibility(View.GONE);
             bindWechat.setTextColor(Color.parseColor("#d1d1d1"));
         } else {
             presenter.Dialogs(this, BizConstant.WX_BIND, BizConstant.TYPE_ONE);//绑定微信
@@ -194,7 +205,6 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         }
     }
 
-
     @Override
     protected int setLayoutId() {
         return R.layout.activity_my_setting;
@@ -202,7 +212,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
 
 
     @OnClick({R.id.back, R.id.amend, R.id.amentpossword, R.id.exit_login, R.id.feedback, R.id.shield_settting, R.id.bind_phone
-            , R.id.about_owen, R.id.lin_discash, R.id.look_playing, R.id.bind_wechat_relative})
+            , R.id.about_owen, R.id.lin_discash, R.id.look_playing, R.id.bind_wechat_relative, R.id.bind_remyrecommd})
     public void onViewClicked(View view) {
         if (AntiShake.check(view.getId())) {    //判断是否多次点击
             return;
@@ -279,10 +289,6 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
                 break;
             //清除缓存功能
             case R.id.lin_discash:
-                //清除缓存
-//                DataClearUtil.cleanAllCache(this);
-//                tv_Cash.setText("0.0MB");
-//                ToastUtils.showToast(this,"清除缓存成功");
                 String cash = tv_Cash.getText().toString();
                 if (StringUtil.isNotEmpty(cash) && cash.equals("0.0KB")) {
                     ToastUtils.showToast(getApplicationContext(), "清理完成");
@@ -291,13 +297,19 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
                     new Thread(clearCache).start();
                     clearDialog.setVisibility(View.VISIBLE);
                 }
-
                 break;
             case R.id.look_playing://查看玩法
                 Intent lookIntent = new Intent(MySettingActivity.this, LookPlayActivity.class);
                 lookIntent.putExtra("type", BizConstant.RECOMMEND);
                 startActivity(lookIntent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                break;
+            case R.id.bind_remyrecommd:
+                Intent cardIntent = new Intent(MySettingActivity.this, BaseWebViewActivity.class);
+                cardIntent.putExtra("weburl", Api.baseUrl() + "/Members/cardPay.html");
+                startActivity(cardIntent);
+                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                finish();
                 break;
             default:
                 break;
@@ -592,12 +604,6 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
             }
         });
     }
-
-    //    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

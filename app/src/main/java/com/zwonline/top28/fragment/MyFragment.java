@@ -28,10 +28,8 @@ import com.zwonline.top28.activity.HomePageActivity;
 import com.zwonline.top28.activity.InsuranceActivity;
 import com.zwonline.top28.activity.IntegralActivity;
 import com.zwonline.top28.activity.MainActivity;
-import com.zwonline.top28.activity.MyAttentionsActivity;
 import com.zwonline.top28.activity.MyCollectActivity;
 import com.zwonline.top28.activity.MyExamineActivity;
-import com.zwonline.top28.activity.MyFansesActivity;
 import com.zwonline.top28.activity.MyIssueActivity;
 import com.zwonline.top28.activity.MyProjectActivity;
 import com.zwonline.top28.activity.MySettingActivity;
@@ -39,7 +37,6 @@ import com.zwonline.top28.activity.MyShareActivity;
 import com.zwonline.top28.activity.RecommendUserActivity;
 import com.zwonline.top28.activity.SettingActivity;
 import com.zwonline.top28.activity.TransmitActivity;
-import com.zwonline.top28.activity.WalletActivity;
 import com.zwonline.top28.activity.WithoutCodeLoginActivity;
 import com.zwonline.top28.adapter.MyOneMunuAdapter;
 import com.zwonline.top28.base.BaseFragment;
@@ -176,6 +173,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
     private MyOneMunuAdapter myOneMenuAdapter;
     private String mbp_url;
     private String vip_url;
+    private String invitation_uid;
+    private String invitation_nickname;
 
     @Override
     protected void init(View view) {
@@ -201,7 +200,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male).error(R.mipmap.no_photo_male);
         Glide.with(getActivity()).load(sp.getKey(getActivity(), "avatar", "")).apply(options).into(userTou);
 //        UserDatas();
-        myOneMenuAdapter = new MyOneMunuAdapter(menuList, getActivity() , (MainActivity) getActivity());
+        myOneMenuAdapter = new MyOneMunuAdapter(menuList, getActivity(), (MainActivity) getActivity());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         ScrollLinearLayoutManager scrollLinearLayoutManager = new ScrollLinearLayoutManager(getActivity());
         scrollLinearLayoutManager.setScrollEnabled(false);
@@ -233,6 +232,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
             uid = userInfoBean.data.user.uid;
             mbp_url = userInfoBean.data.user.mbp_url;//鞅分跳转链接
             vip_url = userInfoBean.data.user.vip_url;
+            invitation_uid = userInfoBean.data.user.invitation_uid;
+            invitation_nickname = userInfoBean.data.user.invitation_nickname;
             String vipLevel = userInfoBean.data.user.vip_level;
             if (StringUtil.isEmpty(vipLevel)) {
                 vipImage.setVisibility(View.GONE);
@@ -259,10 +260,11 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 sp.insertKey(getActivity(), "mbp_amount", userInfoBean.data.user.mbp_amount);
                 sp.insertKey(getActivity(), "boc_amount", userInfoBean.data.user.boc_amount);
                 sp.insertKey(getActivity(), "cp_amount", userInfoBean.data.user.cp_amount);
+                sp.insertKey(getActivity(), "invitation_uid", userInfoBean.data.user.invitation_uid);
+                sp.insertKey(getActivity(), "invitation_nickname", userInfoBean.data.user.invitation_nickname);
             }
 
             avatar = userInfoBean.data.user.avatar;
-//        sp.insertKey(getActivity(), "avatar", avatar);
             if (sp != null) {
                 sp.insertKey(getActivity(), "sharedUid", uid);
                 tvGuanzhuNum.setText((String) sp.getKey(getActivity(), "mbp_amount", ""));
@@ -276,7 +278,6 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
 
             if (StringUtil.isNotEmpty(userInfoBean.data.user.nickname)) {
                 username = userInfoBean.data.user.nickname;
-//                userName.setText(userInfoBean.data.user.nickname+"");
             }
 
             signature = userInfoBean.data.user.signature;
@@ -289,13 +290,11 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                     if (sp != null) {
                         sp.insertKey(getActivity(), "is_enterprise", BizConstant.ENTERPRISE_tRUE);
                     }
-//                attestation.setVisibility(View.GONE);
                     management.setVisibility(View.GONE);
                 } else {
                     if (sp != null) {
                         sp.insertKey(getActivity(), "is_enterprise", BizConstant.ENTERPRISE_FALSE);
                     }
-//                attestation.setVisibility(View.VISIBLE);
                     company.setVisibility(View.VISIBLE);
                     approve.setVisibility(View.VISIBLE);
                     aeo.setVisibility(View.GONE);
@@ -475,6 +474,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 settingIntent.putExtra("nickname", nickName);
                 settingIntent.putExtra("avatar", avatar);
                 settingIntent.putExtra("is_default_password", isDefaultPassword);
+                settingIntent.putExtra("invitation_uid",invitation_uid);
+                settingIntent.putExtra("invitation_nickname",invitation_nickname);
                 startActivity(settingIntent);
 //                getActivity().finish();
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
@@ -644,5 +645,6 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
         });
 
     }
+
 
 }
