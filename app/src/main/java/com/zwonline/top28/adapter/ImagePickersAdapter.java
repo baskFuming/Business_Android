@@ -91,7 +91,7 @@ public class ImagePickersAdapter extends RecyclerView.Adapter<ImagePickersAdapte
         }
 
         public void bind(final int position) {
-            if (mData.get(position).equals(mData.size()-1)){
+            if (mData.get(position).equals(mData.size() - 1)) {
                 close.setVisibility(View.GONE);
             }
             //设置条目的点击事件

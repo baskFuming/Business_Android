@@ -55,7 +55,8 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
     private SharedPreferences startup;
     private boolean isfrist;
     private CountDownViewUtils countDownViewUtils;
-    private boolean isAD;//定义是否跳过链接
+    private boolean isAD = false;//定义是否跳过链接
+    private TextView advertisingIcon;
 
     @Override
     protected void init() {
@@ -81,6 +82,7 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
         imageView = (ImageView) findViewById(R.id.img_background);
         countDownView = (CountDownView) findViewById(R.id.count_down_view);
         MainRe = (RelativeLayout) findViewById(R.id.main_bg);
+        advertisingIcon = (TextView) findViewById(R.id.advertising_icon);
     }
 
     //倒计时
@@ -97,10 +99,7 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
             @Override
             public void onFinishCount() {//结束   TODO 倒计时五秒结束方法
                 if (!isAD) {
-                    Intent intent = new Intent(SplashViewActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    next();
                 } else {
                     return;
                 }
@@ -111,9 +110,7 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
             @Override
             public void onClick(View v) {
                 countDownView.cancel();
-                Intent intent = new Intent(SplashViewActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                next();
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
         });
@@ -123,10 +120,11 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //点击广告后停止计时
-                countDownView.cancel();
+
                 isAD = true;
                 if (StringUtil.isNotEmpty(jump_url) && jump_out == 0) {
+                    //点击广告后停止计时
+                    countDownView.cancel();
                     Intent cardIntent = new Intent(SplashViewActivity.this, BaseWebViewActivity.class);
                     cardIntent.putExtra("weburl", jump_url);
                     cardIntent.putExtra("eventId", BizConstant.TYPE_ONE);
@@ -141,7 +139,6 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
                         //网址正确 跳转成功
                         startActivity(intent);
                         overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                        finish();
                     } else {
                         //网址不正确 跳转失败 提示错误
                         ToastUtil.showToast(SplashViewActivity.this, "网页链接信息错误");
@@ -192,6 +189,7 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
                                 alpha.setDuration(500);
                                 MainRe.startAnimation(alpha);
                                 countDownView.setVisibility(View.VISIBLE);
+                                advertisingIcon.setVisibility(View.VISIBLE);
                                 reimage.setVisibility(View.VISIBLE);
                                 return false;
                             }
@@ -234,5 +232,28 @@ public class SplashViewActivity extends BaseActivity<ILanchScreenActivity, Lanch
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isAD = true;
+    }
+
+    /**
+     * 跳转到首页
+     */
+    public void next() {
+        Intent intent = new Intent(SplashViewActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isAD) {
+            next();
+        }
+    }
 }
 

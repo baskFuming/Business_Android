@@ -165,7 +165,6 @@ public class SessionListFragment extends TabFragment {
         accid = (String) sp.getKey(getActivity(), "account", "");
         has_permission = (String) sp.getKey(getActivity(), "has_permission", "");
         has_boc_permission = (String) sp.getKey(getActivity(), "has_boc_permission", "");
-        registerObservers(true);
         addRecentContactsFragment();
         return view;
     }

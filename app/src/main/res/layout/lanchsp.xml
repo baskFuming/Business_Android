@@ -14,6 +14,20 @@
         android:scaleType="fitXY" />
 
     <TextView
+        android:id="@+id/advertising_icon"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/advertising_icon_shape"
+        android:gravity="center"
+        android:text="广告"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:alpha="0.5"
+        android:textSize="14sp" />
+
+    <TextView
         android:id="@+id/skip_view"
         android:layout_width="70dp"
         android:layout_height="30dp"

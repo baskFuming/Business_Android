@@ -73,13 +73,12 @@ public class DynamicDetailsComentAdapter extends RecyclerView.Adapter<RecyclerVi
         if (list != null && list.size() > 0) {
 //            myViewHolder.commentsTime.setText(list.get(position).add_time);
             //时间转换
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
-            Date date = null;
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
+//            Date date = null;
             try {
-                date = formatter.parse(list.get(position).add_time);
-                myViewHolder.commentsTime.setText(TimeUtil.getTimeFormatText(date));
-                ToastUtils.showToast(context, list.get(position).add_time);
-            } catch (ParseException e) {
+//                date = formatter.parse(list.get(position).add_time);
+                myViewHolder.commentsTime.setText(list.get(position).add_time);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             myViewHolder.commentsUserName.setText(list.get(position).member.nickname);

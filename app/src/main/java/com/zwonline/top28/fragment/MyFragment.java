@@ -563,6 +563,7 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
         if (islogin) {
             presenter.mNoticeNotReadCount(getActivity());
             presenter.mUserInfo(getActivity());
+            presenter.PersonCenterMenus(getActivity());
         } else {
             startActivity(new Intent(getActivity(), WithoutCodeLoginActivity.class));
             getActivity().finish();

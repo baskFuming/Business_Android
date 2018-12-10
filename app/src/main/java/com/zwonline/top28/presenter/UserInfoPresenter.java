@@ -152,4 +152,42 @@ public class UserInfoPresenter extends BasePresenter<IUserInfo> {
             e.printStackTrace();
         }
     }
+
+    public void PersonCenterMenus(final Context context) {
+        try {
+            Flowable<MyPageBean> flowable = userInfoModel.mPersonCenterMenu(context);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new BaseDisposableSubscriber<MyPageBean>(context) {
+
+                        @Override
+                        protected void onBaseNext(MyPageBean myPageBean) {
+                            String status = String.valueOf(myPageBean.status);
+                            if (myPageBean.status == 1) {
+                                iUserInfo.showPersonCenterMenu(myPageBean.data);
+                            } else {
+                                ToastUtils.showToast(context, myPageBean.msg);
+                            }
+                        }
+
+                        @Override
+                        protected String getTitleMsg() {
+                            return null;
+                        }
+
+                        @Override
+                        protected boolean isNeedProgressDialog() {
+                            return false;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
+
+                        }
+
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

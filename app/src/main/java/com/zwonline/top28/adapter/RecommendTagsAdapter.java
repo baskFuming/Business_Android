@@ -53,10 +53,10 @@ public class RecommendTagsAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (StringUtil.isEmpty(list.get(position).did_isChecked)) {
             list.get(position).did_isChecked = "0";
         }
-        if (position>8){
+        if (position > 8) {
             myViewHolder.tags.setEnabled(false);
             myViewHolder.deleteBt.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             myViewHolder.deleteBt.setVisibility(View.GONE);
             myViewHolder.tags.setEnabled(true);
         }
@@ -65,13 +65,9 @@ public class RecommendTagsAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (StringUtil.isNotEmpty(list.get(position).did_isChecked) &&
                 list.get(position).did_isChecked.equals("0")) {
             myViewHolder.tags.setChecked(false);
-//            myViewHolder.deleteBt.setVisibility(View.GONE);
             myViewHolder.tags.setTextColor(Color.parseColor("#ff2b2b"));
 
         } else {
-//            if (list.size()>10){
-//                myViewHolder.deleteBt.setVisibility(View.VISIBLE);
-//            }
             myViewHolder.tags.setChecked(true);
             myViewHolder.tags.setTextColor(Color.parseColor("#ffffff"));
         }
@@ -134,6 +130,7 @@ public class RecommendTagsAdapter extends RecyclerView.Adapter<RecyclerView.View
     public interface TagsInterface {
         public void onclick(View view, int position, CheckBox choose_like);
     }
+
     /**
      * `
      * 按钮点击事件需要的方法

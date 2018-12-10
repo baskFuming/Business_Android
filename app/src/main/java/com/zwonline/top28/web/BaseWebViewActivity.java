@@ -46,6 +46,8 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.EarnIntegralActivity;
+import com.zwonline.top28.web.BaseWebViewActivity;
+import com.zwonline.top28.web.BaseWebViewActivity;
 import com.zwonline.top28.activity.IntegralPayActivity;
 import com.zwonline.top28.activity.MainActivity;
 import com.zwonline.top28.activity.SplashViewActivity;

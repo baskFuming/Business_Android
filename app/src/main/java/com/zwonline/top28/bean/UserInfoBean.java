@@ -90,7 +90,8 @@ public class UserInfoBean {
             public String vip_url;
             public String vip_icon;
             public String bind_union_id;//微信union_id
-
+            public String invitation_uid;
+            public String invitation_nickname;
             public static class CompanyBean {
                 /**
                  * id : 1

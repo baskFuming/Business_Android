@@ -205,6 +205,8 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     private int percent;
     private int progress;
     private GuidePopuWindow guidePopuWindow;
+    private String btnUrlOne;
+    private TextView text_cheats;
 
     @Override
     protected void init() {
@@ -504,6 +506,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     readbackground1 = redacketView.findViewById(R.id.readbackground1);
                     readbackground2 = redacketView.findViewById(R.id.readbackground2);
                     text_busin = redacketView.findViewById(R.id.text_busin);
+                    text_cheats = redacketView.findViewById(R.id.text_cheats);
                     mian.post(new Runnable() {
                         @Override
                         public void run() {
@@ -615,20 +618,16 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     receive.startAnimation(myYAnimation);
                     break;
                 case R.id.text_busin://查看商机币
-                    Intent intent = new Intent(MainActivity.this, IntegralActivity.class);
-                    intent.putExtra("type", BizConstant.RECOMMEND);
+                    Intent intent = new Intent(MainActivity.this, BaseWebViewActivity.class);
+                    intent.putExtra("weburl", btnUrlOne);
                     startActivity(intent);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-//                    redacketPopWindow.dismiss();
-//                    redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
                     break;
                 case R.id.text_cheats://前往秘籍
                     Intent intent1 = new Intent(MainActivity.this, BaseWebViewActivity.class);
                     intent1.putExtra("weburl", yangfenCheatsUrl);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-//                    redacketPopWindow.dismiss();
-//                    redacketPopWindow.backgroundAlpha(MainActivity.this, 1f);
                     break;
             }
         }
@@ -905,6 +904,16 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         if (StringUtil.isNotEmpty(registerRedPacketBean.btn2.action)) {
             yangfenCheatsUrl = Api.baseUrl() + registerRedPacketBean.btn2.action;
         }
+        if (StringUtil.isNotEmpty(registerRedPacketBean.btn1.action)) {
+            btnUrlOne = Api.baseUrl() + registerRedPacketBean.btn1.action;
+        }
+        if (StringUtil.isNotEmpty(registerRedPacketBean.btn1.name)) {
+            text_busin.setText(registerRedPacketBean.btn1.name);
+        }//text_cheats
+        if (StringUtil.isNotEmpty(registerRedPacketBean.btn2.name)) {
+            text_cheats.setText(registerRedPacketBean.btn2.name);
+        }
+
     }
 
     @Override

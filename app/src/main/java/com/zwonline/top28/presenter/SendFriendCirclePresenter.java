@@ -351,7 +351,9 @@ public class SendFriendCirclePresenter extends BasePresenter<ISendFriendCircleAc
                         @Override
                         protected void onBaseNext(DynamicShareBean dynamicShareBean) {
                             Log.e("newContentBean", dynamicShareBean.msg);
-                            iSendFriendCircleActivity.showDynamicShare(dynamicShareBean);
+                            if (dynamicShareBean.status == 1) {
+                                iSendFriendCircleActivity.showDynamicShare(dynamicShareBean);
+                            }
                         }
 
                         @Override

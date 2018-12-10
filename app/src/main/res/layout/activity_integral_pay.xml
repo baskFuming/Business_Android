@@ -303,7 +303,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/rectangle_shape_gay"
                 android:orientation="vertical">
 
@@ -326,7 +326,7 @@
                         android:text="微信支付"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                     <View
                         android:layout_width="match_parent"
