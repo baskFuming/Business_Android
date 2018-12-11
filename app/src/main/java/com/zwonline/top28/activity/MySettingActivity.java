@@ -87,6 +87,9 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
     private BindWechatPopWindow bindWechatPopWindow;
     private RelativeLayout re_Recommned;
     private ImageView imageRe;
+    private ImageView bindWechatImag;
+    private String invitation_nickname;
+    private String invitation_uid;
     private Handler handler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {
@@ -122,8 +125,10 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         Intent intent = getIntent();
         avatar = (String) sp.getKey(getApplicationContext(), "avatar", "");
         nicknames = (String) sp.getKey(getApplicationContext(), "nickname", "");
-        invitation_uids = (String) sp.getKey(getApplicationContext(), "invitation_uid", "");
-        invitation_nicknames = (String) sp.getKey(getApplicationContext(), "invitation_nickname", "");
+        invitation_uid = (String) sp.getKey(getApplicationContext(), "invitation_uid", "");
+        invitation_nickname = (String) sp.getKey(getApplicationContext(), "invitation_nickname", "");
+        invitation_nickname = intent.getStringExtra("invitation_nickname");
+        invitation_uid = intent.getStringExtra("invitation_uid");
         nickname.setText(nicknames);
         isDefaultPassword = intent.getStringExtra("is_default_password");
         RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male)
@@ -141,16 +146,16 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (StringUtil.isNotEmpty(invitation_uids)) {
-            textMyRecond.setText(invitation_nicknames);
-            textMyRecond.setTextColor(Color.parseColor("#d1d1d1"));
+        if (StringUtil.isNotEmpty(invitation_uid)) {
+            textMyRecond.setText(invitation_nickname);
             imageRe.setVisibility(View.GONE);
             re_Recommned.setClickable(false);
+            textMyRecond.setTextColor(Color.parseColor("#d1d1d1"));
         } else {
             re_Recommned.setClickable(true);
             textMyRecond.setText("未绑定");
             imageRe.setVisibility(View.VISIBLE);
-            bindWechat.setTextColor(Color.parseColor("#ff2b2b"));
+            textMyRecond.setTextColor(Color.parseColor("#ff2b2b"));
         }
     }
 
@@ -176,20 +181,8 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         textMyRecond = (TextView) findViewById(R.id.bind_myrecommd);
         re_Recommned = (RelativeLayout) findViewById(R.id.bind_remyrecommd);
         imageRe = (ImageView) findViewById(R.id.recommd_img);
-        ImageView bindWechatImag = (ImageView) findViewById(R.id.bind_wechat_imag);
+        bindWechatImag = (ImageView) findViewById(R.id.bind_wechat_imag);
         clearTv.setSelected(true);
-        //判别是否绑定手机号
-        if (StringUtil.isNotEmpty(mobile)) {
-            bind.setText("已绑定");
-            bindPhone.setClickable(false);
-            bindImag.setVisibility(View.GONE);
-            bind.setTextColor(Color.parseColor("#d1d1d1"));
-        } else {
-            presenter.Dialogs(this, BizConstant.MOBILE_BIND, BizConstant.TYPE_THREE);//绑定手机号
-            bind.setText("未绑定");
-            bind.setTextColor(Color.parseColor("#ff2b2b"));
-            bindImag.setVisibility(View.VISIBLE);
-        }
         //判别是否绑定微信
         if (StringUtil.isNotEmpty(weChatUnionId)) {
             bindWechat.setText("已绑定");
@@ -202,6 +195,18 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
             bindWechatRelative.setClickable(true);
             bindWechat.setTextColor(Color.parseColor("#ff2b2b"));
             bindWechatImag.setVisibility(View.VISIBLE);
+        }
+        //判别是否绑定手机号
+        if (StringUtil.isNotEmpty(mobile)) {
+            bind.setText("已绑定");
+            bindPhone.setClickable(false);
+            bindImag.setVisibility(View.GONE);
+            bind.setTextColor(Color.parseColor("#d1d1d1"));
+        } else {
+            presenter.Dialogs(this, BizConstant.MOBILE_BIND, BizConstant.TYPE_THREE);//绑定手机号
+            bind.setText("未绑定");
+            bind.setTextColor(Color.parseColor("#ff2b2b"));
+            bindImag.setVisibility(View.VISIBLE);
         }
     }
 
@@ -306,7 +311,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
                 break;
             case R.id.bind_remyrecommd:
                 Intent cardIntent = new Intent(MySettingActivity.this, BaseWebViewActivity.class);
-                cardIntent.putExtra("weburl", Api.baseUrl() + "/Members/cardPay.html");
+                cardIntent.putExtra("weburl", Api.baseUrl() + "/Members/referrer.html");
                 startActivity(cardIntent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 finish();
@@ -604,6 +609,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

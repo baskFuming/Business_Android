@@ -477,7 +477,6 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 settingIntent.putExtra("invitation_uid",invitation_uid);
                 settingIntent.putExtra("invitation_nickname",invitation_nickname);
                 startActivity(settingIntent);
-//                getActivity().finish();
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.management://企业管理
