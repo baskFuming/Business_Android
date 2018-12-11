@@ -248,17 +248,17 @@ public class ChannelActivity extends BaseActivity {
                 }
 
                 // 如下方案可在非微信内部WebView的H5页面中调出微信支付
-                if (url.startsWith("weixin://wap/pay?")) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
-                    startActivity(intent);
-                    return true;
-                } else {
-                    Map<String, String> extraHeaders = new HashMap<String, String>();
-                    extraHeaders.put("Referer", "http://lebaopay.28.com");
-                    view.loadUrl(url, extraHeaders);
-                }
+//                if (url.startsWith("weixin://wap/pay?")) {
+//                    Intent intent = new Intent();
+//                    intent.setAction(Intent.ACTION_VIEW);
+//                    intent.setData(Uri.parse(url));
+//                    startActivity(intent);
+//                    return true;
+//                } else {
+//                    Map<String, String> extraHeaders = new HashMap<String, String>();
+//                    extraHeaders.put("Referer", "http://lebaopay.28.com");
+//                    view.loadUrl(url, extraHeaders);
+//                }
                 //跳转文章详情
                 if (url.contains("https://toutiao.28.com/Index/article/id")) {
 //                    service.setVisibility(View.VISIBLE);

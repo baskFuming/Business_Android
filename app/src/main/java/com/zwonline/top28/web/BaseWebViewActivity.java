@@ -46,6 +46,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.EarnIntegralActivity;
+import com.zwonline.top28.utils.UrlParse;
 import com.zwonline.top28.web.BaseWebViewActivity;
 import com.zwonline.top28.web.BaseWebViewActivity;
 import com.zwonline.top28.activity.IntegralPayActivity;
@@ -206,6 +207,26 @@ public class BaseWebViewActivity extends BaseActivity {
                     intent.setData(Uri.parse(url));
                     startActivity(intent);
                 }
+                //绑定上线
+                if (url.contains("backToApp")) {
+
+                    //获得url参数
+                    Map<String, String> urlParams = UrlParse.getUrlParams(url);
+                    for (Map.Entry<String, String> param : urlParams.entrySet()) {
+                        String key = param.getKey();
+                        String value = param.getValue();
+                        Log.i("URL", key + "  :  " + value);
+                        if (StringUtil.isNotEmpty(key) && key.equals("invitation_nickname")) {
+                            sp.insertKey(BaseWebViewActivity.this, "invitation_nickname", value);
+                        }
+                        if (StringUtil.isNotEmpty(key) && key.equals("invitation_uid")) {
+                            sp.insertKey(BaseWebViewActivity.this, "invitation_uid", value);
+                        }
+                    }
+                    finish();
+                    overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+
+                }
                 //赚取算力
                 if (url.contains("http://top28app/computePowerTask/")) {
                     Intent intent1 = new Intent(BaseWebViewActivity.this, EarnIntegralActivity.class);
@@ -266,17 +287,17 @@ public class BaseWebViewActivity extends BaseActivity {
                     return true;
                 }
                 // 如下方案可在非微信内部WebView的H5页面中调出微信支付
-                if (url.startsWith("weixin://wap/pay?")) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
-                    startActivity(intent);
-                    return true;
-                } else {
-                    Map<String, String> extraHeaders = new HashMap<String, String>();
-                    extraHeaders.put("Referer", "http://lebaopay.28.com");
-                    view.loadUrl(url, extraHeaders);
-                }
+//                if (url.startsWith("weixin://wap/pay?")) {
+//                    Intent intent = new Intent();
+//                    intent.setAction(Intent.ACTION_VIEW);
+//                    intent.setData(Uri.parse(url));
+//                    startActivity(intent);
+//                    return true;
+//                } else {
+//                    Map<String, String> extraHeaders = new HashMap<String, String>();
+//                    extraHeaders.put("Referer", "http://lebaopay.28.com");
+//                    view.loadUrl(url, extraHeaders);
+//                }
                 //跳转文章详情
                 if (url.contains("https://toutiao.28.com/Index/article/id")) {
 //                    service.setVisibility(View.VISIBLE);

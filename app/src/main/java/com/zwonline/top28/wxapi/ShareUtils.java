@@ -1,6 +1,7 @@
 package com.zwonline.top28.wxapi;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,9 +28,15 @@ public class ShareUtils {
         web.setTitle(title);//标题
         web.setDescription(description);//描述
         if (TextUtils.isEmpty(imageUrl)) {
-            web.setThumb(new UMImage(activity, imageID));  //本地缩略图
+//            web.setThumb(new UMImage(activity, imageID));  //本地缩略图
+            UMImage umImage = new UMImage(activity,imageID);
+            umImage.compressFormat = Bitmap.CompressFormat.PNG;
+            web.setThumb(umImage);
+
         } else {
-            web.setThumb(new UMImage(activity, imageUrl));  //网络缩略图
+            UMImage umImage = new UMImage(activity,imageUrl);
+            umImage.compressFormat = Bitmap.CompressFormat.PNG;
+            web.setThumb(umImage);  //网络缩略图
         }
         new ShareAction(activity)
                 .setPlatform(platform)

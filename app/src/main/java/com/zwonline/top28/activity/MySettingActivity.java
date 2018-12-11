@@ -1,5 +1,6 @@
 package com.zwonline.top28.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -90,6 +91,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
     private ImageView bindWechatImag;
     private String invitation_nickname;
     private String invitation_uid;
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {
@@ -99,11 +101,8 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
                 case 0:
                     clearDialog.setVisibility(View.GONE);
                     Toast.makeText(MySettingActivity.this, "清理完成", Toast.LENGTH_SHORT).show();
-
                     try {
-
                         tv_Cash.setText(CacheDataManager.getTotalCacheSize(MySettingActivity.this));
-
                     } catch (Exception e) {
 
                         e.printStackTrace();
@@ -125,8 +124,6 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         Intent intent = getIntent();
         avatar = (String) sp.getKey(getApplicationContext(), "avatar", "");
         nicknames = (String) sp.getKey(getApplicationContext(), "nickname", "");
-        invitation_uid = (String) sp.getKey(getApplicationContext(), "invitation_uid", "");
-        invitation_nickname = (String) sp.getKey(getApplicationContext(), "invitation_nickname", "");
         invitation_nickname = intent.getStringExtra("invitation_nickname");
         invitation_uid = intent.getStringExtra("invitation_uid");
         nickname.setText(nicknames);
@@ -141,11 +138,20 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
             settingPassword.setText(this.getString(R.string.user_update_password));
         }
         try {
+            //显示缓存的内存
             tv_Cash.setText(CacheDataManager.getTotalCacheSize(this));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        invitationData(invitation_nickname,invitation_uid);
+    }
+
+    /**
+     * 判断有没有绑定上级
+     */
+    public void invitationData(String invitation_nickname,String invitation_uid) {
+
         if (StringUtil.isNotEmpty(invitation_uid)) {
             textMyRecond.setText(invitation_nickname);
             imageRe.setVisibility(View.GONE);
@@ -314,7 +320,6 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
                 cardIntent.putExtra("weburl", Api.baseUrl() + "/Members/referrer.html");
                 startActivity(cardIntent);
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-                finish();
                 break;
             default:
                 break;
@@ -341,12 +346,18 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
     @Override
     protected void onResume() {
         super.onResume();
-        String avatars = (String) sp.getKey(getApplicationContext(), "avatar", "");
-        String name = (String) sp.getKey(getApplicationContext(), "nickname", "");
-        nickname.setText(name);
-        RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male)
-                .error(R.mipmap.no_photo_male);
-        Glide.with(MySettingActivity.this).load(avatars).apply(options).into(imagHead);
+        if (sp != null) {
+            String avatars = (String) sp.getKey(getApplicationContext(), "avatar", "");
+            String name = (String) sp.getKey(getApplicationContext(), "nickname", "");
+            nickname.setText(name);
+            RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_photo_male)
+                    .error(R.mipmap.no_photo_male);
+            Glide.with(MySettingActivity.this).load(avatars).apply(options).into(imagHead);
+            String invitation_uids = (String) sp.getKey(getApplicationContext(), "invitation_uid", "");
+            String invitation_nicknames = (String) sp.getKey(getApplicationContext(), "invitation_nickname", "");
+            invitationData(invitation_nicknames,invitation_uids);
+        }
+
     }
 
     @Override
