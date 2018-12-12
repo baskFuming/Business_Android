@@ -102,7 +102,6 @@ public class SaveRecommnedActivity extends BaseActivity {
     }
 
 
-
     //WebView 方法配置
     private void webSettingInit() {
         WebSettings settings = webViewRecommed.getSettings();
@@ -190,7 +189,9 @@ public class SaveRecommnedActivity extends BaseActivity {
                                 );
                                 break;
                             case R.id.pengyouquan://微信分享  将小程序换为网页地址
-
+                                ShareUtils.shareWeb(SaveRecommnedActivity.this, new_share_url, new_share_title
+                                        , new_share_description, new_share_icon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN_CIRCLE
+                                );
                                 break;
                             case R.id.qqkongjian:
                                 saveImage();
