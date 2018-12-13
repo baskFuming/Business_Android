@@ -40,39 +40,6 @@
         android:textSize="14sp"
         android:visibility="gone" />
 
-    <com.zwonline.top28.utils.CountDownView
-        android:id="@+id/count_down_view"
-        android:layout_width="@dimen/dp39"
-        android:layout_height="@dimen/dp39"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="@dimen/dp20"
-        android:layout_marginRight="@dimen/dp20"
-        android:layout_marginTop="@dimen/dp20"
-        android:visibility="gone"
-        app:background_color="@color/M8800000"
-        app:borders_color="@color/M45E3BF"
-        app:borders_width="@dimen/dp3"
-        app:text_size="@dimen/sp10" />
-
-    <com.zwonline.top28.utils.CountDownViewUtils
-        android:id="@+id/cdv_time"
-        android:layout_width="39dp"
-        android:layout_height="39dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp"
-        android:visibility="gone"
-        app:cd_animator_time="3"
-        app:cd_animator_time_unit="秒"
-        app:cd_arc_color="#000000"
-        app:cd_arc_width="2dp"
-        app:cd_bg_color="#f5f5f7"
-        app:cd_circle_radius="20dp"
-        app:cd_location="top"
-        app:cd_retreat_type="forward"
-        app:cd_text_color="#000000"
-        app:cd_text_size="9sp" />
 
     <RelativeLayout
         android:id="@+id/relative"
@@ -90,6 +57,40 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:src="@mipmap/clogo" />
+        <com.zwonline.top28.utils.CountDownView
+            android:id="@+id/count_down_view"
+            android:layout_width="@dimen/dp39"
+            android:layout_height="@dimen/dp39"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/dp20"
+            android:layout_marginRight="@dimen/dp20"
+            android:layout_marginTop="@dimen/dp20"
+            android:visibility="gone"
+            app:background_color="@color/M8800000"
+            app:borders_color="@color/M45E3BF"
+            app:borders_width="@dimen/dp3"
+            app:text_size="@dimen/sp10" />
+
+        <com.zwonline.top28.utils.CountDownViewUtils
+            android:id="@+id/cdv_time"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:visibility="gone"
+            app:cd_animator_time="3"
+            app:cd_animator_time_unit="秒"
+            app:cd_arc_color="#000000"
+            app:cd_arc_width="2dp"
+            app:cd_bg_color="#f5f5f7"
+            app:cd_circle_radius="20dp"
+            app:cd_location="top"
+            app:cd_retreat_type="forward"
+            app:cd_text_color="#000000"
+            app:cd_text_size="9sp" />
+
     </RelativeLayout>
 
     <ImageView

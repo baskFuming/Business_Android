@@ -1194,7 +1194,7 @@ public class DynamicDetailsActivity extends BaseActivity<ISendFriendCircleActivi
                 break;
             case R.id.linear_share:
                 presenter.mDynamicShare(getApplicationContext(), moment_id);
-                mPopwindow = new RewritePopwindow(DynamicDetailsActivity.this, itemsOnClick);
+                mPopwindow = new RewritePopwindow(DynamicDetailsActivity.this, itemsOnClick,true);
                 mPopwindow.showAtLocation(view,
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;

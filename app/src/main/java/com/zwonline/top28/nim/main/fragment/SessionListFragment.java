@@ -85,6 +85,7 @@ import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.badge.BadgeViews;
 import com.zwonline.top28.utils.popwindow.EmptyPopwindow;
+import com.zwonline.top28.web.BaseWebViewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -374,9 +375,9 @@ public class SessionListFragment extends TabFragment {
             public void advertising() {
                 if (StringUtil.isNotEmpty(is_webview) && is_webview.endsWith(BizConstant.IS_SUC)) {
                     if (StringUtil.isNotEmpty(is_jump_off) && is_jump_off.equals(BizConstant.IS_FAIL)) {
-                        Intent intent = new Intent(getActivity(), YunYingGuanActivity.class);
+                        Intent intent = new Intent(getActivity(), BaseWebViewActivity.class);
                         if (StringUtil.isNotEmpty(jump_path)) {
-                            intent.putExtra("jump_path", jump_path);
+                            intent.putExtra("weburl", jump_path);
                         }
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);

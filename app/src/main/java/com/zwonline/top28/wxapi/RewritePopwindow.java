@@ -20,12 +20,12 @@ import com.zwonline.top28.R;
 public class RewritePopwindow extends PopupWindow {
     private View mView;
 
-    public RewritePopwindow(Activity context, View.OnClickListener itemsOnClick) {
+    public RewritePopwindow(Activity context, View.OnClickListener itemsOnClick, boolean isShow) {
         super(context);
-        initView(context, itemsOnClick);
+        initView(context, itemsOnClick, isShow);
     }
 
-    private void initView(final Activity context, View.OnClickListener itemsOnClick) {
+    private void initView(final Activity context, View.OnClickListener itemsOnClick, boolean isShow) {
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mView = mInflater.inflate(R.layout.popupwindow_share, null);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -35,6 +35,15 @@ public class RewritePopwindow extends PopupWindow {
         LinearLayout QQZone = (LinearLayout) mView.findViewById(R.id.qqkongjian);
         LinearLayout CopyUrl = (LinearLayout) mView.findViewById(R.id.copyurl);
         TextView canaleTv = (TextView) mView.findViewById(R.id.share_cancle);
+        if (isShow) {
+            QQFriend.setVisibility(View.VISIBLE);
+            QQZone.setVisibility(View.VISIBLE);
+            CopyUrl.setVisibility(View.VISIBLE);
+        } else {
+            QQFriend.setVisibility(View.GONE);
+            QQZone.setVisibility(View.GONE);
+            CopyUrl.setVisibility(View.GONE);
+        }
         canaleTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -144,13 +144,13 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
         } catch (Exception e) {
             e.printStackTrace();
         }
-        invitationData(invitation_nickname,invitation_uid);
+        invitationData(invitation_nickname, invitation_uid);
     }
 
     /**
      * 判断有没有绑定上级
      */
-    public void invitationData(String invitation_nickname,String invitation_uid) {
+    public void invitationData(String invitation_nickname, String invitation_uid) {
 
         if (StringUtil.isNotEmpty(invitation_uid)) {
             textMyRecond.setText(invitation_nickname);
@@ -355,7 +355,7 @@ public class MySettingActivity extends BaseActivity<IbindWechatActivity, BindWec
             Glide.with(MySettingActivity.this).load(avatars).apply(options).into(imagHead);
             String invitation_uids = (String) sp.getKey(getApplicationContext(), "invitation_uid", "");
             String invitation_nicknames = (String) sp.getKey(getApplicationContext(), "invitation_nickname", "");
-            invitationData(invitation_nicknames,invitation_uids);
+            invitationData(invitation_nicknames, invitation_uids);
         }
 
     }

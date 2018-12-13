@@ -77,6 +77,7 @@ import com.zwonline.top28.utils.click.AntiShake;
 import com.zwonline.top28.utils.popwindow.CompletePopwindow;
 import com.zwonline.top28.utils.popwindow.RewardPopWindow;
 import com.zwonline.top28.view.IHomeDetails;
+import com.zwonline.top28.web.BaseWebViewActivity;
 import com.zwonline.top28.web.MJavascriptInterface;
 import com.zwonline.top28.wxapi.RewritePopwindow;
 import com.zwonline.top28.wxapi.ShareUtilses;
@@ -746,7 +747,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                 break;
             case R.id.shared:
                 RecordUserBehavior.recordUserBehavior(context, BizConstant.CLICK_SHARE_ICON);
-                mPopwindow = new RewritePopwindow(HomeDetailsActivity.this, itemsOnClick);
+                mPopwindow = new RewritePopwindow(HomeDetailsActivity.this, itemsOnClick, true);
                 mPopwindow.showAtLocation(view,
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
@@ -759,7 +760,7 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                 }
                 break;
             case R.id.imageViewShare:
-                mPopwindow = new RewritePopwindow(HomeDetailsActivity.this, itemsOnClick);
+                mPopwindow = new RewritePopwindow(HomeDetailsActivity.this, itemsOnClick, true);
                 mPopwindow.showAtLocation(view,
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
@@ -926,6 +927,18 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
                 super.onPageStarted(view, url, favicon);
             }
 
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                //拦截广告
+                if (url.contains("sjtt_adblock")) {
+                    Intent intent1 = new Intent(HomeDetailsActivity.this, BaseWebViewActivity.class);
+                    intent1.putExtra("weburl", url);
+                    startActivity(intent1);
+                    overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+                    return true;
+                }
+                return false;
+            }
 
             @Override
             public void onPageFinished(final WebView view, String url) {

@@ -290,7 +290,7 @@ public class RecommendUserActivity extends BaseActivity<IRecommnedActivity, Reco
                                                     break;
                                             }
                                         }
-                                    });
+                                    },true);
                                     mPopwindow.showAtLocation(view,
                                             Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 

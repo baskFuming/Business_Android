@@ -47,7 +47,7 @@ public class CountDownView extends View {
     private CountDownTimerListener listener;
     private CountDownTimer downTimer;
     //倒计时 显示5秒什么的
-    float lastTime = 5000;
+    float lastTime = 8000;
 
     public CountDownView(Context context) {
         this(context, null);

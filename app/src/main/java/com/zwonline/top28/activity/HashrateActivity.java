@@ -369,7 +369,7 @@ public class HashrateActivity extends BaseActivity implements ViewPager.OnPageCh
                                                     break;
                                             }
                                         }
-                                    });
+                                    },true);
                                     mPopwindow.showAtLocation(view,
                                             Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 

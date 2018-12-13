@@ -30,6 +30,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -99,6 +100,7 @@ public class BaseWebViewActivity extends BaseActivity {
     private String eventId;
     private RelativeLayout netErro;
     private boolean isNetErro = true;
+    private boolean isShow = true;
     private ImageView backXImage;
 
     @Override
@@ -445,6 +447,11 @@ public class BaseWebViewActivity extends BaseActivity {
                                 String title = null;
 
                                 try {
+                                    if (StringUtil.isNotEmpty(eventId) && eventId.equals("click_jinli")) {
+                                        isShow = false;
+                                    } else {
+                                        isShow = true;
+                                    }
                                     json = new JSONObject(value);
                                     description = json.getString("description");
                                     icon = json.getString("icon");
@@ -464,6 +471,10 @@ public class BaseWebViewActivity extends BaseActivity {
                                     mPopwindow = new RewritePopwindow(BaseWebViewActivity.this, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+                                            View rewriteView = mPopwindow.getContentView();
+//                                            rewriteView.findViewById(R.id.qqhaoyou).setVisibility(View.GONE);
+//                                            rewriteView.findViewById(R.id.qqkongjian).setVisibility(View.GONE);
+//                                            rewriteView.findViewById(R.id.copyurl).setVisibility(View.GONE);
                                             mPopwindow.dismiss();
                                             mPopwindow.backgroundAlpha(BaseWebViewActivity.this, 1f);
                                             switch (v.getId()) {
@@ -497,7 +508,7 @@ public class BaseWebViewActivity extends BaseActivity {
                                                     break;
                                             }
                                         }
-                                    });
+                                    }, isShow);
                                     mPopwindow.showAtLocation(view,
                                             Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 

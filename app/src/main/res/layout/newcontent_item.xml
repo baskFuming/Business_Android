@@ -178,9 +178,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:lines="1"
+                android:lines="3"
                 android:textColor="#ff1d1d1d"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/article_desc"
@@ -190,7 +190,8 @@
                 android:ellipsize="end"
                 android:lines="3"
                 android:textColor="#ff96959a"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 
