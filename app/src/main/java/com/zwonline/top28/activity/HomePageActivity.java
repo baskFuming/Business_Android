@@ -2,6 +2,7 @@ package com.zwonline.top28.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -219,10 +220,10 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
 
     @Override
     protected void init() {
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
+        StatusBarUtil.setColor(this, Color.parseColor("#25272D"), 0);
         requestPower();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.black), 0);
-        NavigationBar.Statedata(this);
+//        NavigationBar.Statedata(this);
         api = WXAPIFactory.createWXAPI(this, "wx979d60eb9639eb65");
         initData();//查找控件
         sp = SharedPreferencesUtils.getUtil();
@@ -1110,11 +1111,11 @@ public class HomePageActivity extends BaseMainActivity<IHomePageActivity, HomePa
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (verticalOffset == 0) {
-                    NavigationBar.Statedata(HomePageActivity.this);
+//                    NavigationBar.Statedata(HomePageActivity.this);
                     //张开状态
                     add_befor.setVisibility(View.VISIBLE);
                     add_after.setVisibility(View.GONE);
-                    StatusBarUtil.setColor(HomePageActivity.this, getResources().getColor(R.color.black), 0);
+                    StatusBarUtil.setColor(HomePageActivity.this, Color.parseColor("#25272D"), 0);
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
                 } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
                     //收缩状态

@@ -25,5 +25,6 @@ public class LanchScreenBean {
         public String img_url;
         public String jump_url;
         public int jump_out;
+        public int count_down;
     }
 }

@@ -184,6 +184,7 @@ public interface ApiService {
             @Field("timestamp") String timestamp,
             @Field("token") String token,
             @Field("show_ad") String showAd,
+            @Field("udid") String udid,
             @Field("app_version") String app_version,
             @Field("sign") String sign
     );
@@ -1033,7 +1034,6 @@ public interface ApiService {
     /***
      * 启动屏广告接口
      * @param timestamp
-     * @param token
      * @param sign
      * @return
      */
@@ -1041,7 +1041,6 @@ public interface ApiService {
     @POST("/App/Public/launchScreenAd")
     Flowable<LanchScreenBean> launchScreenAd(
             @Field("timestamp") String timestamp,
-            @Field("token") String token,
             @Field("sign") String sign
     );
 }

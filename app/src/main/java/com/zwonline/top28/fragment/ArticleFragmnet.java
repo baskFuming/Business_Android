@@ -45,6 +45,7 @@ public class ArticleFragmnet extends BasesFragment<IHomeWordActivity, IHomeWordP
     @Override
     protected void init(View view) {
 //        NavigationBar.Statedata(getActivity());
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
         linearLayout = view.findViewById(R.id.lay_re);
         xRecyclerView = view.findViewById(R.id.article_recy);
         sp = SharedPreferencesUtils.getUtil();

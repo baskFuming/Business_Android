@@ -1,6 +1,7 @@
 package com.zwonline.top28.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,6 +21,8 @@ import com.xgr.easypay.EasyPay;
 import com.xgr.easypay.alipay.AliPay;
 import com.xgr.easypay.alipay.AlipayInfoImpli;
 import com.xgr.easypay.callback.IPayCallback;
+import com.xgr.easypay.wxpay.WXPay;
+import com.xgr.easypay.wxpay.WXPayInfoImpli;
 import com.zwonline.top28.R;
 import com.zwonline.top28.base.BaseActivity;
 import com.zwonline.top28.bean.AmountPointsBean;
@@ -108,6 +111,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         posBtn = (RadioButton) findViewById(R.id.pos_btn);
         paySureBtn = (Button) findViewById(R.id.pay_sure_btn);
         giveHashrate = (TextView) findViewById(R.id.give_hashrate);//赠送算力
+
 //        onePointsBtn.setText("100" + getString(R.string.opportunities_currency));
 //        twoPointsBtn.setText("500" + getString(R.string.opportunities_currency));
 //        threePointsBtn.setText("1000" + getString(R.string.opportunities_currency));
@@ -259,10 +263,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                     } else if (payCheckedId == posBtn.getId()) {
 //                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, payAmount);//支付接口
 //                        ToastUtils.showToast(IntegralPayActivity.this, "选着的pos机");
-                        Intent intent = new Intent(IntegralPayActivity.this, ChannelActivity.class);
-                        intent.putExtra("weburl", "http://lebaopaytest.28.com/h/confirmPay");
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//                        wxpay();
                     } else {
                         ToastUtils.showToast(IntegralPayActivity.this, getString(R.string.common_pay_method_empty));
                         return;
@@ -820,5 +821,40 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    /**
+     * 微信支付
+     */
+    private void wxpay(){
+        //实例化微信支付策略
+        String wxAppId = "wx979d60eb9639eb65";
+        WXPay wxPay = WXPay.getInstance(this,wxAppId);
+        //构造微信订单实体。一般都是由服务端直接返回。
+        WXPayInfoImpli wxPayInfoImpli = new WXPayInfoImpli();
+        wxPayInfoImpli.setTimestamp("1544764441");
+        wxPayInfoImpli.setSign("37BA1BBD6D888B203FDE01E7C1D5FBD5");
+        wxPayInfoImpli.setPrepayId("wx14131401104648b36e6b78761779461364");
+        wxPayInfoImpli.setPartnerid("1498354802");
+        wxPayInfoImpli.setAppid("wx979d60eb9639eb65");
+        wxPayInfoImpli.setNonceStr("1544764441849");
+        wxPayInfoImpli.setPackageValue("Sign=WXPay");
+        //策略场景类调起支付方法开始支付，以及接收回调。
+        EasyPay.pay(wxPay, this, wxPayInfoImpli, new IPayCallback() {
+            @Override
+            public void success() {
+                ToastUtils.showToast(getApplicationContext(),"支付成功");
+            }
+
+            @Override
+            public void failed() {
+                ToastUtils.showToast(getApplicationContext(),"支付失败");
+            }
+
+            @Override
+            public void cancel() {
+                ToastUtils.showToast(getApplicationContext(),"支付取消");
+            }
+        });
     }
 }

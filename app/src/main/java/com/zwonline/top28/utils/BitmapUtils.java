@@ -138,8 +138,6 @@ public class BitmapUtils {
     }
 
 
-
-
     /**
      * 图片按比例大小压缩方法（根据路径获取图片并压缩）
      *

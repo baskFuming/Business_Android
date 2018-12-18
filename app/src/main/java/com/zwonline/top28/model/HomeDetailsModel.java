@@ -407,12 +407,11 @@ public class HomeDetailsModel {
         long timestamp = new Date().getTime() / 1000;//获取时间戳
         Map<String, String> map = new HashMap<>();
         map.put("timestamp", String.valueOf(timestamp));
-        map.put("token", token);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<LanchScreenBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .launchScreenAd( String.valueOf(timestamp), token,sign);
+                .launchScreenAd( String.valueOf(timestamp),sign);
         return flowable;
     }
 }

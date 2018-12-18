@@ -520,7 +520,7 @@ public class SendFriendActivity extends BaseActivity<ISendFriendCircleActivity, 
                             }
                             presenter.mPictures(SendFriendActivity.this, files);
                         } else {
-                            ToastUtil.showToast(getApplicationContext(), "图片不能为空");
+                            ToastUtils.showToast(getApplicationContext(), "图片不能为空");
                         }
 
                     } else {

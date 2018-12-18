@@ -95,6 +95,7 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
     @Override
     protected void init(View view) {
 //        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.black), 0);
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);//设置状态栏字体为白色
         sp = SharedPreferencesUtils.getUtil();
         islogins = (boolean) sp.getKey(getActivity(), "islogin", false);
         uid = (String) sp.getKey(getActivity(), "uid", "");
@@ -214,7 +215,7 @@ public class OthersHomePageFrag extends BasesFragment<ISendFriendCircleActivity,
             public void onclick(View view, int position) {
                 moment_id = newContentList.get(position).moment_id;
                 presenter.mDynamicShare(getActivity(), newContentList.get(position).moment_id);
-                mPopwindow = new RewritePopwindow(getActivity(), itemsOnClick,true);
+                mPopwindow = new RewritePopwindow(getActivity(), itemsOnClick, true);
                 mPopwindow.showAtLocation(view,
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
             }

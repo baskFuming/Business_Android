@@ -1,6 +1,8 @@
 package com.zwonline.top28.model;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.telephony.TelephonyManager;
 
 import com.zwonline.top28.bean.HomeBean;
 import com.zwonline.top28.bean.HomeClassBean;
@@ -27,8 +29,12 @@ public class HomeModel {
     private SharedPreferencesUtils sp;
 
     //首页
+    @SuppressLint("MissingPermission")
     public Flowable<HomeClassBean> homePage(Context context, String page, String cate_id) throws IOException {
         String versionName = LanguageUitils.getVersionName(context);
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        tm.getDeviceId();
+        StringBuilder sb = new StringBuilder();
         long timestamp = new Date().getTime() / 1000;//时间戳
         sp = SharedPreferencesUtils.getUtil();
         String token = (String) sp.getKey(context, "dialog", "");
@@ -38,12 +44,13 @@ public class HomeModel {
         map.put("cate_id", cate_id);
         map.put("timestamp", String.valueOf(timestamp));
         map.put("token", token);
+        map.put("udid", tm.getDeviceId());
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<HomeClassBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .iHomePage(page, cate_id, String.valueOf(timestamp), token, showAd, versionName, sign);
+                .iHomePage(page, cate_id, String.valueOf(timestamp), token, showAd, tm.getDeviceId(), versionName, sign);
         return flowable;
     }
 
@@ -64,7 +71,7 @@ public class HomeModel {
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<HomeClassBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .iHomeRecommend(page, String.valueOf(timestamp), token, showAd,versionName, sign);
+                .iHomeRecommend(page, String.valueOf(timestamp), token, showAd, versionName, sign);
         return flowable;
     }
 
@@ -100,7 +107,7 @@ public class HomeModel {
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<HomeBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .iHomeClass(String.valueOf(timestamp), token,versionName, sign);
+                .iHomeClass(String.valueOf(timestamp), token, versionName, sign);
         return flowable;
     }
 

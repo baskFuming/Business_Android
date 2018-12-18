@@ -73,7 +73,7 @@ public class ToastUtils {
             toast.cancel();
         }
         toast = new Toast(mContext);
-        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(view);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
