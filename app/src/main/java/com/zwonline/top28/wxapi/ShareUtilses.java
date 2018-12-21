@@ -2,6 +2,7 @@ package com.zwonline.top28.wxapi;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -46,9 +47,15 @@ public class ShareUtilses {
         web.setTitle(title);//标题
         web.setDescription(description);//描述
         if (TextUtils.isEmpty(imageUrl)) {
-            web.setThumb(new UMImage(activity, imageID));  //本地缩略图
+//            web.setThumb(new UMImage(activity, imageID));  //本地缩略图
+            UMImage umImage = new UMImage(activity,imageID);
+            umImage.compressFormat = Bitmap.CompressFormat.PNG;
+            web.setThumb(umImage);
+
         } else {
-            web.setThumb(new UMImage(activity, imageUrl));  //网络缩略图
+            UMImage umImage = new UMImage(activity,imageUrl);
+            umImage.compressFormat = Bitmap.CompressFormat.PNG;
+            web.setThumb(umImage);  //网络缩略图
         }
         new ShareAction(activity)
                 .setPlatform(platform)
@@ -138,10 +145,10 @@ public class ShareUtilses {
                             public void run() {
                                 if (share_media.name().equals("WEIXIN_FAVORITE")) {
                                     Toast.makeText(activity, activity.getString(R.string.share_fail), Toast.LENGTH_SHORT).show();
-                                    shareDynamicData(activity,dynamicId);
+                                    shareDynamicData(activity, dynamicId);
                                 } else {
                                     Toast.makeText(activity, activity.getString(R.string.share_suc), Toast.LENGTH_SHORT).show();
-                                    shareDynamicData(activity,dynamicId);
+                                    shareDynamicData(activity, dynamicId);
                                 }
                             }
                         });
@@ -249,5 +256,121 @@ public class ShareUtilses {
         }
 
     }
+
+
+    /**
+     * 分享链接锦鲤活动
+     */
+    public static void shareWebJ(final Activity activity, String WebUrl, String title, String description, String imageUrl, int imageID, SHARE_MEDIA platform) {
+        UMWeb web = new UMWeb(WebUrl);//连接地址
+        web.setTitle(title);//标题
+        web.setDescription(description);//描述
+        if (TextUtils.isEmpty(imageUrl)) {
+            web.setThumb(new UMImage(activity, imageID));  //本地缩略图
+        } else {
+            web.setThumb(new UMImage(activity, imageUrl));  //网络缩略图
+        }
+        new ShareAction(activity)
+                .setPlatform(platform)
+                .withMedia(web)
+                .setCallback(new UMShareListener() {
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onResult(final SHARE_MEDIA share_media) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (share_media.name().equals("WEIXIN_FAVORITE")) {
+                                    Toast.makeText(activity, activity.getString(R.string.share_fail), Toast.LENGTH_SHORT).show();
+                                    shareJinLi(activity);
+                                } else {
+                                    Toast.makeText(activity, activity.getString(R.string.share_suc), Toast.LENGTH_SHORT).show();
+                                    shareJinLi(activity);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(final SHARE_MEDIA share_media, final Throwable throwable) {
+                        if (throwable != null) {
+                            Log.d("throw", "C:" + throwable.getMessage());
+                        }
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(activity, activity.getString(R.string.share_fail), Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancel(final SHARE_MEDIA share_media) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(activity, activity.getString(R.string.share_cancel), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .share();
+
+
+        //新浪微博中图文+链接
+        /*new ShareAction(activity)
+                .setPlatform(platform)
+                .withText(description + " " + WebUrl)
+                .withMedia(new UMImage(activity,imageID))
+                .share();*/
+    }
+
+    /**
+     * 分享锦鲤活动
+     *
+     * @param context
+     */
+    public static void shareJinLi(Context context) {
+        try {
+            SharedPreferencesUtils sp = SharedPreferencesUtils.getUtil();
+            String token = (String) sp.getKey(context, "dialog", "");
+            long timestamp = new Date().getTime() / 1000;//时间戳
+            Map<String, String> map = new HashMap<>();
+            map.put("timestamp", String.valueOf(timestamp));
+            map.put("token", token);
+            String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+            Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
+                    .getClientApi(BusinessCircleService.class, Api.url)
+                    .iShareJinliActivity(String.valueOf(timestamp), token, sign);
+            flowable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSubscriber<AttentionBean>() {
+                        @Override
+                        public void onNext(AttentionBean shareArticleBean) {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

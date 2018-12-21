@@ -184,7 +184,6 @@ public interface ApiService {
             @Field("timestamp") String timestamp,
             @Field("token") String token,
             @Field("show_ad") String showAd,
-            @Field("udid") String udid,
             @Field("app_version") String app_version,
             @Field("sign") String sign
     );

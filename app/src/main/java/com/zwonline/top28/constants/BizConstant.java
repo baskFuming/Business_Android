@@ -98,6 +98,7 @@ public class BizConstant {
      * 2支付宝 3银行卡充值
      * 支付方式
      */
+    public static final String WX_PAY = "1";
     public static final String ALIPAY_METHOD = "2";
     public static final String UNIONPAY_METHOD = "3";
     public static final String POS_METHOD = "4";

@@ -39,6 +39,7 @@ public class IntegralPayModel {
         map.put("timestamp", String.valueOf(timestamp));
         map.put("amount", String.valueOf(amount));
         map.put("type", rechType);
+        SignUtils.removeNullValue(map);
         return ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
                 .iPointRecharge(String.valueOf(timestamp), token, rechType, amount,
@@ -106,10 +107,34 @@ public class IntegralPayModel {
         map.put("order_id", orderId);
         map.put("token", token);
         map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         return ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
                 .iGetOrderAipayInfo(String.valueOf(timestamp), token, orderId, sign);
+    }
+
+    /**
+     * 获取微信orderStr
+     *
+     * @param context
+     * @param orderId
+     * @return
+     * @throws IOException
+     */
+    public Flowable<PrepayPayBean> getResponseOfLebao(Context context, String orderId) throws IOException {
+        SharedPreferencesUtils sp = SharedPreferencesUtils.getUtil();
+        String token = (String) sp.getKey(context, "dialog", "");
+        long timestamp = new Date().getTime() / 1000;//时间戳
+        Map<String, String> map = new HashMap<>();
+        map.put("order_id", orderId);
+        map.put("token", token);
+        map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        return ApiRetrofit.getInstance()
+                .getClientApi(PayService.class, Api.url)
+                .iGetResponseOfLebao(String.valueOf(timestamp), token, orderId, sign);
     }
 
 
@@ -127,6 +152,7 @@ public class IntegralPayModel {
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
         map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         return ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
@@ -149,6 +175,7 @@ public class IntegralPayModel {
         map.put("order_id", orderId);
         map.put("token", token);
         map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         return ApiRetrofit.getInstance()
                 .getClientApi(PayService.class, Api.url)
@@ -163,6 +190,7 @@ public class IntegralPayModel {
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
         map.put("timestamp", String.valueOf(timestamp));
+        SignUtils.removeNullValue(map);
         final String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<BalanceBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
@@ -192,7 +220,7 @@ public class IntegralPayModel {
         final String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .getPresentComputePower(String.valueOf(timestamp), token, businessOpportunityCoin,sortNum, sign);
+                .getPresentComputePower(String.valueOf(timestamp), token, businessOpportunityCoin, sortNum, sign);
         return flowable;
     }
 

@@ -38,6 +38,13 @@ public interface IIntegralPayActivity {
     void getOrderInfoByOrderId(PrepayPayBean paymentData);
 
     /**
+     * 获取微信orderStr
+     *
+     * @param paymentData
+     */
+    void getWXPayResponseOfLebao(PrepayPayBean paymentData);
+
+    /**
      * 初始化orderStr
      */
     void initAlipayOrderStr();

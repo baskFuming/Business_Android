@@ -138,6 +138,15 @@ public interface PayService {
             @Field("order_id") String orderId,
             @Field("sign") String sign);
 
+    //获取微信orderStr
+    @FormUrlEncoded
+    @POST("/App/Member/getResponseOfLebao")
+    Flowable<PrepayPayBean> iGetResponseOfLebao(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("order_id") String orderId,
+            @Field("sign") String sign);
+
     //余额充值  3 支付宝支付 4 银行卡转账
     @FormUrlEncoded
     @POST("/App/Member/recharge")

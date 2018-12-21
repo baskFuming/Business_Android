@@ -29,11 +29,8 @@ public class HomeModel {
     private SharedPreferencesUtils sp;
 
     //首页
-    @SuppressLint("MissingPermission")
     public Flowable<HomeClassBean> homePage(Context context, String page, String cate_id) throws IOException {
         String versionName = LanguageUitils.getVersionName(context);
-        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        tm.getDeviceId();
         StringBuilder sb = new StringBuilder();
         long timestamp = new Date().getTime() / 1000;//时间戳
         sp = SharedPreferencesUtils.getUtil();
@@ -44,13 +41,12 @@ public class HomeModel {
         map.put("cate_id", cate_id);
         map.put("timestamp", String.valueOf(timestamp));
         map.put("token", token);
-        map.put("udid", tm.getDeviceId());
         map.put("app_version", versionName);
         SignUtils.removeNullValue(map);
         String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
         Flowable<HomeClassBean> flowable = ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)
-                .iHomePage(page, cate_id, String.valueOf(timestamp), token, showAd, tm.getDeviceId(), versionName, sign);
+                .iHomePage(page, cate_id, String.valueOf(timestamp), token, showAd, versionName, sign);
         return flowable;
     }
 

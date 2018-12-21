@@ -62,7 +62,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     private TextView pointsMonney;
     private String amountPoints;
     private TextView onePointsBtn, twoPointsBtn, threePointsBtn;
-    private String payMethodType = BizConstant.ALIPAY_METHOD;
+    private String payMethodType = BizConstant.WX_PAY;
     private RadioButton alipayBtn, unionpayBtn, posBtn;
     private String orderStr;
     private String orderId;
@@ -162,26 +162,18 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             int id = group.getCheckedRadioButtonId();
             payCheckedId = payMethodRadioGroup.getCheckedRadioButtonId();
             switch (id) {
-                case R.id.alipay_btn:
+                case R.id.alipay_btn://支付宝支付
                     payMethodType = BizConstant.ALIPAY_METHOD;
                     paySureBtn.setBackgroundResource(R.drawable.btn_register_shape);
                     paySureBtn.setEnabled(true);
                     break;
-                case R.id.unionpay_btn:
+                case R.id.unionpay_btn://余额支付
                     payMethodType = BizConstant.UNIONPAY_METHOD;
-//                    Double Monney= Double.valueOf(pointsMonney.getText().toString());
-//                    if (Monney>balance){
-//                        paySureBtn.setBackgroundResource(R.drawable.btn_noguanzhu_gray);
-//                        paySureBtn.setEnabled(false);
-//                    }else {
-//                        paySureBtn.setBackgroundResource(R.drawable.btn_register_shape);
-////                    presenter.mBalancesPay(IntegralPayActivity.this,pointsMonney.getText().toString());
-//                    }
                     isBalance();
                     break;
 
-                case R.id.pos_btn:
-                    payMethodType = BizConstant.POS_METHOD;
+                case R.id.pos_btn://微信支付
+                    payMethodType = BizConstant.WX_PAY;
                     paySureBtn.setBackgroundResource(R.drawable.btn_register_shape);
                     paySureBtn.setEnabled(true);
                     break;
@@ -249,7 +241,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                 if (checkAmount(payAmount)) {
                     if (payCheckedId == alipayBtn.getId()) {  //支付宝支付
                         presenter.pointRecharge(IntegralPayActivity.this, payMethodType, payAmount);//支付接口
-                    } else if (payCheckedId == unionpayBtn.getId()) {
+                    } else if (payCheckedId == unionpayBtn.getId()) {//金票支付
 //                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, pointsMonney.getText().toString());
 //                        ToastUtils.showToast(IntegralPayActivity.this, "选着的是银行卡" + orderCode);
                         Double Monney = Double.valueOf(pointsEditText.getText().toString());
@@ -260,10 +252,8 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                             showNormalDialogFollow();
 
                         }
-                    } else if (payCheckedId == posBtn.getId()) {
-//                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, payAmount);//支付接口
-//                        ToastUtils.showToast(IntegralPayActivity.this, "选着的pos机");
-//                        wxpay();
+                    } else if (payCheckedId == posBtn.getId()) {//微信支付
+                        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, payAmount);//支付接口
                     } else {
                         ToastUtils.showToast(IntegralPayActivity.this, getString(R.string.common_pay_method_empty));
                         return;
@@ -282,6 +272,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
         }
     }
 
+    //支付宝
     @Override
     public void initAlipayOrderStr() {
         if (!StringUtil.isEmpty(orderId)) {
@@ -295,30 +286,30 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     //获取订单详情
     @Override
     public void showOrderInfo(OrderInfoBean paymentData) {
-        int payCheckedId = payMethodRadioGroup.getCheckedRadioButtonId();
-        orderAmount = paymentData.data.amount;
-        orderCode = paymentData.data.oid;
-        projectName = paymentData.data.project_name;
-        if (paymentData.status == 1) {
-            if (payCheckedId == unionpayBtn.getId()) {
-                Intent bankIntent = new Intent(IntegralPayActivity.this, BankPayActivity.class);//银行卡支付
-                //                    intent.putExtra("orderid", orderId);
-                bankIntent.putExtra("orderCode", orderId);
-                startActivity(bankIntent);
-                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-            } else if (payCheckedId == posBtn.getId()) {
-                Intent posIntent = new Intent(IntegralPayActivity.this, PosOrderCodeActivity.class);
-                posIntent.putExtra("amount", orderAmount);
-                posIntent.putExtra("order_code", orderCode);
-                posIntent.putExtra("project_name", projectName);
-                posIntent.putExtra("order_id", orderId);
-                posIntent.putExtra("pos_recharge", BizConstant.POS_INTEGRAL);
-                startActivity(posIntent);
-                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
-            } else {
-                ToastUtils.showToast(this, paymentData.msg);
-            }
-        }
+//        int payCheckedId = payMethodRadioGroup.getCheckedRadioButtonId();
+//        orderAmount = paymentData.data.amount;
+//        orderCode = paymentData.data.oid;
+//        projectName = paymentData.data.project_name;
+//        if (paymentData.status == 1) {
+//            if (payCheckedId == unionpayBtn.getId()) {
+//                Intent bankIntent = new Intent(IntegralPayActivity.this, BankPayActivity.class);//银行卡支付
+//                //                    intent.putExtra("orderid", orderId);
+//                bankIntent.putExtra("orderCode", orderId);
+//                startActivity(bankIntent);
+//                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//            } else if (payCheckedId == posBtn.getId()) {
+//                Intent posIntent = new Intent(IntegralPayActivity.this, PosOrderCodeActivity.class);
+//                posIntent.putExtra("amount", orderAmount);
+//                posIntent.putExtra("order_code", orderCode);
+//                posIntent.putExtra("project_name", projectName);
+//                posIntent.putExtra("order_id", orderId);
+//                posIntent.putExtra("pos_recharge", BizConstant.POS_INTEGRAL);
+//                startActivity(posIntent);
+//                overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
+//            } else {
+//                ToastUtils.showToast(this, paymentData.msg);
+//            }
+//        }
 
     }
 
@@ -367,8 +358,6 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     @Override
     public void IUnitPriceId(AmountPointsBean dataBean) {
         unitPrice = Double.parseDouble(dataBean.data);
-//
-//        presenter.pointRecharge(IntegralPayActivity.this, payMethodType, cp+"");
     }
 
     private void toAlipay(String orderStrs) {
@@ -413,12 +402,15 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
 
     @Override
     public void pointsRecharge(IntegralPayBean dataBean) {
-        orderId = dataBean.data;
         int payCheckedId = payMethodRadioGroup.getCheckedRadioButtonId();
-        if (dataBean.status == 1) {
+        if (dataBean.status == 1) {//支付宝支付
+            orderId = dataBean.data;
             if (payCheckedId == alipayBtn.getId()) {
                 presenter.getPayOrderInfoByOrderId(IntegralPayActivity.this, orderId);
-            } else {
+            }
+            if (payCheckedId == posBtn.getId()) {//微信支付
+                presenter.GetWXPayResponseOfLebao(IntegralPayActivity.this, orderId);
+            } else if (payCheckedId == unionpayBtn.getId()) {
                 paySucPopuWindow = new PaySucPopuWindow(IntegralPayActivity.this, listener, pointsMonney.getText().toString().trim(), pointsEditText.getText().toString().trim(), dataBean.data);
                 paySucPopuWindow.showAtLocation(IntegralPayActivity.this.findViewById(R.id.integral_pay_linear), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
             }
@@ -442,6 +434,21 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
             ToastUtils.showToast(this, paymentData.msg);
         }
 
+    }
+
+    /**
+     * 微信支付
+     *
+     * @p付aram paymentData
+     */
+    @Override
+    public void getWXPayResponseOfLebao(PrepayPayBean paymentData) {
+        if (paymentData.status == 1) {
+            toWXPay(paymentData.data.appid, paymentData.data.noncestr, paymentData.data.packageX, paymentData.data.partnerid,
+                    paymentData.data.prepayid, paymentData.data.sign, paymentData.data.timestamp);
+        } else {
+            ToastUtils.showToast(this, paymentData.msg);
+        }
     }
 
     @Override
@@ -533,7 +540,6 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                         Double cp = NumberOperateUtil.div(parseDouble, unitPrice, 2);
                         pointsMonney.setText(cp + "");
                     }
-//                    presenter.pointRecharge(IntegralPayActivity.this, payMethodType, cp+"");
                 } else {
                     pointsMonney.setText("0.00");
                 }
@@ -545,7 +551,6 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                         Double cp = NumberOperateUtil.div(parseDouble, unitPrice, 2);
                         pointsMonney.setText(cp + "");
                     }
-//                    presenter.pointRecharge(IntegralPayActivity.this, payMethodType, cp+"");
                 } else {
                     pointsMonney.setText("0.00");
 
@@ -750,9 +755,7 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        presenter.mBalancesPay(IntegralPayActivity.this, pointsMonney.getText().toString());
                         presenter.pointRecharge(IntegralPayActivity.this, BizConstant.QITA_LOGIN, pointsEditText.getText().toString().trim());
-//                        presenter.pointRecharge(IntegralPayActivity.this, BizConstant.QITA_LOGIN, "0.01");
                     }
                 });
         normalDialog.setNegativeButton("取消",
@@ -826,34 +829,37 @@ public class IntegralPayActivity extends BaseActivity<IIntegralPayActivity, Inte
     /**
      * 微信支付
      */
-    private void wxpay(){
+    private void toWXPay(String appid, String noncestr, String packagesvalue, String partnerid,
+                         String prepayid, String sign, String timestamp) {
         //实例化微信支付策略
-        String wxAppId = "wx979d60eb9639eb65";
-        WXPay wxPay = WXPay.getInstance(this,wxAppId);
+        WXPay wxPay = WXPay.getInstance(this, appid);
         //构造微信订单实体。一般都是由服务端直接返回。
         WXPayInfoImpli wxPayInfoImpli = new WXPayInfoImpli();
-        wxPayInfoImpli.setTimestamp("1544764441");
-        wxPayInfoImpli.setSign("37BA1BBD6D888B203FDE01E7C1D5FBD5");
-        wxPayInfoImpli.setPrepayId("wx14131401104648b36e6b78761779461364");
-        wxPayInfoImpli.setPartnerid("1498354802");
-        wxPayInfoImpli.setAppid("wx979d60eb9639eb65");
-        wxPayInfoImpli.setNonceStr("1544764441849");
-        wxPayInfoImpli.setPackageValue("Sign=WXPay");
+        wxPayInfoImpli.setTimestamp(timestamp);
+        wxPayInfoImpli.setSign(sign);
+        wxPayInfoImpli.setPrepayId(prepayid);
+        wxPayInfoImpli.setPartnerid(partnerid);
+        wxPayInfoImpli.setAppid(appid);
+        wxPayInfoImpli.setNonceStr(noncestr);
+        wxPayInfoImpli.setPackageValue(packagesvalue);
         //策略场景类调起支付方法开始支付，以及接收回调。
         EasyPay.pay(wxPay, this, wxPayInfoImpli, new IPayCallback() {
             @Override
             public void success() {
-                ToastUtils.showToast(getApplicationContext(),"支付成功");
+                startActivity(new Intent(IntegralPayActivity.this, IntegralActivity.class));
+                finish();
+                overridePendingTransition(R.anim.activity_left_out, R.anim.activity_right_out);
+                ToastUtils.showToast(getApplicationContext(), "支付成功");
             }
 
             @Override
             public void failed() {
-                ToastUtils.showToast(getApplicationContext(),"支付失败");
+                ToastUtils.showToast(getApplicationContext(), "支付失败");
             }
 
             @Override
             public void cancel() {
-                ToastUtils.showToast(getApplicationContext(),"支付取消");
+                ToastUtils.showToast(getApplicationContext(), "支付取消");
             }
         });
     }

@@ -155,6 +155,50 @@ public class IntegralPayPresenter extends BasePresenter<IIntegralPayActivity> {
         }
     }
 
+    /**
+     * 获取微信orderStr
+     *
+     * @param context
+     * @param orderId
+     */
+    public void GetWXPayResponseOfLebao(final Context context, String orderId) {
+        try {
+            interalPayModel.getResponseOfLebao(context, orderId).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new BaseDisposableSubscriber<PrepayPayBean>(context) {
+
+                        @Override
+                        protected void onBaseNext(PrepayPayBean prepayPayBean) {
+                            if (prepayPayBean.status == 1) {
+                                iIntegralPayActivity.getWXPayResponseOfLebao(prepayPayBean);
+                            } else {
+                                ToastUtils.showToast(context, prepayPayBean.msg);
+                            }
+
+                        }
+
+                        @Override
+                        protected String getTitleMsg() {
+                            return null;
+                        }
+
+                        @Override
+                        protected boolean isNeedProgressDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        protected void onBaseComplete() {
+
+                        }
+
+
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * 返回积分单价接口

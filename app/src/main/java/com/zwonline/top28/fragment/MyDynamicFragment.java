@@ -322,7 +322,7 @@ public class MyDynamicFragment extends BasesFragment<ISendFriendCircleActivity, 
             public void onclick(View view, int position) {
                 moment_id = newContentList.get(position).moment_id;
                 presenter.mDynamicShare(getActivity(), newContentList.get(position).moment_id);
-                mPopwindow = new RewritePopwindow(getActivity(), itemsOnClick,true);
+                mPopwindow = new RewritePopwindow(getActivity(), itemsOnClick, true);
                 mPopwindow.showAtLocation(view,
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
             }

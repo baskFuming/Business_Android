@@ -293,6 +293,23 @@ public interface BusinessCircleService {
             @Field("id") String comment_id
     );
 
+
+    /**
+     * 分享动态成功回调
+     *
+     * @param timestamp
+     * @param token
+     * @param sign
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/App/Member/shareJinliActivitySuccessfullyCallback")
+    Flowable<AttentionBean> iShareJinliActivity(
+            @Field("timestamp") String timestamp,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
+
     /**
      * 推荐关注人列表接口
      *

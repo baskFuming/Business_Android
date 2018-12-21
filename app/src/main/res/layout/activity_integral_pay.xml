@@ -320,13 +320,15 @@
                         android:layout_marginRight="32dp"
                         android:background="@android:color/transparent"
                         android:button="@null"
-                        android:drawableLeft="@mipmap/ic_pos"
+                        android:drawableLeft="@mipmap/wechat_icon"
                         android:drawablePadding="10dp"
                         android:drawableRight="@drawable/pay_selector"
                         android:text="微信支付"
+                        android:checked="true"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        android:visibility="gone" />
+                        android:layout_marginTop="15dp"
+                        android:visibility="visible" />
 
                     <View
                         android:layout_width="match_parent"
@@ -345,7 +347,7 @@
                         android:layout_marginTop="20dp"
                         android:background="@android:color/transparent"
                         android:button="@null"
-                        android:checked="true"
+                        android:checked="false"
                         android:drawableLeft="@mipmap/ic_alipay"
                         android:drawablePadding="10dp"
                         android:drawableRight="@drawable/pay_selector"

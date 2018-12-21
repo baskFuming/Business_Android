@@ -66,7 +66,7 @@ import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.SharedPreferencesUtils;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.wxapi.RewritePopwindow;
-import com.zwonline.top28.wxapi.ShareUtils;
+import com.zwonline.top28.wxapi.ShareUtilses;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -479,22 +479,22 @@ public class BaseWebViewActivity extends BaseActivity {
                                             mPopwindow.backgroundAlpha(BaseWebViewActivity.this, 1f);
                                             switch (v.getId()) {
                                                 case R.id.weixinghaoyou:
-                                                    ShareUtils.shareWeb(BaseWebViewActivity.this, finalShare_url, finalTitle
+                                                    ShareUtilses.shareWebJ(BaseWebViewActivity.this, finalShare_url, finalTitle
                                                             , finalDescription, finalIcon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN
                                                     );
                                                     break;
                                                 case R.id.pengyouquan:
-                                                    ShareUtils.shareWeb(BaseWebViewActivity.this, finalShare_url, finalTitle
+                                                    ShareUtilses.shareWebJ(BaseWebViewActivity.this, finalShare_url, finalTitle
                                                             , finalDescription, finalIcon, R.mipmap.ic_launcher, SHARE_MEDIA.WEIXIN_CIRCLE
                                                     );
                                                     break;
                                                 case R.id.qqhaoyou:
-                                                    ShareUtils.shareWeb(BaseWebViewActivity.this, finalShare_url, finalTitle
+                                                    ShareUtilses.shareWebJ(BaseWebViewActivity.this, finalShare_url, finalTitle
                                                             , finalDescription, finalIcon, R.mipmap.ic_launcher, SHARE_MEDIA.QQ
                                                     );
                                                     break;
                                                 case R.id.qqkongjian:
-                                                    ShareUtils.shareWeb(BaseWebViewActivity.this, finalShare_url, finalTitle
+                                                    ShareUtilses.shareWebJ(BaseWebViewActivity.this, finalShare_url, finalTitle
                                                             , finalDescription, finalIcon, R.mipmap.ic_launcher, SHARE_MEDIA.QZONE
                                                     );
                                                     break;
