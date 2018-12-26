@@ -1,5 +1,6 @@
 package com.zwonline.top28.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -68,6 +70,7 @@ import com.zwonline.top28.fragment.HomeFragment;
 import com.zwonline.top28.fragment.InformationFragment;
 import com.zwonline.top28.fragment.MyFragment;
 import com.zwonline.top28.fragment.YangShiFragment;
+import com.zwonline.top28.module.Constants;
 import com.zwonline.top28.nim.session.SessionHelper;
 import com.zwonline.top28.nim.team.TeamCreateHelper;
 import com.zwonline.top28.presenter.MainPresenter;
@@ -588,17 +591,19 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
                     customPopuWindow.backgroundAlpha(MainActivity.this, 1f);
                     break;
                 case R.id.sure:
-                    downloadApk(package_download_url);
-                    updataLinear.setVisibility(View.GONE);
-                    updataProgressbar.setVisibility(View.VISIBLE);
-                    updataTv.setVisibility(View.VISIBLE);
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        checkAndRequestPermission();
+                    } else {
+                        upData();
+                    }
 //                    LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
                     break;
                 case R.id.coerce_sure:
-                    coerceSure.setVisibility(View.GONE);
-                    forceUpdataProgressbar.setVisibility(View.VISIBLE);
-                    forceUpdataTv.setVisibility(View.VISIBLE);
-                    downloadApk(package_download_url);
+
+//                    if (Build.VERSION.SDK_INT >= 23) {
+//                        checkAndRequestPermission();
+//                    } else {
+                        upData();
 //                    LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
                     break;
             }
@@ -1047,7 +1052,6 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         @Override
         public void run() {
             OkHttpClient client = new OkHttpClient();
-//            String url = "https://raw.githubusercontent.com/WVector/AppUpdateDemo/master/apk/app-debug.apk";
             Request request = new Request.Builder().get().url(url).build();
             try {
                 okhttp3.Response response = client.newCall(request).execute();
@@ -1132,6 +1136,11 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 //        }
 //        startActivityForResult(intent, 119);
 //    }
+
+    /**
+     * 安装app
+     * @param file
+     */
     private void installApk(File file) {
         //调用系统安装程序
         Intent intent = new Intent();
@@ -1142,6 +1151,67 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         startActivityForResult(intent, 119);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkAndRequestPermission() {
+        List<String> lackedPermission = new ArrayList<String>();
+        if (!(checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)) {
+            lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
+        }
 
+        if (!(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+            lackedPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        // 权限都已经有了，那么直接调用SDK
+        if (lackedPermission.size() == 0) {
+            upData();
+        }else {
+            // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
+            String[] requestPermissions = new String[lackedPermission.size()];
+            lackedPermission.toArray(requestPermissions);
+            requestPermissions(requestPermissions, 1024);
+        }
+    }
+
+    private boolean hasAllPermissionsGranted(int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
+            upData();
+        }
+//        else {
+//            // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
+//            Toast.makeText(this, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。", Toast.LENGTH_LONG).show();
+//            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//            intent.setData(Uri.parse("package:" + getPackageName()));
+//            startActivity(intent);
+//            finish();
+//        }
+    }
+
+    /***
+     * 更新
+     */
+    public void upData() {
+        downloadApk(package_download_url);
+        if (StringUtil.isNotEmpty(forceUpdate) && forceUpdate.equals(BizConstant.IS_FAIL)) {
+            updataLinear.setVisibility(View.GONE);
+            updataProgressbar.setVisibility(View.VISIBLE);
+            updataTv.setVisibility(View.VISIBLE);
+        } else {
+            coerceSure.setVisibility(View.GONE);
+            forceUpdataProgressbar.setVisibility(View.VISIBLE);
+            forceUpdataTv.setVisibility(View.VISIBLE);
+        }
+    }
 }
 

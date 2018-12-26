@@ -1,12 +1,16 @@
 package com.zwonline.top28.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -76,6 +80,7 @@ public class SplashViewActivity extends AppCompatActivity {
     private CountDownViewUtils countDownViewUtils;
     private boolean isAD = false;//定义是否跳过链接
     private TextView advertisingIcon;
+    private boolean show = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +97,11 @@ public class SplashViewActivity extends AppCompatActivity {
         isfrist = startup.getBoolean("isfrist", true);
         initView();
         countView();
+        if (Build.VERSION.SDK_INT >= 23) {
+            show=false;
+            checkAndRequestPermission();
+            countDownView.setVisibility(View.GONE);
+        }
     }
 
 
@@ -132,7 +142,7 @@ public class SplashViewActivity extends AppCompatActivity {
         countDownView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                countDownView.cancel();
+//                countDownView.cancel();
                 next();
                 overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
             }
@@ -213,6 +223,7 @@ public class SplashViewActivity extends AppCompatActivity {
      * 跳转到首页
      */
     public void next() {
+        countDownView.cancel();
         Intent intent = new Intent(SplashViewActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -265,7 +276,9 @@ public class SplashViewActivity extends AppCompatActivity {
                                                     alpha.setDuration(500);
                                                     MainRe.startAnimation(alpha);
 //                                imageviewStart.setVisibility(View.GONE);
-                                                    countDownView.setVisibility(View.VISIBLE);
+                                                    if (show){
+                                                        countDownView.setVisibility(View.VISIBLE);
+                                                    }
                                                     advertisingIcon.setVisibility(View.VISIBLE);
                                                     reimage.setVisibility(View.VISIBLE);
                                                     return false;
@@ -291,6 +304,54 @@ public class SplashViewActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkAndRequestPermission() {
+        List<String> lackedPermission = new ArrayList<String>();
+        if (!(checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)) {
+            lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
+        }
+
+        if (!(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+            lackedPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        // 权限都已经有了，那么直接调用SDK
+        if (lackedPermission.size() == 0) {
+//            next();
+            show=true;
+        } else {
+            // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
+            String[] requestPermissions = new String[lackedPermission.size()];
+            lackedPermission.toArray(requestPermissions);
+            requestPermissions(requestPermissions, 1024);
+        }
+    }
+
+    private boolean hasAllPermissionsGranted(int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
+            next();
+        }
+//        else {
+//            // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
+//            Toast.makeText(this, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。", Toast.LENGTH_LONG).show();
+//            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//            intent.setData(Uri.parse("package:" + getPackageName()));
+//            startActivity(intent);
+//            finish();
+//        }
     }
 }
 

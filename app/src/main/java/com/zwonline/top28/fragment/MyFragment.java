@@ -22,6 +22,7 @@ import com.netease.nim.uikit.api.NimUIKit;
 import com.zwonline.top28.R;
 import com.zwonline.top28.activity.AeosActivity;
 import com.zwonline.top28.activity.ArticleActivity;
+import com.zwonline.top28.activity.CreatorBusinessCircleActivity;
 import com.zwonline.top28.activity.EnsurePoolActivity;
 import com.zwonline.top28.activity.HashrateActivity;
 import com.zwonline.top28.activity.HomePageActivity;
@@ -490,8 +491,8 @@ public class MyFragment extends BaseFragment<IUserInfo, UserInfoPresenter> imple
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.notice_img://公告
-
-                startActivity(new Intent(getActivity(), AnnouncementActivity.class));
+//                startActivity(new Intent(getActivity(), AnnouncementActivity.class));
+                startActivity(new Intent(getActivity(), CreatorBusinessCircleActivity.class));
                 getActivity().overridePendingTransition(R.anim.activity_right_in, R.anim.activity_left_out);
                 break;
             case R.id.vip_image://VIP跳转地址

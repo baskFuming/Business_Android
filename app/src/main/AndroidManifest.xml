@@ -762,6 +762,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".activity.CreatorBusinessCircleActivity"></activity>
     </application>
 
 </manifest>

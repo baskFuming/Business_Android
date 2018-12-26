@@ -842,10 +842,10 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
     private View.OnClickListener itemsOnClick = new View.OnClickListener() {
 
         public void onClick(View v) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE, Manifest.permission.READ_LOGS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SET_DEBUG_APP, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS, Manifest.permission.WRITE_APN_SETTINGS};
-                ActivityCompat.requestPermissions(HomeDetailsActivity.this, mPermissionList, 123);
-            }
+//            if (Build.VERSION.SDK_INT >= 23) {
+//                String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE, Manifest.permission.READ_LOGS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SET_DEBUG_APP, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS, Manifest.permission.WRITE_APN_SETTINGS};
+//                ActivityCompat.requestPermissions(HomeDetailsActivity.this, mPermissionList, 123);
+//            }
             mPopwindow.dismiss();
             mPopwindow.backgroundAlpha(HomeDetailsActivity.this, 1f);
             switch (v.getId()) {

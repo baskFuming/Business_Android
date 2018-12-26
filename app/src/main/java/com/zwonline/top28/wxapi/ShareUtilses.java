@@ -228,6 +228,7 @@ public class ShareUtilses {
             map.put("timestamp", String.valueOf(timestamp));
             map.put("id", id);
             map.put("token", token);
+            SignUtils.removeNullValue(map);
             String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
             Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                     .getClientApi(BusinessCircleService.class, Api.url)
@@ -343,6 +344,7 @@ public class ShareUtilses {
             Map<String, String> map = new HashMap<>();
             map.put("timestamp", String.valueOf(timestamp));
             map.put("token", token);
+            SignUtils.removeNullValue(map);
             String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
             Flowable<AttentionBean> flowable = ApiRetrofit.getInstance()
                     .getClientApi(BusinessCircleService.class, Api.url)

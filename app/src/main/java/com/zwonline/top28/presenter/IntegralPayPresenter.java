@@ -41,7 +41,7 @@ public class IntegralPayPresenter extends BasePresenter<IIntegralPayActivity> {
      *
      * @param context
      */
-    public void pointRecharge(Context context, final String rechType, String amount) {
+    public void pointRecharge(final Context context, final String rechType, String amount) {
         try {
             interalPayModel.getAmountByPoints(context, rechType, amount).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -49,7 +49,11 @@ public class IntegralPayPresenter extends BasePresenter<IIntegralPayActivity> {
 
                         @Override
                         protected void onBaseNext(IntegralPayBean integralPayBean) {
-                            iIntegralPayActivity.pointsRecharge(integralPayBean);
+                            if (integralPayBean.status == 1) {
+                                iIntegralPayActivity.pointsRecharge(integralPayBean);
+                            } else {
+                                ToastUtils.showToast(context, integralPayBean.msg);
+                            }
                         }
 
                         @Override
