@@ -65,7 +65,7 @@ import com.zwonline.top28.bean.UnclaimedMbpCountBean;
 import com.zwonline.top28.bean.UpdateCodeBean;
 import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.fragment.ExamineFragment;
-import com.zwonline.top28.fragment.FriendCircleFragment;
+import com.zwonline.top28.fragment.BusinessiCrcleFragment;
 import com.zwonline.top28.fragment.HomeFragment;
 import com.zwonline.top28.fragment.InformationFragment;
 import com.zwonline.top28.fragment.MyFragment;
@@ -115,7 +115,7 @@ import retrofit2.http.Url;
 public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter> implements RadioGroup.OnCheckedChangeListener, IMainActivity {
     public SharedPreferencesUtils sp;
     private HomeFragment homeFragment;
-    private FriendCircleFragment businessFragment;
+    private BusinessiCrcleFragment businessFragment;
     private InformationFragment informationFragment;
     private MyFragment myFragment;
     private YangShiFragment yangShiFragment;
@@ -215,7 +215,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
     protected void init() {
         new RecentContactsFragment();
         homeFragment = new HomeFragment();
-        businessFragment = new FriendCircleFragment();
+        businessFragment = new BusinessiCrcleFragment();
         informationFragment = new InformationFragment();
         myFragment = new MyFragment();
         yangShiFragment = new YangShiFragment();
@@ -603,7 +603,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 //                    if (Build.VERSION.SDK_INT >= 23) {
 //                        checkAndRequestPermission();
 //                    } else {
-                        upData();
+                    upData();
 //                    LanguageUitils.gotoBrowserDownload(context, package_download_url);//直接跳浏览器
                     break;
             }
@@ -1139,6 +1139,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
 
     /**
      * 安装app
+     *
      * @param file
      */
     private void installApk(File file) {
@@ -1165,7 +1166,7 @@ public class MainActivity extends BaseMainActivity<IMainActivity, MainPresenter>
         // 权限都已经有了，那么直接调用SDK
         if (lackedPermission.size() == 0) {
             upData();
-        }else {
+        } else {
             // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
             String[] requestPermissions = new String[lackedPermission.size()];
             lackedPermission.toArray(requestPermissions);

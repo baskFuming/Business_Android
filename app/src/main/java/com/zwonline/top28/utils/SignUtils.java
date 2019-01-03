@@ -51,9 +51,9 @@ public class SignUtils {
         if (result.startsWith("&")) {
             result = result.substring(1, result.length());
         }
-        System.out.println("MD5加密前=" + basestring.toString());
+//        System.out.println("MD5加密前=" + basestring.toString());
         String sign = getMD5(result);
-        System.out.println("MD5加密后=" + sign.toUpperCase().toString());
+//        System.out.println("MD5加密后=" + sign.toUpperCase().toString());
         return sign.toUpperCase();
     }
 
@@ -87,9 +87,9 @@ public class SignUtils {
 
         //basestring.append("&key=" + key);
         basestring.append(key);
-        System.out.println("MD5加密前=" + basestring.toString());
+//        System.out.println("MD5加密前=" + basestring.toString());
         String sign = getMD5(basestring.toString());
-        System.out.println("MD5加密后=" + sign.toUpperCase().toString());
+//        System.out.println("MD5加密后=" + sign.toUpperCase().toString());
         return sign.toUpperCase();
     }
 
@@ -135,7 +135,6 @@ public class SignUtils {
      * 所以当索引指针往后移动的时候就找不到要迭代的对象，所以按照 fail-fast 原则 Iterator 会马上抛出 java.util.ConcurrentModificationException 异常。
      * 所以 Iterator 在工作的时候是不允许被迭代的对象被改变的。
      * 但你可以使用 Iterator 本身的方法 remove() 来删除对象， Iterator.remove() 方法会在删除当前迭代对象的同时维护索引的一致性。
-     *
      * @param obj
      * @param iterator
      */
