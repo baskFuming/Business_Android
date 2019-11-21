@@ -88,7 +88,8 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                >
 
                 <net.lucode.hackware.magicindicator.MagicIndicator
                     android:id="@+id/ys_indicator"
@@ -107,7 +108,9 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/ys_view_pager"

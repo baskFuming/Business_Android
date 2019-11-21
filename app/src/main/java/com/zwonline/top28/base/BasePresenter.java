@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
  * 3.@date2017/12/6 13:42
  */
 
-public abstract class BasePresenter<V> {
+public abstract class BasePresenter<V > {
 
     public WeakReference weakReference=null;
 

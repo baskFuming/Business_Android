@@ -39,7 +39,6 @@ public class AttentionPopwindow extends PopupWindow {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //销毁弹出框
                 dismiss();
                 backgroundAlpha(context, 1f);

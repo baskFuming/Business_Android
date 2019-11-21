@@ -131,7 +131,6 @@ public class AddReListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ButterKnife.bind(this, itemView);
         }
     }
-
     /**
      * `
      * 按钮点击事件需要的方法

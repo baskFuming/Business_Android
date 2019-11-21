@@ -131,6 +131,7 @@ public class WithoutCodeLoginActivity extends BaseActivity<IRegisterActivity, Re
         posswodLinear = (LinearLayout) findViewById(R.id.posswod_linear);
         withoutBack = (RelativeLayout) findViewById(R.id.without_back);
         countryCity = (TextView) findViewById(R.id.country_city);
+
         //用户协议----隐私条款
         SpannableStringBuilder spannableString = new SpannableStringBuilder();
         spannableString.append(str);

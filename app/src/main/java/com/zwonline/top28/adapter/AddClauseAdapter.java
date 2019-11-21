@@ -1,12 +1,8 @@
 package com.zwonline.top28.adapter;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -17,10 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.zwonline.top28.R;
-import com.zwonline.top28.activity.CompanyActivity;
-import com.zwonline.top28.activity.CustomContractActivity;
 import com.zwonline.top28.bean.AddClauseBean;
-import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.utils.StringUtil;
 import com.zwonline.top28.utils.ToastUtils;
 import com.zwonline.top28.utils.popwindow.ContractPopuWindow;
@@ -99,14 +92,12 @@ public class AddClauseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemCount() {
         return list != null ? list.size() : 0;
     }
-
     //  添加数据
     public void addData(int position, String clauseNames, String clauseRatios, String clauseContents) {
-//      在list中添加数据，并通知条目加入一条
+        //在list中添加数据，并通知条目加入一条
         list.add(position, new AddClauseBean.DataBean.TermsBean(clauseNames, clauseRatios, clauseContents));
         //添加动画
     }
-
     //  删除数据
     public void removeData(int position) {
         list.remove(position);

@@ -1,12 +1,9 @@
 package com.zwonline.top28.utils;
-
 import android.net.Uri;
-
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 /**
  *    Url参数解析 工具类
  */

@@ -35,7 +35,7 @@ public class AddBankModel {
         map.put("card_number",card_number);
         map.put("card_bank",card_bank);
         SignUtils.removeNullValue(map);
-        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);
+        String sign = SignUtils.getSignature(map, Api.PRIVATE_KEY);  //MD5加密
         SignUtils.removeNullValue(map);
         Flowable<AddBankBean>flowable= ApiRetrofit.getInstance()
                 .getClientApi(ApiService.class, Api.url)

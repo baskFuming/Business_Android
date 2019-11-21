@@ -24,7 +24,7 @@
                 android:id="@+id/collapsing_toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:theme="@style/Themerlay.AppCompat.Dark.ActionBar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout

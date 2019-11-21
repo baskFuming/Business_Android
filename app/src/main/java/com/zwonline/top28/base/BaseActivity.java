@@ -45,7 +45,6 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
             presenter.attachView((V) this);
         }
         presenter = getPresenter();
-
         init();
 
     }

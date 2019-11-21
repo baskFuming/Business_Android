@@ -1,5 +1,6 @@
 package com.zwonline.top28.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -94,6 +95,7 @@ public class FeedBackActivity extends BaseActivity<ISendFriendCircleActivity, Se
         return R.layout.activity_feed_back;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
         back = (RelativeLayout) findViewById(R.id.back);
         title = (TextView) findViewById(R.id.title);

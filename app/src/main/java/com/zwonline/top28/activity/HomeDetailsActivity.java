@@ -1,6 +1,5 @@
 package com.zwonline.top28.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +9,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.ClipboardManager;
 import android.text.Editable;
@@ -66,7 +64,6 @@ import com.zwonline.top28.constants.BizConstant;
 import com.zwonline.top28.presenter.HomeDetailsPresenter;
 import com.zwonline.top28.presenter.RecordUserBehavior;
 import com.zwonline.top28.utils.AdapterUtility;
-import com.zwonline.top28.utils.GlideLoadUtils;
 import com.zwonline.top28.utils.ImageViewPlus;
 import com.zwonline.top28.utils.LanguageUitils;
 import com.zwonline.top28.utils.ObservableScrollView;
@@ -551,7 +548,6 @@ public class HomeDetailsActivity extends BaseActivity<IHomeDetails, HomeDetailsP
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
-
             }
         });
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
